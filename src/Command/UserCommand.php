@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\Feed\DdfService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +13,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class UserCommand extends Command
 {
     protected static $defaultName = 'app:user-command';
+
+    private DdfService $ddfService;
+
+    public function __construct(DdfService $ddfService)
+    {
+        $this->ddfService = $ddfService;
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -36,6 +45,10 @@ class UserCommand extends Command
         }
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+
+        $date = new \DateTime();
+        $result = $this->ddfService->searchUpdatedListings($date->modify('-1 hour'));
+        dump($result);
 
         return Command::SUCCESS;
     }
