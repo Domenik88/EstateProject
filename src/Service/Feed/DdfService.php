@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
 class DdfService
 {
     private LoggerInterface $logger;
-    private Session $rets;
+    private ?Session $rets;
 
     public function __construct(LoggerInterface $logger)
     {
@@ -29,14 +29,14 @@ class DdfService
 
     public function connect()
     {
-        $config = new Configuration;
-        $config->setLoginUrl('http://data.crea.ca/Login.svc/Login')
-            ->setUsername('qeoMsug6JDuY5VrxNT3CZJGq')
-            ->setPassword('S0uuYshvCPegrzypREFO4gdN')
-            ->setRetsVersion('1.7.2');
+            $config = new Configuration;
+            $config->setLoginUrl('http://data.crea.ca/Login.svc/Login')
+                ->setUsername('qeoMsug6JDuY5VrxNT3CZJGq')
+                ->setPassword('S0uuYshvCPegrzypREFO4gdN')
+                ->setRetsVersion('1.7.2');
 
-        $this->rets = new Session($config);
-        $this->rets->Login();
+            $this->rets = new Session($config);
+            $this->rets->Login();
     }
 
     public function searchUpdatedListings(\DateTime $date,$offset = null,$limit = 100)
@@ -46,8 +46,9 @@ class DdfService
         $totalRecordsCount = $results->getTotalResultsCount();
         $nextRecordOffset = $offset + $results->getReturnedResultsCount();
         $moreAvailable = $nextRecordOffset < $totalRecordsCount;
+        $this->rets->Disconnect();
 
-        return new SearchResult($moreAvailable, $results->toArray(), $nextRecordOffset);
+        return new SearchResult($moreAvailable, $results->toArray(), $nextRecordOffset, $totalRecordsCount);
     }
 
     public function getMasterList($limit = null): array

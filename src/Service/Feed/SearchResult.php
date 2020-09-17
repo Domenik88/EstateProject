@@ -15,11 +15,13 @@ class SearchResult
     public bool $moreAvailable;
     public array $results;
     public int $nextRecordOffset;
+    public int $totalCount;
 
-    public function __construct(bool $moreAvailable, array $results, int $nextRecordOffset)
+    public function __construct(bool $moreAvailable, array $results, int $nextRecordOffset, int $totalCount)
     {
         $this->results = $results;
         $this->moreAvailable = $moreAvailable;
         $this->nextRecordOffset = $nextRecordOffset;
+        $this->totalCount = $totalCount;
     }
 }
