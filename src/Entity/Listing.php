@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ListingRepository::class)
+ * @ORM\Table(name="listing",uniqueConstraints={@ORM\UniqueConstraint(name="listing_mls_num_feed_listing_id_idx", columns={"mls_num", "feed_listing_id"})})
  */
 class Listing
 {
@@ -18,142 +19,142 @@ class Listing
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=20)
      */
-    private $MLS_NUM;
+    private $mlsNum;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $feedListingID;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $FeedListingID;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $FeedID;
+    private $feedID;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $ListPrice;
+    private $listPrice;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $PostalCode;
+    private $postalCode;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $PhotosCount;
+    private $photosCount;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $UnparsedAddress;
+    private $unparsedAddress;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $City;
+    private $city;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMLSNUM(): ?string
+    public function getMlsNum(): ?string
     {
-        return $this->MLS_NUM;
+        return $this->mlsNum;
     }
 
-    public function setMLSNUM(string $MLS_NUM): self
+    public function setMlsNum(string $mlsNum): self
     {
-        $this->MLS_NUM = $MLS_NUM;
+        $this->mlsNum = $mlsNum;
 
         return $this;
     }
 
     public function getFeedListingID(): ?string
     {
-        return $this->FeedListingID;
+        return $this->feedListingID;
     }
 
-    public function setFeedListingID(string $FeedListingID): self
+    public function setFeedListingID(string $feedListingID): self
     {
-        $this->FeedListingID = $FeedListingID;
+        $this->feedListingID = $feedListingID;
 
         return $this;
     }
 
     public function getFeedID(): ?string
     {
-        return $this->FeedID;
+        return $this->feedID;
     }
 
-    public function setFeedID(string $FeedID): self
+    public function setFeedID(string $feedID): self
     {
-        $this->FeedID = $FeedID;
+        $this->feedID = $feedID;
 
         return $this;
     }
 
     public function getListPrice(): ?float
     {
-        return $this->ListPrice;
+        return $this->listPrice;
     }
 
-    public function setListPrice(?float $ListPrice): self
+    public function setListPrice(?float $listPrice): self
     {
-        $this->ListPrice = $ListPrice;
+        $this->listPrice = $listPrice;
 
         return $this;
     }
 
     public function getPostalCode(): ?string
     {
-        return $this->PostalCode;
+        return $this->postalCode;
     }
 
-    public function setPostalCode(?string $PostalCode): self
+    public function setPostalCode(?string $postalCode): self
     {
-        $this->PostalCode = $PostalCode;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
 
     public function getPhotosCount(): ?int
     {
-        return $this->PhotosCount;
+        return $this->photosCount;
     }
 
-    public function setPhotosCount(?int $PhotosCount): self
+    public function setPhotosCount(?int $photosCount): self
     {
-        $this->PhotosCount = $PhotosCount;
+        $this->photosCount = $photosCount;
 
         return $this;
     }
 
     public function getUnparsedAddress(): ?string
     {
-        return $this->UnparsedAddress;
+        return $this->unparsedAddress;
     }
 
-    public function setUnparsedAddress(?string $UnparsedAddress): self
+    public function setUnparsedAddress(?string $unparsedAddress): self
     {
-        $this->UnparsedAddress = $UnparsedAddress;
+        $this->unparsedAddress = $unparsedAddress;
 
         return $this;
     }
 
     public function getCity(): ?string
     {
-        return $this->City;
+        return $this->city;
     }
 
-    public function setCity(?string $City): self
+    public function setCity(?string $city): self
     {
-        $this->City = $City;
+        $this->city = $city;
 
         return $this;
     }

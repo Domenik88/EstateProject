@@ -2,7 +2,9 @@
 
 namespace App\Command;
 
+use App\Repository\ListingRepository;
 use App\Service\Feed\DdfService;
+use App\Service\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,11 +19,15 @@ class UserCommand extends Command
 
     private DdfService $ddfService;
     private LoggerInterface $logger;
+    private ListingRepository $listingRepository;
+    private ListingService $listingService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
+        $this->listingRepository = $listingRepository;
+        $this->listingService = $listingService;
         parent::__construct();
     }
 
@@ -50,7 +56,7 @@ class UserCommand extends Command
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         $date = new \DateTime();
-        $date = $date->modify('-8 hour');
+        $date = $date->modify('-15 hour');
         $searchOffset = null;
         $searchCount = 0;
         $totalSearchResult = 0;
@@ -58,16 +64,19 @@ class UserCommand extends Command
             do {
                 $searchResult = $this->ddfService->searchUpdatedListings($date, $searchOffset);
                 foreach ( $searchResult->results as $result ) {
-                    $io->note($result['UnparsedAddress']);
+                    $this->listingService->upsertFromDdfResult($result);
                     $searchCount++;
                 }
                 $searchOffset = $searchResult->nextRecordOffset;
                 $totalSearchResult = $searchResult->totalCount;
             } while ( $searchResult->moreAvailable );
+            //write to table now time.
         } catch (\Exception $e) {
             $io->note($e);
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
+        } finally {
+            //stop.
         }
         $io->success($searchCount);
         $io->success($totalSearchResult);
