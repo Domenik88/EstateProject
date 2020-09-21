@@ -62,4 +62,11 @@ class ListingService
 
         $this->entityManager->flush();
     }
+
+    public function getListingList(string $feedName)
+    {
+        return $this->listingRepository->findBy([
+            'feedID' => $feedName
+        ]);
+    }
 }
