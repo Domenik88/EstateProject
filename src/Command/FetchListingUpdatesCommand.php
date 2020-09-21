@@ -14,9 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class UserCommand extends Command
+class FetchListingUpdatesCommand extends Command
 {
-    protected static $defaultName = 'app:user-command';
+    protected static $defaultName = 'app:listing-updates';
 
     private DdfService $ddfService;
     private LoggerInterface $logger;
