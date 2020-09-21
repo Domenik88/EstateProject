@@ -16,21 +16,19 @@ class ListingListController extends AbstractController
     }
 
     /**
-     * @Route("/listing/{slug}", name="listing_list")
+     * @Route("/listing/list", name="listing_list")
      */
-    public function index(string $slug)
+    public function index()
     {
-        dump($slug);
-        die;
-//        $listingList = $this->listingService->getListingList('ddf');
+        $listingList = $this->listingService->getListingList('ddf');
         return $this->render('listing_list/index.html.twig', [
             'controller_name' => 'ListingListController',
-//            'listingList' => $listingList
+            'listingList' => $listingList
         ]);
     }
 
     /**
-     * @Route("/listing/{page}", name="listing_list")
+     * @Route("/listing/list/{page}", name="listing_list_page")
      */
     public function show(int $page)
     {

@@ -28,7 +28,7 @@ class ListingService
     public function createFromDdfResult(array $result)
     {
         $listing = new Listing();
-        $listing->setFeedID('Ddf');
+        $listing->setFeedID('ddf');
         $listing->setCity($result['City']);
         $listing->setFeedListingID($result['ListingKey']);
         $listing->setListPrice($result['ListPrice']);
@@ -53,7 +53,7 @@ class ListingService
         if (!$existingListing) {
             return $this->createFromDdfResult($result);
         }
-        $existingListing->setFeedID('Ddf');
+        $existingListing->setFeedID('ddf');
         $existingListing->setCity($result['City']);
         $existingListing->setListPrice($result['ListPrice']);
         $existingListing->setPhotosCount($result['PhotosCount']);
@@ -65,8 +65,10 @@ class ListingService
 
     public function getListingList(string $feedName)
     {
-        return $this->listingRepository->findBy([
+        $listingList = $this->listingRepository->findBy([
             'feedID' => $feedName
         ]);
+
+        return $listingList;
     }
 }
