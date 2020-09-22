@@ -99,6 +99,18 @@
     "egulias/email-validator": {
         "version": "2.1.20"
     },
+    "geocoder-php/chain-provider": {
+        "version": "4.2.0"
+    },
+    "geocoder-php/common-http": {
+        "version": "4.3.0"
+    },
+    "geocoder-php/google-maps-provider": {
+        "version": "4.5.0"
+    },
+    "geocoder-php/here-provider": {
+        "version": "0.4.0"
+    },
     "guzzlehttp/guzzle": {
         "version": "7.0.1"
     },
@@ -136,7 +148,22 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.2"
+        "version": "7.4"
+    },
+    "php-http/discovery": {
+        "version": "1.11.0"
+    },
+    "php-http/guzzle7-adapter": {
+        "version": "0.1.0"
+    },
+    "php-http/httplug": {
+        "version": "2.2.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "1.1.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -585,6 +612,9 @@
     },
     "webmozart/assert": {
         "version": "1.9.1"
+    },
+    "willdurand/geocoder": {
+        "version": "4.3.0"
     },
     "zendframework/zend-code": {
         "version": "3.4.1"
