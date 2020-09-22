@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListingListController extends AbstractController
 {
     private ListingService $listingService;
+    const LIMIT = 50;
 
     public function __construct(ListingService $listingService)
     {
@@ -16,23 +17,15 @@ class ListingListController extends AbstractController
     }
 
     /**
-     * @Route("/listing/list", name="listing_list")
+     * @Route("/listing/list/{page}", name="listing_list", requirements={"page"="\d+"})
      */
-    public function index()
+    public function list(int $page = 1)
     {
-        $listingList = $this->listingService->getListingList('ddf');
+        $offset = ($page - 1) * self::LIMIT;
+        $listingListSearchResult = $this->listingService->getListingList('ddf',$page,self::LIMIT,$offset);
         return $this->render('listing_list/index.html.twig', [
             'controller_name' => 'ListingListController',
-            'listingList' => $listingList
+            'listingList' => $listingListSearchResult,
         ]);
-    }
-
-    /**
-     * @Route("/listing/list/{page}", name="listing_list_page")
-     */
-    public function show(int $page)
-    {
-        dump($page);
-        die;
     }
 }

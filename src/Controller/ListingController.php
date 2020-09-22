@@ -2,19 +2,28 @@
 
 namespace App\Controller;
 
-use ContainerXG8YBSR\getListingListControllerService;
+use App\Service\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ListingController extends AbstractController
 {
-    /**
-     * @Route("/listing", name="listing")
-     */
-    public function index()
+    private ListingService $listingService;
+
+    public function __construct(ListingService $listingService)
     {
+        $this->listingService = $listingService;
+    }
+
+    /**
+     * @Route("/listing/{listingId}-{feedName}", name="listing")
+     */
+    public function index(string $listingId, string $feedName)
+    {
+        $listing = $this->listingService->getSingleListing($listingId,$feedName);
         return $this->render('listing/index.html.twig', [
             'controller_name' => 'ListingController',
+            'listing' => $listing,
         ]);
     }
 }

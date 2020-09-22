@@ -63,12 +63,32 @@ class ListingService
         $this->entityManager->flush();
     }
 
-    public function getListingList(string $feedName)
+    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
     {
-        $listingList = $this->listingRepository->findBy([
+        $results = $this->listingRepository->findBy([
+            'feedID' => $feedName
+        ],
+        null,
+        $limit,
+        $offset );
+        $listingListCount = $this->getListingListCount($feedName);
+        $pageCounter = ceil($listingListCount / $limit);
+
+        return new ListingListSearchResult($listingListCount,$results, $currentPage, $pageCounter);
+    }
+
+    public function getSingleListing(string $listingId, string $feedName)
+    {
+        return $this->listingRepository->findOneBy([
+            'mlsNum' => $listingId,
             'feedID' => $feedName
         ]);
+    }
 
-        return $listingList;
+    public function getListingListCount(string $feedName)
+    {
+        return $this->listingRepository->count([
+            'feedID' => $feedName
+        ]);
     }
 }
