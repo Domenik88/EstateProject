@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ListingListController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .example-wrapper table, .example-wrapper table td { border: solid 1px}
+</style>
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ '/mount/space-1/.user/domains/estateblock20/src/Controller/ListingListController.php'|file_link(0) }}">src/Controller/ListingListController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/mount/space-1/.user/domains/estateblock20/templates/listing_list/index.html.twig'|file_link(0) }}">templates/listing_list/index.html.twig</a></code></li>
+    </ul>
+</div>
+    <div class="example-wrapper">
+        <table>
+            <thead style="background-color: gold">
+            <tr>
+                <td>Mls Num</td>
+                <td>Feed listing id</td>
+                <td>Feed name</td>
+                <td>Listing price</td>
+                <td>Postal code</td>
+                <td>Photos count</td>
+                <td>City</td>
+                <td>Address</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for listing in listingList.results %}
+                <tr>
+                    <td><a href="/listing/{{ listing.mlsNum }}-{{ listing.feedID }}">{{ listing.mlsNum }}</a></td>
+                    <td>{{ listing.feedListingID }}</td>
+                    <td>{{ listing.feedID }}</td>
+                    <td>{{ listing.listPrice }}</td>
+                    <td>{{ listing.postalCode }}</td>
+                    <td>{{ listing.photosCount }}</td>
+                    <td>{{ listing.city }}</td>
+                    <td>{{ listing.unparsedAddress }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="example-wrapper">
+        <h2>Pagination</h2>
+        <div>
+            {% for page in 1..listingList.pagesCount %}
+                {% if page != listingList.currentPage %}
+                    <a href="/listing/list/{{ page }}">{{ page }}</a>
+                {% else %}
+                    <a>{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

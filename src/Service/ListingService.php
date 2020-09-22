@@ -28,7 +28,7 @@ class ListingService
     public function createFromDdfResult(array $result)
     {
         $listing = new Listing();
-        $listing->setFeedID('Ddf');
+        $listing->setFeedID('ddf');
         $listing->setCity($result['City']);
         $listing->setFeedListingID($result['ListingKey']);
         $listing->setListPrice($result['ListPrice']);
@@ -53,7 +53,7 @@ class ListingService
         if (!$existingListing) {
             return $this->createFromDdfResult($result);
         }
-        $existingListing->setFeedID('Ddf');
+        $existingListing->setFeedID('ddf');
         $existingListing->setCity($result['City']);
         $existingListing->setListPrice($result['ListPrice']);
         $existingListing->setPhotosCount($result['PhotosCount']);
@@ -61,5 +61,34 @@ class ListingService
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
 
         $this->entityManager->flush();
+    }
+
+    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
+    {
+        $results = $this->listingRepository->findBy([
+            'feedID' => $feedName
+        ],
+        null,
+        $limit,
+        $offset );
+        $listingListCount = $this->getListingListCount($feedName);
+        $pageCounter = ceil($listingListCount / $limit);
+
+        return new ListingListSearchResult($listingListCount,$results, $currentPage, $pageCounter);
+    }
+
+    public function getSingleListing(string $listingId, string $feedName)
+    {
+        return $this->listingRepository->findOneBy([
+            'mlsNum' => $listingId,
+            'feedID' => $feedName
+        ]);
+    }
+
+    public function getListingListCount(string $feedName)
+    {
+        return $this->listingRepository->count([
+            'feedID' => $feedName
+        ]);
     }
 }
