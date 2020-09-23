@@ -14,6 +14,9 @@
             "config/packages/aws.yaml"
         ]
     },
+    "clue/stream-filter": {
+        "version": "v1.4.1"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99"
     },
@@ -158,6 +161,9 @@
     },
     "php-http/httplug": {
         "version": "2.2.0"
+    },
+    "php-http/message": {
+        "version": "1.9.0"
     },
     "php-http/message-factory": {
         "version": "v1.0.2"
