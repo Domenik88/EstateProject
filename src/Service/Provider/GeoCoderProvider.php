@@ -9,12 +9,11 @@
 
 namespace App\Service\Provider;
 
-
 use Geocoder\Provider\Chain\Chain;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\Provider\Here\Here;
 use Geocoder\ProviderAggregator;
-use GuzzleHttp\Client;
+use Http\Adapter\Guzzle7\Client;
 
 class GeoCoderProvider
 {
@@ -22,7 +21,7 @@ class GeoCoderProvider
 
     public function getGeoCoder()
     {
-        if ( $this->geocoder ) {
+        if ( !isset($this->geocoder) ) {
             $this->geocoder = new ProviderAggregator();
             $adapter = new Client();
             $chain = new Chain([
