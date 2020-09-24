@@ -34,7 +34,7 @@ class AwsProvider
         $this->endpoint = getenv('ESBL_DIGITAL_OCEAN_ENDPOINT');
         $this->endpointEdge = getenv('ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE');
 
-        $this->dest = getenv('ESBL_DIGITAL_OCEAN_W3_ENDPOINT') . getenv('ESBL_DIGITAL_OCEAN_W3_DEST');
+        $this->dest = getenv('ESBL_DIGITAL_OCEAN_W3_ENDPOINT') . 'listings/';
         $this->bucket = getenv('ESBL_DIGITAL_OCEAN_W3_BUCKET');
         $this->keyName = getenv('ESBL_DIGITAL_OCEAN_W3_DEST');
     }

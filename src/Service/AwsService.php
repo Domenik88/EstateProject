@@ -26,7 +26,7 @@ class AwsService
     public function upload(string $path, string $destination = null)
     {
         // Where the files will be source from
-        $source = sys_get_temp_dir() . '/' . getenv('ESBL_TMP_IMG_SORCE') . '/' . $path;
+        $source = sys_get_temp_dir() . '/uploadsPic/' . $path;
 
         // Where the files will be transferred to
         $dest = $this->awsProvider->getDest($destination) . $path;
