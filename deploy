@@ -1,9 +1,4 @@
 #!/bin/bash
-sudo apt update
-sudo apt install curl php-cli php-mbstring git unzip -y
-cd ~
-curl -sS https://getcomposer.org/installer -o composer-setup.php
-sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 composer install #--no-dev --optimize-autoloader
-bin/console doctrine:migrations:migrate -n
-bin/console cache:clear
+php bin/console doctrine:migrations:migrate -n
+php bin/console cache:clear
