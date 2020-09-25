@@ -10,9 +10,7 @@
 namespace App\Service\Feed;
 
 
-use App\Entity\Feed;
 use App\Repository\FeedRepository;
-use ContainerIjxoyFm\getDebug_FileLinkFormatter_UrlFormatService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FeedService
@@ -26,13 +24,14 @@ class FeedService
         $this->feedRepository = $feedRepository;
     }
 
-    public function setBusyByFeedName(string $name, bool $busy)
+    public function setBusyByFeedName(string $name, bool $busy): \DateTimeInterface
     {
         $setBusyFeed = $this->feedRepository->findOneBy([
             'name' => $name
         ]);
         $setBusyFeed->setBusy($busy);
         $this->entityManager->flush();
+        return $setBusyFeed->getLastRunTime();
     }
 
     public function isFeedBusy(string $name)

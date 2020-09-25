@@ -9,10 +9,6 @@
 
 namespace App\Service\Feed;
 
-use mysql_xdevapi\DatabaseObject;
-use PHRETS\Exceptions\RETSException;
-use PHRETS\Models\Search\Record;
-use PHRETS\Models\Search\Results;
 use PHRETS\Session;
 use PHRETS\Configuration;
 use Psr\Log\LoggerInterface;
@@ -39,7 +35,7 @@ class DdfService
             $this->rets->Login();
     }
 
-    public function searchUpdatedListings(\DateTime $date,$offset = null,$limit = 100)
+    public function searchUpdatedListings(\DateTimeInterface $date,$offset = null,$limit = 100)
     {
         $this->connect();
         $results = $this->rets->Search('Property', 'Property', 'LastUpdated=' . $date->format('Y-m-d\TH:i:s\Z'),['Format' => 'COMPACT-DECODED','Limit' => $limit, 'Offset' => $offset]);
