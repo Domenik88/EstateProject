@@ -51,7 +51,7 @@ class FetchListingUpdatesCommand extends Command
             $io->warning('Feed is busy');
             return Command::SUCCESS;
         }
-        $this->feedService->setBusyByFeedName('ddf',true);
+        $lastRunTimeDate = $this->feedService->setBusyByFeedName('ddf',true);
 
         $arg1 = $input->getArgument('arg1');
 
@@ -65,14 +65,12 @@ class FetchListingUpdatesCommand extends Command
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
-        $date = new \DateTime();
-        $modifyDate = $date->modify('-8 hour');
         $searchOffset = null;
         $searchCount = 0;
         $totalSearchResult = 0;
         try {
             do {
-                $searchResult = $this->ddfService->searchUpdatedListings($modifyDate, $searchOffset);
+                $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate, $searchOffset);
                 foreach ( $searchResult->results as $result ) {
                     $this->listingService->upsertFromDdfResult($result);
                     $searchCount++;
