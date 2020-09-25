@@ -36,6 +36,8 @@ class ListingService
         $listing->setPhotosCount($result['PhotosCount']);
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
+        $listing->setStatus('new');
+        $listing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->persist($listing);
 
@@ -59,6 +61,8 @@ class ListingService
         $existingListing->setPhotosCount($result['PhotosCount']);
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
+        $existingListing->setStatus('updated');
+        $existingListing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->flush();
     }
@@ -77,7 +81,7 @@ class ListingService
         return new ListingListSearchResult($listingListCount,$results, $currentPage, $pageCounter);
     }
 
-    public function getSingleListing(string $listingId, string $feedName)
+    public function getSingleListing(string $listingId, string $feedName): Listing
     {
         return $this->listingRepository->findOneBy([
             'mlsNum' => $listingId,
@@ -90,5 +94,35 @@ class ListingService
         return $this->listingRepository->count([
             'feedID' => $feedName
         ]);
+    }
+
+    public function getSingleListingForProcessing(string $feedName): Listing
+    {
+        return $this->listingRepository->findOneBy([
+            'feedID' => $feedName,
+            'status' => ['new','updated']
+        ],['lastUpdateFromFeed'=>'ASC']);
+    }
+
+    public function setListingStatus(Listing $result, string $status)
+    {
+        $existingListing = $this->listingRepository->findOneBy([
+            'mlsNum' => $result->getMlsNum(),
+            'feedListingID' => $result->getFeedListingID(),
+        ]);
+        $existingListing->setStatus($status);
+
+        $this->entityManager->flush();
+    }
+
+    public function setListingProcessingStatus(Listing $result, string $status)
+    {
+        $existingListing = $this->listingRepository->findOneBy([
+            'mlsNum' => $result->getMlsNum(),
+            'feedListingID' => $result->getFeedListingID(),
+        ]);
+        $existingListing->setProcessingStatus($status);
+
+        $this->entityManager->flush();
     }
 }
