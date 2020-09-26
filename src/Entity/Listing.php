@@ -58,6 +58,11 @@ class Listing
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $imagesData = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +160,18 @@ class Listing
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getImagesData(): ?array
+    {
+        return $this->imagesData;
+    }
+
+    public function setImagesData(?array $imagesData): self
+    {
+        $this->imagesData = $imagesData;
 
         return $this;
     }

@@ -67,6 +67,24 @@ class DdfService
         return new MasterListItem($listItem['ListingKey'],$listItem['ModificationTimestamp']);
     }
 
+    public function getListingPhotosFromFeed()
+    {
+        $dir_Path = sys_get_temp_dir();
+        $pic_Path = $dir_Path."/001/";
+//        mkdir($pic_Path, 0777, true);
+        $file_full = $pic_Path.'strFileName';
+        $this->connect();
+        $results = $this->rets->getObject('Property','Photo','22361945',1);
+        foreach ($results as $result) {
+            $im = @imagecreatefromstring('https://ddfcdn.realtor.ca/listings/TS637357268280000000/reb15/medres/1/40021271_1.jpg');
+            @imagejpeg($im, $file_full, 100);
+            @chmod($file_full, 0644);
+
+        }
+        dump($results);
+        $this->rets->Disconnect();
+    }
+
     public function hello()
     {
         $this->logger->alert('Petya');

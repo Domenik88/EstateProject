@@ -45,6 +45,8 @@ class FetchListingUpdatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->ddfService->getListingPhotosFromFeed();
+        die;
         $io = new SymfonyStyle($input, $output);
 
         if ($this->feedService->isFeedBusy('ddf')) {
