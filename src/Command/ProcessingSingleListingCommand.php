@@ -8,7 +8,6 @@ use App\Service\AwsService;
 use App\Service\Feed\DdfService;
 use App\Service\Listing\ListingInterface;
 use App\Service\Listing\ListingService;
-use App\Service\RemoveDirService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ProcessingSingleListingCommand extends Command
 {
@@ -26,16 +26,16 @@ class ProcessingSingleListingCommand extends Command
     private Listing $singleListing;
     private DdfService $ddfService;
     private AwsService $awsService;
-    private RemoveDirService $removeDirService;
+    private Filesystem $filesystem;
 
-    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, DdfService $ddfService, AwsService $awsService, RemoveDirService $removeDirService)
+    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, DdfService $ddfService, AwsService $awsService, Filesystem $filesystem)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
         $this->ddfService = $ddfService;
         $this->awsService = $awsService;
-        $this->removeDirService = $removeDirService;
+        $this->filesystem = $filesystem;
         parent::__construct();
     }
 
@@ -60,7 +60,7 @@ class ProcessingSingleListingCommand extends Command
             $listingPicPathForUpload = $this->singleListing->getFeedID() . '/' . $this->singleListing->getFeedListingID();
             $this->awsService->upload($listingPicPathForUpload);
             $this->listingService->setListingPhotosNamesObject($this->singleListing,$photoNamesArray);
-            $this->removeDirService->dirDel(sys_get_temp_dir() . ListingInterface::UPLOAD_LISTING_PIC_PATH);
+            $this->filesystem->remove(sys_get_temp_dir() . ListingInterface::UPLOAD_LISTING_PIC_PATH);
 
             // Command body
 
