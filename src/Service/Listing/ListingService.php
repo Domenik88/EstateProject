@@ -7,7 +7,7 @@
  * @package estateblock20
  */
 
-namespace App\Service;
+namespace App\Service\Listing;
 
 
 use App\Entity\Listing;
@@ -36,7 +36,7 @@ class ListingService
         $listing->setPhotosCount($result['PhotosCount']);
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
-        $listing->setStatus('new');
+        $listing->setStatus(ListingInterface::NEW_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->persist($listing);
@@ -61,7 +61,7 @@ class ListingService
         $existingListing->setPhotosCount($result['PhotosCount']);
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
-        $existingListing->setStatus('updated');
+        $existingListing->setStatus(ListingInterface::UPDATED_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->flush();
@@ -100,7 +100,7 @@ class ListingService
     {
         return $this->listingRepository->findOneBy([
             'feedID' => $feedName,
-            'status' => ['new','updated']
+            'status' => [ListingInterface::NEW_LISTING_STATUS,ListingInterface::UPDATED_LISTING_STATUS]
         ],['lastUpdateFromFeed'=>'ASC']);
     }
 

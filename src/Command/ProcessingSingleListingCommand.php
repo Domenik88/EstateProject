@@ -4,7 +4,8 @@ namespace App\Command;
 
 use App\Entity\Listing;
 use App\Repository\ListingRepository;
-use App\Service\ListingService;
+use App\Service\Listing\ListingInterface;
+use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -48,10 +49,10 @@ class ProcessingSingleListingCommand extends Command
 
             // Command body
 
-            $this->listingService->setListingProcessingStatus($this->singleListing, 'none');
-            $this->listingService->setListingStatus($this->singleListing, 'live');
+            $this->listingService->setListingProcessingStatus($this->singleListing, ListingInterface::NONE_PROCESSING_LISTING_STATUS);
+            $this->listingService->setListingStatus($this->singleListing, ListingInterface::LIVE_LISTING_STATUS);
         } catch (\Exception $e) {
-            $this->listingService->setListingProcessingStatus($this->singleListing, 'error');
+            $this->listingService->setListingProcessingStatus($this->singleListing, ListingInterface::ERROR_PROCESSING_LISTING_STATUS);
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
         }
