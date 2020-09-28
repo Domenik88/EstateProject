@@ -7,7 +7,7 @@
  * @package estateblock20
  */
 
-namespace App\Service;
+namespace App\Service\Listing;
 
 
 class ListingListSearchResult

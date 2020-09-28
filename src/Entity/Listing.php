@@ -59,6 +59,21 @@ class Listing
     private $city;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $status = 'new';
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $processingStatus = 'none';
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastUpdateFromFeed;
+
+    /**
      * @ORM\Column(type="json", nullable=true)
      */
     private $imagesData = [];
@@ -164,6 +179,41 @@ class Listing
         return $this;
     }
 
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getProcessingStatus(): ?string
+    {
+        return $this->processingStatus;
+    }
+
+    public function setProcessingStatus(string $processingStatus): self
+    {
+        $this->processingStatus = $processingStatus;
+
+        return $this;
+    }
+
+    public function getLastUpdateFromFeed(): ?\DateTimeInterface
+    {
+        return $this->lastUpdateFromFeed;
+    }
+
+    public function setLastUpdateFromFeed(?\DateTimeInterface $lastUpdateFromFeed): self
+    {
+        $this->lastUpdateFromFeed = $lastUpdateFromFeed;
+
+        return $this;
+    }
     public function getImagesData(): ?array
     {
         return $this->imagesData;
