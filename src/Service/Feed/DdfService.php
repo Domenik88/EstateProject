@@ -80,7 +80,7 @@ class DdfService
             $res = new XML();
             $tmp = $res->parse($result->getContent());
             $arrayPhotos = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
-            $photoNamesArray = $this->curlPhotoDownloadService->PhotoDownload($arrayPhotos,$ListingFeedId,$feedId);
+            $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($arrayPhotos,$ListingFeedId,$feedId);
         }
         $this->rets->Disconnect();
         return $photoNamesArray;
