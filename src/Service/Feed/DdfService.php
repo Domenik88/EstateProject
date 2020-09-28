@@ -9,6 +9,7 @@
 
 namespace App\Service\Feed;
 
+use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
 use Psr\Log\LoggerInterface;
@@ -74,20 +75,24 @@ class DdfService
 //        mkdir($pic_Path, 0777, true);
         $file_full = $pic_Path.'strFileName';
         $this->connect();
-        $results = $this->rets->getObject('Property','Photo','22361945',1);
+        $results = $this->rets->getObject('Property','LargePhoto','22361945');
         foreach ($results as $result) {
-            $im = @imagecreatefromstring('https://ddfcdn.realtor.ca/listings/TS637357268280000000/reb15/medres/1/40021271_1.jpg');
-            @imagejpeg($im, $file_full, 100);
-            @chmod($file_full, 0644);
+            $res = new XML();
+            $tmp = $res->parse($result->getContent());
+
+dump(array_map([$this,'extractImageUrl'],(array)$tmp->DATA));
+die;
+//            $im = @imagecreatefromstring('https://ddfcdn.realtor.ca/listings/TS637357268280000000/reb15/medres/1/40021271_1.jpg');
+//            @imagejpeg($im, $file_full, 100);
+//            @chmod($file_full, 0644);
 
         }
         dump($results);
         $this->rets->Disconnect();
     }
 
-    public function hello()
+    public function extractImageUrl(string $imgDataString)
     {
-        $this->logger->alert('Petya');
-        return 'Say Hello!';
+        return explode("\t",$imgDataString)[3];
     }
 }
