@@ -9,6 +9,8 @@
 
 namespace App\Service\Feed;
 
+use App\Service\CurlPhotoDownloadService;
+use Curl\Curl;
 use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
@@ -18,10 +20,12 @@ class DdfService
 {
     private LoggerInterface $logger;
     private ?Session $rets;
+    private CurlPhotoDownloadService $curlPhotoDownloadService;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, CurlPhotoDownloadService $curlPhotoDownloadService)
     {
         $this->logger = $logger;
+        $this->curlPhotoDownloadService = $curlPhotoDownloadService;
     }
 
     public function connect()
@@ -68,27 +72,18 @@ class DdfService
         return new MasterListItem($listItem['ListingKey'],$listItem['ModificationTimestamp']);
     }
 
-    public function getListingPhotosFromFeed()
+    public function getListingPhotosFromFeed(string $ListingFeedId, string $feedId): array
     {
-        $dir_Path = sys_get_temp_dir();
-        $pic_Path = $dir_Path."/001/";
-//        mkdir($pic_Path, 0777, true);
-        $file_full = $pic_Path.'strFileName';
         $this->connect();
-        $results = $this->rets->getObject('Property','LargePhoto','22361945');
+        $results = $this->rets->getObject('Property','LargePhoto',$ListingFeedId);
         foreach ($results as $result) {
             $res = new XML();
             $tmp = $res->parse($result->getContent());
-
-dump(array_map([$this,'extractImageUrl'],(array)$tmp->DATA));
-die;
-//            $im = @imagecreatefromstring('https://ddfcdn.realtor.ca/listings/TS637357268280000000/reb15/medres/1/40021271_1.jpg');
-//            @imagejpeg($im, $file_full, 100);
-//            @chmod($file_full, 0644);
-
+            $arrayPhotos = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
+            $photoNamesArray = $this->curlPhotoDownloadService->PhotoDownload($arrayPhotos,$ListingFeedId,$feedId);
         }
-        dump($results);
         $this->rets->Disconnect();
+        return $photoNamesArray;
     }
 
     public function extractImageUrl(string $imgDataString)

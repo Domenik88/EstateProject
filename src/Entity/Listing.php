@@ -59,12 +59,12 @@ class Listing
     private $city;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, options={"default":"new"})
      */
     private $status = 'new';
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, options={"default":"none"})
      */
     private $processingStatus = 'none';
 
@@ -76,7 +76,7 @@ class Listing
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $imagesData = [];
+    private $imagesData;
 
     public function getId(): ?int
     {
@@ -214,12 +214,12 @@ class Listing
 
         return $this;
     }
-    public function getImagesData(): ?array
+    public function getImagesData(): ?object
     {
         return $this->imagesData;
     }
 
-    public function setImagesData(?array $imagesData): self
+    public function setImagesData(?object $imagesData): self
     {
         $this->imagesData = $imagesData;
 

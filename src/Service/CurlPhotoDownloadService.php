@@ -1,0 +1,61 @@
+<?php
+/**
+ * Created by TutMee Co.
+ * User: Domenik88(kataevevgenii@gmail.com)
+ * Date: 28.09.2020
+ *
+ * @package estateblock20
+ */
+
+namespace App\Service;
+
+
+use App\Service\Listing\ListingInterface;
+use Curl\Curl;
+
+class CurlPhotoDownloadService
+{
+    private string $localPath;
+
+    public function init(string $fileName, string $feedId)
+    {
+        $curl = new Curl();
+        $curl->setOpt(CURLOPT_RETURNTRANSFER,true);
+        $this->localPath = sys_get_temp_dir() . ListingInterface::UPLOAD_LISTING_PIC_PATH . $feedId . '/' . $fileName . '/';
+        if (!is_dir($this->localPath)) {
+            mkdir($this->localPath, 0777, true);
+        }
+        return $curl;
+    }
+
+    public function PhotoDownload(array $photos, string $fileName, string $feedId): array
+    {
+        $curl = $this->init($fileName,$feedId);
+        $photosCounter = 1;
+        $photoNamesArray = [];
+        foreach ( $photos as $photo ) {
+            $curl->get($photo);
+            $im = @imagecreatefromstring($curl->getResponse());
+            $fullFileName = $this->localPath.$fileName.'_'.$photosCounter.'.'.$this->getFileExtention($curl->getResponseHeaders('content-type'));
+            @imagejpeg($im, $fullFileName, 100);
+            @chmod($fullFileName, 0644);
+            $photoNamesArray[] = $fileName.'_'.$photosCounter;
+            $photosCounter++;
+        }
+        $curl->close();
+        dump($photoNamesArray);
+        return $photoNamesArray;
+    }
+
+    private function getFileExtention($cType)
+    {
+        switch ($cType) {
+            case "image/jpeg" :
+            case "image/jpg" : $fileExtention = 'jpg'; break;
+            case "image/gif" : $fileExtention = 'gif'; break;
+            case "image/png" : $fileExtention = 'png'; break;
+            default : $fileExtention = 'jpg';
+        }
+        return $fileExtention;
+    }
+}

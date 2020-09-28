@@ -4,8 +4,11 @@ namespace App\Command;
 
 use App\Entity\Listing;
 use App\Repository\ListingRepository;
+use App\Service\AwsService;
+use App\Service\Feed\DdfService;
 use App\Service\Listing\ListingInterface;
 use App\Service\Listing\ListingService;
+use App\Service\RemoveDirService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,12 +24,18 @@ class ProcessingSingleListingCommand extends Command
     private ListingRepository $listingRepository;
     private ListingService $listingService;
     private Listing $singleListing;
+    private DdfService $ddfService;
+    private AwsService $awsService;
+    private RemoveDirService $removeDirService;
 
-    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService)
+    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, DdfService $ddfService, AwsService $awsService, RemoveDirService $removeDirService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
+        $this->ddfService = $ddfService;
+        $this->awsService = $awsService;
+        $this->removeDirService = $removeDirService;
         parent::__construct();
     }
 
@@ -41,11 +50,17 @@ class ProcessingSingleListingCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->singleListing = $this->listingService->getSingleListingForProcessing('ddf');
         try {
-            $this->singleListing = $this->listingService->getSingleListingForProcessing('ddf');
             $this->listingService->setListingProcessingStatus($this->singleListing, ListingInterface::PROCESSING_PROCESSING_LISTING_STATUS);
             $io = new SymfonyStyle($input, $output);
             $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+
+            $photoNamesArray = $this->ddfService->getListingPhotosFromFeed($this->singleListing->getFeedListingID(),$this->singleListing->getFeedID());
+            $listingPicPathForUpload = $this->singleListing->getFeedID() . '/' . $this->singleListing->getFeedListingID();
+            $this->awsService->upload($listingPicPathForUpload);
+            $this->listingService->setListingPhotosNamesObject($this->singleListing,$photoNamesArray);
+            $this->removeDirService->dirDel(sys_get_temp_dir() . ListingInterface::UPLOAD_LISTING_PIC_PATH);
 
             // Command body
 
