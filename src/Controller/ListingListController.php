@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\ListingService;
+use App\Service\Listing\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

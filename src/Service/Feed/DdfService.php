@@ -9,6 +9,9 @@
 
 namespace App\Service\Feed;
 
+use App\Service\CurlPhotoDownloadService;
+use Curl\Curl;
+use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
 use Psr\Log\LoggerInterface;
@@ -17,10 +20,12 @@ class DdfService
 {
     private LoggerInterface $logger;
     private ?Session $rets;
+    private CurlPhotoDownloadService $curlPhotoDownloadService;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, CurlPhotoDownloadService $curlPhotoDownloadService)
     {
         $this->logger = $logger;
+        $this->curlPhotoDownloadService = $curlPhotoDownloadService;
     }
 
     public function connect()
@@ -67,9 +72,22 @@ class DdfService
         return new MasterListItem($listItem['ListingKey'],$listItem['ModificationTimestamp']);
     }
 
-    public function hello()
+    public function getListingPhotosFromFeed(string $ListingFeedId, string $feedId): array
     {
-        $this->logger->alert('Petya');
-        return 'Say Hello!';
+        $this->connect();
+        $results = $this->rets->getObject('Property','LargePhoto',$ListingFeedId);
+        foreach ($results as $result) {
+            $res = new XML();
+            $tmp = $res->parse($result->getContent());
+            $arrayPhotos = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
+            $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($arrayPhotos,$ListingFeedId,$feedId);
+        }
+        $this->rets->Disconnect();
+        return $photoNamesArray;
+    }
+
+    public function extractImageUrl(string $imgDataString)
+    {
+        return explode("\t",$imgDataString)[3];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Repository\ListingRepository;
 use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
-use App\Service\ListingService;
+use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

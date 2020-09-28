@@ -24,19 +24,16 @@ class AwsProvider
     protected string $endpointEdge;
     protected string $dest;
     protected string $bucket;
-    protected string $keyName;
 
     public function __construct()
     {
-        $this->key = getenv('ESBL_DIGITAL_OCEAN_KEY');
-        $this->secret = getenv('ESBL_DIGITAL_OCEAN_SECRET');
-        $this->region = getenv('ESBL_DIGITAL_OCEAN_REGION');
-        $this->endpoint = getenv('ESBL_DIGITAL_OCEAN_ENDPOINT');
-        $this->endpointEdge = getenv('ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE');
-
-        $this->dest = getenv('ESBL_DIGITAL_OCEAN_W3_ENDPOINT') . 'listings/';
-        $this->bucket = getenv('ESBL_DIGITAL_OCEAN_W3_BUCKET');
-        $this->keyName = getenv('ESBL_DIGITAL_OCEAN_W3_DEST');
+        $this->key = $_ENV['ESBL_DIGITAL_OCEAN_KEY'];
+        $this->secret = $_ENV['ESBL_DIGITAL_OCEAN_SECRET'];
+        $this->region = $_ENV['ESBL_DIGITAL_OCEAN_REGION'];
+        $this->endpoint = $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT'];
+        $this->endpointEdge = $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'];
+        $this->dest = $_ENV['ESBL_DIGITAL_OCEAN_W3_ENDPOINT'] . 'listings/';
+        $this->bucket = $_ENV['ESBL_DIGITAL_OCEAN_W3_BUCKET'];
     }
 
     public function connect($endpoint = null)
@@ -46,7 +43,7 @@ class AwsProvider
         } else {
             $endpoint = $this->endpoint;
         }
-        if ($this->s3Client) {
+        if (isset($this->s3Client)) {
             return;
         }
         $this->credentials = new Credentials($this->key, $this->secret);
@@ -63,19 +60,10 @@ class AwsProvider
 
     public function getClient($endpoint = null): S3Client
     {
-        if (!$this->s3Client) {
+        if (!isset($this->s3Client)) {
             $this->connect($endpoint);
         }
         return $this->s3Client;
-    }
-
-    public function getKeyName($destination = null)
-    {
-        if (!is_null($destination)) {
-            return $destination;
-        } else {
-            return $this->keyName;
-        }
     }
 
     public function getBucket()

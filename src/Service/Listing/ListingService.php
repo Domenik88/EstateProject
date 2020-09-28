@@ -125,4 +125,16 @@ class ListingService
 
         $this->entityManager->flush();
     }
+
+    public function setListingPhotosNamesObject(Listing $result, array $photoNamesArray)
+    {
+        $photoNamesObject = (object)$photoNamesArray;
+        $existingListing = $this->listingRepository->findOneBy([
+            'mlsNum' => $result->getMlsNum(),
+            'feedListingID' => $result->getFeedListingID(),
+        ]);
+        $existingListing->setImagesData($photoNamesObject);
+
+        $this->entityManager->flush();
+    }
 }

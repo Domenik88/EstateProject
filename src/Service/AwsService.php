@@ -10,6 +10,7 @@
 namespace App\Service;
 
 
+use App\Service\Listing\ListingInterface;
 use App\Service\Provider\AwsProvider;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\Transfer;
@@ -26,7 +27,7 @@ class AwsService
     public function upload(string $path, string $destination = null)
     {
         // Where the files will be source from
-        $source = sys_get_temp_dir() . '/uploadsPic/' . $path;
+        $source = sys_get_temp_dir() . ListingInterface::UPLOAD_LISTING_PIC_PATH . $path;
 
         // Where the files will be transferred to
         $dest = $this->awsProvider->getDest($destination) . $path;
