@@ -1,5 +1,7 @@
 doctrine:
     dbal:
+        types:
+            point: 'App\Service\Geo\PointType'
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,

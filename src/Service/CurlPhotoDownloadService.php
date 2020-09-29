@@ -10,7 +10,7 @@
 namespace App\Service;
 
 
-use App\Service\Listing\ListingInterface;
+use App\Service\Listing\ListingConstants;
 use Curl\Curl;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -28,7 +28,7 @@ class CurlPhotoDownloadService
     {
         $curl = new Curl();
         $curl->setOpt(CURLOPT_RETURNTRANSFER,true);
-        $this->localPath = sys_get_temp_dir() . ListingInterface::UPLOAD_LISTING_PIC_PATH . $feedId . '/' . $fileName . '/';
+        $this->localPath = sys_get_temp_dir() . ListingConstants::UPLOAD_LISTING_PIC_PATH . $feedId . '/' . $fileName . '/';
         if (!is_dir($this->localPath)) {
             $this->filesystem->mkdir($this->localPath);
         }

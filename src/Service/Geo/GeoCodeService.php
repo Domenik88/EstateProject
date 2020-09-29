@@ -7,9 +7,9 @@
  * @package estateblock20
  */
 
-namespace App\Service;
+namespace App\Service\Geo;
 
-use App\Service\Provider\GeoCoderProvider;
+use App\Service\Geo\Provider\GeoCoderProvider;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
 

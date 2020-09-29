@@ -12,6 +12,7 @@ namespace App\Service\Listing;
 
 use App\Entity\Listing;
 use App\Repository\ListingRepository;
+use App\Service\Geo\Point;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ListingService
@@ -36,7 +37,7 @@ class ListingService
         $listing->setPhotosCount($result['PhotosCount']);
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
-        $listing->setStatus(ListingInterface::NEW_LISTING_STATUS);
+        $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->persist($listing);
@@ -61,7 +62,7 @@ class ListingService
         $existingListing->setPhotosCount($result['PhotosCount']);
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
-        $existingListing->setStatus(ListingInterface::UPDATED_LISTING_STATUS);
+        $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->flush();
@@ -100,40 +101,51 @@ class ListingService
     {
         return $this->listingRepository->findOneBy([
             'feedID' => $feedName,
-            'status' => [ListingInterface::NEW_LISTING_STATUS,ListingInterface::UPDATED_LISTING_STATUS]
+            'status' => [ListingConstants::NEW_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS]
         ],['lastUpdateFromFeed'=>'ASC']);
     }
 
-    public function setListingStatus(Listing $result, string $status)
+    public function setListingStatus(Listing $listing, string $status)
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $result->getMlsNum(),
-            'feedListingID' => $result->getFeedListingID(),
+            'mlsNum' => $listing->getMlsNum(),
+            'feedListingID' => $listing->getFeedListingID(),
         ]);
         $existingListing->setStatus($status);
 
         $this->entityManager->flush();
     }
 
-    public function setListingProcessingStatus(Listing $result, string $status)
+    public function setListingProcessingStatus(Listing $listing, string $status)
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $result->getMlsNum(),
-            'feedListingID' => $result->getFeedListingID(),
+            'mlsNum' => $listing->getMlsNum(),
+            'feedListingID' => $listing->getFeedListingID(),
         ]);
         $existingListing->setProcessingStatus($status);
 
         $this->entityManager->flush();
     }
 
-    public function setListingPhotosNamesObject(Listing $result, array $photoNamesArray)
+    public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray)
     {
         $photoNamesObject = (object)$photoNamesArray;
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $result->getMlsNum(),
-            'feedListingID' => $result->getFeedListingID(),
+            'mlsNum' => $listing->getMlsNum(),
+            'feedListingID' => $listing->getFeedListingID(),
         ]);
         $existingListing->setImagesData($photoNamesObject);
+
+        $this->entityManager->flush();
+    }
+
+    public function setListingCoordinates(Listing $listing, Point $point)
+    {
+        $existingListing = $this->listingRepository->findOneBy([
+            'mlsNum' => $listing->getMlsNum(),
+            'feedListingID' => $listing->getFeedListingID(),
+        ]);
+        $existingListing->setCoordinates($point);
 
         $this->entityManager->flush();
     }

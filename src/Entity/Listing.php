@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ListingRepository;
+use App\Service\Geo\Point;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -77,6 +78,12 @@ class Listing
      * @ORM\Column(type="json", nullable=true)
      */
     private $imagesData;
+
+    /**
+     * @ORM\Column(type="point", nullable=true)
+     * @var Point
+     */
+    private $coordinates;
 
     public function getId(): ?int
     {
@@ -222,6 +229,18 @@ class Listing
     public function setImagesData(?object $imagesData): self
     {
         $this->imagesData = $imagesData;
+
+        return $this;
+    }
+
+    public function getCoordinates(): Point
+    {
+        return $this->coordinates;
+    }
+
+    public function setCoordinates(Point $coordinates): self
+    {
+        $this->coordinates = $coordinates;
 
         return $this;
     }
