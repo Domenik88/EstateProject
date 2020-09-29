@@ -38,4 +38,26 @@ class ListingMediaService
         $this->listingService->setListingPhotosNamesObject($listing,$photoNamesArray);
         $this->filesystem->remove(sys_get_temp_dir() . ListingConstants::UPLOAD_LISTING_PIC_PATH);
     }
+
+    public function getListingPhotos(Listing $listing)
+    {
+        $imageNames = $listing->getImagesData();
+        $listingImagesUrlArray = [];
+        $i = 0;
+        while ($i < count($imageNames)){
+            $listingImagesUrlArray[] = $this->awsService->getListingOriginalImage($listing->getMlsNum(), $imageNames[$i], $listing->getFeedID());
+            $i++;
+        }
+        dump($listingImagesUrlArray);
+        die;
+        $this->awsService->getListingOriginalImage();
+    }
+
+    public function getListingData(string $mlsNum, string $feedName): array
+    {
+        $singleListing = $this->listingService->getSingleListing($mlsNum, $feedName);
+        $this->getListingPhotos($singleListing);
+        return [$singleListing,''];
+    }
+
 }
