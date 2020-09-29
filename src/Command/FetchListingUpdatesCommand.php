@@ -45,6 +45,7 @@ class FetchListingUpdatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $commandLastRunTimeDate = new \DateTime();
         $io = new SymfonyStyle($input, $output);
 
         if ($this->feedService->isFeedBusy('ddf')) {
@@ -78,8 +79,7 @@ class FetchListingUpdatesCommand extends Command
                 $searchOffset = $searchResult->nextRecordOffset;
                 $totalSearchResult = $searchResult->totalCount;
             } while ( $searchResult->moreAvailable );
-            $lastRunTimeDate = new \DateTime();
-            $this->feedService->setLastRunTimeByFeedName('ddf', $lastRunTimeDate);
+            $this->feedService->setLastRunTimeByFeedName('ddf', $commandLastRunTimeDate);
             $io->success($searchCount);
             $io->success($totalSearchResult);
         } catch (\Exception $e) {
