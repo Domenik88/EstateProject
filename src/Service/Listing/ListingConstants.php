@@ -10,7 +10,7 @@
 namespace App\Service\Listing;
 
 
-interface ListingInterface
+interface ListingConstants
 {
     const NEW_LISTING_STATUS = 'new';
     const UPDATED_LISTING_STATUS = 'updated';

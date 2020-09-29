@@ -7,7 +7,7 @@
  * @package estateblock20
  */
 
-namespace App\Service\Provider;
+namespace App\Service\Geo\Provider;
 
 use Geocoder\Provider\Chain\Chain;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
