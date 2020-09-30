@@ -29,6 +29,9 @@ class ListingGeoService
     {
         $listingAddress = $listing->getUnparsedAddress();
         $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
-        $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'],$listingCoordinates['lng']));
+        if (is_null($listingCoordinates)) {
+            throw new \Exception("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}" );
+        }
+        $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
     }
 }
