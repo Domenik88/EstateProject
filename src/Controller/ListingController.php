@@ -23,10 +23,10 @@ class ListingController extends AbstractController
      */
     public function index(string $listingId, string $feedName)
     {
-        $listing = $this->listingMediaService->getListingData($listingId,$feedName);
+        $listingData = $this->listingMediaService->getListingData($listingId,$feedName);
         return $this->render('listing/index.html.twig', [
             'controller_name' => 'ListingController',
-            'listing' => $listing,
+            'listing' => $listingData,
         ]);
     }
 }

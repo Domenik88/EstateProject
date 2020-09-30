@@ -221,7 +221,7 @@ class Listing
 
         return $this;
     }
-    public function getImagesData(): ?object
+    public function getImagesData(): ?array
     {
         return $this->imagesData;
     }
