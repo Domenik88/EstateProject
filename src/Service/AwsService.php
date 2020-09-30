@@ -47,12 +47,12 @@ class AwsService
         unset($uploader);
     }
 
-    public function getListingOriginalImage(string $mls_num, string $pic_num, int $feed_id)
+    public function getListingOriginalImage(string $listingId, string $picName, string $feedId)
     {
-        $key = $this->awsProvider->getKeyName() . $feed_id . DIRECTORY_SEPARATOR . $mls_num . DIRECTORY_SEPARATOR . $mls_num . '_' . $pic_num . '.jpg';
+        $key = 'listings/' . $feedId . DIRECTORY_SEPARATOR . $listingId . DIRECTORY_SEPARATOR . $picName . '.jpg';
         $effectiveUri = NULL;
         try {
-            $result = $this->awsProvider->getClient('edge')->getObject([
+            $result = $this->awsProvider->getClient()->getObject([
                 'Bucket' => $this->awsProvider->getBucket(),
                 'Key' => $key,
             ]);
@@ -80,8 +80,8 @@ class AwsService
 
     public function getListingNoImage()
     {
-        $key = $this->awsProvider->getKeyName() . 'no-img.jpg';
-        $result = $this->awsProvider->getClient('edge')->getObject([
+        $key = 'listings/' . 'no-img.jpg';
+        $result = $this->awsProvider->getClient()->getObject([
             'Bucket' => $this->awsProvider->getBucket(),
             'Key' => $key,
         ]);

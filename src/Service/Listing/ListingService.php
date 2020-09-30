@@ -85,10 +85,10 @@ class ListingService
         return new ListingListSearchResult($listingListCount,$results, $currentPage, $pageCounter);
     }
 
-    public function getSingleListing(string $listingId, string $feedName): Listing
+    public function getSingleListing(string $mlsNum, string $feedName): Listing
     {
         return $this->listingRepository->findOneBy([
-            'mlsNum' => $listingId,
+            'mlsNum' => $mlsNum,
             'feedID' => $feedName
         ]);
     }
@@ -154,4 +154,5 @@ class ListingService
 
         $this->entityManager->flush();
     }
+
 }
