@@ -71,7 +71,9 @@ class ListingService
     public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
     {
         $results = $this->listingRepository->findBy([
-            'feedID' => $feedName
+            'feedID' => $feedName,
+            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+            'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
         ],
         null,
         $limit,
