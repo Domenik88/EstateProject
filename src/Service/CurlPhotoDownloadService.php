@@ -50,7 +50,6 @@ class CurlPhotoDownloadService
             $photosCounter++;
         }
         $curl->close();
-        dump($photoNamesArray);
         return $photoNamesArray;
     }
 

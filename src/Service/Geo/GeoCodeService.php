@@ -25,8 +25,9 @@ class GeoCodeService
     public function getLatLong(string $address)
     {
         $result = $this->geoCoderProvider->getGeoCoder()->geocodeQuery(GeocodeQuery::create($address));
+        $coordinates = $result->first()->getCoordinates();
         if ( !$result->isEmpty() ) {
-            return [ 'lat' => $result->first()->getCoordinates()->getLatitude(), 'lng' => $result->first()->getCoordinates()->getLongitude() ];
+            return [ 'lat' => $coordinates->getLatitude(), 'lng' => $coordinates->getLongitude() ];
         }
         return null;
     }
