@@ -49,7 +49,7 @@ class ProcessingSingleListingCommand extends Command
         try {
             $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
             $io = new SymfonyStyle($input, $output);
-            $io->success("Processed listing {$singleListing->getMlsNum()}");
+            $io->success("Processing listing {$singleListing->getMlsNum()}");
             $this->listingMediaService->syncAllListingPhotos($singleListing);
             $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
 
