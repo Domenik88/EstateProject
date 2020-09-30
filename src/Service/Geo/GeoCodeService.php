@@ -26,7 +26,8 @@ class GeoCodeService
     {
         $result = $this->geoCoderProvider->getGeoCoder()->geocodeQuery(GeocodeQuery::create($address));
         if ( !$result->isEmpty() ) {
-            return [ 'lat' => $result->first()->getCoordinates()->getLatitude(), 'lng' => $result->first()->getCoordinates()->getLongitude() ];
+            $coordinates = $result->first()->getCoordinates();
+            return [ 'lat' => $coordinates->getLatitude(), 'lng' => $coordinates->getLongitude() ];
         }
         return null;
     }

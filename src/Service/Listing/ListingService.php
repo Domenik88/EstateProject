@@ -38,6 +38,7 @@ class ListingService
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
+        $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->persist($listing);
@@ -63,6 +64,7 @@ class ListingService
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
         $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
+        $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
 
         $this->entityManager->flush();
@@ -73,7 +75,6 @@ class ListingService
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
             'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
-            'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
         ],
         null,
         $limit,
@@ -95,7 +96,8 @@ class ListingService
     public function getListingListCount(string $feedName)
     {
         return $this->listingRepository->count([
-            'feedID' => $feedName
+            'feedID' => $feedName,
+            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
         ]);
     }
 
@@ -103,7 +105,8 @@ class ListingService
     {
         return $this->listingRepository->findOneBy([
             'feedID' => $feedName,
-            'status' => [ListingConstants::NEW_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS]
+            'status' => [ListingConstants::NEW_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+            'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
         ],['lastUpdateFromFeed'=>'ASC']);
     }
 
