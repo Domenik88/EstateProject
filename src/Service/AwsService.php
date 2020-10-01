@@ -24,13 +24,10 @@ class AwsService
         $this->awsProvider = $awsProvider;
     }
 
-    public function upload(string $path, string $destination = null)
+    public function upload(string $source, string $destination)
     {
-        // Where the files will be source from
-        $source = sys_get_temp_dir() . ListingConstants::UPLOAD_LISTING_PIC_PATH . $path;
-
         // Where the files will be transferred to
-        $dest = $this->awsProvider->getDest($destination) . $path;
+        $dest = $_ENV['ESBL_DIGITAL_OCEAN_S3_API_ENDPOINT'] . $destination;
         $uploader = new Transfer($this->awsProvider->getClient(), $source, $dest, [
             'before' => function(\Aws\Command $command) {
                 // Commands can vary for multipart uploads, so check which command
@@ -47,47 +44,6 @@ class AwsService
         unset($uploader);
     }
 
-    public function getListingOriginalImage(string $listingId, string $picName, string $feedId)
-    {
-        $key = 'listings/' . $feedId . DIRECTORY_SEPARATOR . $listingId . DIRECTORY_SEPARATOR . $picName . '.jpg';
-        $effectiveUri = NULL;
-        try {
-            $result = $this->awsProvider->getClient()->getObject([
-                'Bucket' => $this->awsProvider->getBucket(),
-                'Key' => $key,
-            ]);
-            $effectiveUri = $result['@metadata']['effectiveUri'];
-        } catch ( S3Exception $e ) {
-            $effectiveUri = $this->getListingNoImage();
-        }
-        return $effectiveUri;
-    }
-
-    public function getListingThumbnail(string $mls_num, string $pic_num, int $feed_id, int $width, int $height)
-    {
-        $key = $this->awsProvider->getKeyName() . $feed_id . DIRECTORY_SEPARATOR . $mls_num . DIRECTORY_SEPARATOR . 'thumbs' . DIRECTORY_SEPARATOR . 'thumb_' . $mls_num . '_' . $pic_num . '_' . $width . '_' . $height . '.jpg';
-            try {
-                $result = $this->awsProvider->getClient('edge')->getObject([
-                    'Bucket' => $this->awsProvider->getBucket(),
-                    'Key' => $key,
-                ]);
-                $effectiveUri = $result['@metadata']['effectiveUri'];
-            } catch ( S3Exception $e ) {
-                $effectiveUri = $this->getListingOriginalImage($mls_num, $pic_num, $feed_id);
-            }
-        return $effectiveUri;
-    }
-
-    public function getListingNoImage()
-    {
-        $key = 'listings/' . 'no-img.jpg';
-        $result = $this->awsProvider->getClient()->getObject([
-            'Bucket' => $this->awsProvider->getBucket(),
-            'Key' => $key,
-        ]);
-        return $result['@metadata']['effectiveUri'];
-    }
-
     public function delete(string $path)
     {
         $key = $this->awsProvider->getKeyName($path);
@@ -97,15 +53,4 @@ class AwsService
         );
     }
 
-    public function deleteSelected(array $ObjectKeys, string $path)
-    {
-        $key = $this->awsProvider->getKeyName($path);
-        foreach ($ObjectKeys as $objectKey) {
-            $agentKey = $key . $objectKey;
-            $this->awsProvider->getClient()->deleteMatchingObjects(
-                $this->awsProvider->getBucket(),
-                $agentKey
-            );
-        }
-    }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\Listing\ListingMediaService;
 use App\Service\Listing\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,12 +9,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListingController extends AbstractController
 {
     private ListingService $listingService;
-    private ListingMediaService $listingMediaService;
 
-    public function __construct(ListingService $listingService, ListingMediaService $listingMediaService)
+    public function __construct(ListingService $listingService)
     {
         $this->listingService = $listingService;
-        $this->listingMediaService = $listingMediaService;
     }
 
     /**
@@ -23,7 +20,7 @@ class ListingController extends AbstractController
      */
     public function index(string $listingId, string $feedName)
     {
-        $listingData = $this->listingMediaService->getListingData($listingId,$feedName);
+        $listingData = $this->listingService->getListingData($listingId,$feedName);
         return $this->render('listing/index.html.twig', [
             'controller_name' => 'ListingController',
             'listing' => $listingData,

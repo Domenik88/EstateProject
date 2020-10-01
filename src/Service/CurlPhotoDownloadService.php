@@ -10,13 +10,11 @@
 namespace App\Service;
 
 
-use App\Service\Listing\ListingConstants;
 use Curl\Curl;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CurlPhotoDownloadService
 {
-    private string $localPath;
     private Filesystem $filesystem;
 
     public function __construct(Filesystem $filesystem)
@@ -24,44 +22,29 @@ class CurlPhotoDownloadService
         $this->filesystem = $filesystem;
     }
 
-    public function init(string $fileName, string $feedId)
+
+    public function photoDownload(array $photoUrls, string $destination, string $baseFileName): array
     {
         $curl = new Curl();
-        $curl->setOpt(CURLOPT_RETURNTRANSFER,true);
-        $this->localPath = sys_get_temp_dir() . ListingConstants::UPLOAD_LISTING_PIC_PATH . $feedId . '/' . $fileName . '/';
-        if (!is_dir($this->localPath)) {
-            $this->filesystem->mkdir($this->localPath);
-        }
-        return $curl;
-    }
 
-    public function photoDownload(array $photos, string $fileName, string $feedId): array
-    {
-        $curl = $this->init($fileName,$feedId);
+        if (!is_dir($destination)) {
+            $this->filesystem->mkdir($destination);
+        }
         $photosCounter = 1;
         $photoNamesArray = [];
-        foreach ( $photos as $photo ) {
-            $curl->get($photo);
-            $im = @imagecreatefromstring($curl->getResponse());
-            $fullFileName = $this->localPath.$fileName.'_'.$photosCounter.'.'.$this->getFileExtention($curl->getResponseHeaders('content-type'));
-            @imagejpeg($im, $fullFileName, 100);
-            $this->filesystem->chmod($fullFileName,0644);
-            $photoNamesArray[] = $fileName.'_'.$photosCounter;
+        foreach ( $photoUrls as $photoUrl ) {
+            $curl->get($photoUrl);
+            $im = imagecreatefromstring($curl->getResponse());
+
+            $fullFileName = $destination.$baseFileName.'_'.$photosCounter.'.jpg';
+
+            imagejpeg($im, $fullFileName, 100);
+
+            $photoNamesArray[] = $baseFileName.'_'.$photosCounter.'.jpg';
             $photosCounter++;
         }
         $curl->close();
         return $photoNamesArray;
     }
 
-    private function getFileExtention($cType)
-    {
-        switch ($cType) {
-            case "image/jpeg" :
-            case "image/jpg" : $fileExtention = 'jpg'; break;
-            case "image/gif" : $fileExtention = 'gif'; break;
-            case "image/png" : $fileExtention = 'png'; break;
-            default : $fileExtention = 'jpg';
-        }
-        return $fileExtention;
-    }
 }

@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Repository\ListingRepository;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingGeoService;
-use App\Service\Listing\ListingMediaService;
+use App\Service\Listing\ListingMediaSyncService;
 use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -21,16 +21,16 @@ class ProcessingSingleListingCommand extends Command
     private LoggerInterface $logger;
     private ListingRepository $listingRepository;
     private ListingService $listingService;
-    private ListingMediaService $listingMediaService;
     private ListingGeoService $listingGeoService;
+    private ListingMediaSyncService $listingMediaSyncService;
 
-    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingMediaService $listingMediaService, ListingGeoService $listingGeoService)
+    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
-        $this->listingMediaService = $listingMediaService;
         $this->listingGeoService = $listingGeoService;
+        $this->listingMediaSyncService = $listingMediaSyncService;
         parent::__construct();
     }
 
@@ -50,7 +50,7 @@ class ProcessingSingleListingCommand extends Command
             $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
             $io = new SymfonyStyle($input, $output);
             $io->success("Processing listing {$singleListing->getMlsNum()}");
-            $this->listingMediaService->syncAllListingPhotos($singleListing);
+            $this->listingMediaSyncService->syncAllListingPhotos($singleListing);
             $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
 
             // Command body

@@ -19,11 +19,13 @@ class ListingService
 {
     private EntityManagerInterface $entityManager;
     private ListingRepository $listingRepository;
+    private ListingMediaService $listingMediaService;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository)
+    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
+        $this->listingMediaService = $listingMediaService;
     }
 
     public function createFromDdfResult(array $result)
@@ -153,6 +155,14 @@ class ListingService
         $existingListing->setCoordinates($point);
 
         $this->entityManager->flush();
+    }
+
+    public function getListingData(string $mlsNum, string $feedName): array
+    {
+        $singleListing = $this->getSingleListing($mlsNum, $feedName);
+        $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
+
+        return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
     }
 
 }
