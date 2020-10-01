@@ -1,7 +1,12 @@
 doctrine:
     dbal:
+        driver: 'pdo_pgsql'
+        server_version: '10.14'
         types:
-            point: 'App\Service\Geo\PointType'
+            point: App\Service\Geo\PointType
+        mapping_types:
+            point: point
+
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
