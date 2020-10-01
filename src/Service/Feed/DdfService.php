@@ -72,15 +72,16 @@ class DdfService
         return new MasterListItem($listItem['ListingKey'],$listItem['ModificationTimestamp']);
     }
 
-    public function getListingPhotosFromFeed(string $ListingFeedId, string $feedId): array
+    public function fetchListingPhotosFromFeed(string $listingFeedId, string $destination): array
     {
         $this->connect();
-        $results = $this->rets->getObject('Property','LargePhoto',$ListingFeedId);
+        $results = $this->rets->getObject('Property','LargePhoto',$listingFeedId);
+
         foreach ($results as $result) {
             $res = new XML();
             $tmp = $res->parse($result->getContent());
-            $arrayPhotos = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
-            $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($arrayPhotos,$ListingFeedId,$feedId);
+            $photoUrls = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
+            $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$listingFeedId);
         }
         $this->rets->Disconnect();
         return $photoNamesArray;

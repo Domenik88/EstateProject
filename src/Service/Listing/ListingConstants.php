@@ -18,5 +18,5 @@ interface ListingConstants
     const NONE_PROCESSING_LISTING_STATUS = 'none';
     const PROCESSING_PROCESSING_LISTING_STATUS = 'processing';
     const ERROR_PROCESSING_LISTING_STATUS = 'error';
-    const UPLOAD_LISTING_PIC_PATH = '/estateblockPics/listing/';
+    const UPLOAD_LISTING_PIC_PATH = '/estateblockPics/';
 }
