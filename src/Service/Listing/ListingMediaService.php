@@ -33,7 +33,7 @@ class ListingMediaService
 
     public function getListingNoImage()
     {
-        return $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'] . 'listings/' . 'no-img.jpg';
+        return $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'] . '/listings/' . 'no-img.jpg';
     }
 
 }
