@@ -85,6 +85,11 @@ class Listing
      */
     private $coordinates;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $rawData = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -241,6 +246,18 @@ class Listing
     public function setCoordinates(Point $coordinates): self
     {
         $this->coordinates = $coordinates;
+
+        return $this;
+    }
+
+    public function getRawData(): ?array
+    {
+        return $this->rawData;
+    }
+
+    public function setRawData(?array $rawData): self
+    {
+        $this->rawData = $rawData;
 
         return $this;
     }
