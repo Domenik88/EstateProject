@@ -42,6 +42,7 @@ class ListingService
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
+        $listing->setRawData($result);
 
         $this->entityManager->persist($listing);
 
@@ -68,6 +69,7 @@ class ListingService
         $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
         $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
+        $existingListing->setRawData($result);
 
         $this->entityManager->flush();
     }
