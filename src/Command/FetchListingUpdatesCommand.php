@@ -73,7 +73,9 @@ class FetchListingUpdatesCommand extends Command
             do {
                 $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate, $searchOffset);
                 foreach ( $searchResult->results as $result ) {
+                    dump(json_encode($result));
                     $this->listingService->upsertFromDdfResult($result);
+                    die;
                     $searchCount++;
                 }
                 $searchOffset = $searchResult->nextRecordOffset;

@@ -88,7 +88,7 @@ class Listing
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $rawData = [];
+    private $rawData;
 
     public function getId(): ?int
     {
@@ -226,7 +226,7 @@ class Listing
 
         return $this;
     }
-    public function getImagesData(): ?array
+    public function getImagesData(): ?object
     {
         return $this->imagesData;
     }
@@ -250,12 +250,12 @@ class Listing
         return $this;
     }
 
-    public function getRawData(): ?array
+    public function getRawData()
     {
         return $this->rawData;
     }
 
-    public function setRawData(?array $rawData): self
+    public function setRawData(?object $rawData): self
     {
         $this->rawData = $rawData;
 
