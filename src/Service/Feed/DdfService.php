@@ -57,7 +57,7 @@ class DdfService
         $this->connect();
 
         $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => $limit, 'Offset'=>1]);
-        return array_map(array($this,'toMasterListItem'),$results->toArray());
+        return ['totalResults' => $results->getTotalResultsCount(),'currentPage' => array_map(array($this,'toMasterListItem'),$results->toArray())];
     }
 
     public function getListingById($listingId)

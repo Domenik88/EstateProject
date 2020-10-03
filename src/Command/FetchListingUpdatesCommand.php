@@ -5,7 +5,6 @@ namespace App\Command;
 use App\Repository\ListingRepository;
 use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
-use App\Service\Listing\ListingDataRawService;
 use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -24,16 +23,14 @@ class FetchListingUpdatesCommand extends Command
     private ListingRepository $listingRepository;
     private ListingService $listingService;
     private FeedService $feedService;
-    private ListingDataRawService $listingDataRawService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, ListingDataRawService $listingDataRawService)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
         $this->feedService = $feedService;
-        $this->listingDataRawService = $listingDataRawService;
         parent::__construct();
     }
 
@@ -76,8 +73,8 @@ class FetchListingUpdatesCommand extends Command
             do {
                 $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate, $searchOffset);
                 foreach ( $searchResult->results as $result ) {
+                    unset($result['AnalyticsClick'],$result['AnalyticsView']);
                     $this->listingService->upsertFromDdfResult($result);
-                    $this->listingDataRawService->rawData($result);
                     $searchCount++;
                 }
                 $searchOffset = $searchResult->nextRecordOffset;

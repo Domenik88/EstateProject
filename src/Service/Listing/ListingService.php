@@ -42,6 +42,7 @@ class ListingService
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
+        $listing->setRawData($result);
 
         $this->entityManager->persist($listing);
 
@@ -68,6 +69,7 @@ class ListingService
         $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
         $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
+        $existingListing->setRawData($result);
 
         $this->entityManager->flush();
     }
@@ -140,7 +142,7 @@ class ListingService
             'mlsNum' => $listing->getMlsNum(),
             'feedListingID' => $listing->getFeedListingID(),
         ]);
-        $existingListing->setImagesData(json_decode(json_encode($photoNamesArray,JSON_FORCE_OBJECT)));
+        $existingListing->setImagesData($photoNamesArray);
 
         $this->entityManager->flush();
     }
@@ -164,14 +166,4 @@ class ListingService
         return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
     }
 
-    public function upsertRawData(array $result, object $rawData)
-    {
-        $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $result['ListingId'],
-            'feedListingID' => $result['ListingKey']
-        ]);
-        $existingListing->setRawData($rawData);
-
-        $this->entityManager->flush();
-    }
 }
