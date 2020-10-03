@@ -226,12 +226,12 @@ class Listing
 
         return $this;
     }
-    public function getImagesData(): ?object
+    public function getImagesData(): array
     {
         return $this->imagesData;
     }
 
-    public function setImagesData(?object $imagesData): self
+    public function setImagesData(object $imagesData): self
     {
         $this->imagesData = $imagesData;
 

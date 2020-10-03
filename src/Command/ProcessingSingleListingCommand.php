@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\ListingRepository;
+use App\Service\AwsService;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingGeoService;
 use App\Service\Listing\ListingMediaSyncService;

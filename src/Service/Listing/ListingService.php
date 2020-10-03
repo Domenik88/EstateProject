@@ -138,12 +138,11 @@ class ListingService
 
     public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray)
     {
-        $photoNamesObject = (object)$photoNamesArray;
         $existingListing = $this->listingRepository->findOneBy([
             'mlsNum' => $listing->getMlsNum(),
             'feedListingID' => $listing->getFeedListingID(),
         ]);
-        $existingListing->setImagesData($photoNamesObject);
+        $existingListing->setImagesData(json_decode(json_encode($photoNamesArray,JSON_FORCE_OBJECT)));
 
         $this->entityManager->flush();
     }
