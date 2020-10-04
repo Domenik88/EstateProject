@@ -26,20 +26,15 @@ class DdfListingMasterService
 
     public function upsertDdfMasterList()
     {
-//        $this->listingMasterRepository->insertMasterList();
-//        die;
         $offset = 1;
         $page = 0;
         do {
             $masterList = $this->ddfService->getMasterList(self::LIMIT,$offset);
             $this->listingMasterRepository->insertMasterList($masterList['currentPage']);
-//            dump($masterList);
+            dump($masterList);
             die;
             $offset = $offset + self::LIMIT;
             $page++;
         } while ($page < $masterList['totalPages']);
-
-        dump($masterList);
-        die;
     }
 }

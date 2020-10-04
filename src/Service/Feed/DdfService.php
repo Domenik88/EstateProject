@@ -75,7 +75,7 @@ dump('returnedResultCount :: ' . $results->getReturnedResultsCount());
 
     public function toMasterListItem(array $listItem): MasterListItem
     {
-        return new MasterListItem($listItem['ListingKey'],$listItem['ModificationTimestamp']);
+        return new MasterListItem($listItem['ListingKey'],\DateTime::createFromFormat('d/m/Y H:i:s A',$listItem['ModificationTimestamp']));
     }
 
     public function fetchListingPhotosFromFeed(string $listingFeedId, string $destination): array

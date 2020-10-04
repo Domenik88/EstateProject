@@ -126,14 +126,23 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
+    "illuminate/collections": {
+        "version": "v8.8.0"
+    },
     "illuminate/container": {
         "version": "v7.28.1"
     },
     "illuminate/contracts": {
         "version": "v7.28.1"
     },
+    "illuminate/macroable": {
+        "version": "v8.8.0"
+    },
     "illuminate/support": {
         "version": "v7.28.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
     },
     "league/csv": {
         "version": "9.6.1"
@@ -571,20 +580,6 @@
     "symfony/web-link": {
         "version": "v5.1.5"
     },
-    "symfony/web-profiler-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "6bdfa1a95f6b2e677ab985cd1af2eae35d62e0f6"
-        },
-        "files": [
-            "config/packages/dev/web_profiler.yaml",
-            "config/packages/test/web_profiler.yaml",
-            "config/routes/dev/web_profiler.yaml"
-        ]
-    },
     "symfony/webpack-encore-bundle": {
         "version": "1.6",
         "recipe": {
@@ -618,6 +613,9 @@
     },
     "voku/portable-ascii": {
         "version": "1.5.3"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"

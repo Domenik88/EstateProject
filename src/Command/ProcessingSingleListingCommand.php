@@ -25,17 +25,15 @@ class ProcessingSingleListingCommand extends Command
     private ListingService $listingService;
     private ListingGeoService $listingGeoService;
     private ListingMediaSyncService $listingMediaSyncService;
-    private DdfListingMasterService $ddfListingMasterService;
     private ListingMasterRepository $listingMasterRepository;
 
-    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, DdfListingMasterService $ddfListingMasterService)
+    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
         $this->listingGeoService = $listingGeoService;
         $this->listingMediaSyncService = $listingMediaSyncService;
-        $this->ddfListingMasterService = $ddfListingMasterService;
         $this->listingMasterRepository = $listingMasterRepository;
         parent::__construct();
     }
@@ -60,7 +58,6 @@ class ProcessingSingleListingCommand extends Command
             $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
 
 
-            $this->ddfListingMasterService->upsertDdfMasterList();
 
 
             // Command body

@@ -25,14 +25,13 @@ class ListingMasterRepository extends ServiceEntityRepository
 
     public function insertMasterList(array $masterList = [])
     {
-
         $listingMaster = new ListingMaster();
         foreach ($masterList as $item) {
             $listingMaster->setFeedId('ddf');
             $listingMaster->setFeedListingId($item->getListingKey());
             $listingMaster->setUpdatedTime($item->getLastModifyDate());
+            $this->entityManagerInterface->persist($listingMaster);
         }
-        $this->entityManagerInterface->persist($listingMaster);
         $this->entityManagerInterface->flush();
     }
 

@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\ListingRepository;
+use App\Service\Feed\DdfListingMasterService;
 use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
 use App\Service\Listing\ListingService;
@@ -23,14 +24,16 @@ class FetchListingUpdatesCommand extends Command
     private ListingRepository $listingRepository;
     private ListingService $listingService;
     private FeedService $feedService;
+    private DdfListingMasterService $ddfListingMasterService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
         $this->feedService = $feedService;
+        $this->ddfListingMasterService = $ddfListingMasterService;
         parent::__construct();
     }
 
@@ -45,6 +48,8 @@ class FetchListingUpdatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->ddfListingMasterService->upsertDdfMasterList();
+        die;
         $commandLastRunTimeDate = new \DateTime();
         $io = new SymfonyStyle($input, $output);
 
