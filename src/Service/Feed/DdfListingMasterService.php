@@ -16,7 +16,6 @@ class DdfListingMasterService
 {
     private DdfService $ddfService;
     private ListingMasterRepository $listingMasterRepository;
-    const LIMIT = 100;
 
     public function __construct(DdfService $ddfService, ListingMasterRepository $listingMasterRepository)
     {
@@ -26,15 +25,7 @@ class DdfListingMasterService
 
     public function upsertDdfMasterList()
     {
-        $offset = 1;
-        $page = 0;
-        do {
-            $masterList = $this->ddfService->getMasterList(self::LIMIT,$offset);
-            $this->listingMasterRepository->insertMasterList($masterList['currentPage']);
-            dump($masterList);
-            die;
-            $offset = $offset + self::LIMIT;
-            $page++;
-        } while ($page < $masterList['totalPages']);
+            $masterList = $this->ddfService->getMasterList();
+            $this->listingMasterRepository->insertMasterList($masterList);
     }
 }

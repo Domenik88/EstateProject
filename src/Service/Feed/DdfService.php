@@ -45,22 +45,20 @@ class DdfService
         $results = $this->rets->Search('Property', 'Property', 'LastUpdated=' . $date->format('Y-m-d\TH:i:s\Z'),['Format' => 'COMPACT-DECODED','Limit' => $limit, 'Offset' => $offset]);
         $totalRecordsCount = $results->getTotalResultsCount();
         $nextRecordOffset = $offset + $results->getReturnedResultsCount();
-        $moreAvailable = $nextRecordOffset < $totalRecordsCount;
+        $moreAvailable = !$results->isMaxRowsReached();
         $this->rets->Disconnect();
 
         return new SearchResult($moreAvailable, $results->toArray(), $nextRecordOffset, $totalRecordsCount);
     }
 
-    public function getMasterList(int $limit = null, int $offset = 1): array
+    public function getMasterList(): array
     {
         $this->connect();
 
-        $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => $limit, 'Offset' => $offset]);
-        $totalPages = ceil($results->getTotalResultsCount() / $limit);
+        $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => null]);
         $this->rets->Disconnect();
-dump('offset :: ' . $offset);
-dump('returnedResultCount :: ' . $results->getReturnedResultsCount());
-        return ['totalResults' => $results->getTotalResultsCount(),'totalPages' => $totalPages,'limit' => $limit, 'offset' => $offset, 'currentPage' => array_map(array($this,'toMasterListItem'),$results->toArray())];
+
+        return array_map(array($this,'toMasterListItem'),$results->toArray());
     }
 
     public function getListingById($listingId): array

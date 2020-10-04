@@ -15,24 +15,32 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ListingMasterRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $entityManagerInterface;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManagerInterface)
     {
-        $this->entityManagerInterface = $entityManagerInterface;
+        $this->entityManager = $entityManagerInterface;
         parent::__construct($registry, ListingMaster::class);
     }
 
     public function insertMasterList(array $masterList = [])
     {
-        $listingMaster = new ListingMaster();
+        $batchSize = 1000;
+        $batchCounter = 0;
         foreach ($masterList as $item) {
+            $listingMaster = new ListingMaster();
             $listingMaster->setFeedId('ddf');
             $listingMaster->setFeedListingId($item->getListingKey());
             $listingMaster->setUpdatedTime($item->getLastModifyDate());
-            $this->entityManagerInterface->persist($listingMaster);
+            $this->entityManager->persist($listingMaster);
+            $batchCounter++;
+            if ($batchCounter >= $batchSize) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
+            }
         }
-        $this->entityManagerInterface->flush();
+        $this->entityManager->flush();
+        $this->entityManager->clear();
     }
 
 }
