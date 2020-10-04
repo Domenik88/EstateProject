@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201003104414 extends AbstractMigration
+final class Version20201004070541 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,26 +20,17 @@ final class Version20201003104414 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SEQUENCE listing_master_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE listing_master (id INT NOT NULL, feed_id VARCHAR(20) NOT NULL, feed_listing_id VARCHAR(20) NOT NULL, updated_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE listing_master (id SERIAL NOT NULL, feed_id VARCHAR(20) NOT NULL, feed_listing_id VARCHAR(20) NOT NULL, updated_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX listing_master_feed_id_feed_listing_id_idx ON listing_master (feed_id, feed_listing_id)');
         $this->addSql('ALTER TABLE listing ALTER raw_data TYPE JSONB');
-        $this->addSql('ALTER TABLE listing ALTER raw_data DROP DEFAULT');
         $this->addSql('ALTER TABLE listing ALTER images_data TYPE JSONB');
-        $this->addSql('ALTER TABLE listing ALTER images_data DROP DEFAULT');
-        $this->addSql('COMMENT ON COLUMN listing.raw_data IS \'(DC2Type:json_array)\'');
-        $this->addSql('COMMENT ON COLUMN listing.images_data IS \'(DC2Type:json_array)\'');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE listing_master_id_seq CASCADE');
         $this->addSql('DROP TABLE listing_master');
         $this->addSql('ALTER TABLE listing ALTER raw_data TYPE JSON');
-        $this->addSql('ALTER TABLE listing ALTER raw_data DROP DEFAULT');
         $this->addSql('ALTER TABLE listing ALTER images_data TYPE JSON');
-        $this->addSql('ALTER TABLE listing ALTER images_data DROP DEFAULT');
-        $this->addSql('COMMENT ON COLUMN listing.images_data IS NULL');
     }
 }

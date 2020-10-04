@@ -126,14 +126,29 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
+    "illuminate/collections": {
+        "version": "v8.8.0"
+    },
     "illuminate/container": {
         "version": "v7.28.1"
     },
     "illuminate/contracts": {
         "version": "v7.28.1"
     },
+    "illuminate/macroable": {
+        "version": "v8.8.0"
+    },
     "illuminate/support": {
         "version": "v7.28.1"
+    },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
     },
     "league/csv": {
         "version": "9.6.1"
@@ -618,6 +633,9 @@
     },
     "voku/portable-ascii": {
         "version": "1.5.3"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"
