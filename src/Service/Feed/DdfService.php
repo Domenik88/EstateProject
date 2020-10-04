@@ -10,7 +10,6 @@
 namespace App\Service\Feed;
 
 use App\Service\CurlPhotoDownloadService;
-use Curl\Curl;
 use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
@@ -52,18 +51,25 @@ class DdfService
         return new SearchResult($moreAvailable, $results->toArray(), $nextRecordOffset, $totalRecordsCount);
     }
 
-    public function getMasterList($limit = null): array
+    public function getMasterList(int $limit = null, int $offset = 1): array
     {
         $this->connect();
 
-        $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => $limit, 'Offset'=>1]);
-        return ['totalResults' => $results->getTotalResultsCount(),'currentPage' => array_map(array($this,'toMasterListItem'),$results->toArray())];
+        $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => $limit, 'Offset' => $offset]);
+        $totalPages = ceil($results->getTotalResultsCount() / $limit);
+        $this->rets->Disconnect();
+dump('offset :: ' . $offset);
+dump('returnedResultCount :: ' . $results->getReturnedResultsCount());
+        return ['totalResults' => $results->getTotalResultsCount(),'totalPages' => $totalPages,'limit' => $limit, 'offset' => $offset, 'currentPage' => array_map(array($this,'toMasterListItem'),$results->toArray())];
     }
 
-    public function getListingById($listingId)
+    public function getListingById($listingId): array
     {
         $this->connect();
+
         $result = $this->rets->Search('Property', 'Property', 'ID=' . $listingId);
+        $this->rets->Disconnect();
+
         return $result->toArray();
     }
 

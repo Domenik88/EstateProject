@@ -2,11 +2,11 @@
 
 namespace App\Command;
 
+use App\Repository\ListingMasterRepository;
 use App\Repository\ListingRepository;
-use App\Service\AwsService;
-use App\Service\Feed\DdfService;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingGeoService;
+use App\Service\Feed\DdfListingMasterService;
 use App\Service\Listing\ListingMediaSyncService;
 use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
@@ -25,16 +25,18 @@ class ProcessingSingleListingCommand extends Command
     private ListingService $listingService;
     private ListingGeoService $listingGeoService;
     private ListingMediaSyncService $listingMediaSyncService;
-    private DdfService $ddfService;
+    private DdfListingMasterService $ddfListingMasterService;
+    private ListingMasterRepository $listingMasterRepository;
 
-    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, DdfService $ddfService)
+    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, DdfListingMasterService $ddfListingMasterService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
         $this->listingGeoService = $listingGeoService;
         $this->listingMediaSyncService = $listingMediaSyncService;
-        $this->ddfService = $ddfService;
+        $this->ddfListingMasterService = $ddfListingMasterService;
+        $this->listingMasterRepository = $listingMasterRepository;
         parent::__construct();
     }
 
@@ -56,6 +58,10 @@ class ProcessingSingleListingCommand extends Command
             $io->success("Processing listing {$singleListing->getMlsNum()}");
             $this->listingMediaSyncService->syncAllListingPhotos($singleListing);
             $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
+
+
+            $this->ddfListingMasterService->upsertDdfMasterList();
+
 
             // Command body
 

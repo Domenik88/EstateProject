@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ListingMaster;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,37 +15,25 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ListingMasterRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManagerInterface;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManagerInterface)
     {
+        $this->entityManagerInterface = $entityManagerInterface;
         parent::__construct($registry, ListingMaster::class);
     }
 
-    // /**
-    //  * @return ListingMaster[] Returns an array of ListingMaster objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function insertMasterList(array $masterList = [])
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ListingMaster
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $listingMaster = new ListingMaster();
+        foreach ($masterList as $item) {
+            $listingMaster->setFeedId('ddf');
+            $listingMaster->setFeedListingId($item->getListingKey());
+            $listingMaster->setUpdatedTime($item->getLastModifyDate());
+        }
+        $this->entityManagerInterface->persist($listingMaster);
+        $this->entityManagerInterface->flush();
     }
-    */
+
 }
