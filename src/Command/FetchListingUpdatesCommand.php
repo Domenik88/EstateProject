@@ -73,6 +73,7 @@ class FetchListingUpdatesCommand extends Command
             do {
                 $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate, $searchOffset);
                 foreach ( $searchResult->results as $result ) {
+                    unset($result['AnalyticsClick'],$result['AnalyticsView']);
                     $this->listingService->upsertFromDdfResult($result);
                     $searchCount++;
                 }

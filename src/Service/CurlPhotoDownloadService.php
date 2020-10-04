@@ -40,7 +40,7 @@ class CurlPhotoDownloadService
 
             imagejpeg($im, $fullFileName, 100);
 
-            $photoNamesArray[] = $baseFileName.'_'.$photosCounter.'.jpg';
+            $photoNamesArray[$photosCounter] = $baseFileName.'_'.$photosCounter.'.jpg';
             $photosCounter++;
         }
         $curl->close();

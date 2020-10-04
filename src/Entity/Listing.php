@@ -75,9 +75,9 @@ class Listing
     private $lastUpdateFromFeed;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="json_array", nullable=true, options={"jsonb":true})
      */
-    private $imagesData;
+    private $imagesData = [];
 
     /**
      * @ORM\Column(type="point", nullable=true)
@@ -86,9 +86,9 @@ class Listing
     private $coordinates;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="json_array", nullable=true, options={"jsonb":true})
      */
-    private $rawData;
+    private $rawData = [];
 
     public function getId(): ?int
     {
@@ -226,12 +226,12 @@ class Listing
 
         return $this;
     }
-    public function getImagesData()
+    public function getImagesData(): ?array
     {
         return $this->imagesData;
     }
 
-    public function setImagesData(?object $imagesData): self
+    public function setImagesData(?array $imagesData): self
     {
         $this->imagesData = $imagesData;
 
@@ -250,12 +250,12 @@ class Listing
         return $this;
     }
 
-    public function getRawData()
+    public function getRawData(): ?array
     {
         return $this->rawData;
     }
 
-    public function setRawData(?object $rawData): self
+    public function setRawData(?array $rawData): self
     {
         $this->rawData = $rawData;
 

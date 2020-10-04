@@ -3,6 +3,8 @@
 namespace App\Command;
 
 use App\Repository\ListingRepository;
+use App\Service\AwsService;
+use App\Service\Feed\DdfService;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingGeoService;
 use App\Service\Listing\ListingMediaSyncService;
@@ -23,14 +25,16 @@ class ProcessingSingleListingCommand extends Command
     private ListingService $listingService;
     private ListingGeoService $listingGeoService;
     private ListingMediaSyncService $listingMediaSyncService;
+    private DdfService $ddfService;
 
-    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService)
+    public function __construct(LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, DdfService $ddfService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
         $this->listingGeoService = $listingGeoService;
         $this->listingMediaSyncService = $listingMediaSyncService;
+        $this->ddfService = $ddfService;
         parent::__construct();
     }
 
