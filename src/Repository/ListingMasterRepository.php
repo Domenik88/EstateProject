@@ -28,7 +28,13 @@ class ListingMasterRepository extends ServiceEntityRepository
         $batchSize = 1000;
         $batchCounter = 0;
         foreach ($masterList as $item) {
-            $listingMaster = new ListingMaster();
+            $listingMaster = $this->findOneBy([
+                'feedId' => 'ddf',
+                'feedListingId' => $item->getListingKey(),
+            ]);
+            if (!$listingMaster) {
+                $listingMaster = new ListingMaster();
+            }
             $listingMaster->setFeedId('ddf');
             $listingMaster->setFeedListingId($item->getListingKey());
             $listingMaster->setUpdatedTime($item->getLastModifyDate());

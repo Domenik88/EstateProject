@@ -6,7 +6,9 @@ use App\Repository\ListingRepository;
 use App\Service\Feed\DdfListingMasterService;
 use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
+use App\Service\Feed\SearchUpdatedDdfListingsService;
 use App\Service\Listing\ListingService;
+use App\Service\Listing\UpsertListingsInFeedService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,8 +27,10 @@ class FetchListingUpdatesCommand extends Command
     private ListingService $listingService;
     private FeedService $feedService;
     private DdfListingMasterService $ddfListingMasterService;
+    private SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService;
+    private UpsertListingsInFeedService $upsertListingsInFeedService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService, UpsertListingsInFeedService $upsertListingsInFeedService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
@@ -34,6 +38,8 @@ class FetchListingUpdatesCommand extends Command
         $this->listingService = $listingService;
         $this->feedService = $feedService;
         $this->ddfListingMasterService = $ddfListingMasterService;
+        $this->searchUpdatedDdfListingsService = $searchUpdatedDdfListingsService;
+        $this->upsertListingsInFeedService = $upsertListingsInFeedService;
         parent::__construct();
     }
 
@@ -48,46 +54,21 @@ class FetchListingUpdatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->ddfListingMasterService->upsertDdfMasterList();
-        die;
         $commandLastRunTimeDate = new \DateTime();
         $io = new SymfonyStyle($input, $output);
-
+        $io->success('Start fetching listings');
         if ($this->feedService->isFeedBusy('ddf')) {
             $io->warning('Feed is busy');
             return Command::SUCCESS;
         }
-        $lastRunTimeDate = $this->feedService->setBusyByFeedName('ddf',true);
-
-        $arg1 = $input->getArgument('arg1');
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
-
-        if ($input->getOption('option1')) {
-            $io->note(sprintf('You passed an option: %s', $input->getOption('option1')));
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
-
-        $searchOffset = null;
-        $searchCount = 0;
-        $totalSearchResult = 0;
+//        $lastRunTimeDate = $this->feedService->setBusyByFeedName('ddf',true);
         try {
-            do {
-                $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate, $searchOffset);
-                foreach ( $searchResult->results as $result ) {
-                    unset($result['AnalyticsClick'],$result['AnalyticsView']);
-                    $this->listingService->upsertFromDdfResult($result);
-                    $searchCount++;
-                }
-                $searchOffset = $searchResult->nextRecordOffset;
-                $totalSearchResult = $searchResult->totalCount;
-            } while ( $searchResult->moreAvailable );
+//            $this->searchUpdatedDdfListingsService->search($lastRunTimeDate);
+            $this->ddfListingMasterService->upsertDdfMasterList();
+            die;
+            $this->upsertListingsInFeedService->upsertListings();
+
             $this->feedService->setLastRunTimeByFeedName('ddf', $commandLastRunTimeDate);
-            $io->success($searchCount);
-            $io->success($totalSearchResult);
         } catch (\Exception $e) {
             $io->note($e);
             $this->logger->error($e->getMessage());
