@@ -23,7 +23,7 @@ class SearchUpdatedDdfListingsService
         $this->listingService = $listingService;
     }
 
-    public function search(\DateTimeInterface $lastRunTimeDate)
+    public function searchAndRecordUpdatedListings(\DateTimeInterface $lastRunTimeDate)
     {
         do {
             $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate);

@@ -11,22 +11,29 @@ namespace App\Service\Feed;
 
 
 use App\Repository\ListingMasterRepository;
+use App\Repository\ListingRepository;
 
 class DdfListingMasterService
 {
     private DdfService $ddfService;
     private ListingMasterRepository $listingMasterRepository;
+    private ListingRepository $listingRepository;
 
-    public function __construct(DdfService $ddfService, ListingMasterRepository $listingMasterRepository)
+    public function __construct(DdfService $ddfService, ListingMasterRepository $listingMasterRepository, ListingRepository $listingRepository)
     {
         $this->ddfService = $ddfService;
         $this->listingMasterRepository = $listingMasterRepository;
+        $this->listingRepository = $listingRepository;
     }
 
-    public function upsertDdfMasterList()
+    public function syncListingRecords()
     {
         $this->listingMasterRepository->truncateListingMasterTable();
         $masterList = $this->ddfService->getMasterList();
         $this->listingMasterRepository->insertMasterList($masterList);
+        $this->listingRepository->deleteListings('ddf');
+        $this->listingRepository->createMissingListingsFromDdfListingMaster();
+        $this->listingMasterRepository->truncateListingMasterTable();
     }
+
 }

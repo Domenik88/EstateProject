@@ -8,7 +8,6 @@ use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
 use App\Service\Feed\SearchUpdatedDdfListingsService;
 use App\Service\Listing\ListingService;
-use App\Service\Listing\UpsertListingsInFeedService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,9 +27,8 @@ class FetchListingUpdatesCommand extends Command
     private FeedService $feedService;
     private DdfListingMasterService $ddfListingMasterService;
     private SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService;
-    private UpsertListingsInFeedService $upsertListingsInFeedService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService, UpsertListingsInFeedService $upsertListingsInFeedService)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
@@ -39,7 +37,6 @@ class FetchListingUpdatesCommand extends Command
         $this->feedService = $feedService;
         $this->ddfListingMasterService = $ddfListingMasterService;
         $this->searchUpdatedDdfListingsService = $searchUpdatedDdfListingsService;
-        $this->upsertListingsInFeedService = $upsertListingsInFeedService;
         parent::__construct();
     }
 
@@ -63,9 +60,8 @@ class FetchListingUpdatesCommand extends Command
         }
         $lastRunTimeDate = $this->feedService->setBusyByFeedName('ddf',true);
         try {
-            $this->searchUpdatedDdfListingsService->search($lastRunTimeDate);
-            $this->ddfListingMasterService->upsertDdfMasterList();
-            $this->upsertListingsInFeedService->syncListingRecords();
+            $this->searchUpdatedDdfListingsService->searchAndRecordUpdatedListings($lastRunTimeDate);
+            $this->ddfListingMasterService->syncListingRecords();
 
             $this->feedService->setLastRunTimeByFeedName('ddf', $commandLastRunTimeDate);
         } catch (\Exception $e) {
