@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ListingMasterRepository::class)
- * @ORM\Table(name="listing_master",uniqueConstraints={@ORM\UniqueConstraint(name="listing_master_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})})
+ * @ORM\Table(name="listing_master",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="listing_master_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})}
+ *     )
  */
 class ListingMaster
 {

@@ -8,7 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ListingRepository::class)
- * @ORM\Table(name="listing",uniqueConstraints={@ORM\UniqueConstraint(name="listing_mls_num_feed_listing_id_idx", columns={"mls_num", "feed_listing_id"})})
+ * @ORM\Table(name="listing",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_idx", columns={"mls_num", "feed_id"}),
+ *          @ORM\UniqueConstraint(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})
+ *     },
+ * )
  */
 class Listing
 {
@@ -20,7 +25,7 @@ class Listing
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $mlsNum;
 
@@ -89,6 +94,11 @@ class Listing
      * @ORM\Column(type="json_array", nullable=true, options={"jsonb":true})
      */
     private $rawData = [];
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedDate;
 
     public function getId(): ?int
     {
@@ -258,6 +268,18 @@ class Listing
     public function setRawData(?array $rawData): self
     {
         $this->rawData = $rawData;
+
+        return $this;
+    }
+
+    public function getDeletedDate(): ?\DateTimeInterface
+    {
+        return $this->deletedDate;
+    }
+
+    public function setDeletedDate(?\DateTimeInterface $deletedDate): self
+    {
+        $this->deletedDate = $deletedDate;
 
         return $this;
     }

@@ -10,13 +10,26 @@
 namespace App\Service\Feed;
 
 
+use DateTimeInterface;
+
 class MasterListItem
 {
     public string $listingKey;
-    public string $lastModifyDate;
-    public function __construct(string $listingKey, string $lastModifyDate)
+    public DateTimeInterface $lastModifyDate;
+
+    public function __construct(string $listingKey, DateTimeInterface $lastModifyDate)
     {
         $this->listingKey = $listingKey;
         $this->lastModifyDate = $lastModifyDate;
+    }
+
+    public function getListingKey(): ?string
+    {
+        return $this->listingKey;
+    }
+
+    public function getLastModifyDate(): DateTimeInterface
+    {
+        return $this->lastModifyDate;
     }
 }

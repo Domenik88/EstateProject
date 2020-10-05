@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\ListingMaster;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,37 +16,42 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ListingMasterRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    const INSERT_LISTING_MASTER_CHUNK_SIZE = 1000;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManagerInterface)
     {
+        $this->entityManager = $entityManagerInterface;
         parent::__construct($registry, ListingMaster::class);
     }
 
-    // /**
-    //  * @return ListingMaster[] Returns an array of ListingMaster objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function insertMasterList(array $masterList = [])
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $chunksMasterList = array_chunk($masterList,self::INSERT_LISTING_MASTER_CHUNK_SIZE);
+        foreach ( $chunksMasterList as $items ) {
+            $values = array_fill(0,count($items),"(?,?,?)");
+            $valuesForQuery = implode(",",$values);
 
-    /*
-    public function findOneBySomeField($value): ?ListingMaster
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            $sql = "insert into listing_master(feed_id,feed_listing_id,updated_time)
+        values {$valuesForQuery}
+        on conflict (feed_id,feed_listing_id)
+        do update set updated_time = EXCLUDED.updated_time";
+            $rsm = new ResultSetMapping();
+            $query = $this->entityManager->createNativeQuery($sql,$rsm);
+            $paramCounter = 1;
+            foreach ( $items as $item ) {
+                $query->setParameter($paramCounter++,'ddf');
+                $query->setParameter($paramCounter++,$item->getListingKey());
+                $query->setParameter($paramCounter++,$item->getLastModifyDate());
+            }
+            $query->execute();
+        }
     }
-    */
+
+    public function truncateListingMasterTable()
+    {
+        $rsm = new ResultSetMapping();
+        $this->entityManager->createNativeQuery('TRUNCATE TABLE listing_master',$rsm)->execute();
+    }
+
 }

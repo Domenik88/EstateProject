@@ -10,7 +10,6 @@
 namespace App\Service\Feed;
 
 use App\Service\CurlPhotoDownloadService;
-use Curl\Curl;
 use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
@@ -43,33 +42,40 @@ class DdfService
     public function searchUpdatedListings(\DateTimeInterface $date,$offset = null,$limit = 100)
     {
         $this->connect();
+
         $results = $this->rets->Search('Property', 'Property', 'LastUpdated=' . $date->format('Y-m-d\TH:i:s\Z'),['Format' => 'COMPACT-DECODED','Limit' => $limit, 'Offset' => $offset]);
         $totalRecordsCount = $results->getTotalResultsCount();
         $nextRecordOffset = $offset + $results->getReturnedResultsCount();
-        $moreAvailable = $nextRecordOffset < $totalRecordsCount;
+        $moreAvailable = !$results->isMaxRowsReached();
+
         $this->rets->Disconnect();
 
         return new SearchResult($moreAvailable, $results->toArray(), $nextRecordOffset, $totalRecordsCount);
     }
 
-    public function getMasterList($limit = null): array
+    public function getMasterList(): array
     {
         $this->connect();
 
-        $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => $limit, 'Offset'=>1]);
-        return ['totalResults' => $results->getTotalResultsCount(),'currentPage' => array_map(array($this,'toMasterListItem'),$results->toArray())];
+        $results = $this->rets->Search('Property', 'Property', 'ID=*',['Limit' => null]);
+        $this->rets->Disconnect();
+
+        return array_map(array($this,'toMasterListItem'),$results->toArray());
     }
 
-    public function getListingById($listingId)
+    public function getListingById($listingId): array
     {
         $this->connect();
+
         $result = $this->rets->Search('Property', 'Property', 'ID=' . $listingId);
+        $this->rets->Disconnect();
+
         return $result->toArray();
     }
 
     public function toMasterListItem(array $listItem): MasterListItem
     {
-        return new MasterListItem($listItem['ListingKey'],$listItem['ModificationTimestamp']);
+        return new MasterListItem($listItem['ListingKey'],\DateTime::createFromFormat('d/m/Y H:i:s A',$listItem['ModificationTimestamp']));
     }
 
     public function fetchListingPhotosFromFeed(string $listingFeedId, string $destination): array
