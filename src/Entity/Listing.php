@@ -9,9 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ListingRepository::class)
  * @ORM\Table(name="listing",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="listing_mls_num_feed_id_idx", columns={"mls_num", "feed_id"})},
- *     indexes={@ORM\Index(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})}
- *     )
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_idx", columns={"mls_num", "feed_id"}),
+ *          @ORM\UniqueConstraint(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})
+ *     },
+ * )
  */
 class Listing
 {
@@ -23,7 +25,7 @@ class Listing
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $mlsNum;
 

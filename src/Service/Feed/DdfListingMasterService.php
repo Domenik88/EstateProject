@@ -25,7 +25,8 @@ class DdfListingMasterService
 
     public function upsertDdfMasterList()
     {
-            $masterList = $this->ddfService->getMasterList();
-            $this->listingMasterRepository->insertMasterList($masterList);
+        $this->listingMasterRepository->truncateListingMasterTable();
+        $masterList = $this->ddfService->getMasterList();
+        $this->listingMasterRepository->insertMasterList($masterList);
     }
 }

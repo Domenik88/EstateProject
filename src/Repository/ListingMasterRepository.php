@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ListingMaster;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class ListingMasterRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $entityManager;
+    const INSERT_LISTING_MASTER_CHUNK_SIZE = 1000;
 
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManagerInterface)
     {
@@ -25,28 +27,31 @@ class ListingMasterRepository extends ServiceEntityRepository
 
     public function insertMasterList(array $masterList = [])
     {
-        $batchSize = 1000;
-        $batchCounter = 0;
-        foreach ($masterList as $item) {
-            $listingMaster = $this->findOneBy([
-                'feedId' => 'ddf',
-                'feedListingId' => $item->getListingKey(),
-            ]);
-            if (!$listingMaster) {
-                $listingMaster = new ListingMaster();
+        $chunksMasterList = array_chunk($masterList,self::INSERT_LISTING_MASTER_CHUNK_SIZE);
+        foreach ( $chunksMasterList as $items ) {
+            $values = array_fill(0,count($items),"(?,?,?)");
+            $valuesForQuery = implode(",",$values);
+
+            $sql = "insert into listing_master(feed_id,feed_listing_id,updated_time)
+        values {$valuesForQuery}
+        on conflict (feed_id,feed_listing_id)
+        do update set updated_time = EXCLUDED.updated_time";
+            $rsm = new ResultSetMapping();
+            $query = $this->entityManager->createNativeQuery($sql,$rsm);
+            $paramCounter = 1;
+            foreach ( $items as $item ) {
+                $query->setParameter($paramCounter++,'ddf');
+                $query->setParameter($paramCounter++,$item->getListingKey());
+                $query->setParameter($paramCounter++,$item->getLastModifyDate());
             }
-            $listingMaster->setFeedId('ddf');
-            $listingMaster->setFeedListingId($item->getListingKey());
-            $listingMaster->setUpdatedTime($item->getLastModifyDate());
-            $this->entityManager->persist($listingMaster);
-            $batchCounter++;
-            if ($batchCounter >= $batchSize) {
-                $this->entityManager->flush();
-                $this->entityManager->clear();
-            }
+            $query->execute();
         }
-        $this->entityManager->flush();
-        $this->entityManager->clear();
+    }
+
+    public function truncateListingMasterTable()
+    {
+        $rsm = new ResultSetMapping();
+        $this->entityManager->createNativeQuery('TRUNCATE TABLE listing_master',$rsm)->execute();
     }
 
 }

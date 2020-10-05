@@ -166,15 +166,4 @@ class ListingService
         return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
     }
 
-    public function upsertMissingListingsFromListingMaster(array $result)
-    {
-        dump($result);
-        die;
-        $existingListing = $this->listingRepository->findOneBy([
-            'feedID' => $result->getFeedId(),
-            'feedListingID' => $result->getFeedListingId()
-        ]);
-
-    }
-
 }

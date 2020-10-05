@@ -56,17 +56,16 @@ class FetchListingUpdatesCommand extends Command
     {
         $commandLastRunTimeDate = new \DateTime();
         $io = new SymfonyStyle($input, $output);
-        $io->success('Start fetching listings');
+        $io->success("Start fetching listings");
         if ($this->feedService->isFeedBusy('ddf')) {
             $io->warning('Feed is busy');
             return Command::SUCCESS;
         }
-//        $lastRunTimeDate = $this->feedService->setBusyByFeedName('ddf',true);
+        $lastRunTimeDate = $this->feedService->setBusyByFeedName('ddf',true);
         try {
-//            $this->searchUpdatedDdfListingsService->search($lastRunTimeDate);
+            $this->searchUpdatedDdfListingsService->search($lastRunTimeDate);
             $this->ddfListingMasterService->upsertDdfMasterList();
-            die;
-            $this->upsertListingsInFeedService->upsertListings();
+            $this->upsertListingsInFeedService->syncListingRecords();
 
             $this->feedService->setLastRunTimeByFeedName('ddf', $commandLastRunTimeDate);
         } catch (\Exception $e) {

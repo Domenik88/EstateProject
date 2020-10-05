@@ -10,30 +10,27 @@
 namespace App\Service\Listing;
 
 
+use App\Repository\ListingMasterRepository;
 use App\Repository\ListingRepository;
 
 class UpsertListingsInFeedService
 {
     private ListingRepository $listingRepository;
     private ListingService $listingService;
+    private ListingMasterRepository $listingMasterRepository;
 
-    public function __construct(ListingRepository $listingRepository, ListingService $listingService)
+    public function __construct(ListingRepository $listingRepository, ListingService $listingService, ListingMasterRepository $listingMasterRepository)
     {
         $this->listingRepository = $listingRepository;
         $this->listingService = $listingService;
+        $this->listingMasterRepository = $listingMasterRepository;
     }
 
-    public function upsertListings()
+    public function syncListingRecords()
     {
-        $this->listingRepository->updateDdfDeletedListings();
-        $result = $this->listingRepository->getMissingListingsFromDdfListingMaster();
-        dump($result[1]);
-        $this->upsertMissingListingsFromListingMaster($result);
-    }
-
-    public function upsertMissingListingsFromListingMaster(array $result)
-    {
-//        $this->listingService->upsertMissingListingsFromListingMaster();
+        $this->listingRepository->deleteListings('ddf');
+        $this->listingRepository->getMissingListingsFromDdfListingMaster();
+        $this->listingMasterRepository->truncateListingMasterTable();
     }
 
 }
