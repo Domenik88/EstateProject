@@ -9,58 +9,63 @@
     .example-wrapper table, .example-wrapper table td { border: solid 1px}
     .example-wrapper img {display: block}
 </style>
-<div class="example-wrapper">
-    <a href="#" onclick="history.back();">Назад</a>
-    <table>
-        <thead style="background-color: gold">
-        <tr>
-            <td>Parameter</td>
-            <td>Value</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Mls Num</td>
-            <td>{{ listing.listing.mlsNum }}</td>
-        </tr>
-        <tr>
-            <td>Feed Listing ID</td>
-            <td>{{ listing.listing.feedListingID }}</td>
-        </tr>
-        <tr>
-            <td>Feed ID</td>
-            <td>{{ listing.listing.feedID }}</td>
-        </tr>
-        <tr>
-            <td>Listing Price</td>
-            <td>{{ listing.listing.listPrice }}</td>
-        </tr>
-        <tr>
-            <td>Postal Code</td>
-            <td>{{ listing.listing.postalCode }}</td>
-        </tr>
-        <tr>
-            <td>Listing Photos Count</td>
-            <td>{{ listing.listing.photosCount }}</td>
-        </tr>
-        <tr>
-            <td>Listing Address</td>
-            <td>{{ listing.listing.unparsedAddress }}</td>
-        </tr>
-        <tr>
-            <td>Listing City</td>
-            <td>{{ listing.listing.city }}</td>
-        </tr>
-        <tr>
-            <td>Listing Coordinates</td>
-            <td>{{ listing.listing.coordinates.latitude }}, {{ listing.listing.coordinates.longitude }}</td>
-        </tr>
-        </tbody>
-    </table>
-    {{ dump(listing.listing.rawData) }}
-    <h2>Listing photos</h2>
-    {% for photo in listing.photos %}
-        <img src="{{ photo }}">
-    {% endfor %}
-</div>
+    <div class="example-wrapper">
+        {% if listing.listing is null %}
+            <h2>Listing not found or sold!</h2>
+            <a href="#" onclick="history.back();">Назад</a>
+        {% else %}
+            <a href="#" onclick="history.back();">Назад</a>
+            <table>
+                <thead style="background-color: gold">
+                <tr>
+                    <td>Parameter</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Mls Num</td>
+                    <td>{{ listing.listing.mlsNum }}</td>
+                </tr>
+                <tr>
+                    <td>Feed Listing ID</td>
+                    <td>{{ listing.listing.feedListingID }}</td>
+                </tr>
+                <tr>
+                    <td>Feed ID</td>
+                    <td>{{ listing.listing.feedID }}</td>
+                </tr>
+                <tr>
+                    <td>Listing Price</td>
+                    <td>{{ listing.listing.listPrice }}</td>
+                </tr>
+                <tr>
+                    <td>Postal Code</td>
+                    <td>{{ listing.listing.postalCode }}</td>
+                </tr>
+                <tr>
+                    <td>Listing Photos Count</td>
+                    <td>{{ listing.listing.photosCount }}</td>
+                </tr>
+                <tr>
+                    <td>Listing Address</td>
+                    <td>{{ listing.listing.unparsedAddress }}</td>
+                </tr>
+                <tr>
+                    <td>Listing City</td>
+                    <td>{{ listing.listing.city }}</td>
+                </tr>
+                <tr>
+                    <td>Listing Coordinates</td>
+                    <td>{{ listing.listing.coordinates.latitude }}, {{ listing.listing.coordinates.longitude }}</td>
+                </tr>
+                </tbody>
+            </table>
+            {{ dump(listing.listing.rawData) }}
+            <h2>Listing photos</h2>
+            {% for photo in listing.photos %}
+                <img src="{{ photo }}">
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}
