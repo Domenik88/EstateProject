@@ -28,7 +28,7 @@
                 <tbody>
                 {% for listing in listingList.results %}
                     <tr>
-                        <td><a href="/listing/{{ listing.mlsNum }}-{{ listing.feedID }}">{{ listing.mlsNum }}</a></td>
+                        <td><a href="/listing/{{ listing.stateOrProvince }}/{{ listing.mlsNum }}-{{ listing.feedID }}">{{ listing.mlsNum }}</a></td>
                         <td>{{ listing.feedListingID }}</td>
                         <td>{{ listing.feedID }}</td>
                         <td>{{ listing.listPrice }}</td>

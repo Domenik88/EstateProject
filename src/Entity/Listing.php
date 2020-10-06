@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=ListingRepository::class)
  * @ORM\Table(name="listing",
  *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_idx", columns={"mls_num", "feed_id"}),
+ *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_state_or_province_idx", columns={"mls_num", "feed_id", "state_or_province"}),
  *          @ORM\UniqueConstraint(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})
  *     },
  * )
@@ -99,6 +99,11 @@ class Listing
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $deletedDate;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $stateOrProvince;
 
     public function getId(): ?int
     {
@@ -280,6 +285,18 @@ class Listing
     public function setDeletedDate(?\DateTimeInterface $deletedDate): self
     {
         $this->deletedDate = $deletedDate;
+
+        return $this;
+    }
+
+    public function getStateOrProvince(): ?string
+    {
+        return $this->stateOrProvince;
+    }
+
+    public function setStateOrProvince(?string $stateOrProvince): self
+    {
+        $this->stateOrProvince = $stateOrProvince;
 
         return $this;
     }

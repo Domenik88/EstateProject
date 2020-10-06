@@ -39,6 +39,7 @@ class ListingService
         $listing->setPhotosCount($result['PhotosCount']);
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
+        $listing->setStateOrProvince($result['StateOrProvince']);
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
@@ -54,19 +55,23 @@ class ListingService
     public function upsertFromDdfResult(array $result)
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $result['ListingId'],
+            'feedID' => 'ddf',
             'feedListingID' => $result['ListingKey']
         ]);
         if (!$existingListing) {
             return $this->createFromDdfResult($result);
         }
         $existingListing->setFeedID('ddf');
+        $existingListing->setMlsNum($result['ListingId']);
         $existingListing->setCity($result['City']);
         $existingListing->setListPrice($result['ListPrice']);
         $existingListing->setPhotosCount($result['PhotosCount']);
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
-        $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
+        $existingListing->setStateOrProvince($result['StateOrProvince']);
+        if ($existingListing->getStatus() != 'new') {
+            $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
+        }
         $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
         $existingListing->setRawData($result);
@@ -89,9 +94,10 @@ class ListingService
         return new ListingListSearchResult($listingListCount,$results, $currentPage, $pageCounter);
     }
 
-    public function getSingleListing(string $mlsNum, string $feedName): Listing
+    public function getSingleListing(string $province, string $mlsNum, string $feedName): Listing
     {
         return $this->listingRepository->findOneBy([
+            'stateOrProvince' => $province,
             'mlsNum' => $mlsNum,
             'feedID' => $feedName
         ]);
@@ -128,7 +134,7 @@ class ListingService
     public function setListingProcessingStatus(Listing $listing, string $status)
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $listing->getMlsNum(),
+            'feedID' => $listing->getFeedID(),
             'feedListingID' => $listing->getFeedListingID(),
         ]);
         $existingListing->setProcessingStatus($status);
@@ -158,9 +164,9 @@ class ListingService
         $this->entityManager->flush();
     }
 
-    public function getListingData(string $mlsNum, string $feedName): array
+    public function getListingData(string $province, string $mlsNum, string $feedName): array
     {
-        $singleListing = $this->getSingleListing($mlsNum, $feedName);
+        $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
         return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
