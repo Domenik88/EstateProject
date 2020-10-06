@@ -97,4 +97,14 @@ class DdfService
     {
         return explode("\t",$imgDataString)[3];
     }
+
+    public function getListingByFeedListingId($feedListingId): array
+    {
+        $this->connect();
+        $result = $this->rets->Search('Property', 'Property', 'ID=' . $feedListingId, ['Limit' => null]);
+        $this->rets->Disconnect();
+
+        return $result->first()->toArray();
+    }
+
 }
