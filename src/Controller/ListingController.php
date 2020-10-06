@@ -16,11 +16,11 @@ class ListingController extends AbstractController
     }
 
     /**
-     * @Route("/listing/{listingId}-{feedName}", name="listing")
+     * @Route("/listing/{province}/{listingId}-{feedName}", name="listing")
      */
-    public function index(string $listingId, string $feedName)
+    public function index(string $province, string $listingId, string $feedName)
     {
-        $listingData = $this->listingService->getListingData($listingId,$feedName);
+        $listingData = $this->listingService->getListingData($province,$listingId,$feedName);
         return $this->render('listing/index.html.twig', [
             'controller_name' => 'ListingController',
             'listing' => $listingData,
