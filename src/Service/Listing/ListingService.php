@@ -44,6 +44,9 @@ class ListingService
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
         $listing->setRawData($result);
+        if ($result['Latitude'] != '' or $result['Longitude'] != '') {
+            $listing->setCoordinates(new Point($result['Latitude'],$result['Longitude']));
+        }
 
         $this->entityManager->persist($listing);
 
@@ -75,6 +78,9 @@ class ListingService
         $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
         $existingListing->setRawData($result);
+        if ($result['Latitude'] != '' or $result['Longitude'] != '') {
+            $existingListing->setCoordinates(new Point($result['Latitude'],$result['Longitude']));
+        }
 
         $this->entityManager->flush();
     }

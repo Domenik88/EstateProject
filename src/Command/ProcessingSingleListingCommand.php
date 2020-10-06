@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Repository\ListingMasterRepository;
 use App\Repository\ListingRepository;
 use App\Service\Listing\ListingConstants;
+use App\Service\Listing\ListingDataSyncService;
 use App\Service\Listing\ListingGeoService;
 use App\Service\Feed\DdfListingMasterService;
 use App\Service\Listing\ListingMediaSyncService;
@@ -26,8 +27,9 @@ class ProcessingSingleListingCommand extends Command
     private ListingGeoService $listingGeoService;
     private ListingMediaSyncService $listingMediaSyncService;
     private ListingMasterRepository $listingMasterRepository;
+    private ListingDataSyncService $listingDataSyncService;
 
-    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService)
+    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, ListingDataSyncService $listingDataSyncService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
@@ -35,6 +37,7 @@ class ProcessingSingleListingCommand extends Command
         $this->listingGeoService = $listingGeoService;
         $this->listingMediaSyncService = $listingMediaSyncService;
         $this->listingMasterRepository = $listingMasterRepository;
+        $this->listingDataSyncService = $listingDataSyncService;
         parent::__construct();
     }
 
@@ -53,12 +56,10 @@ class ProcessingSingleListingCommand extends Command
         try {
             $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
             $io = new SymfonyStyle($input, $output);
-            $io->success("Processing listing {$singleListing->getMlsNum()}");
+            $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
+            $this->listingDataSyncService->syncAllListingData($singleListing);
             $this->listingMediaSyncService->syncAllListingPhotos($singleListing);
             $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
-
-
-
 
             // Command body
 
