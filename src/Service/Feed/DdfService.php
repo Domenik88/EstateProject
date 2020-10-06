@@ -46,7 +46,7 @@ class DdfService
         $results = $this->rets->Search('Property', 'Property', 'LastUpdated=' . $date->format('Y-m-d\TH:i:s\Z'),['Format' => 'COMPACT-DECODED','Limit' => $limit, 'Offset' => $offset]);
         $totalRecordsCount = $results->getTotalResultsCount();
         $nextRecordOffset = $offset + $results->getReturnedResultsCount();
-        $moreAvailable = !$results->isMaxRowsReached();
+        $moreAvailable = $results->isMaxRowsReached();
 
         $this->rets->Disconnect();
 

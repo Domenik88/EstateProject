@@ -25,12 +25,14 @@ class SearchUpdatedDdfListingsService
 
     public function searchAndRecordUpdatedListings(\DateTimeInterface $lastRunTimeDate)
     {
+        $searchOffset = null;
         do {
-            $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate);
+            $searchResult = $this->ddfService->searchUpdatedListings($lastRunTimeDate,$searchOffset);
             foreach ( $searchResult->results as $result ) {
                 unset($result['AnalyticsClick'],$result['AnalyticsView']);
                 $this->listingService->upsertFromDdfResult($result);
             }
+            $searchOffset = $searchResult->nextRecordOffset;
         } while ( $searchResult->moreAvailable );
     }
 }
