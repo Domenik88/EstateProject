@@ -10,6 +10,12 @@
     .example-wrapper img {display: block}
 </style>
     <div class="example-wrapper">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="...">Admin Delete</a>
+        {% endif %}
+        {% if is_granted('ROLE_USER') %}
+            <a href="...">User Delete</a>
+        {% endif %}
         {% if listing.listing is null %}
             <h2>Listing not found or sold!</h2>
             <a href="#" onclick="history.back();">Назад</a>
