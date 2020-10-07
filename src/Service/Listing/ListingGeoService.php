@@ -30,18 +30,13 @@ class ListingGeoService
 
     public function syncListingCoordinatesFromAddress(Listing $listing)
     {
-        try {
-            if ( is_null($listing->getCoordinates()->getLongitude()) or is_null($listing->getCoordinates()->getLatitude()()) ) {
-                $listingAddress = $listing->getUnparsedAddress();
-                $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
-                if ( is_null($listingCoordinates) ) {
-                    throw new \Exception("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}");
-                }
-                $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
+        if ( is_null($listing->getCoordinates()->getLongitude()) or is_null($listing->getCoordinates()->getLatitude())) {
+            $listingAddress = $listing->getUnparsedAddress();
+            $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
+            if ( is_null($listingCoordinates) ) {
+                throw new \Exception("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}");
             }
-        } catch ( \Exception $e ) {
-            $this->logger->error($e->getMessage());
-            $this->logger->error($e->getTraceAsString());
+            $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
         }
     }
 }

@@ -103,6 +103,9 @@ class DdfService
         $this->connect();
         $result = $this->rets->Search('Property', 'Property', 'ID=' . $feedListingId, ['Limit' => null]);
         $this->rets->Disconnect();
+        if (!$result->first()){
+            throw new \Exception("Listing record not found! listingFeedId: {$feedListingId}");
+        }
 
         return $result->first()->toArray();
     }
