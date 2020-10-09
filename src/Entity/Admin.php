@@ -4,16 +4,22 @@ namespace App\Entity;
 
 use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=AdminRepository::class)
+ * @ORM\Table(name="admin",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="admin_username_idx", columns={"username"})
+ *     }
+ * )
  */
 class Admin implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
     private $id;

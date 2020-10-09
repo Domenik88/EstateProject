@@ -8,13 +8,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="`user`")
+ * @ORM\Table(name="`user`",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="user_email_idx", columns={"email"})
+ *     }
+ * )
  */
 class User implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
     private $id;
