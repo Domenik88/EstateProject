@@ -70,6 +70,7 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('map') }}
+    <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1tbIAqN0XqcgTR1-FxYoVTVq6Is6lD98&callback=initMap">
     </script>
 {% endblock %}
