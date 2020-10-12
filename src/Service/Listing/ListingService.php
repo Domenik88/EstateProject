@@ -20,12 +20,14 @@ class ListingService
     private EntityManagerInterface $entityManager;
     private ListingRepository $listingRepository;
     private ListingMediaService $listingMediaService;
+    private ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService)
+    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
         $this->listingMediaService = $listingMediaService;
+        $this->listingListSinglePageListingsCoordinates = $listingListSinglePageListingsCoordinates;
     }
 
     public function createFromDdfResult(array $result)
@@ -176,6 +178,19 @@ class ListingService
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
         return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
+    }
+
+    public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
+    {
+        $results = $this->listingRepository->findBy([
+            'feedID' => $feedName,
+            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+        ],
+            null,
+            $limit,
+            $offset );
+        $listCoordinates = $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
+        return $listCoordinates;
     }
 
 }
