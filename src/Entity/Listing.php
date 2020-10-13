@@ -106,7 +106,7 @@ class Listing
     private $stateOrProvince;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $country;
 
