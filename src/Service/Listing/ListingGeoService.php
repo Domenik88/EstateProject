@@ -31,7 +31,7 @@ class ListingGeoService
     public function syncListingCoordinatesFromAddress(Listing $listing)
     {
         if ( is_null($listing->getCoordinates()->getLongitude()) or is_null($listing->getCoordinates()->getLatitude())) {
-            $listingAddress = $listing->getUnparsedAddress();
+            $listingAddress = $listing->getUnparsedAddress() . ' ' . $listing->getCity() . ' ' . $listing->getStateOrProvince() . ' ' . 'Canada';
             $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
             if ( is_null($listingCoordinates) ) {
                 throw new \Exception("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}");
