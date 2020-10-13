@@ -5,10 +5,21 @@
             center: { lat: 50.8599882, lng: -90.9302304 },
             zoom: 4
         });
+        let northEast = [];
+        let southWest = [];
+        map.addListener("idle", () => {
+            northEast['lat'] = map.getBounds().getNorthEast().lat();
+            northEast['lng'] = map.getBounds().getNorthEast().lng();
+            southWest['lat'] = map.getBounds().getSouthWest().lat();
+            southWest['lng'] = map.getBounds().getSouthWest().lng();
+            console.log(northEast);
+            console.log(southWest);
+        });
         $.ajax(
             {
                 url: ajaxPath,
                 dataType: "json",
+                data: northEast,southWest,
                 method: "POST",
                 success: function (data) {
                     const markers = data.map((markerElem) => {
