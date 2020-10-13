@@ -182,7 +182,7 @@ class ListingService
         return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
     }
 
-    public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
+    public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
     {
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
@@ -191,8 +191,7 @@ class ListingService
             null,
             $limit,
             $offset );
-        $listCoordinates = $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
-        return $listCoordinates;
+        return $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
     }
 
 }

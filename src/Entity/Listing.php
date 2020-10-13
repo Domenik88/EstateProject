@@ -317,4 +317,22 @@ class Listing
 
         return $this;
     }
+
+    public function getFullAddress(): ?string
+    {
+        $addressArray = [];
+        $unparsedAddress = rtrim($this->getUnparsedAddress(),",");
+        $addressArray[] = $unparsedAddress != '' ? $unparsedAddress : '';
+        $city = rtrim($this->getCity(), ",");
+        $addressArray[] = $city != '' ? $city : '';
+        $stateOrProvince = rtrim($this->getStateOrProvince(), ",");
+        $addressArray[] = $stateOrProvince != '' ? $stateOrProvince : '';
+        $postalCode = rtrim($this->getPostalCode(), ",");
+        $addressArray[] = $postalCode != '' ? $postalCode : '';
+        if (count($addressArray) > 0) {
+            return implode(", ", $addressArray);
+        } else {
+            return null;
+        }
+    }
 }
