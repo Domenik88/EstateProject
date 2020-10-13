@@ -20,18 +20,20 @@ class ListingGeoService
     private GeoCodeService $geoCodeService;
     private ListingService $listingService;
     private LoggerInterface $logger;
+    private ListingFullUnparsedAddressService $listingFullUnparsedAddressService;
 
-    public function __construct(GeoCodeService $geoCodeService, ListingService $listingService, LoggerInterface $logger)
+    public function __construct(GeoCodeService $geoCodeService, ListingService $listingService, LoggerInterface $logger, ListingFullUnparsedAddressService $listingFullUnparsedAddressService)
     {
         $this->geoCodeService = $geoCodeService;
         $this->listingService = $listingService;
         $this->logger = $logger;
+        $this->listingFullUnparsedAddressService = $listingFullUnparsedAddressService;
     }
 
     public function syncListingCoordinatesFromAddress(Listing $listing)
     {
         if ( is_null($listing->getCoordinates()->getLongitude()) or is_null($listing->getCoordinates()->getLatitude())) {
-            $listingAddress = $listing->getUnparsedAddress() . ' ' . $listing->getCity() . ' ' . $listing->getStateOrProvince() . ' ' . 'Canada';
+            $listingAddress = $this->listingFullUnparsedAddressService->getListingFullUnparsedAddress($listing);
             $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
             if ( is_null($listingCoordinates) ) {
                 throw new \Exception("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}");
@@ -39,4 +41,5 @@ class ListingGeoService
             $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
         }
     }
+
 }

@@ -105,6 +105,11 @@ class Listing
      */
     private $stateOrProvince;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $country;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -297,6 +302,18 @@ class Listing
     public function setStateOrProvince(?string $stateOrProvince): self
     {
         $this->stateOrProvince = $stateOrProvince;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

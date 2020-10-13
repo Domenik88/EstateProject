@@ -13,6 +13,12 @@ namespace App\Service\Listing;
 
 class ListingListSinglePageListingsCoordinates
 {
+    private ListingFullUnparsedAddressService $listingFullUnparsedAddressService;
+
+    public function __construct(ListingFullUnparsedAddressService $listingFullUnparsedAddressService)
+    {
+        $this->listingFullUnparsedAddressService = $listingFullUnparsedAddressService;
+    }
 
     public function getListingListCoordinates(array $listingListSinglePage)
     {
@@ -20,6 +26,7 @@ class ListingListSinglePageListingsCoordinates
         $counter = 0;
         foreach ($listingListSinglePage as $listing) {
             $coordinatesList[$counter]['mlsNum'] = $listing->getMlsNum();
+            $coordinatesList[$counter]['address'] = $this->listingFullUnparsedAddressService->getListingFullUnparsedAddress($listing);
             $coordinatesList[$counter]['lat'] = $listing->getCoordinates()->getLatitude();
             $coordinatesList[$counter]['lng'] = $listing->getCoordinates()->getLongitude();
             $counter++;

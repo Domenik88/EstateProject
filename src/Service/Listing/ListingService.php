@@ -42,6 +42,7 @@ class ListingService
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
         $listing->setStateOrProvince($result['StateOrProvince']);
+        $listing->setCountry($result['Country']);
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
@@ -74,6 +75,7 @@ class ListingService
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
         $existingListing->setStateOrProvince($result['StateOrProvince']);
+        $existingListing->setCountry($result['Country']);
         if ($existingListing->getStatus() != 'new') {
             $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
         }

@@ -18,7 +18,7 @@
                         infowincontent.appendChild(strong);
                         infowincontent.appendChild(document.createElement('br'));
                         let text = document.createElement('text');
-                        text.textContent = markerElem.mlsNum
+                        text.textContent = markerElem.address
                         infowincontent.appendChild(text);
 
                         let marker = new google.maps.Marker({
