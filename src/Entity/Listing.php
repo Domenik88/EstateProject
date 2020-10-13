@@ -105,6 +105,11 @@ class Listing
      */
     private $stateOrProvince;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $country;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -299,5 +304,35 @@ class Listing
         $this->stateOrProvince = $stateOrProvince;
 
         return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getFullAddress(): ?string
+    {
+        $addressArray = [];
+        $unparsedAddress = rtrim($this->getUnparsedAddress(),",");
+        if ($unparsedAddress != '') { $addressArray[] = $unparsedAddress; }
+        $city = rtrim($this->getCity(), ",");
+        if ($city != '') { $addressArray[] = $city; }
+        $stateOrProvince = rtrim($this->getStateOrProvince(), ",");
+        if ($stateOrProvince != '') { $addressArray[] = $stateOrProvince; }
+        $postalCode = rtrim($this->getPostalCode(), ",");
+        if ($postalCode != '') { $addressArray[] = $postalCode; }
+        if (count($addressArray) > 0) {
+            return implode(", ", $addressArray);
+        } else {
+            return null;
+        }
     }
 }

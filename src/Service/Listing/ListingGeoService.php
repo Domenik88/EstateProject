@@ -31,7 +31,7 @@ class ListingGeoService
     public function syncListingCoordinatesFromAddress(Listing $listing)
     {
         if ( is_null($listing->getCoordinates()->getLongitude()) or is_null($listing->getCoordinates()->getLatitude())) {
-            $listingAddress = $listing->getUnparsedAddress();
+            $listingAddress = $listing->getFullAddress();
             $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
             if ( is_null($listingCoordinates) ) {
                 throw new \Exception("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}");
@@ -39,4 +39,5 @@ class ListingGeoService
             $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
         }
     }
+
 }

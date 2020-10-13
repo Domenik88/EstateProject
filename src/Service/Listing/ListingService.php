@@ -42,6 +42,7 @@ class ListingService
         $listing->setPostalCode($result['PostalCode']);
         $listing->setUnparsedAddress($result['UnparsedAddress']);
         $listing->setStateOrProvince($result['StateOrProvince']);
+        $listing->setCountry($result['Country']);
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
@@ -74,6 +75,7 @@ class ListingService
         $existingListing->setPostalCode($result['PostalCode']);
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
         $existingListing->setStateOrProvince($result['StateOrProvince']);
+        $existingListing->setCountry($result['Country']);
         if ($existingListing->getStatus() != 'new') {
             $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
         }
@@ -180,7 +182,7 @@ class ListingService
         return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
     }
 
-    public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
+    public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
     {
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
@@ -189,8 +191,7 @@ class ListingService
             null,
             $limit,
             $offset );
-        $listCoordinates = $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
-        return $listCoordinates;
+        return $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
     }
 
 }

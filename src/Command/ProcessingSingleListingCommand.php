@@ -7,7 +7,6 @@ use App\Repository\ListingRepository;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingDataSyncService;
 use App\Service\Listing\ListingGeoService;
-use App\Service\Feed\DdfListingMasterService;
 use App\Service\Listing\ListingMediaSyncService;
 use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
