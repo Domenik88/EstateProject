@@ -194,9 +194,9 @@ class ListingService
         return $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
     }
 
-    public function getAllActiveListingsForMapBox(string $box)
+    public function getAllActiveListingsForMapBox(string $boxString): array
     {
-        return $this->listingRepository->getAllListingsInMapBox();
+        return $this->listingRepository->getAllListingsInMapBox($boxString);
     }
 
 }

@@ -6,6 +6,7 @@ use App\Service\Listing\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,13 +31,22 @@ class ListingsMapController extends AbstractController
         {
             throw new NotFoundHttpException();
         }
-        $box = $request->request->get('box');
-        $listings = $listingService->getAllActiveListingsForMapBox($box);
-        dump($box);
-        dump(json_decode($box));
+        $boxObject = $request->request->get('box');
+        $box = json_decode($boxObject);
+        $boxString = "box '((" . $box->northEast->lat . ", ". $box->northEast->lng . "),(" . $box->southWest->lat . ", " . $box->southWest->lng . "))'";
+        $listings = $listingService->getAllActiveListingsForMapBox($boxString);
+        $response = new JsonResponse(['collection' => json_encode($listings)]);
+//        $response->setData([
+//            'data' => 123,
+//        ]);
+//        $response->setContent(json_encode($listings));
+        foreach ($listings as $listing) {
+            dump($listing);
+        }
         dump($listings);
+        dump($response);
         die;
-        return new JsonResponse([['mlsNum'=>'R123456789','address'=>'У','lat'=>0,'lng'=>0],['mlsNum'=>'R123456789','address'=>'У','lat'=>10,'lng'=>10]]);
+        return $response;
     }
 
 }

@@ -16,7 +16,8 @@
                     dataType: 'json',
                     data: {box:JSON.stringify(box)},
                     success: function (data) {
-                        const markers = data.map((markerElem) => {
+                        console.log(data);
+                        /*const markers = data.map((markerElem) => {
                             let infowincontent = document.createElement('div');
                             let strong = document.createElement('strong');
                             strong.textContent = markerElem.mlsNum
@@ -40,7 +41,7 @@
                         new MarkerClusterer(map, markers, {
                             imagePath:
                                 "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
-                        });
+                        });*/
                     },
                 }
             );
