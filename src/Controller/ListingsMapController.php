@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Service\Listing\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ListingsMapController extends AbstractController
@@ -19,18 +22,20 @@ class ListingsMapController extends AbstractController
     }
 
     /**
-     * @Route("/map/ajax", name="listings_map_ajax")
+     * @Route("/listing/search", name="listings_search")
      */
-    public function mapAjax()
+    public function listingSearch(Request $request, ListingService $listingService)
     {
-//        $isAjax = $this->get('Request')->isXMLHttpRequest();
-        dump($this);
-        dump($this->get('session'));
+        if(!$request->isXmlHttpRequest())
+        {
+            throw new NotFoundHttpException();
+        }
+        $box = $request->request->get('box');
+        $listings = $listingService->getAllActiveListingsForMapBox($box);
+        dump($box);
+        dump(json_decode($box));
+        dump($listings);
         die;
-//        if ($isAjax) {
-//            ...
-//            return new JsonResponse([['mlsNum'=>'R123456789','address'=>'У черта на куличках','lat'=>0,'lng'=>0],['mlsNum'=>'R123456789','address'=>'У черта на куличках','lat'=>10,'lng'=>10]]);
-//        }
         return new JsonResponse([['mlsNum'=>'R123456789','address'=>'У','lat'=>0,'lng'=>0],['mlsNum'=>'R123456789','address'=>'У','lat'=>10,'lng'=>10]]);
     }
 

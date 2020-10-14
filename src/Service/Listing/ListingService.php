@@ -194,12 +194,9 @@ class ListingService
         return $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
     }
 
-    public function getLatLngForAllActiveListings(string $feedName)
+    public function getAllActiveListingsForMapBox(string $box)
     {
-        $results = $this->listingRepository->findBy([
-            'feedID' => $feedName,
-            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
-        ]);
+        return $this->listingRepository->getAllListingsInMapBox();
     }
 
 }

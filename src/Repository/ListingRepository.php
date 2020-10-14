@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Listing;
+use App\Service\Geo\Box;
+use App\Service\Geo\Point;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,8 +18,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ListingRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         parent::__construct($registry, Listing::class);
     }
 
@@ -36,5 +42,21 @@ class ListingRepository extends ServiceEntityRepository
     {
         $rsm = new ResultSetMapping();
         $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status from listing_master lm on conflict (feed_id,feed_listing_id) do nothing",$rsm)->execute();
+    }
+
+    public function getAllListingsInMapBox()
+    {
+        try {
+            $box = new Box(new Point(62.66299586734857,-93.479058525), new Point(36.78984347156478,-142.522027275));
+            $sql = "select * from listing where status = 'live' and $box @> coordinates";
+            $rsm = new ResultSetMapping();
+            dump($sql);
+            $query = $this->entityManager->createNativeQuery($sql, $rsm);
+            $result = $query->getResult();
+            dump($result);
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+            dump($e->getTraceAsString());
+        }
     }
 }
