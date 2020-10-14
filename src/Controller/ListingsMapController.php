@@ -41,10 +41,11 @@ class ListingsMapController extends AbstractController
 //        ]);
 //        $response->setContent(json_encode($listings));
         foreach ($listings as $listing) {
-            dump($listing);
+            dump($listing->getCoordinates());
+            die;
         }
-        dump($listings);
-        dump($response);
+//        dump($listings);
+//        dump($response);
         die;
         return $response;
     }
