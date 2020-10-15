@@ -19,9 +19,6 @@ use Doctrine\Persistence\ManagerRegistry;
 class ListingRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $entityManager;
-    const STATUS_LIVE = ListingConstants::LIVE_LISTING_STATUS;
-    const STATUS_UPDATED = ListingConstants::UPDATED_LISTING_STATUS;
-    const STATUS_ERROR = ListingConstants::ERROR_PROCESSING_LISTING_STATUS;
 
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
@@ -53,7 +50,7 @@ class ListingRepository extends ServiceEntityRepository
         try {
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-            $sql = "select * from listing where status IN ('" . self::STATUS_LIVE . "', '" . self::STATUS_UPDATED . "') and processing_status != '" . self::STATUS_ERROR . "' and coordinates <@ $boxString";
+            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and processing_status != '" . ListingConstants::ERROR_PROCESSING_LISTING_STATUS . "' and coordinates <@ $boxString";
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             return $query->getResult();
         } catch (\Exception $e) {
