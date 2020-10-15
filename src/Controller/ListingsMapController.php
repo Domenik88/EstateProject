@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Controller;
+
+use App\Service\Listing\ListingService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
+
+class ListingsMapController extends AbstractController
+{
+    /**
+     * @Route("/map", name="listings_map")
+     */
+    public function index()
+    {
+        return $this->render('listings_map/index.html.twig', [
+            'controller_name' => 'ListingsMapController',
+        ]);
+    }
+
+    /**
+     * @Route("/listing/search", name="listings_search")
+     */
+    public function listingSearch(Request $request, ListingService $listingService)
+    {
+        if(!$request->isXmlHttpRequest())
+        {
+            throw new NotFoundHttpException();
+        }
+        $boxObject = $request->request->get('box');
+        $box = json_decode($boxObject);
+        $listings = $listingService->getAllActiveListingsForMapBox($box->northEast->lat,$box->northEast->lng,$box->southWest->lat,$box->southWest->lng);
+        $response = new JsonResponse(['collection' => json_encode($listings)]);
+        $responseData = [];
+        foreach ($listings as $listing) {
+            $responseData[] = $listing->getDataForMap();
+        }
+        $response->setData($responseData);
+        return $response;
+    }
+
+}

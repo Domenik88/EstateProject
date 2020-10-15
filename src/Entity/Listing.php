@@ -335,4 +335,15 @@ class Listing
             return null;
         }
     }
+
+    public function getDataForMap()
+    {
+        $return = [];
+        $return['mlsNum'] = $this->getMlsNum();
+        $return['address'] = $this->getFullAddress();
+        $return['lat'] = $this->getCoordinates()->getLatitude();
+        $return['lng'] = $this->getCoordinates()->getLongitude();
+
+        return $return;
+    }
 }
