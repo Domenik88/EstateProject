@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Listing;
+use App\Service\Listing\ListingConstants;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -18,6 +19,9 @@ use Doctrine\Persistence\ManagerRegistry;
 class ListingRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $entityManager;
+    const STATUS_LIVE = ListingConstants::LIVE_LISTING_STATUS;
+    const STATUS_UPDATED = ListingConstants::UPDATED_LISTING_STATUS;
+    const STATUS_ERROR = ListingConstants::ERROR_PROCESSING_LISTING_STATUS;
 
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
@@ -43,12 +47,13 @@ class ListingRepository extends ServiceEntityRepository
         $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status from listing_master lm on conflict (feed_id,feed_listing_id) do nothing",$rsm)->execute();
     }
 
-    public function getAllListingsInMapBox(string $boxString): array
+    public function getAllListingsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
     {
+        $boxString = "box '((" . $neLat . ", ". $neLng . "),(" . $swLat . ", " . $swLng . "))'";
         try {
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-            $sql = "select * from listing where status = 'live' and $boxString @> coordinates";
+            $sql = "select * from listing where status IN ('" . self::STATUS_LIVE . "', '" . self::STATUS_UPDATED . "') and processing_status != '" . self::STATUS_ERROR . "' and coordinates <@ $boxString";
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             return $query->getResult();
         } catch (\Exception $e) {

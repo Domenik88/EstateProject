@@ -33,14 +33,11 @@ class ListingsMapController extends AbstractController
         }
         $boxObject = $request->request->get('box');
         $box = json_decode($boxObject);
-        $boxString = "box '((" . $box->northEast->lat . ", ". $box->northEast->lng . "),(" . $box->southWest->lat . ", " . $box->southWest->lng . "))'";
-        $listings = $listingService->getAllActiveListingsForMapBox($boxString);
+        $listings = $listingService->getAllActiveListingsForMapBox($box->northEast->lat,$box->northEast->lng,$box->southWest->lat,$box->southWest->lng);
         $response = new JsonResponse(['collection' => json_encode($listings)]);
-        $counter = 0;
         $responseData = [];
         foreach ($listings as $listing) {
             $responseData[] = $listing->getDataForMap();
-            $counter++;
         }
         $response->setData($responseData);
         return $response;
