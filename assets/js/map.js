@@ -21,7 +21,6 @@
                     dataType: 'json',
                     data: {box:JSON.stringify(box)},
                     success: function (data) {
-                        console.log(data);
                         markers = data.map((markerElem) => {
                             let infowincontent = document.createElement('div');
                             let strong = document.createElement('strong');
@@ -66,11 +65,8 @@
             northEast['lng'] = map.getBounds().getNorthEast().lng();
             southWest['lat'] = map.getBounds().getSouthWest().lat();
             southWest['lng'] = map.getBounds().getSouthWest().lng();
-            console.log(northEast);
-            console.log(southWest);
             box.northEast = northEast;
             box.southWest = southWest;
-            console.log(box);
             deleteMarkers();
             search(box);
         });
