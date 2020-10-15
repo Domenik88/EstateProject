@@ -8,6 +8,11 @@
         const northEast = {};
         const southWest = {};
         const box = {};
+        let markers = [];
+        let markerCluster = new MarkerClusterer(map, markers, {
+            imagePath:
+                "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+        });
         const search = (box) => {
             $.ajax(
                 {
@@ -17,7 +22,7 @@
                     data: {box:JSON.stringify(box)},
                     success: function (data) {
                         console.log(data);
-                        /*const markers = data.map((markerElem) => {
+                        markers = data.map((markerElem) => {
                             let infowincontent = document.createElement('div');
                             let strong = document.createElement('strong');
                             strong.textContent = markerElem.mlsNum
@@ -38,13 +43,23 @@
                             });
                             return marker;
                         });
-                        new MarkerClusterer(map, markers, {
-                            imagePath:
-                                "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
-                        });*/
+                        markerCluster.addMarkers(markers);
                     },
                 }
             );
+        }
+        const clearMarkers = () => {
+            setMapOnAll(null);
+        }
+        const setMapOnAll = (map) => {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+        const deleteMarkers = () => {
+            clearMarkers();
+            markerCluster.clearMarkers();
+            markers = [];
         }
         map.addListener("idle", () => {
             northEast['lat'] = map.getBounds().getNorthEast().lat();
@@ -56,6 +71,7 @@
             box.northEast = northEast;
             box.southWest = southWest;
             console.log(box);
+            deleteMarkers();
             search(box);
         });
     }
