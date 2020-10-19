@@ -1,4 +1,7 @@
 {
+    "almasaeed2010/adminlte": {
+        "version": "v3.0.5"
+    },
     "aws/aws-sdk-php": {
         "version": "3.154.0"
     },
