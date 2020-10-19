@@ -36,7 +36,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: /admin/login
+                target: /admin
             guard:
                 authenticators:
                     - App\Security\AdminAuthenticator
@@ -48,7 +48,7 @@ security:
             form_login:
                 login_path: /login
                 check_path: /login_check
-                default_target_path: /login
+                default_target_path: /listing/list
                 username_parameter: email
                 password_parameter: password
             logout:
@@ -66,5 +66,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: '^/admin/login', roles: IS_ANONYMOUS }
+        - { path: '^/user/login', roles: IS_ANONYMOUS }
         - { path: '^/admin', roles: ROLE_ADMIN }
         - { path: '^/user', roles: ROLE_USER }
