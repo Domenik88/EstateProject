@@ -322,13 +322,13 @@ class Listing
     {
         $addressArray = [];
         $unparsedAddress = rtrim($this->getUnparsedAddress(),",");
-        if ($unparsedAddress != '') { $addressArray[] = $unparsedAddress; }
+        if (!empty($unparsedAddress)) { $addressArray[] = $unparsedAddress; }
         $city = rtrim($this->getCity(), ",");
-        if ($city != '') { $addressArray[] = $city; }
+        if (!empty($city)) { $addressArray[] = $city; }
         $stateOrProvince = rtrim($this->getStateOrProvince(), ",");
-        if ($stateOrProvince != '') { $addressArray[] = $stateOrProvince; }
+        if (!empty($stateOrProvince)) { $addressArray[] = $stateOrProvince; }
         $postalCode = rtrim($this->getPostalCode(), ",");
-        if ($postalCode != '') { $addressArray[] = $postalCode; }
+        if (!empty($postalCode)) { $addressArray[] = $postalCode; }
         if (count($addressArray) > 0) {
             return implode(", ", $addressArray);
         } else {
