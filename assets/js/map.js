@@ -1,4 +1,5 @@
     window.initMap = () => {
+    console.log('init map');
         let ajaxPath = $('#map').data('path');
         let infoWindow = new google.maps.InfoWindow;
         let map = new google.maps.Map(document.getElementById('map'), {
@@ -21,6 +22,7 @@
                     dataType: 'json',
                     data: {box:JSON.stringify(box)},
                     success: function (data) {
+                        console.log(data);
                         markers = data.map((markerElem) => {
                             let infowincontent = document.createElement('div');
                             let strong = document.createElement('strong');

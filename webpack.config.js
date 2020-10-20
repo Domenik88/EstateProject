@@ -24,7 +24,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', ['./assets/js/app.js','./assets/css/app.scss'])
-    .addEntry('map', './assets/js/map.js')
+    .addEntry('map', ['./assets/js/map.js','./assets/css/map.scss'])
     // .addEntry('app', './assets/css/app.scss')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
