@@ -87,6 +87,7 @@ class ListingService
         }
 
         $this->entityManager->flush();
+        $this->entityManager->clear();
     }
 
     public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
@@ -121,13 +122,13 @@ class ListingService
         ]);
     }
 
-    public function getSingleListingForProcessing(string $feedName): Listing
+    public function getBatchListingsForProcessing(string $feedName, int $batchSize): array
     {
-        return $this->listingRepository->findOneBy([
+        return $this->listingRepository->findBy([
             'feedID' => $feedName,
             'status' => [ListingConstants::NEW_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
             'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
-        ],['lastUpdateFromFeed'=>'ASC']);
+        ],['lastUpdateFromFeed'=>'ASC'],$batchSize);
     }
 
     public function setListingStatus(Listing $listing, string $status)

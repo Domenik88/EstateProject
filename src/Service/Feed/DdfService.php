@@ -14,6 +14,7 @@ use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
 use Psr\Log\LoggerInterface;
+use function GuzzleHttp\normalize_header_keys;
 
 class DdfService
 {
@@ -98,7 +99,7 @@ class DdfService
         return explode("\t",$imgDataString)[3];
     }
 
-    public function getListingByFeedListingId($feedListingId): array
+    public function getListingByFeedListingId($feedListingId): ?array
     {
         $this->connect();
         $result = $this->rets->Search('Property', 'Property', 'ID=' . $feedListingId, ['Limit' => null]);

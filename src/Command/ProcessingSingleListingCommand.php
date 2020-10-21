@@ -27,6 +27,7 @@ class ProcessingSingleListingCommand extends Command
     private ListingMediaSyncService $listingMediaSyncService;
     private ListingMasterRepository $listingMasterRepository;
     private ListingDataSyncService $listingDataSyncService;
+    const BATCH_SIZE = 100;
 
     public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, ListingDataSyncService $listingDataSyncService)
     {
@@ -44,30 +45,37 @@ class ProcessingSingleListingCommand extends Command
     {
         $this
             ->setDescription('Add a short description for your command')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
+            ->addArgument('bsize', InputArgument::OPTIONAL, 'Batch size, default 100')
             ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $singleListing = $this->listingService->getSingleListingForProcessing('ddf');
-        try {
-            $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
-            $io = new SymfonyStyle($input, $output);
-            $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
-            $this->listingDataSyncService->syncAllListingData($singleListing);
-            $this->listingMediaSyncService->syncAllListingPhotos($singleListing);
-            $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
+        if ($input->getArgument('bsize')) {
+            $batchSize = (int)$input->getArgument('bsize');
+        } else {
+            $batchSize = self::BATCH_SIZE;
+        }
+        $batchListings = $this->listingService->getBatchListingsForProcessing('ddf',$batchSize);
+        foreach ($batchListings as $singleListing) {
+            try {
+                $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
+                $io = new SymfonyStyle($input, $output);
+                $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
+                $this->listingDataSyncService->syncAllListingData($singleListing);
+                $this->listingMediaSyncService->syncAllListingPhotos($singleListing);
+                $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
 
-            // Command body
+                // Command body
 
-            $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::NONE_PROCESSING_LISTING_STATUS);
-            $this->listingService->setListingStatus($singleListing, ListingConstants::LIVE_LISTING_STATUS);
-        } catch (\Exception $e) {
-            $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::ERROR_PROCESSING_LISTING_STATUS);
-            $this->logger->error($e->getMessage());
-            $this->logger->error($e->getTraceAsString());
+                $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::NONE_PROCESSING_LISTING_STATUS);
+                $this->listingService->setListingStatus($singleListing, ListingConstants::LIVE_LISTING_STATUS);
+            } catch (\Exception $e) {
+                $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::ERROR_PROCESSING_LISTING_STATUS);
+                $this->logger->error($e->getMessage());
+                $this->logger->error($e->getTraceAsString());
+            }
         }
         return Command::SUCCESS;
     }
