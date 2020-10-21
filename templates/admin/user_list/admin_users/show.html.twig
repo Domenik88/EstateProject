@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}user{% endblock %}
+
+{% block body %}
+
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>User: {{ user.username }}</h1>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <tbody>
+                                <tr>
+                                    <th>Id</th>
+                                    <td>{{ user.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>{{ user.username }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a href="{{ path('admin_list') }}">back to list</a><br>
+                        <a href="{{ path('admin_edit', {'id': user.id}) }}">edit</a>
+                        {{ include('admin/user_list/admin_users/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

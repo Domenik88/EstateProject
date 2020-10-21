@@ -1,0 +1,19 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New user{% endblock %}
+
+{% block body %}
+{% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+{% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+{#    {{ dump(form) }}#}
+
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <h1>Create new user</h1>
+                    {{ include('admin/user_list/admin_users/_form.html.twig') }}
+                <a href="{{ path('admin_list') }}">back to list</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

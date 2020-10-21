@@ -1,0 +1,22 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <h1>Edit User</h1>
+
+                {{ include('admin/user_list/admin_users/_form.html.twig', {'button_label': 'Update'}) }}
+
+                <a href="{{ path('admin_list') }}">back to list</a>
+
+                {{ include('admin/user_list/admin_users/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

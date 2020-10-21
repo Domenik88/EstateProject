@@ -11,6 +11,7 @@ namespace App\Form;
 
 
 use App\Entity\Admin;
+use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +23,6 @@ class AdminType extends AbstractType
         $builder
             ->add('username')
             ->add('password')
-            ->add('roles')
         ;
     }
 

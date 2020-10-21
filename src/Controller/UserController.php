@@ -20,7 +20,7 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('admin/user_list/front_users/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -42,7 +42,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user');
         }
 
-        return $this->render('user/new.html.twig', [
+        return $this->render('admin/user_list/front_users/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
@@ -53,7 +53,7 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-        return $this->render('user/show.html.twig', [
+        return $this->render('admin/user_list/front_users/show.html.twig', [
             'user' => $user,
         ]);
     }
@@ -68,14 +68,12 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userObject = $this->getDoctrine()->getManager();
-            dump($form);
-            die;
             $userObject->flush();
 
             return $this->redirectToRoute('user');
         }
 
-        return $this->render('user/edit.html.twig', [
+        return $this->render('admin/user_list/front_users/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
