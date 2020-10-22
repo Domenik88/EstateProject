@@ -18,5 +18,7 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "dependencies": {}
+    "dependencies": {
+        "admin-lte": "^3.0.5"
+    }
 }
