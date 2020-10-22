@@ -13,7 +13,9 @@ namespace App\Service\Listing;
 use App\Entity\Listing;
 use App\Repository\ListingRepository;
 use App\Service\Geo\Point;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class ListingService
 {
@@ -21,13 +23,15 @@ class ListingService
     private ListingRepository $listingRepository;
     private ListingMediaService $listingMediaService;
     private ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates;
+    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates)
+    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
         $this->listingMediaService = $listingMediaService;
         $this->listingListSinglePageListingsCoordinates = $listingListSinglePageListingsCoordinates;
+        $this->logger = $logger;
     }
 
     public function createFromDdfResult(array $result)
@@ -58,7 +62,7 @@ class ListingService
         return $listing;
     }
 
-    public function upsertFromDdfResult(array $result)
+    public function upsertFromDdfResult(array $result, bool $updateStatuses = true)
     {
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
@@ -76,10 +80,12 @@ class ListingService
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
         $existingListing->setStateOrProvince($result['StateOrProvince']);
         $existingListing->setCountry($result['Country']);
-        if ($existingListing->getStatus() != 'new') {
-            $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
+        if ($updateStatuses) {
+            if ($existingListing->getStatus() != 'new') {
+                $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
+            }
+            $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         }
-        $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $existingListing->setLastUpdateFromFeed(new \DateTime());
         $existingListing->setRawData($result);
         if ($result['Latitude'] != '' or $result['Longitude'] != '') {
@@ -121,35 +127,43 @@ class ListingService
         ]);
     }
 
-    public function getSingleListingForProcessing(string $feedName): Listing
+    public function getBatchListingsForProcessing(string $feedName, int $batchSize): array
     {
-        return $this->listingRepository->findOneBy([
+        return $this->listingRepository->findBy([
             'feedID' => $feedName,
             'status' => [ListingConstants::NEW_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
             'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
-        ],['lastUpdateFromFeed'=>'ASC']);
+        ],['lastUpdateFromFeed'=>'ASC'],$batchSize);
     }
 
     public function setListingStatus(Listing $listing, string $status)
     {
-        $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $listing->getMlsNum(),
-            'feedListingID' => $listing->getFeedListingID(),
-        ]);
-        $existingListing->setStatus($status);
+        $listing->setStatus($status);
 
         $this->entityManager->flush();
     }
 
     public function setListingProcessingStatus(Listing $listing, string $status)
     {
-        $existingListing = $this->listingRepository->findOneBy([
-            'feedID' => $listing->getFeedID(),
-            'feedListingID' => $listing->getFeedListingID(),
-        ]);
-        $existingListing->setProcessingStatus($status);
+        $listing->setProcessingStatus($status);
 
         $this->entityManager->flush();
+    }
+
+    public function setBatchProcessingStatus(array $batch, string $status)
+    {
+        try {
+            $this->entityManager->getConnection()->beginTransaction();
+            foreach ( $batch as $batchItem ) {
+                $batchItem->setProcessingStatus($status);
+            }
+            $this->entityManager->flush();
+            $this->entityManager->getConnection()->commit();
+        } catch (Exception $e) {
+            $this->entityManager->getConnection()->rollBack();
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
+        }
     }
 
     public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray)
