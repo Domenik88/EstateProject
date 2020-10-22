@@ -61,7 +61,6 @@ class ProcessingSingleListingCommand extends Command
         $this->listingService->setBatchProcessingStatus($batchListings, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
         foreach ($batchListings as $singleListing) {
             try {
-                $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
                 $io = new SymfonyStyle($input, $output);
                 $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
                 $this->listingDataSyncService->syncAllListingData($singleListing);
