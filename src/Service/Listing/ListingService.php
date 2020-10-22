@@ -62,7 +62,7 @@ class ListingService
         return $listing;
     }
 
-    public function upsertFromDdfResult(array $result)
+    public function upsertFromDdfResult(array $result, bool $processingStop = true)
     {
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
@@ -83,7 +83,9 @@ class ListingService
         if ($existingListing->getStatus() != 'new') {
             $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
         }
-        $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
+        if ($processingStop) {
+            $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
+        }
         $existingListing->setLastUpdateFromFeed(new \DateTime());
         $existingListing->setRawData($result);
         if ($result['Latitude'] != '' or $result['Longitude'] != '') {
@@ -91,7 +93,6 @@ class ListingService
         }
 
         $this->entityManager->flush();
-        $this->entityManager->clear();
     }
 
     public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
@@ -137,22 +138,14 @@ class ListingService
 
     public function setListingStatus(Listing $listing, string $status)
     {
-        $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $listing->getMlsNum(),
-            'feedListingID' => $listing->getFeedListingID(),
-        ]);
-        $existingListing->setStatus($status);
+        $listing->setStatus($status);
 
         $this->entityManager->flush();
     }
 
     public function setListingProcessingStatus(Listing $listing, string $status)
     {
-        $existingListing = $this->listingRepository->findOneBy([
-            'feedID' => $listing->getFeedID(),
-            'feedListingID' => $listing->getFeedListingID(),
-        ]);
-        $existingListing->setProcessingStatus($status);
+        $listing->setProcessingStatus($status);
 
         $this->entityManager->flush();
     }
@@ -170,8 +163,6 @@ class ListingService
             $this->entityManager->getConnection()->rollBack();
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
-        } finally {
-            $this->entityManager->clear();
         }
     }
 
