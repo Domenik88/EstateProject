@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Form\AdminType;
+use App\Form\AdminTypeNew;
 use App\Repository\AdminRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +56,7 @@ class AdminController extends AbstractController
     public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
         $user = new Admin();
-        $form = $this->createForm(AdminType::class, $user);
+        $form = $this->createForm(AdminTypeNew::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -96,9 +97,6 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userObject = $this->getDoctrine()->getManager();
-            if (!empty($userObject->getPassword())) {
-                $userObject->setPassword($encoder->encodePassword($userObject, $userObject->getPassword()));
-            }
             $userObject->flush();
 
             return $this->redirectToRoute('admin_list');
