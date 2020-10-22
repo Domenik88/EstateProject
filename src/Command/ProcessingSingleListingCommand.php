@@ -58,6 +58,7 @@ class ProcessingSingleListingCommand extends Command
             $batchSize = self::BATCH_SIZE;
         }
         $batchListings = $this->listingService->getBatchListingsForProcessing('ddf',$batchSize);
+        $this->listingService->setBatchProcessingStatus($batchListings, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
         foreach ($batchListings as $singleListing) {
             try {
                 $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);

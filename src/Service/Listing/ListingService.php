@@ -13,7 +13,9 @@ namespace App\Service\Listing;
 use App\Entity\Listing;
 use App\Repository\ListingRepository;
 use App\Service\Geo\Point;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class ListingService
 {
@@ -21,13 +23,15 @@ class ListingService
     private ListingRepository $listingRepository;
     private ListingMediaService $listingMediaService;
     private ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates;
+    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates)
+    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
         $this->listingMediaService = $listingMediaService;
         $this->listingListSinglePageListingsCoordinates = $listingListSinglePageListingsCoordinates;
+        $this->logger = $logger;
     }
 
     public function createFromDdfResult(array $result)
@@ -151,6 +155,29 @@ class ListingService
         $existingListing->setProcessingStatus($status);
 
         $this->entityManager->flush();
+    }
+
+    public function setBatchProcessingStatus(array $batch, string $status)
+    {
+        try {
+            $this->entityManager->getConnection()->beginTransaction();
+            foreach ( $batch as $batchItem ) {
+                $existingListing = $this->listingRepository->findOneBy([
+                    'feedID' => $batchItem->getFeedID(),
+                    'feedListingID' => $batchItem->getFeedListingID(),
+                ]);
+                $existingListing->setProcessingStatus($status);
+                $this->entityManager->persist($existingListing);
+                $this->entityManager->flush();
+            }
+            $this->entityManager->getConnection()->commit();
+        } catch (Exception $e) {
+            $this->entityManager->getConnection()->rollBack();
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
+        } finally {
+            $this->entityManager->clear();
+        }
     }
 
     public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray)
