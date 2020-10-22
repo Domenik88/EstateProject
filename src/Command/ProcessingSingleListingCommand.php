@@ -52,6 +52,7 @@ class ProcessingSingleListingCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
         if ($input->getArgument('bsize')) {
             $batchSize = (int)$input->getArgument('bsize');
         } else {
@@ -61,7 +62,6 @@ class ProcessingSingleListingCommand extends Command
         $this->listingService->setBatchProcessingStatus($batchListings, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
         foreach ($batchListings as $singleListing) {
             try {
-                $io = new SymfonyStyle($input, $output);
                 $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
                 $this->listingDataSyncService->syncAllListingData($singleListing);
                 $this->listingMediaSyncService->syncAllListingPhotos($singleListing);

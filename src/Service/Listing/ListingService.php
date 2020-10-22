@@ -162,14 +162,9 @@ class ListingService
         try {
             $this->entityManager->getConnection()->beginTransaction();
             foreach ( $batch as $batchItem ) {
-                $existingListing = $this->listingRepository->findOneBy([
-                    'feedID' => $batchItem->getFeedID(),
-                    'feedListingID' => $batchItem->getFeedListingID(),
-                ]);
-                $existingListing->setProcessingStatus($status);
-                $this->entityManager->persist($existingListing);
-                $this->entityManager->flush();
+                $batchItem->setProcessingStatus($status);
             }
+            $this->entityManager->flush();
             $this->entityManager->getConnection()->commit();
         } catch (Exception $e) {
             $this->entityManager->getConnection()->rollBack();
