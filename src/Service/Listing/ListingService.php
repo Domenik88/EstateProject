@@ -62,7 +62,7 @@ class ListingService
         return $listing;
     }
 
-    public function upsertFromDdfResult(array $result, bool $processingStop = true)
+    public function upsertFromDdfResult(array $result, bool $updateStatuses = true)
     {
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
@@ -80,10 +80,10 @@ class ListingService
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
         $existingListing->setStateOrProvince($result['StateOrProvince']);
         $existingListing->setCountry($result['Country']);
-        if ($existingListing->getStatus() != 'new') {
-            $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
-        }
-        if ($processingStop) {
+        if ($updateStatuses) {
+            if ($existingListing->getStatus() != 'new') {
+                $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
+            }
             $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         }
         $existingListing->setLastUpdateFromFeed(new \DateTime());
