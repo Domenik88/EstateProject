@@ -318,8 +318,11 @@ class Listing
         return $this;
     }
 
-    public function getFullAddress(): ?string
+    public function getFullAddress(bool $forGeoCoder = false): ?string
     {
+        if ($forGeoCoder && empty($this->getUnparsedAddress())){
+            return null;
+        }
         $addressArray = [];
         $unparsedAddress = rtrim($this->getUnparsedAddress(),",");
         if (!empty($unparsedAddress)) { $addressArray[] = $unparsedAddress; }

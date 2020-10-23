@@ -50,7 +50,7 @@ class ListingRepository extends ServiceEntityRepository
         try {
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and processing_status != '" . ListingConstants::ERROR_PROCESSING_LISTING_STATUS . "' and coordinates <@ $boxString AND deleted_date IS NULL";
+            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and processing_status != '" . ListingConstants::ERROR_PROCESSING_LISTING_STATUS . "' and coordinates IS NOT NULL and coordinates <@ $boxString AND deleted_date IS NULL";
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             return $query->getResult();
         } catch (\Exception $e) {
@@ -58,4 +58,5 @@ class ListingRepository extends ServiceEntityRepository
             dump($e->getTraceAsString());
         }
     }
+
 }

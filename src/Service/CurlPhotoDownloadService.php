@@ -11,15 +11,18 @@ namespace App\Service;
 
 
 use Curl\Curl;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CurlPhotoDownloadService
 {
     private Filesystem $filesystem;
+    private LoggerInterface $logger;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, LoggerInterface $logger)
     {
         $this->filesystem = $filesystem;
+        $this->logger = $logger;
     }
 
 
@@ -34,7 +37,12 @@ class CurlPhotoDownloadService
         $photoNamesArray = [];
         foreach ( $photoUrls as $photoUrl ) {
             $curl->get($photoUrl);
-            $im = imagecreatefromstring($curl->getResponse());
+            try {
+                $im = imagecreatefromstring($curl->getResponse());
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+                $this->logger->error($e->getTraceAsString());
+            }
 
             $fullFileName = $destination.$baseFileName.'_'.$photosCounter.'.jpg';
 
