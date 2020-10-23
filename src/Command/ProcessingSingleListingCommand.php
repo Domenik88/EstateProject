@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Repository\ListingMasterRepository;
 use App\Repository\ListingRepository;
+use App\Service\Feed\DdfService;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingDataSyncService;
 use App\Service\Listing\ListingGeoService;
@@ -27,9 +28,10 @@ class ProcessingSingleListingCommand extends Command
     private ListingMediaSyncService $listingMediaSyncService;
     private ListingMasterRepository $listingMasterRepository;
     private ListingDataSyncService $listingDataSyncService;
+    private DdfService $ddfService;
     const BATCH_SIZE = 100;
 
-    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, ListingDataSyncService $listingDataSyncService)
+    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, ListingDataSyncService $listingDataSyncService, DdfService $ddfService)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
@@ -38,6 +40,7 @@ class ProcessingSingleListingCommand extends Command
         $this->listingMediaSyncService = $listingMediaSyncService;
         $this->listingMasterRepository = $listingMasterRepository;
         $this->listingDataSyncService = $listingDataSyncService;
+        $this->ddfService = $ddfService;
         parent::__construct();
     }
 
@@ -58,6 +61,7 @@ class ProcessingSingleListingCommand extends Command
         } else {
             $batchSize = self::BATCH_SIZE;
         }
+        $this->ddfService->connect();
         $batchListings = $this->listingService->getBatchListingsForProcessing('ddf',$batchSize);
         $this->listingService->setBatchProcessingStatus($batchListings, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
         foreach ($batchListings as $singleListing) {
