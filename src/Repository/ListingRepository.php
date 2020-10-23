@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * @method Listing|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,10 +20,12 @@ use Doctrine\Persistence\ManagerRegistry;
 class ListingRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $entityManager;
+    private LoggerInterface $logger;
 
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
         parent::__construct($registry, Listing::class);
     }
 
@@ -54,8 +57,8 @@ class ListingRepository extends ServiceEntityRepository
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             return $query->getResult();
         } catch (\Exception $e) {
-            dump($e->getMessage());
-            dump($e->getTraceAsString());
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
         }
     }
 
