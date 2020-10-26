@@ -112,12 +112,12 @@ class DdfService
             $this->logger->error($e->getTraceAsString());
             throw $e;
         }
-        foreach ($results as $result) {
-            $res = new XML();
-            $tmp = $res->parse($result->getContent());
-            $photoUrls = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
-            $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$listingFeedId);
-        }
+        $result = $results[0]->getContent();
+        $res = new XML();
+        $tmp = $res->parse($result);
+        $photoUrls = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
+        $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$listingFeedId);
+
         return $photoNamesArray;
     }
 

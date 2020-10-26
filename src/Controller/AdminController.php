@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Form\AdminType;
-use App\Form\AdminTypeNew;
+use App\Form\NewAdminType;
 use App\Repository\AdminRepository;
+use App\Service\User\AdminUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,18 +54,14 @@ class AdminController extends AbstractController
     /**
      * @Route("/new", name="admin_new", methods={"GET","POST"}, defaults={"title":"Create new Admin user"})
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function new(Request $request, AdminUserService $adminUserService): Response
     {
         $user = new Admin();
-        $form = $this->createForm(AdminTypeNew::class, $user);
+        $form = $this->createForm(NewAdminType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $user->setRoles(["ROLE_ADMIN"]);
-            $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $adminUserService->createNewAdminUser($user);
 
             return $this->redirectToRoute('admin_list');
         }
@@ -90,14 +87,13 @@ class AdminController extends AbstractController
     /**
      * @Route("/{id}/edit", name="admin_edit", methods={"GET","POST"}, defaults={"title":"Edit user"})
      */
-    public function edit(Request $request, Admin $admin, UserPasswordEncoderInterface $encoder): Response
+    public function edit(Request $request, Admin $admin, AdminUserService $adminUserService): Response
     {
         $form = $this->createForm(AdminType::class, $admin);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userObject = $this->getDoctrine()->getManager();
-            $userObject->flush();
+            $adminUserService->editAdminUser();
 
             return $this->redirectToRoute('admin_list');
         }
@@ -112,12 +108,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/{id}", name="admin_delete", methods={"DELETE"}, defaults={"title":"Delete user"})
      */
-    public function delete(Request $request, Admin $admin): Response
+    public function delete(Request $request, Admin $admin, AdminUserService $adminUserService): Response
     {
         if ($this->isCsrfTokenValid('delete'.$admin->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($admin);
-            $entityManager->flush();
+            $adminUserService->removeAdminUser($admin);
         }
 
         return $this->redirectToRoute('admin_list');

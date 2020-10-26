@@ -30,26 +30,24 @@ class CurlPhotoDownloadService
     {
         $curl = new Curl();
 
-        if (!is_dir($destination)) {
+        if ( !is_dir($destination) ) {
             $this->filesystem->mkdir($destination);
         }
         $photosCounter = 1;
         $photoNamesArray = [];
         foreach ( $photoUrls as $photoUrl ) {
-            $curl->get($photoUrl);
             try {
+                $curl->get($photoUrl);
                 $im = imagecreatefromstring($curl->getResponse());
-            } catch (\Exception $e) {
+                $fullFileName = $destination . $baseFileName . '_' . $photosCounter . '.jpg';
+                imagejpeg($im, $fullFileName, 100);
+                $photoNamesArray[$photosCounter] = $baseFileName . '_' . $photosCounter . '.jpg';
+                $photosCounter++;
+            } catch ( \Exception $e ) {
                 $this->logger->error($e->getMessage());
-                $this->logger->error($e->getTraceAsString());
+                $this->logger->error('imagecreatefromstring::' . $photoUrl);
+                throw $e;
             }
-
-            $fullFileName = $destination.$baseFileName.'_'.$photosCounter.'.jpg';
-
-            imagejpeg($im, $fullFileName, 100);
-
-            $photoNamesArray[$photosCounter] = $baseFileName.'_'.$photosCounter.'.jpg';
-            $photosCounter++;
         }
         $curl->close();
         return $photoNamesArray;
