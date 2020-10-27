@@ -162,7 +162,7 @@ class ListingService
         } catch (Exception $e) {
             $this->entityManager->getConnection()->rollBack();
             $this->logger->error($e->getMessage());
-            $this->logger->error($e->getTraceAsString());
+            throw $e;
         }
     }
 

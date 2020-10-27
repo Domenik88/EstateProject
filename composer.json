@@ -9,7 +9,6 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-xmlwriter": "*",
-        "almasaeed2010/adminlte": "~3.0",
         "aws/aws-sdk-php-symfony": "^2.2",
         "composer/package-versions-deprecated": "^1.11",
         "curl/curl": "^2.3",
