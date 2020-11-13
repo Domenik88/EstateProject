@@ -28,6 +28,6 @@ class ListingDataSyncService
     {
         $listingForProcessingData = $this->ddfService->getListingByFeedListingId($listing->getFeedListingID());
         unset($listingForProcessingData['AnalyticsClick'],$listingForProcessingData['AnalyticsView']);
-        $this->listingService->upsertFromDdfResult($listingForProcessingData,false);
+        return $this->listingService->upsertFromDdfResult($listingForProcessingData,false);
     }
 }

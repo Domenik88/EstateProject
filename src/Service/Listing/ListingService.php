@@ -34,7 +34,7 @@ class ListingService
         $this->logger = $logger;
     }
 
-    public function createFromDdfResult(array $result)
+    public function createFromDdfResult(array $result): Listing
     {
         $listing = new Listing();
         $listing->setFeedID('ddf');
@@ -51,8 +51,8 @@ class ListingService
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
         $listing->setRawData($result);
-        if ($result['Latitude'] != '' or $result['Longitude'] != '') {
-            $listing->setCoordinates(new Point($result['Latitude'],$result['Longitude']));
+        if ( $result['Latitude'] != '' or $result['Longitude'] != '' ) {
+            $listing->setCoordinates(new Point($result['Latitude'], $result['Longitude']));
         }
 
         $this->entityManager->persist($listing);
@@ -62,13 +62,13 @@ class ListingService
         return $listing;
     }
 
-    public function upsertFromDdfResult(array $result, bool $updateStatuses = true)
+    public function upsertFromDdfResult(array $result, bool $updateStatuses = true): Listing
     {
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
             'feedListingID' => $result['ListingKey']
         ]);
-        if (!$existingListing) {
+        if ( !$existingListing ) {
             return $this->createFromDdfResult($result);
         }
         $existingListing->setFeedID('ddf');
@@ -80,34 +80,36 @@ class ListingService
         $existingListing->setUnparsedAddress($result['UnparsedAddress']);
         $existingListing->setStateOrProvince($result['StateOrProvince']);
         $existingListing->setCountry($result['Country']);
-        if ($updateStatuses) {
-            if ($existingListing->getStatus() != 'new') {
+        if ( $updateStatuses ) {
+            if ( $existingListing->getStatus() != 'new' ) {
                 $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
             }
             $existingListing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         }
         $existingListing->setLastUpdateFromFeed(new \DateTime());
         $existingListing->setRawData($result);
-        if ($result['Latitude'] != '' or $result['Longitude'] != '') {
-            $existingListing->setCoordinates(new Point($result['Latitude'],$result['Longitude']));
+        if ( $result['Latitude'] != '' or $result['Longitude'] != '' ) {
+            $existingListing->setCoordinates(new Point($result['Latitude'], $result['Longitude']));
         }
 
         $this->entityManager->flush();
+
+        return $existingListing;
     }
 
     public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
     {
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
-            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
         ],
-        null,
-        $limit,
-        $offset );
+            null,
+            $limit,
+            $offset);
         $listingListCount = $this->getListingListCount($feedName);
         $pageCounter = ceil($listingListCount / $limit);
 
-        return new ListingListSearchResult($listingListCount,$results, $currentPage, $pageCounter);
+        return new ListingListSearchResult($listingListCount, $results, $currentPage, $pageCounter);
     }
 
     public function getSingleListing(string $province, string $mlsNum, string $feedName): Listing
@@ -123,7 +125,7 @@ class ListingService
     {
         return $this->listingRepository->count([
             'feedID' => $feedName,
-            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
         ]);
     }
 
@@ -131,9 +133,9 @@ class ListingService
     {
         return $this->listingRepository->findBy([
             'feedID' => $feedName,
-            'status' => [ListingConstants::NEW_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+            'status' => [ ListingConstants::NEW_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
             'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
-        ],['lastUpdateFromFeed'=>'ASC'],$batchSize);
+        ], [ 'lastUpdateFromFeed' => 'ASC' ], $batchSize);
     }
 
     public function setListingStatus(Listing $listing, string $status)
@@ -159,22 +161,25 @@ class ListingService
             }
             $this->entityManager->flush();
             $this->entityManager->getConnection()->commit();
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             $this->entityManager->getConnection()->rollBack();
             $this->logger->error($e->getMessage());
             throw $e;
         }
     }
 
-    public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray)
+    public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray): Listing
     {
+        dump($listing);
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $listing->getMlsNum(),
+            'feedID' => 'ddf',
             'feedListingID' => $listing->getFeedListingID(),
         ]);
         $existingListing->setImagesData($photoNamesArray);
 
         $this->entityManager->flush();
+
+        return $existingListing;
     }
 
     public function setListingCoordinates(Listing $listing, Point $point)
@@ -193,18 +198,18 @@ class ListingService
         $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
-        return ['listing'=>$singleListing,'photos'=>$listingImagesUrlArray];
+        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray ];
     }
 
     public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
     {
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
-            'status' => [ListingConstants::LIVE_LISTING_STATUS,ListingConstants::UPDATED_LISTING_STATUS],
+            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
         ],
             null,
             $limit,
-            $offset );
+            $offset);
         return $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
     }
 

@@ -10,6 +10,8 @@ use App\Service\Listing\ListingDataSyncService;
 use App\Service\Listing\ListingGeoService;
 use App\Service\Listing\ListingMediaSyncService;
 use App\Service\Listing\ListingService;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,9 +31,9 @@ class ProcessingSingleListingCommand extends Command
     private ListingMasterRepository $listingMasterRepository;
     private ListingDataSyncService $listingDataSyncService;
     private DdfService $ddfService;
-    const BATCH_SIZE = 100;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, ListingDataSyncService $listingDataSyncService, DdfService $ddfService)
+    public function __construct(ListingMasterRepository $listingMasterRepository, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, ListingGeoService $listingGeoService, ListingMediaSyncService $listingMediaSyncService, ListingDataSyncService $listingDataSyncService, DdfService $ddfService, EntityManagerInterface $entityManager)
     {
         $this->logger = $logger;
         $this->listingRepository = $listingRepository;
@@ -41,8 +43,11 @@ class ProcessingSingleListingCommand extends Command
         $this->listingMasterRepository = $listingMasterRepository;
         $this->listingDataSyncService = $listingDataSyncService;
         $this->ddfService = $ddfService;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
+
+    const BATCH_SIZE = 100;
 
     protected function configure()
     {
@@ -67,9 +72,9 @@ class ProcessingSingleListingCommand extends Command
         foreach ($batchListings as $singleListing) {
             try {
                 $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
-                $this->listingDataSyncService->syncAllListingData($singleListing);
-                $this->listingMediaSyncService->syncAllListingPhotos($singleListing);
-                $this->listingGeoService->syncListingCoordinatesFromAddress($singleListing);
+                $singleListingWithData = $this->listingDataSyncService->syncAllListingData($singleListing);
+                $singleListingWithPhotos = $this->listingMediaSyncService->syncAllListingPhotos($singleListingWithData);
+                $this->listingGeoService->syncListingCoordinatesFromAddress($singleListingWithPhotos);
 
                 // Command body
 
@@ -79,6 +84,8 @@ class ProcessingSingleListingCommand extends Command
                 $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::ERROR_PROCESSING_LISTING_STATUS);
                 $this->logger->error($e->getMessage());
                 $this->logger->error($e->getTraceAsString());
+            } finally {
+                $this->entityManager->clear();
             }
         }
         return Command::SUCCESS;
