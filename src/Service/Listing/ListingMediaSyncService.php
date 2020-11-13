@@ -30,14 +30,16 @@ class ListingMediaSyncService
         $this->filesystem = $filesystem;
     }
 
-    public function syncAllListingPhotos(Listing $listing)
+    public function syncAllListingPhotos(Listing $listing): Listing
     {
         $listingPicPathForUpload = sys_get_temp_dir() . ListingConstants::UPLOAD_LISTING_PIC_PATH . 'listing/' . $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/';
         $cloudDestination = 'listings/' . $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/';
         $photoNamesArray = $this->ddfService->fetchListingPhotosFromFeed($listing->getFeedListingID(),$listingPicPathForUpload);
         $this->awsService->upload($listingPicPathForUpload,$cloudDestination);
-        $this->listingService->setListingPhotosNamesObject($listing,$photoNamesArray);
+        $singleListingWithPhotos = $this->listingService->setListingPhotosNamesObject($listing,$photoNamesArray);
         $this->filesystem->remove($listingPicPathForUpload);
+
+        return $singleListingWithPhotos;
     }
 
 }
