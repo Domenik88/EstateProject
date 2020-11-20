@@ -36,13 +36,19 @@ class ListingGeoService
                 $listingCoordinates = $this->geoCodeService->getLatLong($listingAddress);
                 if ( is_null($listingCoordinates) ) {
                     $this->logger->warning("Coordinates not found for Listing {$listing->getMlsNum()} feed {$listing->getFeedID()}");
+                    $singleListingWithCoordinates = $listing;
                 } else {
-                    $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
+                    $singleListingWithCoordinates = $this->listingService->setListingCoordinates($listing, new Point($listingCoordinates['lat'], $listingCoordinates['lng']));
                 }
             } else {
                 $this->logger->warning("Listing {$listing->getMlsNum()} feed {$listing->getFeedID()} have not address!");
+                $singleListingWithCoordinates = $listing;
             }
+        } else {
+            $singleListingWithCoordinates = $listing;
         }
+
+        return $singleListingWithCoordinates;
     }
 
 }

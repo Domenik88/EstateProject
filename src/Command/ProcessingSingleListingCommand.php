@@ -71,15 +71,16 @@ class ProcessingSingleListingCommand extends Command
         $this->listingService->setBatchProcessingStatus($batchListings, ListingConstants::PROCESSING_PROCESSING_LISTING_STATUS);
         foreach ($batchListings as $singleListing) {
             try {
-                $io->success("Processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
+                $io->text("Start processing listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
                 $singleListingWithData = $this->listingDataSyncService->syncAllListingData($singleListing);
                 $singleListingWithPhotos = $this->listingMediaSyncService->syncAllListingPhotos($singleListingWithData);
-                $this->listingGeoService->syncListingCoordinatesFromAddress($singleListingWithPhotos);
+                $singleListingWithCoordinates = $this->listingGeoService->syncListingCoordinatesFromAddress($singleListingWithPhotos);
 
                 // Command body
 
-                $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::NONE_PROCESSING_LISTING_STATUS);
-                $this->listingService->setListingStatus($singleListing, ListingConstants::LIVE_LISTING_STATUS);
+                $this->listingService->setListingProcessingStatus($singleListingWithCoordinates, ListingConstants::NONE_PROCESSING_LISTING_STATUS);
+                $this->listingService->setListingStatus($singleListingWithCoordinates, ListingConstants::LIVE_LISTING_STATUS);
+                $io->success("Success processing - Listing MLS_NUM: {$singleListing->getMlsNum()} Listing Feed ID: {$singleListing->getFeedListingID()}");
             } catch (\Exception $e) {
                 $this->listingService->setListingProcessingStatus($singleListing, ListingConstants::ERROR_PROCESSING_LISTING_STATUS);
                 $this->logger->error($e->getMessage());
