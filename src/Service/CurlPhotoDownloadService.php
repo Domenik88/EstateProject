@@ -11,6 +11,7 @@ namespace App\Service;
 
 
 use Curl\Curl;
+use mysql_xdevapi\Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -46,10 +47,12 @@ class CurlPhotoDownloadService
             } catch ( \Exception $e ) {
                 $this->logger->error($e->getMessage());
                 $this->logger->error('imagecreatefromstring::' . $photoUrl);
-                throw $e;
             }
         }
         $curl->close();
+        if (count($photoUrls) > 0 && count($photoNamesArray) == 0) {
+            throw new \Exception("Could not download any photos for urls");
+        }
         return $photoNamesArray;
     }
 

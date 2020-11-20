@@ -170,7 +170,6 @@ class ListingService
 
     public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray): Listing
     {
-        dump($listing);
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
             'feedListingID' => $listing->getFeedListingID(),
@@ -191,6 +190,8 @@ class ListingService
         $existingListing->setCoordinates($point);
 
         $this->entityManager->flush();
+
+        return $existingListing;
     }
 
     public function getListingData(string $province, string $mlsNum, string $feedName): array
