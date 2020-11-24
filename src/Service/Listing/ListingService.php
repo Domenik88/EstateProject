@@ -145,8 +145,11 @@ class ListingService
         $this->entityManager->flush();
     }
 
-    public function setListingProcessingStatus(Listing $listing, string $status)
+    public function setListingProcessingStatus($listingId, string $status)
     {
+        $listing = $this->listingRepository->findOneBy([
+            'id' => $listingId
+        ]);
         $listing->setProcessingStatus($status);
 
         $this->entityManager->flush();
