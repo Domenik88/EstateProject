@@ -1,0 +1,112 @@
+.btn-wrap {
+	width: 100%;
+	text-align: center;
+	
+	&._left {
+		text-align: left;
+	}
+	
+	&._right {
+		text-align: right;
+	}
+}
+
+.simple-button {
+	padding: 10px 20px;
+	min-height: 50px;
+	background: green;
+	color: $white;
+	min-width: 150px;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-style {
+	$btn: &;
+	position: relative;
+	display: inline-block;
+	color: $white;
+	cursor: pointer;
+	border: none;
+	background: green;
+	max-width: 100%;
+	z-index: 5;
+	
+	&__wrapper {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+		text-align: center;
+		padding: 0 26px;
+		height: 60px;
+		width: 100%;
+	}
+	
+	&__label {
+		position: relative;
+		z-index: 2;
+	}
+	
+	&:not(._active) {
+		.hide-text {
+			display: none !important;
+		}
+	}
+	
+	&._active {
+		.show-text {
+			display: none !important;
+		}
+	}
+}
+
+.cross-btn {
+	display: block;
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	left: auto;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+	z-index: 10;
+	
+	&::before,
+	&::after {
+		content: '';
+		display: block;
+		position: absolute;
+		width: 50%;
+		height: 1px;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+		background: green;
+		transition: $default-transition
+	}
+	
+	&::before {
+		transform: rotate(45deg);
+	}
+	
+	&::after {
+		transform: rotate(-45deg);
+	}
+	
+	&:hover {
+		&::before,
+		&::after {
+			opacity: .5;
+		}
+	}
+}
+
+.close-button {
+	@extend .cross-btn;
+}

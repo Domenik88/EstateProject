@@ -1,9 +1,20 @@
 {
+    "dependencies": {
+        "@carto/carto.js": "^4.2.1",
+        "jquery": "^3.5.1",
+        "admin-lte": "^3.0.5",
+        "simplebar": "^5.3.0",
+        "paginationjs": "^2.1.5",
+        "jquery-lazy": "^1.7.10",
+        "leaflet": "^1.7.1",
+        "leaflet-freedraw": "^2.13.3",
+        "leaflet-kml": "^1.0.1",
+        "leaflet-responsive-popup": "^0.6.4"
+    },
     "devDependencies": {
         "@symfony/webpack-encore": "^0.30.0",
         "bootstrap": "^4.5.2",
         "core-js": "^3.0.0",
-        "jquery": "^3.5.1",
         "node-sass": "^4.14.1",
         "popper.js": "^1.16.1",
         "regenerator-runtime": "^0.13.2",
@@ -17,8 +28,5 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
-    },
-    "dependencies": {
-        "admin-lte": "^3.0.5"
     }
 }

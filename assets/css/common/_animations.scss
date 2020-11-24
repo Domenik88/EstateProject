@@ -1,0 +1,8 @@
+$timingFunction: ease;
+$baseDuration: 0.3;
+
+$default-transition: all #{($baseDuration * 1) + s} $timingFunction;
+$default-transition-2: all #{($baseDuration * 2) + s} $timingFunction;
+$default-transition-3: all #{($baseDuration * 3) + s} $timingFunction;
+$default-transition-4: all #{($baseDuration * 4) + s} $timingFunction;
+$default-transition-5: all #{($baseDuration * 5) + s} $timingFunction;
