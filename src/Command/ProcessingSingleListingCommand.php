@@ -78,7 +78,7 @@ class ProcessingSingleListingCommand extends Command
 
                 // Command body
 
-                $this->listingService->setListingProcessingStatus($singleListingWithCoordinates, ListingConstants::NONE_PROCESSING_LISTING_STATUS);
+                $this->listingService->setListingProcessingStatus($singleListingWithCoordinates->getId(), ListingConstants::NONE_PROCESSING_LISTING_STATUS);
                 $this->listingService->setListingStatus($singleListingWithCoordinates, ListingConstants::LIVE_LISTING_STATUS);
                 $io->success("Success processing - Listing MLS_NUM: {$singleListingWithCoordinates->getMlsNum()} Listing Feed ID: {$singleListingWithCoordinates->getFeedListingID()}");
             } catch (\Exception $e) {
