@@ -30,6 +30,7 @@ Encore
     .addEntry('map', [
         './assets/js/map.js',
         './assets/css/app.scss',
+        './assets/css/map.scss',
     ])
     .addEntry('adminLte', [
         './node_modules/admin-lte/plugins/jquery/jquery.min.js',

@@ -1,8 +1,11 @@
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
+import SimpleBar from 'simplebar'
+window.SimpleBar = SimpleBar;
+
 require('jquery');
 require('jquery-lazy');
-window.SimpleBar = require('simplebar');
+require('objectFitPolyfill');
 require('./plugin/slick.js');
 require('./plugin/jquery.validate.min.js');
 require('./plugin/jquery.maskedinput.js');
@@ -13,6 +16,7 @@ require('./modules/common.js');
 
 require('bootstrap');
 
-$(document).ready(function() {
+$(document).ready(() => {
+    objectFitPolyfill($('.js-object-fit'));
     $('[data-toggle="popover"]').popover();
 });

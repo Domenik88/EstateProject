@@ -9,7 +9,7 @@
 {#    <div id="map" data-path="/listing/search"></div>#}
     <div class="map-table">
         <div class="map-table__col map-table__col_left scroll-left js-estate-cards-wrap">
-            {% embed 'layouts/modules/preloader.html.twig' %}{% endembed %}
+            {% include 'layouts/modules/preloader.html.twig' %}
             <div class="map-table__scroll-wrap js-cards-scroll-wrap js-custom-scrollbar" data-trigger-on-scroll="trigger:check-sliders">
                 <div class="estate-content">
                     <div class="estate-cards-list js-estate-cards-list">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="map-table__col map-table__col_right js-map-wrap">
-            {% embed 'layouts/modules/preloader.html.twig' %}{% endembed %}
+            {% include 'layouts/modules/preloader.html.twig' %}
             <div class="map js-map">
                 <div class="map-controls">
                     <div class="map-draw-bar">
@@ -33,6 +33,12 @@
                         </div>
                     </div>
                     <div class="map-buttons-bar">
+                        {% include 'layouts/modules/button.html.twig' with {
+                            'dataPopup' : {'target': 'map'},
+                            'mod': 'js-call-popup',
+                            'text': 'show-popup-map',
+                        } %}
+
                         <div class="select-module js-select-module js-bcc">
                             <select class="select-module__select js-yelp-select pseudo-hidden js-select-module-select"
                                     name="yelp" data-title="Интересующая тема">
@@ -87,7 +93,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('map') }}
-    <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1tbIAqN0XqcgTR1-FxYoVTVq6Is6lD98&callback=initMap">
     </script>
 {% endblock %}

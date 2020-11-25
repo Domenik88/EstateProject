@@ -1,15 +1,16 @@
 {
     "dependencies": {
         "@carto/carto.js": "^4.2.1",
-        "jquery": "^3.5.1",
         "admin-lte": "^3.0.5",
-        "simplebar": "^5.3.0",
-        "paginationjs": "^2.1.5",
+        "jquery": "^3.5.1",
         "jquery-lazy": "^1.7.10",
         "leaflet": "^1.7.1",
         "leaflet-freedraw": "^2.13.3",
         "leaflet-kml": "^1.0.1",
-        "leaflet-responsive-popup": "^0.6.4"
+        "leaflet-responsive-popup": "^0.6.4",
+        "objectFitPolyfill": "^2.3.0",
+        "paginationjs": "^2.1.5",
+        "simplebar": "^5.3.0"
     },
     "devDependencies": {
         "@symfony/webpack-encore": "^0.30.0",

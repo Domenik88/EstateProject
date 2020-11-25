@@ -9,9 +9,9 @@ const m_ = {
     init() {
         this.initCache();
         this.initMap();
-        // this.initDrawButtons();
-        // this.initSliderCheckTimer();
-        // this.initEvents();
+        this.initDrawButtons();
+        this.initSliderCheckTimer();
+        this.initEvents();
     },
     
     initCache() {
@@ -58,7 +58,7 @@ const m_ = {
         
         this.$estateCardsWrapPosition = m_.$estateCardsWrap[0].getBoundingClientRect();
         
-        this.proxy = window.location.hostname === 'estateblock-local' ? 'https://cors-anywhere.herokuapp.com/' : '';
+        this.proxy = window.location.hostname === 'estateblock20' ? 'https://cors-anywhere.herokuapp.com/' : '';
         
         this.templates = {
             markerPopup: ({img, title, text}) => `
@@ -125,7 +125,7 @@ const m_ = {
         m_.map.on('move', () => {
             clearTimeout(m_.refreshMapTimer);
         });
-        
+
         m_.map.on('moveend', () => {
             m_._setBox();
             m_._runRefreshTimer();
@@ -173,7 +173,10 @@ const m_ = {
             minZoom: minZoom,
             zoomControl: false,
             layers: [OpenStreetMap],
-        }).on('load', () =>  m_._runRefreshTimer());
+        }).on('load', () => {
+            m_._setBox();
+            m_._runRefreshTimer();
+        });
         
         m_.map.setView(center);
         
@@ -664,9 +667,9 @@ const m_ = {
         
         $.ajax(requestParameters).done((data) => {
             console.log(data);
-            // m_._parseMarkersData(data);
+            m_._parseMarkersData(data);
         })
-        .error((err) => {
+        .fail((err) => {
             console.log(err);
         })
         .always(() => {
@@ -704,7 +707,7 @@ const m_ = {
         $.ajax(requestParameters).done((data) => {
             m_._addYelpMarkers(data);
         })
-        .error((err) => {
+        .fail((err) => {
             console.log(err);
         })
         .always(() => {

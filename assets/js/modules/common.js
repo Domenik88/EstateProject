@@ -110,10 +110,11 @@ var $_ = {
                 threshold: window.innerHeight / 2,
                 visibleOnly: true,
                 afterLoad: (element) => {
-                    var $currentEl = $(element),
+                    const
+                        $currentEl = $(element),
                         hasObjectFit = $currentEl.hasClass('js-object-fit');
                     
-                    if (hasObjectFit) $.fn.objectFitImages($currentEl);
+                    if (hasObjectFit) objectFitPolyfill($currentEl);
                 },
             });
         }
@@ -154,7 +155,7 @@ var $_ = {
             const
                 $currentTarget = $(el),
                 dataTriggerOnScroll = $currentTarget.data('trigger-on-scroll');
-    
+
             const scroll = new SimpleBar(el, {
                 autoHide: false,
                 scrollbarMinSize: 100,
@@ -174,14 +175,14 @@ var $_ = {
                 }
             }
         }
-        
+
         $($_.selectors.scrollbar).each((key, el) => {
             initScroll(el);
         });
-        
+
         $_.$body.on('trigger:init-scrollbar', (e, data) => {
             const { el } = data;
-    
+
             initScroll(el);
         });
     },

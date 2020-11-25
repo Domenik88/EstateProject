@@ -93,8 +93,8 @@ jQuery(function($) {
             });
         }
     };
-    
-    $(window).load(() => {
+
+    $(document).ready(function() {
         sel.init();
     });
 });

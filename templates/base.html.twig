@@ -11,6 +11,7 @@
         <div class="wrapper">
             {% embed 'layouts/top-panel.html.twig' %}{% endembed %}
             {% block body %}{% endblock %}
+            {% include 'layouts/popups.html.twig' %}
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
             {% endblock %}
