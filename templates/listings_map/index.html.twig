@@ -6,31 +6,25 @@
 {% block title %}Hello MapListingsController!{% endblock %}
 
 {% block body %}
-{#    <div id="map" data-path="/listing/search"></div>#}
-    <div class="map-table">
+    <div class="map-table js-map-interface-wrap">
         <div class="map-table__col map-table__col_left scroll-left js-estate-cards-wrap">
             {% include 'layouts/modules/preloader.html.twig' %}
             <div class="map-table__scroll-wrap js-cards-scroll-wrap js-custom-scrollbar" data-trigger-on-scroll="trigger:check-sliders">
                 <div class="estate-content">
-                    <div class="estate-cards-list js-estate-cards-list">
-                    </div>
-                    <div class="estate-cards-pagination js-estate-cards-pagination">
-                    </div>
+                    <div class="estate-cards-list js-estate-cards-list"> </div>
+                    <div class="estate-cards-pagination js-estate-cards-pagination"></div>
                 </div>
             </div>
         </div>
-        <div class="map-table__col map-table__col_right js-map-wrap">
-            {% include 'layouts/modules/preloader.html.twig' %}
-            <div class="map js-map">
+        <div class="map-table__col map-table__col_right">
+            <div class="map-container js-map-container">
+                {% include 'layouts/modules/preloader.html.twig' %}
+
                 <div class="map-controls">
                     <div class="map-draw-bar">
-                        <div class="map-draw-bar__label">Draw a shape around the region(s) you would like to live
-                            in
-                        </div>
-                        <div class="map-draw-bar__btn js-draw-cancel">Cancel
-                        </div>
-                        <div class="map-draw-bar__btn js-draw-apply">Apply
-                        </div>
+                        <div class="map-draw-bar__label">Draw a shape around the region(s) you would like to live in</div>
+                        <div class="map-draw-bar__btn js-draw-cancel">Cancel</div>
+                        <div class="map-draw-bar__btn js-draw-apply">Apply</div>
                     </div>
                     <div class="map-buttons-bar">
                         {% include 'layouts/modules/button.html.twig' with {
@@ -83,8 +77,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="map__container" id="estate-map" data-params='{"path":"/listing/search","center":[49.20984,-122.87793],"zoom":13,"minZoom":10,"refreshMarkers":true,"refreshYelp":true,"yelpPreloader":true,"cardsPreloader":true,"cardsPerPage":48,"maxMarkersCount":480}'>
-                </div>
+
+                <div class="map" id="estate-map" data-params='{
+                    "path":"/listing/search",
+                    "center":[49.20984,-122.87793],
+                    "zoom":13,
+                    "minZoom":10,
+                    "refreshMarkers":true,
+                    "refreshYelp":true,
+                    "yelpPreloader":true,
+                    "cardsPreloader":true,
+                    "cardsPerPage":48,
+                    "maxMarkersCount":480
+                }'></div>
             </div>
         </div>
     </div>

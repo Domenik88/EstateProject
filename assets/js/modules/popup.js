@@ -107,9 +107,11 @@ jQuery(function($){
                 { target, overlay_mod } = $btn.data('popup'),
                 $popup = $('.js-popup-' + target),
                 $recaptcha = $popup.find('.js-recaptcha');
-            
+
+            $('body').trigger('trigger:init-map', '#test-popup-map')
+
             if ($recaptcha.length) popup.$body.trigger('trigger:init-recaptcha');
-            
+
             popup._clearOverlay();
             
             if (overlay_mod) {
