@@ -13,6 +13,7 @@ namespace App\Service\Listing;
 use App\Entity\Listing;
 use App\Repository\ListingRepository;
 use App\Service\Geo\Point;
+use DateTime;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -206,7 +207,44 @@ class ListingService
         }
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
-        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray ];
+        $listingCoordinates = [
+            'lat' => $singleListing->getCoordinates()->getLatitude(),
+            'lng' => $singleListing->getCoordinates()->getLongitude(),
+        ];
+
+        $listingAddress = [
+            'country' => $singleListing->getCountry(),
+            'state' => $singleListing->getStateOrProvince(),
+            'city' => $singleListing->getCity(),
+            'postalCode' => $singleListing->getPostalCode(),
+            'streetAddress' => $singleListing->getUnparsedAddress(),
+        ];
+
+        $listingMetrics = [
+            'bedRooms' => $singleListing->getRawData()['BedroomsTotal'],
+            'bathRooms' => $singleListing->getRawData()['BathroomsTotal'],
+            'stories' => $singleListing->getRawData()['Stories'],
+            'lotSize' => $this->getListingLotSize($singleListing),
+            'sqrtFootage' => $this->getListingBuildingAreaTotal($singleListing),
+        ];
+
+        $listingFinancials = [];
+
+        $listingObject = [
+            'yearBuilt' => $singleListing->getRawData()['YearBuilt'],
+            'mlsNumber' => $singleListing->getMlsNum(),
+            'feedId' => $singleListing->getFeedID(),
+            'type' => $singleListing->getRawData()['PropertyType'],
+            'ownershipType' => $singleListing->getRawData()['OwnershipType'],
+            'images' => $listingImagesUrlArray,
+            'coordinates' => $listingCoordinates,
+            'daysOnTheMarket' => $this->getListingDaysOnTheMarket($singleListing->getRawData()['ListingContractDate']),
+            'description' => $singleListing->getRawData()['PublicRemarks'],
+            'address' => $listingAddress,
+            'metrics' => $listingMetrics,
+        ];
+
+        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray, 'object' => $listingObject ];
     }
 
     public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
@@ -226,4 +264,26 @@ class ListingService
         return $this->listingRepository->getAllListingsInMapBox($neLat, $neLng, $swLat, $swLng);
     }
 
+    public function getListingDaysOnTheMarket($listingContractDate)
+    {
+        return date_diff(new DateTime(), new DateTime($listingContractDate))->days;
+    }
+
+    public function getListingLotSize(Listing $listing): ?string
+    {
+        if (!is_null($listing->getRawData()['LotSizeArea']) || $listing->getRawData()['LotSizeArea'] != 0) {
+            return $listing->getRawData()['LotSizeArea'] . $listing->getRawData()['LotSizeUnits'];
+        }
+
+        return null;
+    }
+
+    public function getListingBuildingAreaTotal(Listing $listing): ?string
+    {
+        if (!is_null($listing->getRawData()['BuildingAreaTotal']) || $listing->getRawData()['BuildingAreaTotal'] != 0) {
+            return $listing->getRawData()['BuildingAreaTotal'] . $listing->getRawData()['BuildingAreaUnits'];
+        }
+
+        return null;
+    }
 }
