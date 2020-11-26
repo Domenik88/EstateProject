@@ -199,7 +199,7 @@ class ListingService
         return $existingListing;
     }
 
-    public function getListingData(string $province, string $mlsNum, string $feedName): ?array
+    public function getListingData(string $province, string $mlsNum, string $feedName): ?object
     {
         $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
         if (is_null($singleListing)) {
@@ -213,7 +213,7 @@ class ListingService
             'feedId' => $singleListing->getFeedID(),
             'type' => $singleListing->getRawData()['PropertyType'],
             'ownershipType' => $singleListing->getRawData()['OwnershipType'],
-            'images' => (object)$listingImagesUrlArray,
+            'images' => $listingImagesUrlArray,
             'coordinates' => $this->getSingleListingCoordinatesObject($singleListing),
             'daysOnTheMarket' => $this->getListingDaysOnTheMarket($singleListing->getRawData()['ListingContractDate']),
             'description' => $singleListing->getRawData()['PublicRemarks'],
@@ -223,7 +223,7 @@ class ListingService
             'listingAgent' => $this->getListingAgentObject($singleListing),
         ];
 
-        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray, 'listingObject' => $listingObject ];
+        return $listingObject;
     }
 
     public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
