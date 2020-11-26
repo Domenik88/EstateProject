@@ -1,0 +1,44 @@
+.form-style {
+    position: relative;
+
+    &__input-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    &__input-list_2-col {
+        .select-module {
+            width: calc(50% - 10px);
+        }
+
+        .input-style {
+            width: calc(50% - 10px);
+
+            &_textarea {
+                width: 100%;
+            }
+        }
+    }
+
+    &__row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        &_mb {
+            margin-bottom: 20px;
+        }
+
+        &_3 {
+            .input-style,
+            .select-module {
+                width: calc(100% / 3 - 40px / 3);
+            }
+        }
+    }
+}
+
+.confidentiality {
+    margin-bottom: 20px;
+}

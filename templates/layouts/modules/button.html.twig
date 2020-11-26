@@ -1,0 +1,8 @@
+{% set html_tag = button|default(false) ? 'button' : (href|default(false) ? 'a' : 'div') %}
+{% set dataPopupAttribute = dataPopup|default(false) ? "data-popup=" ~ dataPopup|json_encode() %}
+
+<{{html_tag}} class="btn-style{{ mod|default(false) ? ' ' ~ mod }}" {{ dataPopupAttribute }}>
+    <span class="btn-style__wrapper">
+        <span class="btn-style__label">{{ text ?? '' }}</span>
+    </span>
+</{{html_tag}}>

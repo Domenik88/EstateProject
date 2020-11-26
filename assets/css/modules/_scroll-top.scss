@@ -1,0 +1,82 @@
+
+.scroll-top {
+	position: fixed;
+	top: auto;
+	left: auto;
+	right: 0;
+	bottom: 0;
+	margin: 0 20px 20px 0;
+	width: 75px;
+	height: 75px;
+	background: green;
+	opacity: 0;
+	transform: translateY(150%);
+	transition: all .5s ease;
+	cursor: pointer;
+	z-index: 200;
+
+	&::before,
+	&::after {
+		content: '';
+		@include absolute;
+		display: block;
+		background: $white;
+		width: 20px;
+		height: 2px;
+		transform-origin: 50% 50%;
+		transition: all .5s ease;
+	}
+
+	&::before {
+		transform: rotate(-45deg);
+		left: -14px;
+	}
+
+	&::after {
+		transform: rotate(45deg);
+		right: -14px;
+	}
+
+	&._show {
+		opacity: .6;
+		transform: translateY(0);
+	}
+
+	&:hover {
+		opacity: 1;
+
+		&::before {
+			transform: rotate(135deg);
+		}
+
+		&::after {
+			transform: rotate(-135deg);
+		}
+
+	}
+
+	@include media_1300 {
+		margin: 0 15px 15px 0;
+		width: 50px;
+		height: 50px;
+
+		&::before,
+		&::after {
+			width: 10px;
+		}
+
+		&::before {
+			left: -7px;
+		}
+
+		&::after {
+			right: -7px;
+		}
+	}
+
+	@include media_700 {
+		margin: 0 10px 10px 0;
+		width: 40px;
+		height: 40px;
+	}
+}

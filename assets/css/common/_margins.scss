@@ -1,0 +1,53 @@
+$margins: (
+	default: (
+		05: 5px,
+		10: 10px,
+		15: 15px,
+		20: 20px,
+		25: 25px,
+		30: 30px,
+		35: 35px,
+		40: 40px,
+		45: 45px,
+		50: 50px,
+		55: 55px,
+		60: 60px,
+		65: 65px,
+		70: 70px,
+		85: 85px,
+		90: 90px,
+		95: 95px,
+		100: 100px,
+	),
+	$b1500: (
+	
+	),
+	$b900: (
+	
+	),
+	$b700: (
+	
+	)
+);
+
+@mixin margin-classes($key, $val) {
+	.mt#{$key} {margin-top: $val}
+	.mtr#{$key} {margin-top: -$val}
+	.mb#{$key} {margin-bottom: $val}
+	.pt#{$key} {padding-top: $val}
+	.pb#{$key} {padding-bottom: $val}
+}
+
+@each $res, $arr in $margins {
+	@if $res == default {
+		@each $key, $val in $arr {
+			@include margin-classes($key, $val);
+		}
+	} @else {
+		@media #{$res} {
+			@each $key, $val in $arr {
+				@include margin-classes($key, $val);
+			}
+		}
+	}
+}

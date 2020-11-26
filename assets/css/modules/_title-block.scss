@@ -1,0 +1,17 @@
+.title-block {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	
+	&__title {
+		flex: 1 0 0;
+	}
+	
+	&__btn-wrap {
+	
+	}
+}
+
+.content-title {
+	max-width: 715px;
+}

@@ -1,0 +1,224 @@
+$baseAnimationDuration: .7s;
+
+.overlay {
+	@include fixed;
+	height: 100vh;
+	width: 100vw;
+	z-index: 950;
+	overflow: hidden;
+	transition-property: background, transform;
+	transition-duration: $baseAnimationDuration/2, 0s;
+	transition-delay: $baseAnimationDuration/2, $baseAnimationDuration;
+	transition-timing-function: ease-in-out, linear;
+	background: rgba(0,0,0,0);
+	transform: translateY(-200%);
+	
+	&::before {
+		content: '';
+		@include absolute(0,auto,auto);
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		transition: transform $baseAnimationDuration ease-in-out, background $baseAnimationDuration*0.3 linear;
+		transform: translateY(101%);
+		background: rgba(0,0,0,0.3);
+	}
+	
+	&._active {
+		transition-delay: 0s, 0s;
+		transform: translateY(0);
+		background: rgba(0,0,0,0.3);
+		
+		&::before {
+			transform: translateY(0);
+		}
+	}
+}
+
+
+.popup-style {
+	$r: &;
+	background-color: transparent;
+	transform: translateX(-105%);
+	display: flex;
+	justify-content: flex-start;
+	pointer-events: none;
+	align-items: center;
+	flex-direction: column;
+	box-sizing: border-box;
+	padding: 50px 0;
+	height: 100vh;
+	position: fixed;
+	left: 0;
+	top: 0;
+	transition: 0s ease;
+	width: 100%;
+	z-index: 960;
+	transition-delay: 1s;
+	perspective: 1000px;
+	
+	&._active {
+		transform: translateX(0);
+		transition-delay: 0s;
+	}
+	
+	&__container {
+		position: relative;
+		pointer-events: auto;
+		box-sizing: border-box;
+		max-height: 100%;
+		padding: 60px 0 50px;
+		background: $white;
+		max-width: 100%;
+		width: 1100px;
+		overflow: hidden;
+		margin: auto;
+		flex: 0 0 auto;
+		opacity: 0;
+		transform: translateY(25vh);
+		transition: transform $baseAnimationDuration*1.25 ease, opacity $baseAnimationDuration*0.4 ease;
+		transition-delay: 0s;
+		
+		& > .cross-btn {
+			@include absolute(0,0,auto,auto);
+			width: 35px;
+			height: 35px;
+			background: red;
+			z-index: 50;
+			
+			&::before,
+			&::after {
+				width: 65%;
+				background: $white;
+			}
+		}
+	}
+	
+	&__scroll-wrap {
+		position: relative;
+		height: auto;
+		max-height: calc(100vh - 210px);
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		padding: 0 50px;
+	}
+	
+	&__content {
+		position: relative;
+		box-sizing: border-box;
+		width: 100%;
+		height: auto;
+		margin: auto;
+	}
+	
+	&._active & {
+		&__container {
+			transition: transform $baseAnimationDuration*1.25 ease, opacity $baseAnimationDuration*0.7 ease;
+			transition-delay: $baseAnimationDuration/2, $baseAnimationDuration*0.7;
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	&_map {
+		padding: 0;
+
+		#{$r}__container {
+			padding: 70px 100px;
+			height: 100%;
+			width: 100%;
+			max-width: 1920px;
+
+			& > .cross-btn {
+				top: 0;
+				right: 0;
+			}
+		}
+
+		#{$r}__scroll-wrap {
+			height: 100%;
+			max-height: 100%;
+			padding: 0;
+
+			.simplebar-content {
+				height: 100%;
+			}
+
+			.estate-popup-content {
+				height: 100%;
+				width: 100%;
+			}
+
+			.map-buttons-bar {
+				margin-top: 0;
+			}
+
+			.map {
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+			}
+		}
+
+		#{$r}__content {
+			height: 100%;
+		}
+
+		#{$r}__map-controls {
+			height: 100px;
+			position: relative;
+			z-index: 2;
+		}
+
+		#{$r}__map-container {
+			background: yellow;
+			height: calc(100% - 100px);
+			width: 100%;
+			position: relative;
+			z-index: 1;
+		}
+	}
+}
+
+.ty-content {
+	position: relative;
+	text-align: center;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 50px 0 60px;
+	
+	&__title {
+		display: block;
+		margin-bottom: 20px;
+		color: red;
+	}
+	
+	&__subtitle {
+		display: block;
+	}
+}
+
+
+.estate-popup-content {
+	&__table {
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+	}
+	
+	&__col {
+		width: calc(50% - 10px);
+	}
+}
+
+.estate-popup-slider {
+	width: 100%;
+	height: 500px;
+	@extend .responsive-slides;
+}

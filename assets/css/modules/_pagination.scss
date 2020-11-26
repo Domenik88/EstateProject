@@ -1,0 +1,82 @@
+.pagination {
+	.nav-links {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.page-numbers {
+			padding: 0 5px;
+
+			&.prev,
+			&.next {
+
+				&::before {
+				
+				}
+			}
+
+			&.prev {
+				margin-right: 20px;
+
+				&::before {
+				
+				}
+			}
+
+			&.next {
+				margin-left: 20px;
+
+				&::before {
+				
+				}
+			}
+
+			&:hover,
+			&.current {
+			
+			}
+
+			&.dots {
+				&:hover {
+				
+				}
+			}
+		}
+	}
+}
+
+
+.paginationjs {
+	.paginationjs-pages {
+		ul {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			
+			li {
+				margin-right: 10px;
+				transition: $default-transition;
+				background: #eee;
+				
+				&.disabled {
+					pointer-events: none;
+				}
+				
+				&.active,
+				&:hover {
+					background: green;
+				}
+				
+				&:last-child {
+					margin-right: 0;
+				}
+				
+				a {
+					display: block;
+					padding: 10px;
+					
+				}
+			}
+		}
+	}
+}

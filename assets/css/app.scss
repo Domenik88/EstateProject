@@ -1,5 +1,7 @@
 //@import '../../vendor/almasaeed2010/adminlte/build/scss/AdminLTE.scss';
 //@import '../../vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
-body {
-    background-color: lightgray;
-}
+
+@import 'common/index';
+@import 'lib/index';
+@import 'plugins/index';
+@import 'modules/index';

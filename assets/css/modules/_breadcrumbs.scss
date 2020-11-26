@@ -1,0 +1,28 @@
+.breadcrumbs {
+    a, span {
+        display: inline;
+        position: relative;
+    }
+    
+    a {
+        margin-right: 20px;
+        
+        &:last-child {
+            margin-right: 0;
+        }
+        
+        &::after {
+            content: '•';
+            @include absolute(auto, auto, 0.05em, calc(100% + 10px));
+            display: block;
+            color: $white;
+            pointer-events: none;
+            line-height: 1;
+        }
+        
+        &:hover {
+        
+        }
+        
+    }
+}
