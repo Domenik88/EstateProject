@@ -1,19 +1,166 @@
-$raleway: 'raleway';
-$digital7: 'digital-7';
+$montserrat: 'montserrat';
+$icomoon: 'icomoon';
 
-//@font-face {
-//    font-family: $raleway;
-//    src: local("raleway light"), local("raleway-light-webfont"), url("../fonts/raleway-light-webfont.woff2") format("woff2"), url("../fonts/raleway-light-webfont.woff") format("woff"), url("../fonts/raleway-light-webfont.ttf") format("truetype");
-//    font-weight: 400;
-//    font-style: normal;
-//}
-//
-//
-//@font-face {
-//    font-family: $digital7;
-//    src: local("digital-7-webfont"), local("digital 7"), url("../fonts/digital-7-webfont.woff2") format("woff2"), url("../fonts/digital-7-webfont.woff") format("woff"), url("../fonts/digital-7-webfont.ttf") format("truetype");
-//    font-weight: 400;
-//    font-style: normal;
-//}
+@font-face {
+    font-family: $montserrat;
+    src:
+            url("../../fonts/montserrat-bold-webfont.woff2") format("woff2"),
+            url("../../fonts/montserrat-bold-webfont.woff") format("woff"),
+            url("../../fonts/montserrat-bold-webfont.ttf") format("truetype");
+
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+}
 
 
+@font-face {
+    font-family: $montserrat;
+    src:
+            url("../../fonts/montserrat-medium-webfont.woff2") format("woff2"),
+            url("../../fonts/montserrat-medium-webfont.woff") format("woff"),
+            url("../../fonts/montserrat-medium-webfont.ttf") format("truetype");
+
+    font-weight: 500;
+    font-style: normal;
+    font-display: block;
+}
+
+
+@font-face {
+  font-family: $icomoon;
+  src:  url('../../fonts/icomoon.eot?d8aagk');
+  src:  url('../../fonts/icomoon.eot?d8aagk#iefix') format('embedded-opentype'),
+  url('../../fonts/icomoon.ttf?d8aagk') format('truetype'),
+  url('../../fonts/icomoon.woff?d8aagk') format('woff'),
+  url('../../fonts/icomoon.svg?d8aagk#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  &::before {
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.icon-angle-down:before {
+  content: "\e900";
+}
+.icon-angle-left:before {
+  content: "\e901";
+}
+.icon-angle-right:before {
+  content: "\e902";
+}
+.icon-angle-right-thin:before {
+  content: "\e903";
+}
+.icon-arrow-down:before {
+  content: "\e904";
+}
+.icon-arrow-left:before {
+  content: "\e905";
+}
+.icon-arrow-right:before {
+  content: "\e906";
+}
+.icon-bus:before {
+  content: "\e907";
+}
+.icon-check:before {
+  content: "\e908";
+}
+.icon-climate:before {
+  content: "\e909";
+}
+.icon-compare-frame:before {
+  content: "\e90a";
+}
+.icon-environment:before {
+  content: "\e90b";
+}
+.icon-facebook:before {
+  content: "\e90c";
+}
+.icon-facebook-frame:before {
+  content: "\e90d";
+}
+.icon-heart:before {
+  content: "\e90e";
+}
+.icon-heart-frame:before {
+  content: "\e90f";
+}
+.icon-iibs:before {
+  content: "\e910";
+}
+.icon-info:before {
+  content: "\e911";
+}
+.icon-linkedin:before {
+  content: "\e912";
+}
+.icon-linkedin-frame:before {
+  content: "\e913";
+}
+.icon-map:before {
+  content: "\e914";
+}
+.icon-mls:before {
+  content: "\e915";
+}
+.icon-mls-min:before {
+  content: "\e916";
+}
+.icon-noise:before {
+  content: "\e917";
+}
+.icon-pinterest:before {
+  content: "\e918";
+}
+.icon-pinterest-frame:before {
+  content: "\e919";
+}
+.icon-print-frame:before {
+  content: "\e91a";
+}
+.icon-private-schools:before {
+  content: "\e91b";
+}
+.icon-public-schools:before {
+  content: "\e91c";
+}
+.icon-search:before {
+  content: "\e91d";
+}
+.icon-share-frame:before {
+  content: "\e91e";
+}
+.icon-twitter:before {
+  content: "\e91f";
+}
+.icon-twitter-frame:before {
+  content: "\e920";
+}
+.icon-youtube:before {
+  content: "\e921";
+}
+.icon-youtube-frame:before {
+  content: "\e922";
+}
+.icon-cross:before {
+  content: "\e923";
+}
+.icon-cross-frame:before {
+  content: "\e924";
+}

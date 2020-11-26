@@ -1,5 +1,8 @@
 body {
-    //background: red !important;
+    font-family: $montserrat;
+    font-style: normal;
+    font-weight: 500;
+    color: $gray0;
 }
 
 ._ta-center {
@@ -24,7 +27,7 @@ body {
     transform: scale(0);
 }
 
-.content {
+.wrapper {
     display: block;
     width: 100%;
     overflow: hidden;
