@@ -1,0 +1,101 @@
+@keyframes preloader-scale {
+	0%   {
+		transform:  scale(.8);
+	}
+	50% {
+		transform:  scale(1);
+	}
+	100% {
+		transform:  scale(.8);
+	}
+}
+
+@keyframes spin {
+	0%   {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+._loading {
+	.preloader-wrap {
+		opacity: .8;
+		left: 0;
+		pointer-events: auto;
+		
+		.preloader,
+		.spinner {
+			animation-play-state: running;
+		}
+	}
+}
+
+.preloader-wrap {
+	@include absolute(0,auto,auto,-110vw);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	background: $white;
+	pointer-events: none;
+	z-index: 90;
+}
+
+.preloader {
+	@include absolute;
+	display: block;
+	width: 150px;
+	height: 150px;
+	max-width: 60%;
+	transform: scale(.8);
+	$border-width: 2px;
+	$color-big: green;
+	$color-med: #469346;
+	$color-small: #618661;
+	animation: preloader-scale 6s linear infinite;
+	animation-play-state: paused;
+	z-index: 90;
+	
+	.spinner {
+		@include absolute;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		border: $border-width solid transparent;
+		border-top-color: $color-big;
+		animation: spin 2s linear infinite;
+		animation-play-state: paused;
+		
+		&::before {
+			content: "";
+			@include absolute;
+			width: calc(100% - 10px);
+			height: calc(100% - 10px);
+			
+			border-radius: 50%;
+			border: $border-width solid transparent;
+			border-top-color: $color-med;
+			animation: spin 3s linear infinite;
+			animation-play-state: inherit;
+		}
+		
+		&::after {
+			content: "";
+			
+			@include absolute;
+			width: calc(100% - 20px);
+			height: calc(100% - 20px);
+			
+			border-radius: 50%;
+			border: $border-width solid transparent;
+			border-top-color: $color-small;
+			animation: spin 1.5s linear infinite;
+			animation-play-state: inherit;
+		}
+	}
+}

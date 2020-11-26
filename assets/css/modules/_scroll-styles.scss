@@ -1,0 +1,40 @@
+.simplebar-wrapper {
+	width: 100%;
+	max-height: none;
+	padding-right: 15px;
+}
+
+.simplebar-track {
+	&.simplebar-vertical {
+		height: 100%;
+		background: #eee;
+		top: 0;
+		right: 8px;
+		margin: auto;
+		width: 4px;
+		
+		.simplebar-visible {
+			&:before {
+				opacity: 1;
+				transition: none;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				border-radius: 0;
+				background: green;
+			}
+		}
+	}
+}
+
+.scroll-left {
+	.simplebar-track {
+		&.simplebar-vertical {
+			height: calc(100% - 10px);
+			right: auto;
+			left: 8px;
+			bottom: auto;
+		}
+	}
+}

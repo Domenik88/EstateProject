@@ -1,0 +1,41 @@
+body {
+    //background: red !important;
+}
+
+._ta-center {
+    text-align: center;
+}
+
+._ta-left {
+    text-align: left;
+}
+
+._ta-right {
+    text-align: right;
+}
+
+.pseudo-hidden {
+    position: absolute;
+    left: -200vw;
+    opacity: 0;
+    z-index: -999;
+    pointer-events: none;
+    overflow: hidden;
+    transform: scale(0);
+}
+
+.content {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 15px;
+    box-sizing: border-box;
+    z-index: 5;
+    position: relative;
+}
