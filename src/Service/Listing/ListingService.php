@@ -205,14 +205,14 @@ class ListingService
         if (is_null($singleListing)) {
             return [ 'listing' => null ];
         }
-        $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
+        $listingImagesUrlArray = (object)$this->listingMediaService->getListingPhotos($singleListing);
 
-        $listingCoordinates = [
+        $listingCoordinates = (object)[
             'lat' => $singleListing->getCoordinates()->getLatitude(),
             'lng' => $singleListing->getCoordinates()->getLongitude(),
         ];
 
-        $listingAddress = [
+        $listingAddress = (object)[
             'country' => $singleListing->getCountry(),
             'state' => $singleListing->getStateOrProvince(),
             'city' => $singleListing->getCity(),
@@ -220,7 +220,7 @@ class ListingService
             'streetAddress' => $singleListing->getUnparsedAddress(),
         ];
 
-        $listingMetrics = [
+        $listingMetrics = (object)[
             'bedRooms' => $singleListing->getRawData()['BedroomsTotal'],
             'bathRooms' => $singleListing->getRawData()['BathroomsTotal'],
             'stories' => $singleListing->getRawData()['Stories'],
@@ -228,9 +228,22 @@ class ListingService
             'sqrtFootage' => $this->getListingBuildingAreaTotal($singleListing),
         ];
 
-        $listingFinancials = [];
+        $listingFinancials = (object)[
+            'listingPrice' => $singleListing->getListPrice(),
+            'strataMaintenanceFee' => null,
+            'grossTaxes' => null,
+            'grossTaxYear' => null,
+            'originalListingPrice' => $singleListing->getListPrice(),
+        ];
 
-        $listingObject = [
+        $listingAgent = (object)[
+            'agentFullName' => $singleListing->getRawData()['ListAgentFullName'],
+            'agencyName' => $singleListing->getRawData()['ListOfficeName'],
+            'agentPhone' => $singleListing->getRawData()['ListAgentOfficePhone'],
+            'agentEmail' => $singleListing->getRawData()['ListAgentEmail'],
+        ];
+
+        $listingObject = (object)[
             'yearBuilt' => $singleListing->getRawData()['YearBuilt'],
             'mlsNumber' => $singleListing->getMlsNum(),
             'feedId' => $singleListing->getFeedID(),
@@ -242,9 +255,11 @@ class ListingService
             'description' => $singleListing->getRawData()['PublicRemarks'],
             'address' => $listingAddress,
             'metrics' => $listingMetrics,
+            'financials' => $listingFinancials,
+            'listingAgent' => $listingAgent,
         ];
 
-        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray, 'object' => $listingObject ];
+        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray, 'listingObject' => $listingObject ];
     }
 
     public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
