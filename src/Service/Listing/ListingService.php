@@ -112,12 +112,13 @@ class ListingService
         return new ListingListSearchResult($listingListCount, $results, $currentPage, $pageCounter);
     }
 
-    public function getSingleListing(string $province, string $mlsNum, string $feedName): Listing
+    public function getSingleListing(string $province, string $mlsNum, string $feedName): ?Listing
     {
         return $this->listingRepository->findOneBy([
             'stateOrProvince' => $province,
             'mlsNum' => $mlsNum,
-            'feedID' => $feedName
+            'feedID' => $feedName,
+            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
         ]);
     }
 
@@ -145,8 +146,11 @@ class ListingService
         $this->entityManager->flush();
     }
 
-    public function setListingProcessingStatus(Listing $listing, string $status)
+    public function setListingProcessingStatus($listingId, string $status)
     {
+        $listing = $this->listingRepository->findOneBy([
+            'id' => $listingId
+        ]);
         $listing->setProcessingStatus($status);
 
         $this->entityManager->flush();
@@ -194,9 +198,12 @@ class ListingService
         return $existingListing;
     }
 
-    public function getListingData(string $province, string $mlsNum, string $feedName): array
+    public function getListingData(string $province, string $mlsNum, string $feedName): ?array
     {
         $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
+        if (is_null($singleListing)) {
+            return [ 'listing' => null ];
+        }
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
         return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray ];

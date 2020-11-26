@@ -15,7 +15,7 @@ use App\Entity\Listing;
 class ListingMediaService
 {
 
-    public function getListingPhotos(Listing $listing): array
+    public function getListingPhotos(Listing $listing): ?array
     {
         $imageNames = $listing->getImagesData();
         $listingImagesUrlArray = [];
