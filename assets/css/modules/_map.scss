@@ -379,7 +379,9 @@
 
 
 .estate-cards-pagination {
-    margin-top: 40px;
+    & > div {
+        padding-top: 40px;
+    }
 }
 
 .yelp-marker-popup-inner {

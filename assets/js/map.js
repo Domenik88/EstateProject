@@ -4,6 +4,7 @@ require('leaflet-freedraw');
 require('leaflet-kml');
 const carto = require('@carto/carto.js');
 require('paginationjs');
+import { mapTemplates } from './templates/map-templates'
 
 class EstateMap {
     constructor(id) {
@@ -57,69 +58,9 @@ class EstateMap {
         this.yelpMarkers = null;
         this.schoolsLayers = null;
 
-        this.$estateCardsWrapPosition = this.$estateCardsWrap[0].getBoundingClientRect();
+        this.$estateCardsWrapPosition = this.$estateCardsWrap.length && this.$estateCardsWrap[0].getBoundingClientRect();
 
         this.proxy = window.location.hostname === 'estateblock20' ? 'https://cors-anywhere.herokuapp.com/' : '';
-
-        this.templates = {
-            markerPopup: ({img, title, text}) => `
-                <div class="marker-popup-inner">
-                    <div class="marker-popup-inner__img-wrap">
-                        <img src=${img} alt="#" class="of"/>
-                    </div>
-                    
-                    <div class="marker-popup-inner__description">
-                        <h1>${title}</h1>
-                        <p>${text}</p>
-                    </div>
-                </div>
-            `,
-
-            estateCard: ({images, title, text}) => `
-                <div class="estate-card js-estate-card">
-                    <div class="estate-card__slider js-estate-card-slider">
-                        ${images}
-                    </div>
-                    
-                    <div class="estate-card__description">
-                        <h1>${title}</h1>
-                        <p>${text}</p>
-                    </div>
-                </div>
-            `,
-
-            estateSliderItems: (imagesArray) => imagesArray.map(img => `
-                <div class="estate-slider-item">
-                    <img data-lazy=${img} src='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' alt="#" class="of js-estate-card-slider-img"/>
-                </div>
-            `).join(''),
-
-            yelpMarkerPopup: ({display_phone, phone, image_url, displayAddress, name, rating, review_count, url}) => `
-                <div class="yelp-marker-popup-inner">
-                    <div class="yelp-marker-popup-inner__top">
-                        <div class="yelp-marker-popup-inner__description">
-                            <h1>${name}</h1>
-                            <p>${displayAddress}</p>
-                            <a href="tel:${phone}">${display_phone}</a>
-                        </div>
-                        
-                        <div class="yelp-marker-popup-inner__img-wrap">
-                            ${image_url && `<img src=${image_url} alt="#" class="of"/>`}
-                        </div>
-                    </div>
-                    
-                    <div class="yelp-marker-popup-inner__bottom">
-                        <div class="yelp-marker-popup-inner__rating-wrap">
-                            <div class="rating _${rating.toString().replace('.','')}"></div>
-                            <p>Yelp Rating based on <span class="highlight">${review_count}</span> reviews</p>
-                        </div>
-                        <div class="yelp-marker-popup-inner__link-wrap">
-                            <a href="${url}" target="_blank" class="simple-button">link</a>
-                        </div>
-                    </div>
-                </div>
-            `,
-        }
     }
 
     initEvents() {
@@ -192,6 +133,8 @@ class EstateMap {
         L.control.zoom({
             position: 'bottomright'
         }).addTo(this.map);
+
+        this.$map.addClass('map-initialized')
     }
 
     initDrawButtons() {
@@ -402,7 +345,7 @@ class EstateMap {
         //         const marker = L.marker(L.latLng(lat,lon), { icon: this._constructDivIcon({
         //                     mod: 'school'
         //                 })}),
-        //             popup = L.responsivePopup().setContent(this.templates.markerPopup({
+        //             popup = L.responsivePopup().setContent(mapTemplates.markerPopup({
         //                 img: `https://picsum.photos/300/170??random=${i+1}`,
         //                 title: `title ${i+1}`,
         //                 text: 'test',
@@ -492,7 +435,7 @@ class EstateMap {
             offset: [0, -15],
         })
             .setLatLng(L.latLng(lat,lng))
-            .setContent(this.templates.markerPopup({
+            .setContent(mapTemplates.markerPopup({
                 img: `https://picsum.photos/300/170??random=${counter+1}`,
                 title: `title ${counter+1}`,
                 text: address,
@@ -536,7 +479,7 @@ class EstateMap {
     _parseMarkersData(data) {
         this._setMarkersObj(data);
         this._addMarkers();
-        this._initPagination(data);
+        if (this.$estateCardsPagination.length) this._initPagination(data);
     }
 
     _addMarkers(data) {
@@ -568,8 +511,8 @@ class EstateMap {
 
             const
                 { address, mlsNum } = data[i],
-                $card = $(this.templates.estateCard({
-                    images: this.templates.estateSliderItems(images),
+                $card = $(mapTemplates.estateCard({
+                    images: mapTemplates.estateSliderItems(images),
                     title: `title ${pageCounter+i+1}`,
                     text: address,
                 }));
@@ -617,7 +560,7 @@ class EstateMap {
                     { icon: this._constructYelpDivIcon({categoriesAliases, term: this.yelpTerm})}
                 ),
 
-                popup = L.responsivePopup().setContent(this.templates.yelpMarkerPopup({
+                popup = L.responsivePopup().setContent(mapTemplates.yelpMarkerPopup({
                     display_phone,
                     phone,
                     image_url,
@@ -743,6 +686,7 @@ class EstateMap {
             dataSource: data,
             pageSize: cardsPerPage,
             pageRange: 1,
+            hideWhenLessThanOnePage: true,
 
             callback: (currentPageData, p) => {
                 const
@@ -830,6 +774,7 @@ $(document).ready(() => {
     new EstateMap('#estate-map');
 
     $('body').on('trigger:init-map', (e, id) => {
-        new EstateMap(id);
+        const $map = $(id);
+        if ($map.length && !$map.hasClass('map-initialized')) new EstateMap(id);
     });
 });

@@ -37,6 +37,7 @@ $baseAnimationDuration: .7s;
 
 
 .popup-style {
+	$r: &;
 	background-color: transparent;
 	transform: translateX(-105%);
 	display: flex;
@@ -45,7 +46,7 @@ $baseAnimationDuration: .7s;
 	align-items: center;
 	flex-direction: column;
 	box-sizing: border-box;
-	padding: 50px;
+	padding: 50px 0;
 	height: 100vh;
 	position: fixed;
 	left: 0;
@@ -119,6 +120,65 @@ $baseAnimationDuration: .7s;
 			transition-delay: $baseAnimationDuration/2, $baseAnimationDuration*0.7;
 			opacity: 1;
 			transform: translateY(0);
+		}
+	}
+
+	&_map {
+		padding: 0;
+
+		#{$r}__container {
+			padding: 70px 100px;
+			height: 100%;
+			width: 100%;
+			max-width: 1920px;
+
+			& > .cross-btn {
+				top: 0;
+				right: 0;
+			}
+		}
+
+		#{$r}__scroll-wrap {
+			height: 100%;
+			max-height: 100%;
+			padding: 0;
+
+			.simplebar-content {
+				height: 100%;
+			}
+
+			.estate-popup-content {
+				height: 100%;
+				width: 100%;
+			}
+
+			.map-buttons-bar {
+				margin-top: 0;
+			}
+
+			.map {
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+			}
+		}
+
+		#{$r}__content {
+			height: 100%;
+		}
+
+		#{$r}__map-controls {
+			height: 100px;
+			position: relative;
+			z-index: 2;
+		}
+
+		#{$r}__map-container {
+			background: yellow;
+			height: calc(100% - 100px);
+			width: 100%;
+			position: relative;
+			z-index: 1;
 		}
 	}
 }

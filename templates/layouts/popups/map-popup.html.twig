@@ -1,0 +1,60 @@
+<div class="popup-style popup-style_map js-popup js-popup-map">
+    <div class="popup-style__container">
+        <div class="cross-btn js-close-popup"></div>
+
+        <div class="popup-style__scroll-wrap js-custom-scrollbar">
+            <div class="popup-style__content">
+                <div class="estate-popup-content js-map-interface-wrap">
+                    <div class="popup-style__map-controls">
+                        <div class="map-buttons-bar">
+                            <div class="select-module js-select-module js-bcc">
+                                <select class="select-module__select js-yelp-select pseudo-hidden js-select-module-select"
+                                        name="yelp" data-title="Yelp">
+                                    <option disabled="disabled" selected="selected" value=""></option>
+                                    <option value="banks">Banks</option>
+                                    <option value="coffee">Coffee &amp; Tea</option>
+                                    <option value="servicestations">Gas Stations</option>
+                                    <option value="grocery">Grocery Stores</option>
+                                    <option value="hospitals">Hospitals</option>
+                                    <option value="parks">Parks</option>
+                                    <option value="restaurants">Restaurants and Bars</option>
+                                    <option value="shopping">Shopping</option>
+                                </select>
+                                <div class="select-module__input-container js-select-module-container">
+                                    <span class="select-module__text-block js-select-module-text-block"></span>
+                                </div>
+                                <div class="select-module__dropdown">
+                                    <div class="select-module__scroll js-select-module-scrollbar js-select-module-options">
+                                    </div>
+                                </div>
+                                <span class="select-module__label p5">Yelp</span>
+                            </div>
+                            <div class="btn-style schools-button js-map-show-schools">
+                                            <span class="btn-style__wrapper">
+                                                <span class="btn-style__label b2">schools</span>
+                                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="popup-style__map-container js-map-container">
+                        {% include 'layouts/modules/preloader.html.twig' %}
+
+                        <div class="map" id="test-popup-map" data-params='{
+                            "path":"/listing/search",
+                            "center":[49.20984,-122.87793],
+                            "zoom":13,
+                            "minZoom":10,
+                            "refreshMarkers":true,
+                            "refreshYelp":true,
+                            "yelpPreloader":true,
+                            "cardsPreloader":true,
+                            "cardsPerPage":48,
+                            "maxMarkersCount":480
+                        }'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

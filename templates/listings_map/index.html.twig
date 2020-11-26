@@ -35,7 +35,7 @@
 
                         <div class="select-module js-select-module js-bcc">
                             <select class="select-module__select js-yelp-select pseudo-hidden js-select-module-select"
-                                    name="yelp" data-title="Интересующая тема">
+                                    name="yelp" data-title="Yelp">
                                 <option disabled="disabled" selected="selected" value=""></option>
                                 <option value="banks">Banks</option>
                                 <option value="coffee">Coffee &amp; Tea</option>
@@ -53,7 +53,7 @@
                                 <div class="select-module__scroll js-select-module-scrollbar js-select-module-options">
                                 </div>
                             </div>
-                            <span class="select-module__label p5">Интересующая тема</span>
+                            <span class="select-module__label p5">Yelp</span>
                         </div>
                         <div class="btn-style schools-button js-map-show-schools">
                                 <span class="btn-style__wrapper">
@@ -93,6 +93,9 @@
             </div>
         </div>
     </div>
+
+    {% include 'layouts/popups/popup-overlay.html.twig' %}
+    {% include 'layouts/popups/map-popup.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}
