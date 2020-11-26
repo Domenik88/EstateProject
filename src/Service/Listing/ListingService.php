@@ -300,9 +300,9 @@ class ListingService
     {
         return (object)[
             'listingPrice' => $listing->getListPrice(),
-            'strataMaintenanceFee' => null,
-            'grossTaxes' => null,
-            'grossTaxYear' => null,
+            'strataMaintenanceFee' => 'N/A',
+            'grossTaxes' => 'N/A',
+            'grossTaxYear' => 'N/A',
             'originalListingPrice' => $listing->getListPrice(),
         ];
     }
