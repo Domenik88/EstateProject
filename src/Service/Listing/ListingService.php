@@ -199,49 +199,13 @@ class ListingService
         return $existingListing;
     }
 
-    public function getListingData(string $province, string $mlsNum, string $feedName): ?array
+    public function getListingData(string $province, string $mlsNum, string $feedName): ?object
     {
         $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
         if (is_null($singleListing)) {
             return [ 'listing' => null ];
         }
-        $listingImagesUrlArray = (object)$this->listingMediaService->getListingPhotos($singleListing);
-
-        $listingCoordinates = (object)[
-            'lat' => $singleListing->getCoordinates()->getLatitude(),
-            'lng' => $singleListing->getCoordinates()->getLongitude(),
-        ];
-
-        $listingAddress = (object)[
-            'country' => $singleListing->getCountry(),
-            'state' => $singleListing->getStateOrProvince(),
-            'city' => $singleListing->getCity(),
-            'postalCode' => $singleListing->getPostalCode(),
-            'streetAddress' => $singleListing->getUnparsedAddress(),
-        ];
-
-        $listingMetrics = (object)[
-            'bedRooms' => $singleListing->getRawData()['BedroomsTotal'],
-            'bathRooms' => $singleListing->getRawData()['BathroomsTotal'],
-            'stories' => $singleListing->getRawData()['Stories'],
-            'lotSize' => $this->getListingLotSize($singleListing),
-            'sqrtFootage' => $this->getListingBuildingAreaTotal($singleListing),
-        ];
-
-        $listingFinancials = (object)[
-            'listingPrice' => $singleListing->getListPrice(),
-            'strataMaintenanceFee' => null,
-            'grossTaxes' => null,
-            'grossTaxYear' => null,
-            'originalListingPrice' => $singleListing->getListPrice(),
-        ];
-
-        $listingAgent = (object)[
-            'agentFullName' => $singleListing->getRawData()['ListAgentFullName'],
-            'agencyName' => $singleListing->getRawData()['ListOfficeName'],
-            'agentPhone' => $singleListing->getRawData()['ListAgentOfficePhone'],
-            'agentEmail' => $singleListing->getRawData()['ListAgentEmail'],
-        ];
+        $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
         $listingObject = (object)[
             'yearBuilt' => $singleListing->getRawData()['YearBuilt'],
@@ -250,16 +214,16 @@ class ListingService
             'type' => $singleListing->getRawData()['PropertyType'],
             'ownershipType' => $singleListing->getRawData()['OwnershipType'],
             'images' => $listingImagesUrlArray,
-            'coordinates' => $listingCoordinates,
+            'coordinates' => $this->getSingleListingCoordinatesObject($singleListing),
             'daysOnTheMarket' => $this->getListingDaysOnTheMarket($singleListing->getRawData()['ListingContractDate']),
             'description' => $singleListing->getRawData()['PublicRemarks'],
-            'address' => $listingAddress,
-            'metrics' => $listingMetrics,
-            'financials' => $listingFinancials,
-            'listingAgent' => $listingAgent,
+            'address' => $this->getListingAddressObject($singleListing),
+            'metrics' => $this->getListingMetricsObject($singleListing),
+            'financials' => $this->getListingFinancialsObject($singleListing),
+            'listingAgent' => $this->getListingAgentObject($singleListing),
         ];
 
-        return [ 'listing' => $singleListing, 'photos' => $listingImagesUrlArray, 'listingObject' => $listingObject ];
+        return $listingObject;
     }
 
     public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
@@ -300,5 +264,56 @@ class ListingService
         }
 
         return null;
+    }
+
+    public function getSingleListingCoordinatesObject(Listing $listing): object
+    {
+        return (object)[
+            'lat' => $listing->getCoordinates()->getLatitude(),
+            'lng' => $listing->getCoordinates()->getLongitude(),
+        ];
+    }
+
+    public function getListingAddressObject(Listing $listing): object
+    {
+        return (object)[
+            'country' => $listing->getCountry(),
+            'state' => $listing->getStateOrProvince(),
+            'city' => $listing->getCity(),
+            'postalCode' => $listing->getPostalCode(),
+            'streetAddress' => $listing->getUnparsedAddress(),
+        ];
+    }
+
+    public function getListingMetricsObject(Listing $listing): object
+    {
+        return (object)[
+            'bedRooms' => $listing->getRawData()['BedroomsTotal'],
+            'bathRooms' => $listing->getRawData()['BathroomsTotal'],
+            'stories' => $listing->getRawData()['Stories'],
+            'lotSize' => $this->getListingLotSize($listing),
+            'sqrtFootage' => $this->getListingBuildingAreaTotal($listing),
+        ];
+    }
+
+    public function getListingFinancialsObject(Listing $listing): object
+    {
+        return (object)[
+            'listingPrice' => $listing->getListPrice(),
+            'strataMaintenanceFee' => null,
+            'grossTaxes' => null,
+            'grossTaxYear' => null,
+            'originalListingPrice' => $listing->getListPrice(),
+        ];
+    }
+
+    public function getListingAgentObject(Listing $listing): object
+    {
+        return (object)[
+            'agentFullName' => $listing->getRawData()['ListAgentFullName'],
+            'agencyName' => $listing->getRawData()['ListOfficeName'],
+            'agentPhone' => $listing->getRawData()['ListAgentOfficePhone'],
+            'agentEmail' => $listing->getRawData()['ListAgentEmail'],
+        ];
     }
 }
