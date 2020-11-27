@@ -2,6 +2,20 @@
     {% include 'layouts/form/select.html.twig' with {
         'name': 'header-search-select',
         'inputMod': '_fill-gray',
+        'options': [
+            {
+                'value': 'val1',
+                'text': 'New Property',
+            },
+            {
+                'value': 'val2',
+                'text': 'New Property1',
+            },
+            {
+                'value': 'val3',
+                'text': 'New Property2',
+            },
+        ]
     } %}
 
     {% include 'layouts/form/input.html.twig' with {

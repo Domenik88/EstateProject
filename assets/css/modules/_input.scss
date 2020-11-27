@@ -20,7 +20,7 @@
     transition: $default_transition;
     height: 41px;
     width: 100%;
-    padding: 10px;
+    padding: 5px 20px;
     box-sizing: border-box;
     display: block;
     //font-family: $raleway;
@@ -38,22 +38,22 @@
     //    border-color: $c;
     //}
     //
-    //&::-webkit-input-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
-    //&::-moz-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
-    //&:-ms-input-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
-    //&:-moz-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
+    &::-webkit-input-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    &::-moz-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    &:-ms-input-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    &:-moz-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
     
     &._fill-gray {
         border: none;
