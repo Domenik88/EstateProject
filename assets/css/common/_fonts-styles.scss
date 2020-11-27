@@ -70,10 +70,13 @@
     line-height: 21px;
 }
 
-.small-text2 {
+@mixin small-text2 {
     font-weight: 500;
     font-size: 14px;
     line-height: 21px;
+}
+.small-text2 {
+    @include small-text2;
 }
 
 .tiny-text {

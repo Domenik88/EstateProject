@@ -1,10 +1,23 @@
+//@import "../plugins/mixin-object-fit";
+//@import "reset";
+//@import "mixins";
+//@import "margins";
+//@import "colors";
+//@import "animations";
+//@import "fonts-include";
+//@import "fonts-styles";
+//@import "controls";
+//@import "common";
+
+//
 @import "../plugins/mixin-object-fit";
 @import "reset";
+@import "animations";
+@import "breakpoints";
+@import "fonts-include";
+@import "colors";
 @import "mixins";
 @import "margins";
-@import "colors";
-@import "animations";
-@import "fonts-include";
 @import "fonts-styles";
 @import "controls";
 @import "common";
