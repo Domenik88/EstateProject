@@ -51,7 +51,7 @@ class ListingMasterRepository extends ServiceEntityRepository
     public function truncateListingMasterTable()
     {
         $rsm = new ResultSetMapping();
-        $this->entityManager->createNativeQuery('TRUNCATE TABLE listing_master',$rsm)->execute();
+        $this->entityManager->createNativeQuery('TRUNCATE TABLE listing_master RESTART IDENTITY',$rsm)->execute();
     }
 
 }
