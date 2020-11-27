@@ -29,6 +29,12 @@
 	overflow: hidden;
 	box-sizing: border-box;
 	z-index: 5;
+	
+	&::before {
+		display: block;
+		font-size: 18px;
+		margin-right: 10px;
+	}
 
 	&__text {
 		@extend .button1;
@@ -40,6 +46,14 @@
 		color: $dark1;
 		border: 2px solid $fuchsia;
 		background: transparent;
+	}
+	
+	&._small {
+		height: 31px;
+		
+		&::before {
+			font-size: 14px;
+		}
 	}
 }
 

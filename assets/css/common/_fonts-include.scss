@@ -29,11 +29,11 @@ $icomoon: 'icomoon';
 
 @font-face {
   font-family: $icomoon;
-  src:  url('../../fonts/icomoon.eot?d8aagk');
-  src:  url('../../fonts/icomoon.eot?d8aagk#iefix') format('embedded-opentype'),
-  url('../../fonts/icomoon.ttf?d8aagk') format('truetype'),
-  url('../../fonts/icomoon.woff?d8aagk') format('woff'),
-  url('../../fonts/icomoon.svg?d8aagk#icomoon') format('svg');
+  src:  url('../../fonts/icomoon.eot?85to61');
+  src:  url('../../fonts/icomoon.eot?85to61#iefix') format('embedded-opentype'),
+  url('../../fonts/icomoon.ttf?85to61') format('truetype'),
+  url('../../fonts/icomoon.woff?85to61') format('woff'),
+  url('../../fonts/icomoon.svg?85to61#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -163,4 +163,7 @@ $icomoon: 'icomoon';
 }
 .icon-cross-frame:before {
   content: "\e924";
+}
+.icon-angle-down-frame:before {
+  content: "\e925";
 }
