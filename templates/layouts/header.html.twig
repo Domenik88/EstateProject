@@ -1,29 +1,40 @@
 <div class="header js-header">
     <div class="header__fixed-wrap">
         <div class="header__logo-wrap">
-
+            {% include 'layouts/common/logo.html.twig' %}
         </div>
-        <div class="header__search-wrap">
 
-        </div>
+        {% if showSearch|default(false) %}
+            <div class="header__search-wrap">
+                {% include 'layouts/modules/simple-search.html.twig' %}
+            </div>
+        {% endif %}
+
         <div class="header__control-wrap">
-            {% include 'layouts/modules/button.html.twig' with {
+            {% include 'layouts/controls/button.html.twig' with {
                 'href': '#',
                 'text': 'Price your home',
             } %}
         </div>
+
         <div class="header__control-wrap">
-            {% include 'layouts/modules/button.html.twig' with {
+            {% include 'layouts/controls/button.html.twig' with {
                 'href': '#',
                 'mod': '_bordered',
                 'text': 'Sign in',
             } %}
         </div>
+
         <div class="header__control-wrap">
             {% include 'layouts/modules/select-language.html.twig' %}
         </div>
+
         <div class="header__control-wrap">
-            {% include 'layouts/modules/hamburger.html.twig' %}
+            {% include 'layouts/controls/hamburger.html.twig' %}
+        </div>
+
+        <div class="header__menu-wrap">
+            {% include 'layouts/top-panel.html.twig' %}
         </div>
     </div>
 </div>

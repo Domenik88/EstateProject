@@ -1,0 +1,8 @@
+{% set wrap_mod = wrapMod|default(false) ? ' ' ~ wrapMod : '' %}
+{% set input_mod = inputMod|default(false) ? ' ' ~ inputMod : '' %}
+
+<div class="input-style{{ wrap_mod }}">
+    <div class="input-style__container">
+        <input class="input-style__input{{ input_mod }}" type="text" name="{{ name }}" placeholder="{{ placeholder }}" value="" />
+    </div>
+</div>
