@@ -1,0 +1,216 @@
+{% set navTableArray = [
+    {
+        title: 'Real Estate For Sale',
+        list: [
+            {
+                href: '#',
+                text: 'Vancouver Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Surrey Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Burnaby Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Richmond Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Abbotsford Real Estate',
+            }
+        ]
+    },
+    {
+        title: 'Commercial Real Estate',
+        list: [
+            {
+                href: '#',
+                text: 'Vancouver Commercial Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Surrey Commercial Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Richmond Commercial Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Burnaby Commercial Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Abbotsford Commercial Real Estate',
+            }
+        ]
+    },
+    {
+        title: 'Condos For Sale',
+        list: [
+            {
+                href: '#',
+                text: 'Condos for sale in Vancouver',
+            },
+            {
+                href: '#',
+                text: 'Condos for sale in Surrey',
+            },
+            {
+                href: '#',
+                text: 'Condos for sale in Burnaby',
+            },
+            {
+                href: '#',
+                text: 'Condos for sale in Richmond',
+            },
+            {
+                href: '#',
+                text: 'Condos for sale in Coquitlam',
+            }
+        ]
+    },
+    {
+        title: 'Houses For Sale',
+        list: [
+            {
+                href: '#',
+                text: 'Houses for sale in Vancouver',
+            },
+            {
+                href: '#',
+                text: 'Houses for sale in Surrey',
+            },
+            {
+                href: '#',
+                text: 'Houses for sale in Burnaby',
+            },
+            {
+                href: '#',
+                text: 'Houses for sale in Richmond',
+            },
+            {
+                href: '#',
+                text: 'Houses for sale in Coquitlam',
+            }
+        ]
+    },
+    {
+        title: 'EstateBlock Info',
+        list: [
+            {
+                href: '#',
+                text: 'How it Works',
+            },
+            {
+                href: '#',
+                text: 'Selling',
+            },
+            {
+                href: '#',
+                text: 'Buying',
+            },
+            {
+                href: '#',
+                text: 'EstateBlock Blog',
+            },
+            {
+                href: '#',
+                text: 'Site Map',
+            },
+            {
+                href: '#',
+                text: 'Our Agents',
+            }
+        ]
+    },
+    {
+        title: 'Real Estate Tools and Guides',
+        list: [
+            {
+                href: '#',
+                text: 'Q&A Forum',
+            },
+            {
+                href: '#',
+                text: 'First Time Home Buyers Guide',
+            },
+            {
+                href: '#',
+                text: "What's my Surrey home worth?",
+            }
+        ]
+    },
+    {
+        title: 'Lower Mainland Real Estate',
+        list: [
+            {
+                href: '#',
+                text: 'Lower Mainland Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Vancouver Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Surrey Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Burnaby Real Estate',
+            },
+            {
+                href: '#',
+                text: 'Richmond Real Estate',
+            }
+        ]
+    },
+    {
+        title: 'Contact Us',
+        list: [
+            {
+                href: '#',
+                text: 'Privacy Policy',
+            },
+            {
+                href: '#',
+                text: 'Terms of Use',
+            },
+            {
+                href: '#',
+                text: 'Disclaimers',
+            },
+            {
+                href: '#',
+                text: 'Follow us on Twitter',
+            },
+            {
+                href: '#',
+                text: 'Contact Us',
+            }
+        ]
+    },
+] %}
+
+<div class="nav-table mtr40">
+    {% for col in navTableArray %}
+        <div class="nav-table__col mt40">
+            <span class="nav-table__title small-text mb20">{{ col.title }}</span>
+
+            <div class="nav-table__list">
+                {% for link in col.list %}
+                    <a class="nav-table__link small-text2" href="{{ link.href }}">{{ link.text }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+
