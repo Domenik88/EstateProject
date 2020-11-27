@@ -1,0 +1,25 @@
+.copyright {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	&__text {
+		width: calc(100% - 90px);
+		color: $gray1;
+	}
+	
+	&__logo {
+		cursor: pointer;
+		transition: $default-transition;
+		color: $gray1;
+		
+		&::before {
+			display: block;
+			font-size: 27px;
+		}
+		
+		&:hover {
+			color: $fuchsia;
+		}
+	}
+}

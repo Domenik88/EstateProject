@@ -1,0 +1,58 @@
+.social-buttons {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	
+	&__label {
+		margin-right: 33px;
+		color: $dark1;
+	}
+	
+	&__list {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		margin-top: -20px;
+	}
+	
+	&__item {
+		margin-top: 20px;
+		margin-right: 20px;
+		width: 57px;
+		height: 57px;
+		border-radius: 20px;
+		
+		&:last-child {
+			margin-right: 0;
+		}
+		
+		&::before {
+			display: block;
+			font-size: 57px;
+			color: $white;
+		}
+		
+		&.icon-twitter-frame {
+			background: $twitter;
+		}
+		
+		&.icon-facebook-frame {
+			background: $facebook;
+		}
+		
+		&.icon-youtube-frame {
+			background: $youtube;
+		}
+		
+		&.icon-linkedin-frame {
+			background: $linkedin;
+		}
+		
+		&.icon-pinterest-frame {
+			background: $pinterest;
+		}
+		
+	}
+}

@@ -1,0 +1,27 @@
+.nav-table {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	
+	&__col {
+		width: calc(100% / 12 * 3);
+		padding-right: 20px;
+	}
+	
+	&__title {
+		display: block;
+		color: $dark1;
+	}
+	
+	&__list {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	
+	&__link {
+		color: $gray1;
+	}
+}
