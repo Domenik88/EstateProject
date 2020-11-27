@@ -9,7 +9,9 @@
     </head>
     <body>
         <div class="wrapper">
-            {% embed 'layouts/top-panel.html.twig' %}{% endembed %}
+            {% include 'layouts/header.html.twig' with {
+                'showSearch': true
+            } %}
             {% block body %}{% endblock %}
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}

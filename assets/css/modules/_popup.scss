@@ -78,20 +78,6 @@ $baseAnimationDuration: .7s;
 		transform: translateY(25vh);
 		transition: transform $baseAnimationDuration*1.25 ease, opacity $baseAnimationDuration*0.4 ease;
 		transition-delay: 0s;
-		
-		& > .cross-btn {
-			@include absolute(0,0,auto,auto);
-			width: 35px;
-			height: 35px;
-			background: red;
-			z-index: 50;
-			
-			&::before,
-			&::after {
-				width: 65%;
-				background: $white;
-			}
-		}
 	}
 	
 	&__scroll-wrap {

@@ -18,7 +18,7 @@
     position: relative;
     z-index: 9;
     transition: $default_transition;
-    height: 46px;
+    height: 41px;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -27,11 +27,8 @@
     //@include p5;
     @include error-styles;
     //color: $c;
-    border-style: solid;
-    border-width: 0 0 2px 0;
-    border-color: transparent;
-    background: green;
-    border-radius: 0;
+    border: 1px solid $gray0;
+    border-radius: 10px;
     //
     //&:hover {
     //    background: $gray02;
@@ -57,6 +54,15 @@
     //    @include p5;
     //    color: $gray05;
     //}
+    
+    &._fill-gray {
+        border: none;
+        background: $gray2;
+    }
+    
+    &._bright-border {
+        border-color: $gray-line;
+    }
     
     @include media_1700 {
     
