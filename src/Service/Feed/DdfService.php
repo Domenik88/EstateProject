@@ -45,7 +45,7 @@ class DdfService
 
     public function __destruct()
     {
-        $this->logger->error('Disconnecting from RETS!');
+        $this->logger->info('Disconnecting from RETS!');
         if ($this->rets) {
             $this->rets->Disconnect();
             $this->rets = null;

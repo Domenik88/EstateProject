@@ -110,6 +110,36 @@ class Listing
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $ownershipType;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $bedrooms;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $livingArea;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $lotSize;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $yearBuilt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -348,5 +378,77 @@ class Listing
         $return['lng'] = $this->getCoordinates()->getLongitude();
 
         return $return;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getOwnershipType(): ?string
+    {
+        return $this->ownershipType;
+    }
+
+    public function setOwnershipType(?string $ownershipType): self
+    {
+        $this->ownershipType = $ownershipType;
+
+        return $this;
+    }
+
+    public function getBedrooms(): ?int
+    {
+        return $this->bedrooms;
+    }
+
+    public function setBedrooms(?int $bedrooms): self
+    {
+        $this->bedrooms = $bedrooms;
+
+        return $this;
+    }
+
+    public function getLivingArea(): ?int
+    {
+        return $this->livingArea;
+    }
+
+    public function setLivingArea(?int $livingArea): self
+    {
+        $this->livingArea = $livingArea;
+
+        return $this;
+    }
+
+    public function getLotSize(): ?int
+    {
+        return $this->lotSize;
+    }
+
+    public function setLotSize(?int $lotSize): self
+    {
+        $this->lotSize = $lotSize;
+
+        return $this;
+    }
+
+    public function getYearBuilt(): ?int
+    {
+        return $this->yearBuilt;
+    }
+
+    public function setYearBuilt(?int $yearBuilt): self
+    {
+        $this->yearBuilt = $yearBuilt;
+
+        return $this;
     }
 }

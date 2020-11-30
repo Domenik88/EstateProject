@@ -22,6 +22,7 @@
         {% else %}
             <a href="#" onclick="history.back();">Назад</a>
             {{ dump(listing) }}
+            {{ dump(similarListings) }}
             <h2>Listing photos</h2>
             {% for photo in listing.images %}
                 <img src="{{ photo }}">
