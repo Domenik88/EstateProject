@@ -64,7 +64,7 @@ class ListingRepository extends ServiceEntityRepository
         }
     }
 
-    public function getSimilarListings(string $type, string $ownershipType, int $bedRooms, array $livingAreaRange, array $lotSizeRange, ?array $yearBuiltRange, object $coordinates)
+    public function getSimilarListings(string $type, string $ownershipType, int $bedRooms, array $livingAreaRange, array $lotSizeRange, ?array $yearBuiltRange, object $coordinates, string $mlsNum)
     {
         try {
             $this->latitude = $coordinates->lat;
@@ -94,7 +94,9 @@ class ListingRepository extends ServiceEntityRepository
                 $params['yearBuiltFrom'] = $yearBuiltRange[0];
                 $params['yearBuiltTo'] = $yearBuiltRange[1];
             }
-//            $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
+            $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
+            $sqlArray[] = 'mls_num != :mlsNumber';
+            $params['mlsNumber'] = $mlsNum;
             $sql = "select * from listing where status = 'live' and deleted_date is null";
             if (!empty($sqlArray)){
                 $sql .= ' and ' . implode(' and ', $sqlArray);

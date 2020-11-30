@@ -29,7 +29,7 @@ class ListingSimilarSearch
         $livingAreaRange = $this->inRange($listingData->metrics->sqrtFootage,ListingConstants::LIVING_AREA);
         $lotSizeRange = $this->inRange($listingData->metrics->lotSize,ListingConstants::LOT_SIZE);
 
-        $similarListingsData = $this->listingRepository->getSimilarListings($listingData->type, $listingData->ownershipType, $listingData->metrics->bedRooms, $livingAreaRange, $lotSizeRange, $yearBuiltRange, $listingData->coordinates);
+        $similarListingsData = $this->listingRepository->getSimilarListings($listingData->type, $listingData->ownershipType, $listingData->metrics->bedRooms, $livingAreaRange, $lotSizeRange, $yearBuiltRange, $listingData->coordinates, $listingData->mlsNumber);
         $similarListings = [];
         foreach ( $similarListingsData as $similarListingData ) {
             $similarListings[] = $this->listingSearchDataService->constructSearchListingData($similarListingData);
