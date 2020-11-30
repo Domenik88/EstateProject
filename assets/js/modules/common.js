@@ -13,6 +13,7 @@ var $_ = {
         this.initLazyLoad();
         this.initDefaultSlider();
         this.initTriggerSlider();
+        this.initToggleActive();
     },
     
     initCache() {
@@ -32,7 +33,9 @@ var $_ = {
         this.$arrowRight = $('.js-arrow-right');
         this.$current = $('.js-current');
         this.$total = $('.js-total');
-        
+
+        this.$toggleActive = $('.js-toggle-active');
+
         this.$map = $('#y-map');
         this.mapIsInit = false;
         
@@ -67,7 +70,13 @@ var $_ = {
         }
         is_touch_device();
     },
-    
+
+    initToggleActive() {
+        $_.$toggleActive.on('click', (e) => {
+            $(e.currentTarget).toggleClass('_active');
+        })
+    },
+
     initTriggerSlider() {
         $_.$body.on('trigger:init-slider', (e, obj) => {
             const { $sliders, $slides } = obj;
@@ -239,12 +248,14 @@ var $_ = {
     },
     
     initBodyClickClose () {
-        $_.$body.on('click', function(e) {
-            var $target = $(e.target),
+        $_.$body.on('click', (e) => {
+            const
+                $target = $(e.target),
                 $bccItems = $('.js-bcc').filter('._active');
-            
+
             if ($bccItems.length) {
-                var isBcc = $target.hasClass('js-bcc'),
+                const
+                    isBcc = $target.hasClass('js-bcc'),
                     $closestBcc = $target.closest('.js-bcc'),
                     $targetToPrevent = isBcc ? $target : $closestBcc,
                     dataBccPrevent = $targetToPrevent.data('bcc-prevent'),
@@ -353,7 +364,7 @@ var $_ = {
         })
     },
     
-    _toggleActive($el) {
+    _toggleActiveClasses($el) {
         $el.addClass('_active').siblings().removeClass('_active');
     },
     

@@ -8,11 +8,11 @@
     }
     
     &__text-block {
-        //@extend .p5;
+        @extend .button2;
         line-height: 1;
         max-width: 100%;
         overflow: hidden;
-        //color: $c;
+        color: $dark1;
     }
     
     &__label {
@@ -26,19 +26,11 @@
         align-items: center;
         justify-content: flex-start;
         cursor: pointer;
-        padding-right: 50px;
+        padding-right: 30px;
+        @extend .angle-down-after;
         
         &::after {
-            content: '\e908';
-            display: block;
-            //font-family: $icomoon;
-            line-height: 1;
-            font-weight: 100;
-            font-size: 10px;
-            //color: $red;
-            @include absolute(calc(50% - 3px),12px,auto,auto);
-            transition: $default-transition;
-            transform-origin: 50% 50%;
+            right: 15px;
         }
     }
     

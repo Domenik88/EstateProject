@@ -1,13 +1,108 @@
-h1 {
-    font-size: 36px;
+.h1 {
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 78px;
 }
 
-h2 {
-    font-size: 24px;
+.h2 {
+    font-weight: 700;
+    font-size: 45px;
+    line-height: 55px;
 }
 
-h3 {
+.h3 {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
+}
+
+.h4 {
+    font-weight: 700;
     font-size: 18px;
+    line-height: 22px;
+}
+
+.h5 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.h6 {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.subtitle {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+}
+
+.subtitle2 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+}
+
+.body-text {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+}
+
+.body-text2 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+}
+
+.table-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.small-text {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+@mixin small-text2 {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+}
+.small-text2 {
+    @include small-text2;
+}
+
+.tiny-text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.button1 {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.button2 {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.schild {
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 21px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
 }
 
 .link-style {
@@ -33,5 +128,5 @@ textarea {
 b,
 strong,
 .bold {
-    font-weight: bold !important;
+    font-weight: 700 !important;
 }

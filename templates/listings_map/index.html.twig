@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-clear.html.twig' %}
 {% block stylesheets %}
     {{ encore_entry_link_tags('map') }}
 {% endblock %}
@@ -8,7 +8,7 @@
 {% block body %}
     <div class="map-table js-map-interface-wrap">
         <div class="map-table__col map-table__col_left scroll-left js-estate-cards-wrap">
-            {% include 'layouts/modules/preloader.html.twig' %}
+            {% include 'layouts/common/preloader.html.twig' %}
             <div class="map-table__scroll-wrap js-cards-scroll-wrap js-custom-scrollbar" data-trigger-on-scroll="trigger:check-sliders">
                 <div class="estate-content">
                     <div class="estate-cards-list js-estate-cards-list"> </div>
@@ -18,7 +18,7 @@
         </div>
         <div class="map-table__col map-table__col_right">
             <div class="map-container js-map-container">
-                {% include 'layouts/modules/preloader.html.twig' %}
+                {% include 'layouts/common/preloader.html.twig' %}
 
                 <div class="map-controls">
                     <div class="map-draw-bar">
@@ -27,7 +27,7 @@
                         <div class="map-draw-bar__btn js-draw-apply">Apply</div>
                     </div>
                     <div class="map-buttons-bar">
-                        {% include 'layouts/modules/button.html.twig' with {
+                        {% include 'layouts/controls/button.html.twig' with {
                             'dataPopup' : {'target': 'map'},
                             'mod': 'js-call-popup',
                             'text': 'show-popup-map',

@@ -1,0 +1,30 @@
+{% set wrap_mod = wrapMod|default(false) ? ' ' ~ wrapMod : '' %}
+{% set input_mod = inputMod|default(false) ? ' ' ~ inputMod : '' %}
+{% set select_mod = selectMod|default(false) ? ' ' ~ selectMod : '' %}
+
+<div class="select-module{{ wrap_mod }} js-select-module js-bcc">
+    <select class="select-module__select{{ select_mod }} pseudo-hidden js-select-module-select" name="{{ name }}">
+        {% if initialEmpty|default(false) %}
+            <option value="" disabled selected></option>
+        {% endif %}
+
+        {% for option in options %}
+            {% set selecter_attr = option.selected|default(false) ? 'selected="selected"' : '' %}
+
+            <option value="{{ option.value }}"{{ selecter_attr }}>{{ option.text }}</option>
+        {% endfor %}
+    </select>
+
+    <div class="select-module__input-container{{ input_mod }} js-select-module-container">
+        <span class="select-module__text-block js-select-module-text-block">
+            {% if initialEmpty|default(false) %}
+                {{ placeholder|default('') }}
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="select-module__dropdown">
+        <div class="select-module__scroll js-select-module-scrollbar js-select-module-options">
+        </div>
+    </div>
+</div>

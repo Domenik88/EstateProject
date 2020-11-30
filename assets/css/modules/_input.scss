@@ -18,20 +18,17 @@
     position: relative;
     z-index: 9;
     transition: $default_transition;
-    height: 46px;
+    height: 41px;
     width: 100%;
-    padding: 10px;
+    padding: 5px 20px;
     box-sizing: border-box;
     display: block;
     //font-family: $raleway;
     //@include p5;
     @include error-styles;
     //color: $c;
-    border-style: solid;
-    border-width: 0 0 2px 0;
-    border-color: transparent;
-    background: green;
-    border-radius: 0;
+    border: 1px solid $gray0;
+    border-radius: 10px;
     //
     //&:hover {
     //    background: $gray02;
@@ -41,22 +38,31 @@
     //    border-color: $c;
     //}
     //
-    //&::-webkit-input-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
-    //&::-moz-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
-    //&:-ms-input-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
-    //&:-moz-placeholder {
-    //    @include p5;
-    //    color: $gray05;
-    //}
+    &::-webkit-input-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    &::-moz-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    &:-ms-input-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    &:-moz-placeholder {
+        @include small-text2;
+        color: $gray1;
+    }
+    
+    &._fill-gray {
+        border: none;
+        background: $gray2;
+    }
+    
+    &._bright-border {
+        border-color: $gray-line;
+    }
     
     @include media_1700 {
     
