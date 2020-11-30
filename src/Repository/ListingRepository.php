@@ -21,6 +21,8 @@ class ListingRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $entityManager;
     private LoggerInterface $logger;
+    private float $latitude;
+    private float $longtitude;
 
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
@@ -69,6 +71,55 @@ class ListingRepository extends ServiceEntityRepository
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
+        }
+    }
+
+    public function getSimilarListings(string $type, string $ownershipType, int $bedRooms, array $livingAreaRange, array $lotSizeRange, ?array $yearBuiltRange, object $coordinates, string $mlsNum)
+    {
+        try {
+            $this->latitude = $coordinates->lat;
+            $this->longtitude = $coordinates->lng;
+            $sqlArray = [];
+            $params = [];
+            $rsm = new ResultSetMappingBuilder($this->entityManager);
+            $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
+            $sqlArray[] = 'type = :propertyType';
+            $params['propertyType'] = $type;
+            $sqlArray[] = 'ownership_type = :ownershipType';
+            $params['ownershipType'] = $ownershipType;
+            $sqlArray[] = 'bedrooms = :bedroomsCount';
+            $params['bedroomsCount'] = $bedRooms;
+            if ($livingAreaRange) {
+                $sqlArray[] = 'living_area <@ int4range(:livingAreaFrom,:livingAreaTo)';
+                $params['livingAreaFrom'] = $livingAreaRange[0];
+                $params['livingAreaTo'] = $livingAreaRange[1];
+            }
+            if ($lotSizeRange) {
+                $sqlArray[] = 'lot_size <@ int4range(:lotSizeFrom,:lotSizeTo)';
+                $params['lotSizeFrom'] = $lotSizeRange[0];
+                $params['lotSizeTo'] = $lotSizeRange[1];
+            }
+            if ($yearBuiltRange) {
+                $sqlArray[] = 'year_built <@ int4range(:yearBuiltFrom,:yearBuiltTo)';
+                $params['yearBuiltFrom'] = $yearBuiltRange[0];
+                $params['yearBuiltTo'] = $yearBuiltRange[1];
+            }
+            $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
+            $sqlArray[] = 'mls_num != :mlsNumber';
+            $params['mlsNumber'] = $mlsNum;
+            $sql = "select * from listing where status = 'live' and deleted_date is null";
+            if (!empty($sqlArray)){
+                $sql .= ' and ' . implode(' and ', $sqlArray);
+            }
+            dump($sql,$params);
+            $query = $this->entityManager->createNativeQuery($sql, $rsm);
+            foreach ( $params as $key => $param ) {
+                $query->setParameter($key, $param);
+            }
+            return $query->getResult();
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+            dump($e->getTraceAsString());
         }
     }
 

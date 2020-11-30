@@ -3,7 +3,7 @@
         "@carto/carto.js": "^4.2.1",
         "admin-lte": "^3.0.5",
         "jquery": "^3.5.1",
-        "jquery-lazy": "^1.7.10",
+        "jquery-lazy": "^1.7.11",
         "leaflet": "^1.7.1",
         "leaflet-freedraw": "^2.13.3",
         "leaflet-kml": "^1.0.1",

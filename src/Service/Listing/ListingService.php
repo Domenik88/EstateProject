@@ -25,14 +25,16 @@ class ListingService
     private ListingMediaService $listingMediaService;
     private ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates;
     private LoggerInterface $logger;
+    private ListingSearchDataService $listingSearchDataService;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger)
+    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger, ListingSearchDataService $listingSearchDataService)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
         $this->listingMediaService = $listingMediaService;
         $this->listingListSinglePageListingsCoordinates = $listingListSinglePageListingsCoordinates;
         $this->logger = $logger;
+        $this->listingSearchDataService = $listingSearchDataService;
     }
 
     public function createFromDdfResult(array $result): Listing
@@ -55,6 +57,12 @@ class ListingService
         if ( $result['Latitude'] != '' or $result['Longitude'] != '' ) {
             $listing->setCoordinates(new Point($result['Latitude'], $result['Longitude']));
         }
+        $listing->setType($result['PropertyType']);
+        $listing->setOwnershipType($result['OwnershipType']);
+        $listing->setBedrooms($result['BedroomsTotal'] ? (int)$result['BedroomsTotal'] : null);
+        $listing->setLivingArea($result['BuildingAreaTotal'] ? (int)$result['BuildingAreaTotal'] : 0);
+        $listing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
+        $listing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
 
         $this->entityManager->persist($listing);
 
@@ -92,6 +100,12 @@ class ListingService
         if ( $result['Latitude'] != '' or $result['Longitude'] != '' ) {
             $existingListing->setCoordinates(new Point($result['Latitude'], $result['Longitude']));
         }
+        $existingListing->setType($result['PropertyType']);
+        $existingListing->setOwnershipType($result['OwnershipType']);
+        $existingListing->setBedrooms($result['BedroomsTotal'] ? (int)$result['BedroomsTotal'] : null);
+        $existingListing->setLivingArea($result['BuildingAreaTotal'] ? (int)$result['BuildingAreaTotal'] : 0);
+        $existingListing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
+        $existingListing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
 
         $this->entityManager->flush();
 
@@ -203,27 +217,10 @@ class ListingService
     {
         $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
         if (is_null($singleListing)) {
-            return [ 'listing' => null ];
+            return null;
         }
-        $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($singleListing);
 
-        $listingObject = (object)[
-            'yearBuilt' => $singleListing->getRawData()['YearBuilt'],
-            'mlsNumber' => $singleListing->getMlsNum(),
-            'feedId' => $singleListing->getFeedID(),
-            'type' => $singleListing->getRawData()['PropertyType'],
-            'ownershipType' => $singleListing->getRawData()['OwnershipType'],
-            'images' => $listingImagesUrlArray,
-            'coordinates' => $this->getSingleListingCoordinatesObject($singleListing),
-            'daysOnTheMarket' => $this->getListingDaysOnTheMarket($singleListing->getRawData()['ListingContractDate']),
-            'description' => $singleListing->getRawData()['PublicRemarks'],
-            'address' => $this->getListingAddressObject($singleListing),
-            'metrics' => $this->getListingMetricsObject($singleListing),
-            'financials' => $this->getListingFinancialsObject($singleListing),
-            'listingAgent' => $this->getListingAgentObject($singleListing),
-        ];
-
-        return $listingObject;
+        return $this->listingSearchDataService->constructSearchListingData($singleListing);
     }
 
     public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
@@ -248,19 +245,19 @@ class ListingService
         return date_diff(new DateTime(), new DateTime($listingContractDate))->days;
     }
 
-    public function getListingLotSize(Listing $listing): ?string
+    public function getListingLotSize(Listing $listing): ?int
     {
-        if (!is_null($listing->getRawData()['LotSizeArea']) || $listing->getRawData()['LotSizeArea'] != 0) {
-            return $listing->getRawData()['LotSizeArea'] . $listing->getRawData()['LotSizeUnits'];
+        if (!is_null($listing->getLotSize()) || $listing->getLotSize() != 0) {
+            return (int)$listing->getLotSize();
         }
 
         return null;
     }
 
-    public function getListingBuildingAreaTotal(Listing $listing): ?string
+    public function getListingBuildingAreaTotal(Listing $listing): ?int
     {
-        if (!is_null($listing->getRawData()['BuildingAreaTotal']) || $listing->getRawData()['BuildingAreaTotal'] != 0) {
-            return $listing->getRawData()['BuildingAreaTotal'] . $listing->getRawData()['BuildingAreaUnits'];
+        if (!is_null($listing->getLivingArea()) || $listing->getLivingArea() != 0) {
+            return (int)$listing->getLivingArea();
         }
 
         return null;
@@ -288,11 +285,13 @@ class ListingService
     public function getListingMetricsObject(Listing $listing): object
     {
         return (object)[
-            'bedRooms' => $listing->getRawData()['BedroomsTotal'],
-            'bathRooms' => $listing->getRawData()['BathroomsTotal'],
-            'stories' => $listing->getRawData()['Stories'],
+            'bedRooms' => $listing->getBedrooms(),
+            'bathRooms' => (int)$listing->getRawData()['BathroomsTotal'],
+            'stories' => (int)$listing->getRawData()['Stories'],
             'lotSize' => $this->getListingLotSize($listing),
+            'lotSizeUnits' => $listing->getRawData()['LotSizeUnits'],
             'sqrtFootage' => $this->getListingBuildingAreaTotal($listing),
+            'sqrtFootageUnits' => $listing->getRawData()['BuildingAreaUnits'],
         ];
     }
 
