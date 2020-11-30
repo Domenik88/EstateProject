@@ -36,15 +36,25 @@ class ListingRepository extends ServiceEntityRepository
 
     public function deleteListings(string $feedId)
     {
-        $query = $this->getEntityManager()->createQuery("UPDATE App\Entity\Listing l SET l.deletedDate = current_timestamp() where l.feedID = :feedId and l.deletedDate IS NULL and not exists (select lm.feedListingId from App\Entity\ListingMaster lm where lm.feedListingId = l.feedListingID and lm.feedId = l.feedID)");
-        $query->setParameter('feedId', $feedId);
-        $query->execute();
+        try {
+            $query = $this->getEntityManager()->createQuery("UPDATE App\Entity\Listing l SET l.deletedDate = current_timestamp() where l.feedID = :feedId and l.deletedDate IS NULL and not exists (select lm.feedListingId from App\Entity\ListingMaster lm where lm.feedListingId = l.feedListingID and lm.feedId = l.feedID)");
+            $query->setParameter('feedId', $feedId);
+            $query->execute();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
+        }
     }
 
     public function createMissingListingsFromDdfListingMaster()
     {
-        $rsm = new ResultSetMapping();
-        $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status from listing_master lm on conflict (feed_id,feed_listing_id) do nothing",$rsm)->execute();
+        try {
+            $rsm = new ResultSetMapping();
+            $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status from listing_master lm on conflict (feed_id,feed_listing_id) do nothing", $rsm)->execute();
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
+        }
     }
 
     public function getAllListingsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
