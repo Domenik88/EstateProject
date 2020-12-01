@@ -46,7 +46,9 @@ class ListingRepository extends ServiceEntityRepository
     public function createMissingListingsFromDdfListingMaster()
     {
         $rsm = new ResultSetMapping();
-        $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status from listing_master lm on conflict (feed_id,feed_listing_id) do nothing",$rsm)->execute();
+        $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) 
+                select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status 
+                from listing_master lm on conflict (feed_id,feed_listing_id) do nothing",$rsm)->execute();
     }
 
     public function getAllListingsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
@@ -97,19 +99,18 @@ class ListingRepository extends ServiceEntityRepository
             $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
             $sqlArray[] = 'mls_num != :mlsNumber';
             $params['mlsNumber'] = $mlsNum;
-            $sql = "select * from listing where status = 'live' and deleted_date is null";
+            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
             if (!empty($sqlArray)){
                 $sql .= ' and ' . implode(' and ', $sqlArray);
             }
-            dump($sql,$params);
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             foreach ( $params as $key => $param ) {
                 $query->setParameter($key, $param);
             }
             return $query->getResult();
         } catch (\Exception $e) {
-            dump($e->getMessage());
-            dump($e->getTraceAsString());
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
         }
     }
 

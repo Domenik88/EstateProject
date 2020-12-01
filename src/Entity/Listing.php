@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=ListingRepository::class)
  * @ORM\Table(name="listing",
  *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_state_or_province_idx", columns={"mls_num", "feed_id", "state_or_province"}, options={"where": "((state_or_province IS NOT NULL) AND ((status)::text = 'live'::text) AND (mls_num IS NOT NULL))"}),
+ *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_state_or_province_idx", columns={"mls_num", "feed_id", "state_or_province"}, options={"where": "((state_or_province IS NOT NULL) AND ((status)::text = 'live'::text) AND (mls_num IS NOT NULL) AND (deleted_date IS NULL))"}),
  *          @ORM\UniqueConstraint(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})
  *     },
  * )
