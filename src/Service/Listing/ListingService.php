@@ -75,7 +75,8 @@ class ListingService
     {
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
-            'feedListingID' => $result['ListingKey']
+            'feedListingID' => $result['ListingKey'],
+            'deletedDate' => null,
         ]);
         if ( !$existingListing ) {
             return $this->createFromDdfResult($result);
@@ -117,6 +118,7 @@ class ListingService
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
             'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
+            'deletedDate' => null,
         ],
             null,
             $limit,
@@ -133,6 +135,7 @@ class ListingService
             'stateOrProvince' => $province,
             'mlsNum' => $mlsNum,
             'feedID' => $feedName,
+            'deletedDate' => null,
             'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
         ]);
     }
@@ -141,6 +144,7 @@ class ListingService
     {
         return $this->listingRepository->count([
             'feedID' => $feedName,
+            'deletedDate' => null,
             'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
         ]);
     }
@@ -149,6 +153,7 @@ class ListingService
     {
         return $this->listingRepository->findBy([
             'feedID' => $feedName,
+            'deletedDate' => null,
             'status' => [ ListingConstants::NEW_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
             'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
         ], [ 'lastUpdateFromFeed' => 'ASC' ], $batchSize);
@@ -192,6 +197,7 @@ class ListingService
         $existingListing = $this->listingRepository->findOneBy([
             'feedID' => 'ddf',
             'feedListingID' => $listing->getFeedListingID(),
+            'deletedDate' => null,
         ]);
         $existingListing->setImagesData($photoNamesArray);
 
@@ -200,11 +206,12 @@ class ListingService
         return $existingListing;
     }
 
-    public function setListingCoordinates(Listing $listing, Point $point)
+    public function setListingCoordinates(Listing $listing, Point $point): Listing
     {
         $existingListing = $this->listingRepository->findOneBy([
             'mlsNum' => $listing->getMlsNum(),
             'feedListingID' => $listing->getFeedListingID(),
+            'deletedDate' => null,
         ]);
         $existingListing->setCoordinates($point);
 
@@ -228,6 +235,7 @@ class ListingService
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
             'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
+            'deletedDate' => null,
         ],
             null,
             $limit,
@@ -240,79 +248,4 @@ class ListingService
         return $this->listingRepository->getAllListingsInMapBox($neLat, $neLng, $swLat, $swLng);
     }
 
-    public function getListingDaysOnTheMarket($listingContractDate)
-    {
-        return date_diff(new DateTime(), new DateTime($listingContractDate))->days;
-    }
-
-    public function getListingLotSize(Listing $listing): ?int
-    {
-        if (!is_null($listing->getLotSize()) || $listing->getLotSize() != 0) {
-            return (int)$listing->getLotSize();
-        }
-
-        return null;
-    }
-
-    public function getListingBuildingAreaTotal(Listing $listing): ?int
-    {
-        if (!is_null($listing->getLivingArea()) || $listing->getLivingArea() != 0) {
-            return (int)$listing->getLivingArea();
-        }
-
-        return null;
-    }
-
-    public function getSingleListingCoordinatesObject(Listing $listing): object
-    {
-        return (object)[
-            'lat' => $listing->getCoordinates()->getLatitude(),
-            'lng' => $listing->getCoordinates()->getLongitude(),
-        ];
-    }
-
-    public function getListingAddressObject(Listing $listing): object
-    {
-        return (object)[
-            'country' => $listing->getCountry(),
-            'state' => $listing->getStateOrProvince(),
-            'city' => $listing->getCity(),
-            'postalCode' => $listing->getPostalCode(),
-            'streetAddress' => $listing->getUnparsedAddress(),
-        ];
-    }
-
-    public function getListingMetricsObject(Listing $listing): object
-    {
-        return (object)[
-            'bedRooms' => $listing->getBedrooms(),
-            'bathRooms' => (int)$listing->getRawData()['BathroomsTotal'],
-            'stories' => (int)$listing->getRawData()['Stories'],
-            'lotSize' => $this->getListingLotSize($listing),
-            'lotSizeUnits' => $listing->getRawData()['LotSizeUnits'],
-            'sqrtFootage' => $this->getListingBuildingAreaTotal($listing),
-            'sqrtFootageUnits' => $listing->getRawData()['BuildingAreaUnits'],
-        ];
-    }
-
-    public function getListingFinancialsObject(Listing $listing): object
-    {
-        return (object)[
-            'listingPrice' => $listing->getListPrice(),
-            'strataMaintenanceFee' => 'N/A',
-            'grossTaxes' => 'N/A',
-            'grossTaxYear' => 'N/A',
-            'originalListingPrice' => $listing->getListPrice(),
-        ];
-    }
-
-    public function getListingAgentObject(Listing $listing): object
-    {
-        return (object)[
-            'agentFullName' => $listing->getRawData()['ListAgentFullName'],
-            'agencyName' => $listing->getRawData()['ListOfficeName'],
-            'agentPhone' => $listing->getRawData()['ListAgentOfficePhone'],
-            'agentEmail' => $listing->getRawData()['ListAgentEmail'],
-        ];
-    }
 }
