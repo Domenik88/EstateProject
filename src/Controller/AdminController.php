@@ -74,7 +74,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_show", methods={"GET"}, defaults={"title":"Show user"})
+     * @Route("/{id}", name="admin_show", methods={"GET"}, defaults={"title":"Show user"}, requirements={"id"="\d+"})
      */
     public function show(Admin $admin, Request $request): Response
     {
@@ -85,7 +85,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="admin_edit", methods={"GET","POST"}, defaults={"title":"Edit user"})
+     * @Route("/{id}/edit", name="admin_edit", methods={"GET","POST"}, defaults={"title":"Edit user"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Admin $admin, AdminUserService $adminUserService): Response
     {
@@ -106,7 +106,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_delete", methods={"DELETE"}, defaults={"title":"Delete user"})
+     * @Route("/{id}", name="admin_delete", methods={"DELETE"}, defaults={"title":"Delete user"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, Admin $admin, AdminUserService $adminUserService): Response
     {
