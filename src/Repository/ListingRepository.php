@@ -63,10 +63,11 @@ class ListingRepository extends ServiceEntityRepository
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
+            return [];
         }
     }
 
-    public function getSimilarListings(string $type, string $ownershipType, int $bedRooms, array $livingAreaRange, array $lotSizeRange, ?array $yearBuiltRange, object $coordinates, string $mlsNum)
+    public function getSimilarListings(?string $type, ?string $ownershipType, ?int $bedRooms, ?array $livingAreaRange, ?array $lotSizeRange, ?array $yearBuiltRange, ?object $coordinates, ?string $mlsNum): array
     {
         try {
             $this->latitude = $coordinates->lat;
@@ -75,12 +76,18 @@ class ListingRepository extends ServiceEntityRepository
             $params = [];
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-            $sqlArray[] = 'type = :propertyType';
-            $params['propertyType'] = $type;
-            $sqlArray[] = 'ownership_type = :ownershipType';
-            $params['ownershipType'] = $ownershipType;
-            $sqlArray[] = 'bedrooms = :bedroomsCount';
-            $params['bedroomsCount'] = $bedRooms;
+            if ($type) {
+                $sqlArray[] = 'type = :propertyType';
+                $params[ 'propertyType' ] = $type;
+            }
+            if ($ownershipType) {
+                $sqlArray[] = 'ownership_type = :ownershipType';
+                $params[ 'ownershipType' ] = $ownershipType;
+            }
+            if (isset($bedRooms)) {
+                $sqlArray[] = 'bedrooms = :bedroomsCount';
+                $params[ 'bedroomsCount' ] = $bedRooms;
+            }
             if ($livingAreaRange) {
                 $sqlArray[] = 'living_area <@ int4range(:livingAreaFrom,:livingAreaTo)';
                 $params['livingAreaFrom'] = $livingAreaRange[0];
@@ -97,8 +104,10 @@ class ListingRepository extends ServiceEntityRepository
                 $params['yearBuiltTo'] = $yearBuiltRange[1];
             }
             $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
-            $sqlArray[] = 'mls_num != :mlsNumber';
-            $params['mlsNumber'] = $mlsNum;
+            if (isset($mlsNum)) {
+                $sqlArray[] = 'mls_num != :mlsNumber';
+                $params[ 'mlsNumber' ] = $mlsNum;
+            }
             $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
             if (!empty($sqlArray)){
                 $sql .= ' and ' . implode(' and ', $sqlArray);
@@ -111,6 +120,7 @@ class ListingRepository extends ServiceEntityRepository
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
+            return [];
         }
     }
 
