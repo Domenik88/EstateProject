@@ -38,7 +38,7 @@ class ListingSearchDataService
             'metrics'               => $this->getListingMetricsObject($listing),
             'financials'            => $this->getListingFinancialsObject($listing),
             'listingAgent'          => $this->getListingAgentObject($listing),
-            'listingSeoDescription' => $this->getListingSeoDescription($listing),
+            'ListingSeo' => $this->getListingSeoObject($listing),
         ];
         return $listingObject;
     }
@@ -119,74 +119,206 @@ class ListingSearchDataService
         ];
     }
 
+    private function getListingSeoObject(Listing $listing): object
+    {
+        return (object)[
+            'browserTitle' => '',
+            'pageTitle' => '',
+            'metaKeywords' => '',
+            'metaDescription' => '',
+            'description' => $this->getListingSeoDescription($listing),
+            'sitemapDescription' => '',
+        ];
+    }
+
     private function getListingSeoDescription(Listing $listing): string
     {
-        $seoDescriptionNotParsed = "[AddressFull] is a [SubType] that currently for sale for $[ListPrice] with [Beds] bedrooms and [Baths] bathrooms, with [FloorArea] sq.ft living area. It was built in [YearBuilt]. It was listed in MLS® under # [MLS] and available for [DayOnMarket] days on Estateblock.com. This listing is located in [Subdivision].
+        $shortCodesData = [
+            'AddressFull' => $listing->getFullAddress(),
+            'SubType' => '',
+            'ListPrice' => '',
+            'Beds' => $listing->getBedrooms(),
+            'Baths' => '',
+            'FloorArea' => $listing->getLivingArea(),
+            'YearBuilt' => $listing->getYearBuilt(),
+            'MLS' => $listing->getMlsNum(),
+            'DayOnMarket' => '',
+            'Subdivision' => '',
+            'SubAreaCommunity' => '',
+            'Area' => '',
+            'Condos' => '',
+            'BuildingText' => '',
+            'LblPrice' => '',
+            'MedianListCityPrice' => '',
+            'MedianCityPriceStatus' => '',
+            'MedianListNeighbourhoodPrice' => '',
+            'MedianCommPriceStatus' => '',
+            'PublicSchLbl' => '',
+            'ElementarySchoolname' => '',
+            'ElementryDistance' => '',
+            'ElementryRate' => '',
+            'SecondarySchoolName' => '',
+            'SecondaryDistance' => '',
+            'SecondaryRating' => '',
+            'PrivateSchLbl' => '',
+            'ClosesteleIndSchool' => '',
+            'SchoolRating' => '',
+            'IndSchDistance' => '',
+            'ClosestSecPrivateSchool' => '',
+            'PrivateSchoolRating' => '',
+            'SecPrivateSchDistance' => '',
+            'TotalCrimeLbl' => '',
+            'AllIncidents' => '',
+            'AllRate' => '',
+            'AllRating' => '',
+            'DrugCrimeLbl' => '',
+            'DrugRating' => '',
+            'DrugRate' => '',
+            'DrugIncidents' => '',
+            'PropertyCrimeLbl' => '',
+            'PropertyRating' => '',
+            'PropertyRate' =>'',
+            'PropertyIncidents' => '',
+            'ViolentCrimeLbl' => '',
+            'ViolentIncidents' => '',
+            'ViolentRate' => '',
+            'ViolentRating' => '',
+            'TransitLbl' => '',
+            'Start Condition' => '',
+            'SkytrainStationName' => '',
+            'SkytrainStationLine' => '',
+            'SkytrainDistance' => '',
+            'End Condition' => '',
+            'BusStationName' => '',
+            'BusDistance' => '',
+            'EducationLbl' => '',
+            'TotalPeopleWithDegree' => '',
+            'DemographicsArea' => '',
+            'DegreeStatus' => '',
+            'TotalPeopleWithoutDegree' => '',
+            'NoDegreeStatus' => '',
+            'IncomeLbl' => '',
+            'MedianHouseHoldIncome' => '',
+            'MedianIncomeStatus' => '',
+            'UnemploymentLbl' => '',
+            'UnemploymentRate' => '',
+            'UnemploymentStatus' => '',
+            'DaycaresLbl' => '',
+            'ClosestDaycareNoViolations' => '',
+            'ClosestDaycareNoViolationsDistance' => '',
+            'ClimateLbl' => '',
+            'ClosestWeatherStation' => '',
+            'ClosestWeatherStationDistance' => '',
+            'ClosestWeatherStationElevation' => '',
+            'ClosestWeatherStationTemperature' => '',
+            'ClosestWeatherStationTemperatureStatus' => '',
+            'ClosestWeatherStationRainfallRate' => '',
+            'ClosestWeatherStationRainfallStatus' => '',
+            'ClosesWeatherStationSnowfallRate' => '',
+            'ClosesWeatherStationSnowFallStatus' => '',
+            'BusStopDistance' => '',
+            'FloodAreaLbl' => '',
+            'Street' => '',
+            'FloodStatus' => '',
+            'SkytrainNoiseLbl' => '',
+            'SkytrainNoise' => '',
+            'RoadNoiseLbl' => '',
+            'RoadNoise' => '',
+            'AirportNoiseLbl' => '',
+            'AirportNoise' => '',
+            'PowerLinesLbl' => '',
+            'PowerLines' => '',
+            'CemeteriesLbl' => '',
+            'Cemeteries' => '',
+            'ALRLbl' => '',
+            'ALRStatus' => '',
+            'PopulationChangeLbl' => '',
+            'PopulationChange' => '',
+            'PopulationChangeStatus' => '',
+            'AverageChildrenLbl' => '',
+            'ChildrenRate' => '',
+            'ChildrenStatus' => '',
+            'MedianAgeLbl' => '',
+            'MedianAgeRate' => '',
+            'MedianAgeStatus' => '',
+            'PopulationDensityLbl' => '',
+            'PopulationDensityStatus' => '',
+            'PopulationDensityRate' => '',
+            'AverageOwnerPaymentsLbl' => '',
+            'AverageOwnerPaymentsStatus' => '',
+            'AverageOwnerPaymentsCount' => '',
+            'TransportLbl' => '',
+            'PublicTransportRate' => '',
+            'WalkingBicycleRate' => '',
+        ];
+        $seoDescription = "[AddressFull] is a [SubType] that currently for sale for $[ListPrice] with [Beds] bedrooms and [Baths] bathrooms, with [FloorArea] sq.ft living area. It was built in [YearBuilt]. It was listed in MLS® under # [MLS] and available for [DayOnMarket] days on Estateblock.com. This listing is located in [Subdivision].
+                            [SubType] for sale is situated in [SubAreaCommunity] in [Area].
+                            [Condos|BuildingText]
+                            [LblPrice] The Median List price for the property is [MedianListCityPrice]% [MedianCityPriceStatus] than comparables in the city and [MedianListNeighbourhoodPrice]% [MedianCommPriceStatus] than similar homes in the neighbourhood. 
+                            ~~~~~
+                            [PublicSchLbl] This home is serviced by [ElementarySchoolname]. The property is located [ElementryDistance] km from the school. [ElementarySchoolname] has a rating of [ElementryRate]/10. This home is also serviced by [SecondarySchoolName] and located [SecondaryDistance] km from it. [SecondarySchoolName] has a rating of [SecondaryRating]/10.
+                            
+                            [PrivateSchLbl] The closest elementary independent school with good rating is [ClosesteleIndSchool]. The School's rating is [SchoolRating]/10 and it is located [IndSchDistance] km.
+                            
+                            The closest Secondary Private School with good rating is [ClosestSecPrivateSchool]. The School's rating is [PrivateSchoolRating]/10. The school is located [SecPrivateSchDistance] km from it.
+                            
+                            [TotalCrimeLbl]  The freshest crime data for BC municipalities from Statistics Canada are from 2015. There were [AllIncidents] crime incidents excluding traffic incidents.  The overall crime rate (excluding traffic) is [AllRate]. Rate is the amount of incidents per 100,000 population.  Comparing to other South West BC cities it has a [AllRating] rate in 2015.
+                             
+                            [DrugCrimeLbl] Drug crime rate is [DrugRating] comparing to other neighbourhoods. The drug crime rate is [DrugRate]. This is the amount of drug crime incidents per 100,000 population.  There were [DrugIncidents] drug crime incidents in this city in 2015.
+                              
+                            [PropertyCrimeLbl] Property crimes are [PropertyRating] in the city. Property crime rate is [PropertyRate] which is [PropertyRating] in comparison to other Lower Mainland and surroundings. There were [PropertyIncidents] in the neighbourhood in 2015. 
+                            
+                            [ViolentCrimeLbl] There were [ViolentIncidents] violent crime incidents in 2015. The violent crime rate per 100,000 population was [ViolentRate] and it is [ViolentRating] rate comparing to other BC municipalities.
+                            
+                            [TransitLbl] [Start Condition]The closest Skytrain/Railway station is [SkytrainStationName] on [SkytrainStationLine] line in [SkytrainDistance] km away. [End Condition]The closest Bus station is [BusStationName] in [BusDistance] km away.
+                            
+                            [EducationLbl] [TotalPeopleWithDegree]% of people with university certificate/degree live in [DemographicsArea] which is [DegreeStatus] in comparison with the Lower Mainland average. [TotalPeopleWithoutDegree]% of population in [DemographicsArea] have no certificate or degree. This number is [NoDegreeStatus] compared to the average in Metro Vancouver and Fraser Valley.
+                            
+                            [IncomeLbl] Median Household Income near this dwelling in [DemographicsArea] is [MedianHouseHoldIncome] which is [MedianIncomeStatus] in comparison with the Lower Mainland average.
+                            
+                            [UnemploymentLbl] Unemployment rate in the area around Listing # [MLS] is [UnemploymentRate] which is [UnemploymentStatus] in comparison to the other Lower Mainland neighbourhoods.
+                            
+                            [DaycaresLbl] The closest daycare without violation is [ClosestDaycareNoViolations]. And it is in [ClosestDaycareNoViolationsDistance]km away.
+                            
+                            [ClimateLbl] The closest weather station is [ClosestWeatherStation]. It is located [ClosestWeatherStationDistance]km away. Weather station elevation is [ClosestWeatherStationElevation]m.  
+                            
+                            Daily average temperature around this station is [ClosestWeatherStationTemperature]C which is [ClosestWeatherStationTemperatureStatus] compared to the  local average. 
+                            
+                            Rainfall is about [ClosestWeatherStationRainfallRate]mm yearly which is [ClosestWeatherStationRainfallStatus] compared to the local averages.
+                            
+                            Snowfall is [ClosesWeatherStationSnowfallRate]mm yearly. This number is [ClosesWeatherStationSnowFallStatus] compared to other local neighbourhoods.
+                            
+                            The closest bus station is [BusStopDistance] km away.
+                            
+                            [FloodAreaLbl]  According to an official flood area map [Street] home for sale [FloodStatus] . This information is for general informational purposes only. You should not use such information in determining the chances of this house being flooded. 
+                            
+                            [SkytrainNoiseLbl] This listing is [SkytrainNoise].
+                            
+                            [RoadNoiseLbl] This home [RoadNoise].
+                            
+                            [AirportNoiseLbl] This area [AirportNoise].
+                            
+                            [PowerLinesLbl] It is [PowerLines].
+                            
+                            [CemeteriesLbl] It is [Cemeteries].
+                            
+                            [ALRLbl] It [ALRStatus].
+                            
+                            [PopulationChangeLbl] This real estate is located in [Subdivision] where population change between 2006 and 2011 was [PopulationChange]. This is [PopulationChangeStatus] in comparison to average growth rate of this region.
+                            
+                            [AverageChildrenLbl]  Average Number of Children in [Subdivision] is [ChildrenRate]. This is [ChildrenStatus] number in comparison to the whole region.
+                            
+                            [MedianAgeLbl]  [MedianAgeRate]% of population in this area is 65 and over. This percentage is [MedianAgeStatus] in comparison to other BC cities.
+                            
+                            [PopulationDensityLbl]  Population Density is [PopulationDensityStatus]. [PopulationDensityRate] people per sq.km. 
+                            
+                            [AverageOwnerPaymentsLbl]  Average Owner payments are [AverageOwnerPaymentsStatus] in this area. $[AverageOwnerPaymentsCount] owners spent in average for the dwelling.
+                            
+                            [TransportLbl]  [PublicTransportRate]% of all population in the area around this real estate using Public Transport and only [WalkingBicycleRate]% walking and using bicycle.";
 
-[SubType] for sale is situated in [SubAreaCommunity] in [Area].
-[Condos|BuildingText]
-[LblPrice] The Median List price for the property is [MedianListCityPrice]% [MedianCityPriceStatus] than comparables in the city and [MedianListNeighbourhoodPrice]% [MedianCommPriceStatus] than similar homes in the neighbourhood. 
-~~~~~
-[PublicSchLbl] This home is serviced by [ElementarySchoolname]. The property is located [ElementryDistance] km from the school. [ElementarySchoolname] has a rating of [ElementryRate]/10. This home is also serviced by [SecondarySchoolName] and located [SecondaryDistance] km from it. [SecondarySchoolName] has a rating of [SecondaryRating]/10.
-
-[PrivateSchLbl] The closest elementary independent school with good rating is [ClosesteleIndSchool]. The School's rating is [SchoolRating]/10 and it is located [IndSchDistance] km.
-
-The closest Secondary Private School with good rating is [ClosestSecPrivateSchool]. The School's rating is [PrivateSchoolRating]/10. The school is located [SecPrivateSchDistance] km from it.
-
-[TotalCrimeLbl]  The freshest crime data for BC municipalities from Statistics Canada are from 2015. There were [AllIncidents] crime incidents excluding traffic incidents.  The overall crime rate (excluding traffic) is [AllRate]. Rate is the amount of incidents per 100,000 population.  Comparing to other South West BC cities it has a [AllRating] rate in 2015.
- 
-[DrugCrimeLbl] Drug crime rate is [DrugRating] comparing to other neighbourhoods. The drug crime rate is [DrugRate]. This is the amount of drug crime incidents per 100,000 population.  There were [DrugIncidents] drug crime incidents in this city in 2015.
-  
-[PropertyCrimeLbl] Property crimes are [PropertyRating] in the city. Property crime rate is [PropertyRate] which is [PropertyRating] in comparison to other Lower Mainland and surroundings. There were [PropertyIncidents] in the neighbourhood in 2015. 
-
-[ViolentCrimeLbl] There were [ViolentIncidents] violent crime incidents in 2015. The violent crime rate per 100,000 population was [ViolentRate] and it is [ViolentRating] rate comparing to other BC municipalities.
-
-[TransitLbl] [Start Condition]The closest Skytrain/Railway station is [SkytrainStationName] on [SkytrainStationLine] line in [SkytrainDistance] km away. [End Condition]The closest Bus station is [BusStationName] in [BusDistance] km away.
-
-[EducationLbl] [TotalPeopleWithDegree]% of people with university certificate/degree live in [DemographicsArea] which is [DegreeStatus] in comparison with the Lower Mainland average. [TotalPeopleWithoutDegree]% of population in [DemographicsArea] have no certificate or degree. This number is [NoDegreeStatus] compared to the average in Metro Vancouver and Fraser Valley.
-
-[IncomeLbl] Median Household Income near this dwelling in [DemographicsArea] is [MedianHouseHoldIncome] which is [MedianIncomeStatus] in comparison with the Lower Mainland average.
-
-[UnemploymentLbl] Unemployment rate in the area around Listing # [MLS] is [UnemploymentRate] which is [UnemploymentStatus] in comparison to the other Lower Mainland neighbourhoods.
-
-[DaycaresLbl] The closest daycare without violation is [ClosestDaycareNoViolations]. And it is in [ClosestDaycareNoViolationsDistance]km away.
-
-[ClimateLbl] The closest weather station is [ClosestWeatherStation]. It is located [ClosestWeatherStationDistance]km away. Weather station elevation is [ClosestWeatherStationElevation]m.  
-
-Daily average temperature around this station is [ClosestWeatherStationTemperature]C which is [ClosestWeatherStationTemperatureStatus] compared to the  local average. 
-
-Rainfall is about [ClosestWeatherStationRainfallRate]mm yearly which is [ClosestWeatherStationRainfallStatus] compared to the local averages.
-
-Snowfall is [ClosesWeatherStationSnowfallRate]mm yearly. This number is [ClosesWeatherStationSnowFallStatus] compared to other local neighbourhoods.
-
-The closest bus station is [BusStopDistance] km away.
-
-[FloodAreaLbl]  According to an official flood area map [Street] home for sale [FloodStatus] . This information is for general informational purposes only. You should not use such information in determining the chances of this house being flooded. 
-
-[SkytrainNoiseLbl] This listing is [SkytrainNoise].
-
-[RoadNoiseLbl] This home [RoadNoise].
-
-[AirportNoiseLbl] This area [AirportNoise].
-
-[PowerLinesLbl] It is [PowerLines].
-
-[CemeteriesLbl] It is [Cemeteries].
-
-[ALRLbl] It [ALRStatus].
-
-[PopulationChangeLbl] This real estate is located in [Subdivision] where population change between 2006 and 2011 was [PopulationChange]. This is [PopulationChangeStatus] in comparison to average growth rate of this region.
-
-[AverageChildrenLbl]  Average Number of Children in [Subdivision] is [ChildrenRate]. This is [ChildrenStatus] number in comparison to the whole region.
-
-[MedianAgeLbl]  [MedianAgeRate]% of population in this area is 65 and over. This percentage is [MedianAgeStatus] in comparison to other BC cities.
-
-[PopulationDensityLbl]  Population Density is [PopulationDensityStatus]. [PopulationDensityRate] people per sq.km. 
-
-[AverageOwnerPaymentsLbl]  Average Owner payments are [AverageOwnerPaymentsStatus] in this area. $[AverageOwnerPaymentsCount] owners spent in average for the dwelling.
-
-[TransportLbl]  [PublicTransportRate]% of all population in the area around this real estate using Public Transport and only [WalkingBicycleRate]% walking and using bicycle.";
-
-        return $seoDescriptionNotParsed;
+        foreach ($shortCodesData as $key => $value) {
+            $seoDescription = str_replace('[' . $key . ']', $value, $seoDescription);
+        }
+        return $seoDescription;
     }
 }
