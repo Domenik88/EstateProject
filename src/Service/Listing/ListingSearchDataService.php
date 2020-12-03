@@ -24,6 +24,7 @@ class ListingSearchDataService
     public function constructSearchListingData(Listing $listing): object
     {
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
+        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getRawData()['ListingContractDate']);
 
         $listingObject = (object)[
             'yearBuilt' => $listing->getYearBuilt(),
@@ -33,12 +34,13 @@ class ListingSearchDataService
             'ownershipType' => $listing->getOwnershipType(),
             'images' => $listingImagesUrlArray,
             'coordinates' => $this->getSingleListingCoordinatesObject($listing),
-            'daysOnTheMarket' => $this->getListingDaysOnTheMarket($listing->getRawData()['ListingContractDate']),
+            'daysOnTheMarket' => $daysOnTheMarket,
             'description' => $listing->getRawData()['PublicRemarks'],
             'address' => $this->getListingAddressObject($listing),
             'metrics' => $this->getListingMetricsObject($listing),
             'financials' => $this->getListingFinancialsObject($listing),
             'listingAgent' => $this->getListingAgentObject($listing),
+            'isNew' => $daysOnTheMarket <= 3,
         ];
 
         return $listingObject;
