@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-gd": "*",
+        "ext-http": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-xmlwriter": "*",
@@ -19,6 +20,7 @@
         "geocoder-php/chain-provider": "^4.2",
         "geocoder-php/google-maps-provider": "^4.5",
         "geocoder-php/here-provider": "^0.4.0",
+        "izica/php-progressive-images-webp-jp2-jxr": "^1.2",
         "php-http/guzzle7-adapter": "^0.1.0",
         "php-http/message": "^1.9",
         "phpdocumentor/reflection-docblock": "^5.2",
@@ -51,8 +53,7 @@
         "symfony/yaml": "5.1.*",
         "troydavisson/phrets": "^2.6",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "ext-http": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "symfony/browser-kit": "^5.1",
