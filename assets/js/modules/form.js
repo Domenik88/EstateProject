@@ -35,7 +35,7 @@ jQuery(function($) {
         init_cache: function(options) {
             this.options = this.init_options();
             this.$input_phone = $('.userphone');
-            this.$form = $('form:not(.js-no-ajax):not(.js-add-to-request-from)');
+            this.$form = $('.js-ajax-form');
             this.$file_input = $('.js-file-input');
         },
         
