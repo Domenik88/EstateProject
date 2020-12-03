@@ -1,0 +1,28 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello AdminSeoController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+    <div class="content-wrapper">
+        <h1>Hello {{ controller_name }}! ✅</h1>
+
+
+        This friendly message is coming from:
+        <ul>
+            <li>Your controller at <code><a
+                            href="{{ '/mount/space-1/.user/domains/estateblock20/src/Controller/AdminSeoController.php'|file_link(0) }}">src/Controller/AdminSeoController.php</a></code>
+            </li>
+            <li>Your template at <code><a
+                            href="{{ '/mount/space-1/.user/domains/estateblock20/templates/admin_seo/index.html.twig'|file_link(0) }}">templates/admin_seo/index.html.twig</a></code>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
