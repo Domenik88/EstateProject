@@ -24,22 +24,26 @@ class ListingSearchDataService
     public function constructSearchListingData(Listing $listing): object
     {
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
+        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getRawData()['ListingContractDate']);
+
         $listingObject = (object)[
-            'yearBuilt'             => $listing->getYearBuilt(),
-            'mlsNumber'             => $listing->getMlsNum(),
-            'feedId'                => $listing->getFeedID(),
-            'type'                  => $listing->getType(),
-            'ownershipType'         => $listing->getOwnershipType(),
-            'images'                => $listingImagesUrlArray,
-            'coordinates'           => $this->getSingleListingCoordinatesObject($listing),
-            'daysOnTheMarket'       => $this->getListingDaysOnTheMarket($listing->getRawData()[ 'ListingContractDate' ]),
-            'description'           => $listing->getRawData()[ 'PublicRemarks' ],
-            'address'               => $this->getListingAddressObject($listing),
-            'metrics'               => $this->getListingMetricsObject($listing),
-            'financials'            => $this->getListingFinancialsObject($listing),
-            'listingAgent'          => $this->getListingAgentObject($listing),
-            'ListingSeo' => $this->getListingSeoObject($listing),
+            'yearBuilt' => $listing->getYearBuilt(),
+            'mlsNumber' => $listing->getMlsNum(),
+            'feedId' => $listing->getFeedID(),
+            'type' => $listing->getType(),
+            'ownershipType' => $listing->getOwnershipType(),
+            'images' => $listingImagesUrlArray,
+            'coordinates' => $this->getSingleListingCoordinatesObject($listing),
+            'daysOnTheMarket' => $daysOnTheMarket,
+            'description' => $listing->getRawData()['PublicRemarks'],
+            'address' => $this->getListingAddressObject($listing),
+            'metrics' => $this->getListingMetricsObject($listing),
+            'financials' => $this->getListingFinancialsObject($listing),
+            'listingAgent' => $this->getListingAgentObject($listing),
+            'isNew' => $daysOnTheMarket <= 3,
+            'listingSeo' => $this->getListingSeoObject($listing),
         ];
+
         return $listingObject;
     }
 
@@ -74,6 +78,7 @@ class ListingSearchDataService
         if ( !is_null($listing->getLotSize()) || $listing->getLotSize() != 0 ) {
             return (int)$listing->getLotSize();
         }
+
         return null;
     }
 
@@ -82,6 +87,7 @@ class ListingSearchDataService
         if ( !is_null($listing->getLivingArea()) || $listing->getLivingArea() != 0 ) {
             return (int)$listing->getLivingArea();
         }
+
         return null;
     }
 
