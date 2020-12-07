@@ -19,30 +19,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewingController extends AbstractController
 {
     /**
-     * @Route("/viewing/new", name="new_viewing", methods={"GET","POST"})
+     * @Route("/viewing/new", name="new_viewing", methods={"POST"})
      */
     public function index(Request $request, ViewingService $viewingService)
     {
-        $arr = json_encode([
-            'name' => 'Fabien',
-            'phone' => '+71234567890',
-            'email' => 'user@example.com',
-            'listingId' => '225723441',
-        ]);
+        if(!$request->isXmlHttpRequest())
+        {
+            throw new NotFoundHttpException();
+        }
 
-        $request = Request::create(
-            '/viewing/new',
-            'POST',
-            ['data' => $arr],
-        );
-//        if(!$request->isXmlHttpRequest())
-//        {
-//            throw new NotFoundHttpException();
-//        }
-
-        $responseData = $viewingService->createViewing($request);
+        $responseData = $viewingService->createViewing($request->request->get('formData'));
         $response = new JsonResponse();
-        $response->setData($responseData);
+        $response->setData(json_encode($responseData));
         return $response;
     }
 

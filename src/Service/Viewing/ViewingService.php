@@ -16,7 +16,6 @@ use App\Repository\ListingRepository;
 use App\Repository\UserRepository;
 use App\Repository\ViewingRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ViewingService
@@ -36,27 +35,31 @@ class ViewingService
         $this->encoder = $encoder;
     }
 
-    public function createViewing(Request $request): ?Viewing
+    public function createViewing(string $request): ViewingResponseStatusCode
     {
-        $formData = json_decode($request->request->get('data'));
-        $user = $this->getUser($formData);
-        $listing = $this->getListing($formData);
-
-        $viewing = new Viewing();
-        $viewing->setUser($user);
-        $viewing->setListing($listing);
-        $viewing->setStatus('new');
-
-        $this->entityManager->persist($viewing);
-        $this->entityManager->flush();
-
-        return $viewing;
+        try {
+            $formData = json_decode($request);
+            $user = $this->getUser($formData);
+            $listing = $this->getListing($formData->listingId->value);
+            if ( !$listing ) {
+                return new ViewingResponseStatusCode(404, 'Listing not found');
+            }
+            $viewing = new Viewing();
+            $viewing->setUser($user);
+            $viewing->setListing($listing);
+            $viewing->setStatus('new');
+            $this->entityManager->persist($viewing);
+            $this->entityManager->flush();
+            return new ViewingResponseStatusCode(201, 'Viewing created');
+        } catch (\Exception $e) {
+            return new ViewingResponseStatusCode(500, $e->getMessage());
+        }
     }
 
     private function getUser($userData)
     {
         $user = $this->userRepository->findOneBy([
-            'email' => $userData->email
+            'email' => $userData->email->value
         ]);
         if ( !$user ) {
             return $this->createUserFromData($userData);
@@ -67,11 +70,11 @@ class ViewingService
     private function createUserFromData($formData): User
     {
         $user = new User();
-        $user->setEmail($formData->email);
-        $user->setName($formData->name);
-        $user->setPhoneNumber($formData->phone);
+        $user->setEmail($formData->email->value);
+        $user->setName($formData->uname->value);
+        $user->setPhoneNumber($formData->phone->value);
         $user->setRoles(["ROLE_USER"]);
-        $user->setPassword($this->encoder->encodePassword($user, $formData->phone));
+        $user->setPassword($this->encoder->encodePassword($user, $formData->phone->value));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -79,14 +82,15 @@ class ViewingService
         return $user;
     }
 
-    private function getListing($formData): Listing
+    private function getListing($listingId): ?Listing
     {
         $listing = $this->listingRepository->findOneBy([
-            'feedListingID' => $formData->listingId
+            'feedListingID' => $listingId
         ]);
         if ( !$listing ) {
-            throw new \Exception("Listing with id: $formData->listingId not found!");
+            return null;
         }
         return $listing;
     }
+
 }
