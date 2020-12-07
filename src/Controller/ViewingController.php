@@ -9,10 +9,11 @@
 
 namespace App\Controller;
 
+use App\Service\Viewing\ViewingFormDataFormatter;
 use App\Service\Viewing\ViewingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,17 +22,17 @@ class ViewingController extends AbstractController
     /**
      * @Route("/viewing/new", name="new_viewing", methods={"POST"})
      */
-    public function index(Request $request, ViewingService $viewingService)
+    public function index(Request $request, ViewingService $viewingService): Response
     {
         if(!$request->isXmlHttpRequest())
         {
             throw new NotFoundHttpException();
         }
 
-        $responseData = $viewingService->createViewing($request->request->get('formData'));
-        $response = new JsonResponse();
-        $response->setData(json_encode($responseData));
-        return $response;
+        $formData = json_decode($request->request->get('formData'));
+        $responseData = $viewingService->createViewing(new ViewingFormDataFormatter($formData->uname->value,$formData->email->value,$formData->phone->value,$formData->listingId->value,));
+
+        return $this->json($responseData,$responseData->statusCode);
     }
 
 }

@@ -7,12 +7,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ViewingRepository::class)
+ * @ORM\Table(name="viewing",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="viewing_user_idx", columns={"user_id"}),
+ *          @ORM\UniqueConstraint(name="viewing_listing_idx", columns={"listing_id"})
+ *     },
+ * )
  */
 class Viewing
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -30,7 +36,7 @@ class Viewing
     private $listing;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="text")
      */
     private $status;
 
