@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -38,6 +40,26 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $phoneNumber;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Viewing::class, mappedBy="user")
+     */
+    private $viewings;
+
+    public function __construct()
+    {
+        $this->viewings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -115,5 +137,59 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Viewing[]
+     */
+    public function getViewings(): Collection
+    {
+        return $this->viewings;
+    }
+
+    public function addViewing(Viewing $viewing): self
+    {
+        if (!$this->viewings->contains($viewing)) {
+            $this->viewings[] = $viewing;
+            $viewing->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewing(Viewing $viewing): self
+    {
+        if ($this->viewings->removeElement($viewing)) {
+            // set the owning side to null (unless already changed)
+            if ($viewing->getUser() === $this) {
+                $viewing->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ListingRepository;
 use App\Service\Geo\Point;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -139,6 +141,16 @@ class Listing
      * @ORM\Column(type="integer", nullable=true)
      */
     private $yearBuilt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Viewing::class, mappedBy="listing")
+     */
+    private $viewings;
+
+    public function __construct()
+    {
+        $this->viewings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -448,6 +460,36 @@ class Listing
     public function setYearBuilt(?int $yearBuilt): self
     {
         $this->yearBuilt = $yearBuilt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Viewing[]
+     */
+    public function getViewings(): Collection
+    {
+        return $this->viewings;
+    }
+
+    public function addViewing(Viewing $viewing): self
+    {
+        if (!$this->viewings->contains($viewing)) {
+            $this->viewings[] = $viewing;
+            $viewing->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewing(Viewing $viewing): self
+    {
+        if ($this->viewings->removeElement($viewing)) {
+            // set the owning side to null (unless already changed)
+            if ($viewing->getListing() === $this) {
+                $viewing->setListing(null);
+            }
+        }
 
         return $this;
     }
