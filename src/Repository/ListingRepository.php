@@ -48,7 +48,7 @@ class ListingRepository extends ServiceEntityRepository
         $rsm = new ResultSetMapping();
         $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) 
                 select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status 
-                from listing_master lm on conflict (feed_id,feed_listing_id) do nothing",$rsm)->execute();
+                from listing_master lm on conflict (feed_id,feed_listing_id) do update set last_update_from_feed = excluded.last_update_from_feed",$rsm)->execute();
     }
 
     public function getAllListingsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
