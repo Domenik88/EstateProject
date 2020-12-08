@@ -28,6 +28,7 @@ class ListingSearchDataService
         $listingObject = (object)[
             'yearBuilt'       => $listing->getYearBuilt(),
             'mlsNumber'       => $listing->getMlsNum(),
+            'listingId'       => $listing->getFeedListingID(),
             'feedId'          => $listing->getFeedID(),
             'type'            => $listing->getType(),
             'ownershipType'   => $listing->getOwnershipType(),
