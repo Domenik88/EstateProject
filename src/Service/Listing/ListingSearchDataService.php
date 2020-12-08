@@ -28,6 +28,7 @@ class ListingSearchDataService
         $listingObject = (object)[
             'yearBuilt'       => $listing->getYearBuilt(),
             'mlsNumber'       => $listing->getMlsNum(),
+            'listingId'       => $listing->getFeedListingID(),
             'feedId'          => $listing->getFeedID(),
             'type'            => $listing->getType(),
             'ownershipType'   => $listing->getOwnershipType(),
@@ -39,6 +40,7 @@ class ListingSearchDataService
             'metrics'         => $this->getListingMetricsObject($listing),
             'financials'      => $this->getListingFinancialsObject($listing),
             'listingAgent'    => $this->getListingAgentObject($listing),
+            'agent'           => $this->getAgentObject(),
             'isNew'           => $daysOnTheMarket <= 3,
             'listingSeo'      => $this->getListingSeoObject($listing),
         ];
@@ -275,6 +277,17 @@ class ListingSearchDataService
         }, $keys);
         $seoDescription = preg_replace($keys, $values, $seoDescription);
         return $seoDescription;
+    }
+
+    private function getAgentObject()
+    {
+        return (object)[
+            'agentName'  => 'Dan Marusin',
+            'agencyName' => 'Renanza Realty',
+            'agentPhone' => '778-200-2710',
+            'agentEmail' => 'vadim@estateblock.com',
+            'agentPhoto' => $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'] . '/agents/' . 'dan_marusin.jpg',
+        ];
     }
 
 }
