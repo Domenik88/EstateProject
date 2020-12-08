@@ -23,8 +23,8 @@ final class Version20201207215255 extends AbstractMigration
         $this->addSql('CREATE TABLE viewing (id SERIAL NOT NULL, user_id INT NOT NULL, listing_id INT NOT NULL, status TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX viewing_user_idx ON viewing (user_id)');
         $this->addSql('CREATE UNIQUE INDEX viewing_listing_idx ON viewing (listing_id)');
-        $this->addSql('ALTER TABLE viewing ADD CONSTRAINT FK_F5BB4698A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE viewing ADD CONSTRAINT FK_F5BB4698D4619D1A FOREIGN KEY (listing_id) REFERENCES listing (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE viewing ADD CONSTRAINT viewing_user_id_fk FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE viewing ADD CONSTRAINT viewing_listing_id_fk FOREIGN KEY (listing_id) REFERENCES listing (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE "user" ADD phone_number TEXT NOT NULL');
         $this->addSql('ALTER TABLE "user" ADD name TEXT DEFAULT NULL');
     }
