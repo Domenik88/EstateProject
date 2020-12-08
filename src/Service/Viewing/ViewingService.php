@@ -35,11 +35,11 @@ class ViewingService
         $this->encoder = $encoder;
     }
 
-    public function createViewing(ViewingFormDataFormatter $formData): ViewingResponseStatusCode
+    public function createViewing(ViewingRequestData $requestData): ViewingResponseStatusCode
     {
         try {
-            $user = $this->getOrCreateUser($formData);
-            $listing = $this->getListing($formData->listingId);
+            $user = $this->getOrCreateUser($requestData);
+            $listing = $this->getListing($requestData->getListingId());
             if ( !$listing ) {
                 return new ViewingResponseStatusCode(404, 'Listing not found');
             }
@@ -55,10 +55,10 @@ class ViewingService
         }
     }
 
-    private function getOrCreateUser($userData): User
+    private function getOrCreateUser(ViewingRequestData $userData): User
     {
         $user = $this->userRepository->findOneBy([
-            'email' => $userData->email
+            'email' => $userData->getEmail(),
         ]);
         if ( !$user ) {
             return $this->createUserFromData($userData);
@@ -66,14 +66,14 @@ class ViewingService
         return $user;
     }
 
-    private function createUserFromData($formData): User
+    private function createUserFromData(ViewingRequestData $formData): User
     {
         $user = new User();
-        $user->setEmail($formData->email);
-        $user->setName($formData->uname);
-        $user->setPhoneNumber($formData->phone);
+        $user->setEmail($formData->getEmail());
+        $user->setName($formData->getName());
+        $user->setPhoneNumber($formData->getPhone());
         $user->setRoles(["ROLE_USER"]);
-        $user->setPassword($this->encoder->encodePassword($user, $formData->phone));
+        $user->setPassword($this->encoder->encodePassword($user, $formData->getPhone()));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

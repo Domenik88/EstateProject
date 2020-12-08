@@ -9,7 +9,7 @@
 
 namespace App\Controller;
 
-use App\Service\Viewing\ViewingFormDataFormatter;
+use App\Service\Viewing\ViewingRequestData;
 use App\Service\Viewing\ViewingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,15 +24,17 @@ class ViewingController extends AbstractController
      */
     public function index(Request $request, ViewingService $viewingService): Response
     {
-        if(!$request->isXmlHttpRequest())
-        {
+        if ( !$request->isXmlHttpRequest() ) {
             throw new NotFoundHttpException();
         }
-
         $formData = json_decode($request->request->get('formData'));
-        $responseData = $viewingService->createViewing(new ViewingFormDataFormatter($formData->uname->value,$formData->email->value,$formData->phone->value,$formData->listingId->value,));
-
-        return $this->json($responseData,$responseData->statusCode);
+        $responseData = $viewingService->createViewing(new ViewingRequestData(
+            $formData->uname->value,
+            $formData->email->value,
+            $formData->phone->value,
+            $formData->listingId->value
+        ));
+        return $this->json($responseData, $responseData->statusCode);
     }
 
 }
