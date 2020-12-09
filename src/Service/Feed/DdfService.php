@@ -102,7 +102,7 @@ class DdfService
         return new MasterListItem($listItem['ListingKey'],\DateTime::createFromFormat('d/m/Y H:i:s A',$listItem['ModificationTimestamp']));
     }
 
-    public function fetchListingPhotosFromFeed(string $listingFeedId, string $destination): array
+    public function fetchListingPhotosFromFeed(string $listingFeedId, string $destination, string $listingFullAddress, string $mlsNum): array
     {
         try {
             $this->connect();
@@ -116,7 +116,7 @@ class DdfService
         $res = new XML();
         $tmp = $res->parse($result);
         $photoUrls = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
-        $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$listingFeedId);
+        $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$mlsNum,$listingFullAddress);
 
         return $photoNamesArray;
     }
