@@ -10,6 +10,7 @@
 namespace App\Service;
 
 
+use App\Service\Listing\ListingImageResizeService;
 use Curl\Curl;
 use mysql_xdevapi\Exception;
 use Psr\Log\LoggerInterface;
@@ -19,11 +20,13 @@ class CurlPhotoDownloadService
 {
     private Filesystem $filesystem;
     private LoggerInterface $logger;
+    private ListingImageResizeService $imageResizeService;
 
-    public function __construct(Filesystem $filesystem, LoggerInterface $logger)
+    public function __construct(Filesystem $filesystem, LoggerInterface $logger, ListingImageResizeService $imageResizeService)
     {
         $this->filesystem = $filesystem;
         $this->logger = $logger;
+        $this->imageResizeService = $imageResizeService;
     }
 
 
@@ -40,9 +43,12 @@ class CurlPhotoDownloadService
             try {
                 $curl->get($photoUrl);
                 $im = imagecreatefromstring($curl->getResponse());
-                $fullFileName = $destination . $baseFileName . '_' . $photosCounter . '.jpg';
-                imagejpeg($im, $fullFileName, 100);
-                $photoNamesArray[$photosCounter] = $baseFileName . '_' . $photosCounter . '.jpg';
+                $fullFileName = $destination . $baseFileName . '-' . $photosCounter . '.jpg';
+                imagejpeg($im, $fullFileName);
+                if (imagesx($im) > 1200 || imagesy($im) > 1200) {
+                    $this->imageResizeService->resizeImage($fullFileName);
+                }
+                $photoNamesArray[$photosCounter] = $baseFileName . '-' . $photosCounter . '.jpg';
                 $photosCounter++;
             } catch ( \Exception $e ) {
                 $this->logger->error($e->getMessage());

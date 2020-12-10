@@ -153,6 +153,9 @@
     "illuminate/support": {
         "version": "v7.28.1"
     },
+    "imagine/imagine": {
+        "version": "1.2.4"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
