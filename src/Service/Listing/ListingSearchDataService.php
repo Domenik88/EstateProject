@@ -91,6 +91,7 @@ class ListingSearchDataService
     {
         return (object)[
             'listingPrice'         => $listing->getListPrice(),
+            'originalPrice'        => $listing->getOriginalPrice(),
             'strataMaintenanceFee' => 'N/A',
             'grossTaxes'           => 'N/A',
             'grossTaxYear'         => 'N/A',
@@ -286,7 +287,7 @@ class ListingSearchDataService
             'agencyName' => 'Renanza Realty',
             'agentPhone' => '778-200-2710',
             'agentEmail' => 'vadim@estateblock.com',
-            'agentPhoto' => $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'] . '/agents/' . 'dan_marusin.jpg',
+            'agentPhoto' => $_ENV[ 'ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE' ] . '/agents/' . 'dan_marusin.jpg',
         ];
     }
 
