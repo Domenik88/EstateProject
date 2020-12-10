@@ -236,7 +236,7 @@ class Listing
 
     public function setUnparsedAddress(?string $unparsedAddress): self
     {
-        $this->unparsedAddress = rtrim($unparsedAddress,',');
+        $this->unparsedAddress = $unparsedAddress;
 
         return $this;
     }
