@@ -156,9 +156,6 @@
     "imagine/imagine": {
         "version": "1.2.4"
     },
-    "izica/php-progressive-images-webp-jp2-jxr": {
-        "version": "1.2"
-    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },

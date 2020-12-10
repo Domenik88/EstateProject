@@ -30,7 +30,7 @@ class CurlPhotoDownloadService
     }
 
 
-    public function photoDownload(array $photoUrls, string $destination, string $baseFileName, string $listingFullAddress): array
+    public function photoDownload(array $photoUrls, string $destination, string $baseFileName): array
     {
         $curl = new Curl();
 
@@ -43,12 +43,12 @@ class CurlPhotoDownloadService
             try {
                 $curl->get($photoUrl);
                 $im = imagecreatefromstring($curl->getResponse());
-                $fullFileName = $destination . $baseFileName . '-' . $listingFullAddress . '-' . $photosCounter . '.jpg';
-                imagejpeg($im, $fullFileName, 100);
+                $fullFileName = $destination . $baseFileName . '-' . $photosCounter . '.jpg';
+                imagejpeg($im, $fullFileName);
                 if (imagesx($im) > 1200 || imagesy($im) > 1200) {
                     $this->imageResizeService->resizeImage($fullFileName);
                 }
-                $photoNamesArray[$photosCounter] = $baseFileName . '_' . $photosCounter . '.jpg';
+                $photoNamesArray[$photosCounter] = $baseFileName . '-' . $photosCounter . '.jpg';
                 $photosCounter++;
             } catch ( \Exception $e ) {
                 $this->logger->error($e->getMessage());

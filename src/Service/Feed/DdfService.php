@@ -9,6 +9,7 @@
 
 namespace App\Service\Feed;
 
+use App\Entity\Listing;
 use App\Service\CurlPhotoDownloadService;
 use PHRETS\Parsers\XML;
 use PHRETS\Session;
@@ -102,11 +103,11 @@ class DdfService
         return new MasterListItem($listItem['ListingKey'],\DateTime::createFromFormat('d/m/Y H:i:s A',$listItem['ModificationTimestamp']));
     }
 
-    public function fetchListingPhotosFromFeed(string $listingFeedId, string $destination, string $listingFullAddress, string $mlsNum): array
+    public function fetchListingPhotosFromFeed(Listing $listing, string $destination): array
     {
         try {
             $this->connect();
-            $results = $this->rets->getObject('Property', 'LargePhoto', $listingFeedId);
+            $results = $this->rets->getObject('Property', 'LargePhoto', $listing->getFeedListingID());
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
@@ -116,12 +117,14 @@ class DdfService
         $res = new XML();
         $tmp = $res->parse($result);
         $photoUrls = array_map([$this,'extractImageUrl'],(array)$tmp->DATA);
-        $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$mlsNum,$listingFullAddress);
+        $listingFullAddress = str_replace(' ', '-', preg_replace('/[^a-z\d]/ui', '-',$listing->getFullAddress()));
+        $baseFilename = $listing->getMlsNum() . '-' . $listingFullAddress;
+        $photoNamesArray = $this->curlPhotoDownloadService->photoDownload($photoUrls,$destination,$baseFilename);
 
         return $photoNamesArray;
     }
 
-    public function extractImageUrl(string $imgDataString)
+    public function extractImageUrl(string $imgDataString): array
     {
         return explode("\t",$imgDataString)[3];
     }

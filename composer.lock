@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d63039c0951ec7192bc1c0b0a5d42db3",
+    "content-hash": "48360f7f8864fa71c7bcfd653b457b70",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2221,57 +2221,6 @@
                 "image processing"
             ],
             "time": "2020-11-03T22:35:03+00:00"
-        },
-        {
-            "name": "izica/php-progressive-images-webp-jp2-jxr",
-            "version": "1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/izica/php-progressive-images-webp-jp2-jxr.git",
-                "reference": "e75b8a14a23f567d39726d4de1116d11c5cc7ef9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/izica/php-progressive-images-webp-jp2-jxr/zipball/e75b8a14a23f567d39726d4de1116d11c5cc7ef9",
-                "reference": "e75b8a14a23f567d39726d4de1116d11c5cc7ef9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "ProgressiveImages.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Golovarchuk Artyom",
-                    "email": "artemiztomska@gmail.com"
-                }
-            ],
-            "description": "Php library for converting and caching images to Webp .webp, JpegXr .jxr, Jpeg 2000 .jp2",
-            "keywords": [
-                "ImageMagick",
-                "Webp",
-                "image",
-                "images",
-                "imagick",
-                "jp2",
-                "jpeg2000",
-                "jpegxr",
-                "jxr",
-                "php",
-                "progressive",
-                "tools",
-                "utilities"
-            ],
-            "time": "2020-03-16T09:57:41+00:00"
         },
         {
             "name": "laminas/laminas-code",

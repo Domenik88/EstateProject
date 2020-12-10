@@ -11,7 +11,6 @@ namespace App\Service\Listing;
 
 
 use App\Entity\Listing;
-use Izica\ProgressiveImages;
 
 class ListingMediaService
 {
@@ -37,10 +36,4 @@ class ListingMediaService
         return $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'] . '/listings/' . 'no-img.jpg';
     }
 
-    public function convertImage(string $sourcePath,string $destinationPath,string $filename)
-    {
-        $obData = ProgressiveImages::fromFileSource('/upload/iblock/fe7/fe7728c5f2c6763693eb1d9ef105c46c.png')
-            ->setFileName('custom-file-name')
-            ->setDestinationFolder($_SERVER['DOCUMENT_ROOT'] . '/test/cache/')
-            ->convert();    }
 }
