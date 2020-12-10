@@ -44,6 +44,7 @@ class ListingService
         $listing->setCity($result['City']);
         $listing->setFeedListingID($result['ListingKey']);
         $listing->setListPrice($result['ListPrice']);
+        $listing->setOriginalPrice($result['ListPrice']);
         $listing->setMlsNum($result['ListingId']);
         $listing->setPhotosCount($result['PhotosCount']);
         $listing->setPostalCode($result['PostalCode']);

@@ -147,6 +147,11 @@ class Listing
      */
     private $viewings;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $originalPrice;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
@@ -490,6 +495,18 @@ class Listing
                 $viewing->setListing(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOriginalPrice(): ?float
+    {
+        return $this->originalPrice;
+    }
+
+    public function setOriginalPrice(?float $originalPrice): self
+    {
+        $this->originalPrice = $originalPrice;
 
         return $this;
     }
