@@ -1,0 +1,45 @@
+
+
+<section class="listing-page-intro mb70">
+    <div class="container">
+        <div class="estate-header mb20">
+            <div class="estate-header__title-wrap">
+                <h2 class="estate-header__title h2 mb10">
+                    {{ (listing.address.streetAddress ~ ', ' ~  listing.address.city)|replace({',,': ','}) }}
+                </h2>
+
+                <span class="estate-header__subtitle table-text mb10">
+                    {{ listing.address.country ~ ', ' ~  listing.address.state }}
+                </span>
+
+                <span class="estate-header__label tiny-text">
+                    {{ 'MLS® ' ~ listing.mlsNumber ~ ' | ' ~ listing.daysOnTheMarket ~ ' Days on the market' }}
+                </span>
+            </div>
+
+            <div class="estate-header__price-wrap">
+                {% include 'layouts/modules/price-card.html.twig' %}
+            </div>
+
+            <div class="estate-header__agent-wrap">
+                {% include 'layouts/modules/agent.html.twig' %}
+            </div>
+        </div>
+
+        <div class="estate-info mb20">
+
+        </div>
+
+        <div class="estate-gallery mb20">
+
+        </div>
+
+        <div class="estate-controls">
+
+        </div>
+    </div>
+</section>
+
+
+
+
