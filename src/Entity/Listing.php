@@ -231,12 +231,12 @@ class Listing
 
     public function getUnparsedAddress(): ?string
     {
-        return $this->unparsedAddress;
+        return rtrim($this->unparsedAddress,',');
     }
 
     public function setUnparsedAddress(?string $unparsedAddress): self
     {
-        $this->unparsedAddress = $unparsedAddress;
+        $this->unparsedAddress = rtrim($unparsedAddress,',');
 
         return $this;
     }
