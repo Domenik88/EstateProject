@@ -44,6 +44,7 @@
     font-weight: 700;
     font-size: 24px;
     line-height: 36px;
+    color: $dark1;
 }
 
 .subtitle2 {
@@ -120,6 +121,28 @@
     }
 }
 
+.link-purple {
+    color: $turquoise;
+    transition: $default-transition;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.link-gray {
+    color: $gray1;
+    transition: $default-transition;
+    
+    &:hover,
+    &._current {
+        color: $dark1;
+    }
+    
+    &._current {
+        font-weight: 700;
+    }
+}
 
 .link-underline {
     &:hover {

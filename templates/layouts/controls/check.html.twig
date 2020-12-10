@@ -1,0 +1,10 @@
+<div class="check">
+    <input
+            class="check__input"
+            type="{{ type|default('checkbox') }}"
+            name="{{ name }}" value="{{ value }}"
+            {{ checked|default(false) ? 'checked' : '' }}
+    >
+    <div class="check__indicator"></div>
+    <div class="check__text tiny-text">{{ text|raw }}</div>
+</div>

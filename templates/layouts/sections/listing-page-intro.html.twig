@@ -2,44 +2,82 @@
 
 <section class="listing-page-intro mb70">
     <div class="container">
-        <div class="estate-header mb20">
-            <div class="estate-header__title-wrap">
-                <h2 class="estate-header__title h2 mb10">
-                    {{ (listing.address.streetAddress ~ ', ' ~  listing.address.city)|replace({',,': ','}) }}
+        <div class="listing-page-intro__header mb20">
+            <div class="listing-page-intro__title-wrap">
+                <h2 class="listing-page-intro__title h2 mb10">
+                    {{ listing.address.streetAddress ~ ', ' ~  listing.address.city }}
                 </h2>
 
-                <span class="estate-header__subtitle table-text mb10">
+                <span class="listing-page-intro__subtitle table-text mb10">
                     {{ listing.address.country ~ ', ' ~  listing.address.state }}
                 </span>
 
-                <span class="estate-header__label tiny-text">
+                <span class="listing-page-intro__label tiny-text">
                     {{ 'MLS® ' ~ listing.mlsNumber ~ ' | ' ~ listing.daysOnTheMarket ~ ' Days on the market' }}
                 </span>
             </div>
 
-            <div class="estate-header__price-wrap">
-                {% include 'layouts/modules/price-card.html.twig' %}
+            <div class="listing-page-intro__price-wrap">
+                {% include 'layouts/modules/price-card.html.twig' with {
+                    'listingPrice': listing.financials.listingPrice,
+                    'originalListingPrice': listing.financials.originalListingPrice,
+                }%}
             </div>
 
-            <div class="estate-header__agent-wrap">
-                {% include 'layouts/modules/agent.html.twig' %}
+            <div class="listing-page-intro__agent-wrap">
+                {% include 'layouts/modules/agent.html.twig' with {
+                    simple: true,
+                    agentPhoto: listing.agent.agentPhoto,
+                    agentName: listing.agent.agentName,
+                    agencyName: listing.agent.agencyName,
+                    agentPhone: listing.agent.agentPhone,
+                } %}
             </div>
         </div>
 
-        <div class="estate-info mb20">
-
+        <div style="width: 387px" class="mb30">
+            {% include 'layouts/modules/agent.html.twig' with {
+                confidentiality: true,
+                agentPhoto: listing.agent.agentPhoto,
+                agentName: listing.agent.agentName,
+                agencyName: listing.agent.agencyName,
+                agentPhone: listing.agent.agentPhone,
+            } %}
         </div>
 
-        <div class="estate-gallery mb20">
-
+        <div style="width: 794px" class="mb30">
+            {% include 'layouts/modules/agent.html.twig' with {
+                confidentiality: true,
+                twoCol: true,
+                agentPhoto: listing.agent.agentPhoto,
+                agentName: listing.agent.agentName,
+                agencyName: listing.agent.agencyName,
+                agentPhone: listing.agent.agentPhone,
+            } %}
         </div>
 
-        <div class="estate-controls">
+        <div class="listing-page-intro__row mb20">
+            <div class="listing-page-intro__controls-wrap">
 
+            </div>
+            <div class="listing-page-intro__controls-wrap">
+
+            </div>
+        </div>
+
+        <div class="listing-page-intro__row mb20">
+            <div class="estate-gallery">
+
+            </div>
+        </div>
+
+        <div class="listing-page-intro__row">
+            <div class="listing-page-intro__controls-wrap">
+
+            </div>
+            <div class="listing-page-intro__controls-wrap">
+
+            </div>
         </div>
     </div>
 </section>
-
-
-
-

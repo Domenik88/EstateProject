@@ -16,7 +16,7 @@
     </select>
 
     <div class="select-module__input-container{{ input_mod }} js-select-module-container">
-        <span class="select-module__text-block js-select-module-text-block">
+        <span class="select-module__text-block js-select-module-text-block {{ textMod|default('button2') }}">
             {% if initialEmpty|default(false) %}
                 {{ placeholder|default('') }}
             {% endif %}

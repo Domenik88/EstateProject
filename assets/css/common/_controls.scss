@@ -118,3 +118,98 @@
 	align-items: center;
 	justify-content: center;
 }
+
+.check {
+	$r: &;
+	position: relative;
+	display: inline-flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	
+	&__input {
+		@include absolute;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		z-index: 3;
+		cursor: pointer;
+		
+		&:checked ~ #{$r}__indicator {
+			border-color: $fuchsia;
+			background: $fuchsia;
+			
+			&::before {
+				opacity: 1;
+			}
+		}
+	}
+	
+	&__indicator {
+		position: relative;
+		width: 20px;
+		height: 20px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid $gray-line;
+		background: transparent;
+		transition: $default-transition;
+		z-index: 1;
+		
+		&::before {
+			display: block;
+			position: relative;
+			font-family: $icomoon;
+			line-height: 1;
+			font-weight: 100;
+			color: $white;
+			opacity: 0;
+			transition: $default-transition;
+		}
+	}
+	
+	[type="checkbox"] {
+		& ~ #{$r}__indicator {
+			@extend .icon-check;
+			box-sizing: content-box;
+			border-radius: 5px;
+			
+			&::before {
+				font-size: 8px;
+			}
+		}
+		
+		& ~ #{$r}__text {
+			padding-top: 0.2em;
+		}
+	}
+	
+	[type="radio"] {
+		& ~ #{$r}__indicator {
+			@extend .icon-dot;
+			box-sizing: border-box;
+			border-radius: 50%;
+			
+			&::before {
+				font-size: 6px;
+			}
+		}
+		
+		& ~ #{$r}__text {
+			padding-top: 0.1em;
+		}
+	}
+	
+	&__text {
+		flex: 1 1 0;
+		padding-left: 10px;
+		color: $gray1;
+		
+		a {
+			@extend .link-purple;
+			position: relative;
+			z-index: 5;
+		}
+	}
+}

@@ -1,0 +1,73 @@
+{% set mod = twoCol|default(false) ? '_2-col' : '' %}
+
+<form class="contact-form {{ mod }} js-ajax-form">
+    <div class="contact-form__col">
+        <div class="contact-form__list mb20">
+            <div class="contact-form__row">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'name',
+                    'placeholder': 'Enter your name',
+                    'inputMod': '',
+                } %}
+            </div>
+
+            <div class="contact-form__row">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'email',
+                    'placeholder': 'Your email',
+                    'inputMod': 'usermail',
+                } %}
+            </div>
+            <div class="contact-form__row">
+                <div class="tel-wrap">
+                    <div class="tel-wrap__code">
+                        {% include 'layouts/form/select.html.twig' with {
+                            'name': 'code',
+                            'inputMod': '',
+                            'wrapMod': '  _gray-text',
+                            'textMod': 'small-text2',
+                            'options': [
+                                {
+                                    'value': '+1268',
+                                    'text': 'CA +1268',
+                                },
+                                {
+                                    'value': '1111',
+                                    'text': 'CA +1111',
+                                },
+                                {
+                                    'value': '2222',
+                                    'text': 'CA +2222',
+                                },
+                            ]
+                        } %}
+                    </div>
+                    <div class="tel-wrap__phone">
+                        {% include 'layouts/form/input.html.twig' with {
+                            'name': 'phone',
+                            'placeholder': 'Phone number',
+                            'inputMod': 'userphone',
+                        } %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if confidentiality|default(false) and not twoCol|default(false) %}
+            <div class="contact-form__check-wrap mb30">
+                {% include 'layouts/modules/agreement-check.html.twig' %}
+            </div>
+        {% endif %}
+
+        {% include 'layouts/controls/button.html.twig' with {
+            'button': true,
+            'text': btnText|default(''),
+        } %}
+    </div>
+
+    {% if confidentiality|default(false) and twoCol|default(false) %}
+        <div class="contact-form__col">
+            {% include 'layouts/modules/agreement-check.html.twig' %}
+        </div>
+    {% endif %}
+</form>

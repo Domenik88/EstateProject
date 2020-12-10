@@ -8,7 +8,6 @@ require('jquery-lazy');
 require('objectFitPolyfill');
 require('./plugin/slick.js');
 require('./plugin/jquery.validate.min.js');
-require('./plugin/jquery.maskedinput.js');
 require('./modules/select.js');
 require('./modules/form.js');
 require('./modules/popup.js');

@@ -1,0 +1,78 @@
+.agent {
+	$r: &;
+	background: $dark1;
+	border-radius: 20px;
+	padding: 50px;
+	
+	&__container {
+	
+	}
+	
+	&__person {
+		margin-bottom: 24px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	
+	&__photo-wrap {
+		position: relative;
+		width: 60px;
+		height: 60px;
+		border-radius: 20px;
+		overflow: hidden;
+		z-index: 2;
+	}
+	
+	&__photo {
+		z-index: 1;
+	}
+	
+	&__info {
+		width: calc(100% - 60px);
+		padding-left: 20px;
+	}
+	
+	&__name {
+		color: $white;
+		margin-bottom: 2px;
+	}
+	
+	&__agency {
+		color: $gray1;
+	}
+	
+	&__phone {
+		color: $white;
+		display: inline-block;
+		
+		&_highlight {
+			color: $fuchsia;
+			margin-right: 10px;
+		}
+	}
+	
+	&__phone-wrap {
+		display: flex;
+		align-items: baseline;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+	
+	&__phone-label {
+		color: $white;
+	}
+	
+	&._simple {
+		padding: 25px;
+		
+		#{$r}__container {
+			max-width: 210px;
+			margin: auto;
+		}
+		
+		#{$r}__person {
+			margin-bottom: 10px;
+		}
+	}
+}

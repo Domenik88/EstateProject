@@ -6,7 +6,6 @@ jQuery(function($) {
             this.options = options;
             this.init_cache();
             this.init_validation();
-            this.init_mask();
             
             if (this.options['file']) {
                 this.check_file();
@@ -51,8 +50,6 @@ jQuery(function($) {
             
             $.validator.addClassRules({
                 userphone: {
-                    minlength: 15,
-                    regexp: '[^_]+$',
                     required: true
                 },
                 usermail: {
@@ -69,10 +66,6 @@ jQuery(function($) {
                     equalTo:'.js-input-new-password'
                 }
             });
-        },
-        
-        init_mask: function() {
-            if (this.$input_phone.length) this.$input_phone.mask("+7 (999) 999 - 99 - 99", { placeholder: "_" });
         },
         
         form_send: function(formObject, action) {

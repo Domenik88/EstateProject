@@ -1,8 +1,11 @@
 .listing-page-intro {
-
-}
-
-.estate-header {
+	
+	&__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+	
 	&__title-wrap {
 		width: calc(100% / 12 * 6 - 40px / 3);
 	}
@@ -22,4 +25,13 @@
 	&__label {
 		color: $gray1;
 	}
+	
+	&__row {
+		width: 100%;
+	}
 }
+
+.estate-header {
+
+}
+

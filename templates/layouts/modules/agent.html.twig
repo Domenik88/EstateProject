@@ -1,3 +1,39 @@
-<div class="agent">
+{% set mod = simple|default(false) ? '_simple' : '' %}
 
+<div class="agent {{ mod }}">
+    <div class="agent__container">
+        <div class="agent__person">
+            <div class="agent__photo-wrap">
+                <img class="agent__photo of" src="{{ agentPhoto }}" />
+            </div>
+
+            <div class="agent__info">
+                <div class="agent__name body-text">{{ agentName }}</div>
+                <div class="agent__agency tiny-text">{{ agencyName }}</div>
+
+                {% if simple|default(false) %}
+                    <a class="agent__phone body-text2 mt10" href="tel:{{ agentPhone }}">{{ agentPhone }}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if simple|default(false) %}
+            {% include 'layouts/controls/button.html.twig' with {
+                'href': '#',
+                'text': 'Go See This Home Now',
+            } %}
+        {% endif %}
+
+        {% if not simple|default(false) %}
+            <div class="agent__phone-wrap mb10">
+                <a class="agent__phone agent__phone_highlight body-text" href="tel:{{ agentPhone }}">{{ agentPhone }}</a>
+                <div class="agent__phone-label small-text">{{ 'Call or Text Now!' }}</div>
+            </div>
+
+            {% include 'layouts/modules/contact-form.html.twig' with {
+                'confidentiality': confidentiality|default(false),
+                'btnText': 'Go See This Home Now'
+            } %}
+        {% endif %}
+    </div>
 </div>

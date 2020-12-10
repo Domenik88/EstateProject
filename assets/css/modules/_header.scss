@@ -49,23 +49,21 @@
     }
 
     &__menu-wrap {
-        @include absolute(calc(100% - 10px),100vw,auto,auto);
-        width: 300px;
-        height: auto;
-        padding: 20px;
-        border-radius: 20px;
-        background: $gray2;
-        transform: translateY(20px);
-        opacity: 0;
-        transition-property: right, opacity, transform;
-        transition-duration: 0s, .3s, .3s;
-        transition-delay: .3s, 0s, 0s;
+        @extend .menu-wrap;
+        width: 250px;
+        padding: 40px;
     }
 
     .hamburger-wrapper._active ~ &__menu-wrap {
-        right: 0;
-        transform: translateY(0);
-        opacity: 1;
-        transition-delay: 0s, 0s, 0s;
+        @extend .menu-wrap-active;
+    }
+}
+
+
+.navbar {
+    &__item {
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 }

@@ -1,7 +1,6 @@
 @mixin input-wrap {
     width: 100%;
     position: relative;
-    margin-bottom: 30px;
     
     @include media_700 {
         margin-bottom: 20px;
@@ -10,7 +9,7 @@
 
 @mixin error-styles {
     &.error {
-        border-color: red !important;
+        border-color: $red !important;
     }
 }
 
@@ -20,7 +19,7 @@
     transition: $default_transition;
     height: 41px;
     width: 100%;
-    padding: 5px 20px;
+    padding: 5px 15px;
     box-sizing: border-box;
     display: block;
     //font-family: $raleway;
@@ -29,6 +28,8 @@
     //color: $c;
     border: 1px solid $gray0;
     border-radius: 10px;
+    background: transparent;
+    color: $gray1;
     //
     //&:hover {
     //    background: $gray02;
@@ -53,6 +54,11 @@
     &:-moz-placeholder {
         @include small-text2;
         color: $gray1;
+    }
+    
+    &._fill-white {
+        border: none;
+        background: $white;
     }
     
     &._fill-gray {
