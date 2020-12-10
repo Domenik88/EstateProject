@@ -39,9 +39,6 @@ class ListingMediaSyncService
         $cloudDestination = 'listings/' . $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/';
         try {
             $photoNamesArray = $this->ddfService->fetchListingPhotosFromFeed($listing, $listingPicPathForUpload);
-            dump('ok');
-            dump($photoNamesArray);
-            die;
             $this->awsService->upload($listingPicPathForUpload, $cloudDestination);
             $singleListingWithPhotos = $this->listingService->setListingPhotosNamesObject($listing, $photoNamesArray);
             $this->filesystem->remove($listingPicPathForUpload);
