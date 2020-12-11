@@ -15,7 +15,7 @@ use PHRETS\Parsers\XML;
 use PHRETS\Session;
 use PHRETS\Configuration;
 use Psr\Log\LoggerInterface;
-use function GuzzleHttp\normalize_header_keys;
+use Psr\Log\LogLevel;
 
 class DdfService
 {
@@ -75,6 +75,7 @@ class DdfService
         try {
             $this->connect();
             $results = $this->rets->Search('Property', 'Property', 'ID=*', [ 'Limit' => null ]);
+            $this->logger->log(LogLevel::INFO, 'Incoming-Listings-Total-Count :: ' . $results->count());
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
