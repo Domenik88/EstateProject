@@ -91,11 +91,10 @@ class ListingSearchDataService
     {
         return (object)[
             'listingPrice'         => $listing->getListPrice(),
-            'originalPrice'        => $listing->getOriginalPrice(),
-            'strataMaintenanceFee' => 'N/A',
-            'grossTaxes'           => 'N/A',
-            'grossTaxYear'         => 'N/A',
-            'originalListingPrice' => $listing->getListPrice(),
+            'strataMaintenanceFee' => $listing->getRawData()['AssociationFee'],
+            'grossTaxes'           => null,
+            'grossTaxYear'         => null,
+            'originalListingPrice' => $listing->getOriginalPrice(),
         ];
     }
 
