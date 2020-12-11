@@ -3,7 +3,7 @@
 
 <div class="price-card">
     <div class="price-card__current subtitle">
-        {{ listingPrice|format_currency('USD', {fraction_digit: 0}) }}
+        {{ listingPrice|format_currency('CAD', {fraction_digit: 0}) }}
 
         {% if priceAreUp %}
             <div class="price-card__arrow icon-arrow-up"></div>
@@ -17,7 +17,7 @@
     {% if priceAreUp or priceAreDown %}
         <div class="price-card__original body-text2">
             <div class="price-card__line-through">
-                {{ originalListingPrice|format_currency('USD', {fraction_digit: 0}) }}
+                {{ originalListingPrice|format_currency('CAD', {fraction_digit: 0}) }}
             </div>
 
             <div class="price-card__info icon-info"></div>

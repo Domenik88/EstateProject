@@ -1,0 +1,28 @@
+.controls-bar {
+	display: inline-flex;
+	align-items: stretch;
+	justify-content: flex-start;
+	border: 1px solid $gray-line;
+	box-sizing: border-box;
+	border-radius: 10px;
+	max-width: 100%;
+	flex-wrap: wrap;
+	
+	&__item {
+		min-height: 40px;
+		padding: 5px 20px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		border-right: 1px solid $gray-line;
+		
+		&:last-child {
+			border-right: none;
+		}
+		
+		&[class*="icon-"] {
+			padding: 5px 15px;
+		}
+	}
+}

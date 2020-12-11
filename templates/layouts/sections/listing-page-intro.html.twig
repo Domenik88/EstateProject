@@ -35,33 +35,33 @@
             </div>
         </div>
 
-        <div style="width: 387px" class="mb30">
-            {% include 'layouts/modules/agent.html.twig' with {
-                confidentiality: true,
-                agentPhoto: listing.agent.agentPhoto,
-                agentName: listing.agent.agentName,
-                agencyName: listing.agent.agencyName,
-                agentPhone: listing.agent.agentPhone,
-            } %}
-        </div>
-
-        <div style="width: 794px" class="mb30">
-            {% include 'layouts/modules/agent.html.twig' with {
-                confidentiality: true,
-                twoCol: true,
-                agentPhoto: listing.agent.agentPhoto,
-                agentName: listing.agent.agentName,
-                agencyName: listing.agent.agencyName,
-                agentPhone: listing.agent.agentPhone,
-            } %}
-        </div>
-
         <div class="listing-page-intro__row mb20">
             <div class="listing-page-intro__controls-wrap">
-
+                {% include 'layouts/modules/metrics.html.twig' with {
+                    metrics: listing.metrics,
+                } %}
             </div>
             <div class="listing-page-intro__controls-wrap">
-
+                {% include 'layouts/modules/controls-bar.html.twig' with {
+                    controlsArray: [
+                        {
+                            mod: 'icon-heart-frame',
+                            href: '#'
+                        },
+                        {
+                            mod: 'icon-share-frame',
+                            href: '#'
+                        },
+                        {
+                            mod: 'icon-compare-frame',
+                            href: '#'
+                        },
+                        {
+                            mod: 'icon-print-frame',
+                            href: '#'
+                        }
+                    ],
+                } %}
             </div>
         </div>
 
@@ -79,5 +79,26 @@
 
             </div>
         </div>
+    </div>
+
+    <div style="width: 387px" class="mb30">
+        {% include 'layouts/modules/agent.html.twig' with {
+            confidentiality: true,
+            agentPhoto: listing.agent.agentPhoto,
+            agentName: listing.agent.agentName,
+            agencyName: listing.agent.agencyName,
+            agentPhone: listing.agent.agentPhone,
+        } %}
+    </div>
+
+    <div style="width: 794px" class="mb30">
+        {% include 'layouts/modules/agent.html.twig' with {
+            confidentiality: true,
+            twoCol: true,
+            agentPhoto: listing.agent.agentPhoto,
+            agentName: listing.agent.agentName,
+            agencyName: listing.agent.agencyName,
+            agentPhone: listing.agent.agentPhone,
+        } %}
     </div>
 </section>
