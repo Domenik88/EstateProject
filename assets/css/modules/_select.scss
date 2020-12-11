@@ -8,7 +8,6 @@
     }
     
     &__text-block {
-        @extend .button2;
         line-height: 1;
         max-width: 100%;
         overflow: hidden;
@@ -38,7 +37,7 @@
         z-index: 10;
         position: absolute;
         left: 0;
-        top: 100%;
+        top: calc(100% + 10px);
         width: 100%;
         overflow: hidden;
         background: $white;
@@ -49,6 +48,8 @@
         opacity: 0;
         //@extend .p5;
         padding: 20px 0;
+        border: 1px solid $gray-line;
+        border-radius: 10px;
     }
     
     &__scroll {
@@ -66,25 +67,33 @@
         display: block;
         width: 100%;
         cursor: pointer;
-        //color: $c2;
+        color: $gray0;
         transition: $default-transition;
         margin-bottom: 10px;
+        @extend .small-text2;
         
         &:last-child {
             margin-bottom: 0;
         }
         
-        //&:hover {
-        //    color: $red;
-        //}
-        //
+        &:hover {
+            color: $dark1;
+        }
+
         &._active {
-            color: green;
+            font-weight: 700;
+            color: $dark1;
+        }
+    }
+    
+    &._gray-text & {
+        &__text-block {
+            color: $gray1;
         }
     }
     
     &._active {
-        z-index: 222;
+        z-index: 20;
     }
     
     &._active & {

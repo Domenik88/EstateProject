@@ -1,0 +1,14 @@
+<div class="slider-nav">
+    <div class="slider-nav__arrows-wrap">
+        <div class="slider-nav__arrow icon-arrow-left js-arrow-left"></div>
+        <div class="slider-nav__arrow icon-arrow-right js-arrow-right"></div>
+    </div>
+
+    {% if counter|default(false) %}
+        <div class="slider-nav__counter p3">
+            <div class="slider-nav__current js-current"></div>
+            <div class="slider-nav__separate">&nbsp;—&nbsp;</div>
+            <div class="slider-nav__total js-total"></div>
+        </div>
+    {% endif %}
+</div>

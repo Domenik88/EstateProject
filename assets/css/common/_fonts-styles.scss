@@ -2,42 +2,49 @@
     font-weight: 700;
     font-size: 64px;
     line-height: 78px;
+    color: $dark1;
 }
 
 .h2 {
     font-weight: 700;
     font-size: 45px;
     line-height: 55px;
+    color: $dark1;
 }
 
 .h3 {
     font-weight: 700;
     font-size: 28px;
     line-height: 34px;
+    color: $dark1;
 }
 
 .h4 {
     font-weight: 700;
     font-size: 18px;
     line-height: 22px;
+    color: $dark1;
 }
 
 .h5 {
     font-weight: 700;
     font-size: 16px;
     line-height: 20px;
+    color: $dark1;
 }
 
 .h6 {
     font-weight: 700;
     font-size: 12px;
     line-height: 15px;
+    color: $dark1;
 }
 
 .subtitle {
     font-weight: 700;
     font-size: 24px;
     line-height: 36px;
+    color: $dark1;
 }
 
 .subtitle2 {
@@ -114,6 +121,28 @@
     }
 }
 
+.link-purple {
+    color: $turquoise;
+    transition: $default-transition;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.link-gray {
+    color: $gray1;
+    transition: $default-transition;
+    
+    &:hover,
+    &._current {
+        color: $dark1;
+    }
+    
+    &._current {
+        font-weight: 700;
+    }
+}
 
 .link-underline {
     &:hover {

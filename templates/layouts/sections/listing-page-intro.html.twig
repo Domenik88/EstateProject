@@ -1,0 +1,150 @@
+
+
+<section class="listing-page-intro mb70">
+    <div class="container">
+        <div class="listing-page-intro__header mb20">
+            <div class="listing-page-intro__title-wrap">
+                <h2 class="listing-page-intro__title h2 mb10">
+                    {{ listing.address.streetAddress ~ ', ' ~  listing.address.city }}
+                </h2>
+
+                <span class="listing-page-intro__subtitle table-text mb10">
+                    {{ listing.address.country ~ ', ' ~  listing.address.state }}
+                </span>
+
+                <span class="listing-page-intro__label tiny-text">
+                    {{ 'MLS® ' ~ listing.mlsNumber ~ ' | ' ~ listing.daysOnTheMarket ~ ' Days on the market' }}
+                </span>
+            </div>
+
+            <div class="listing-page-intro__price-wrap">
+                {% include 'layouts/modules/price-card.html.twig' with {
+                    'listingPrice': listing.financials.listingPrice,
+                    'originalListingPrice': listing.financials.originalListingPrice,
+                }%}
+            </div>
+
+            <div class="listing-page-intro__agent-wrap">
+                {% include 'layouts/modules/agent.html.twig' with {
+                    simple: true,
+                    agentPhoto: listing.agent.agentPhoto,
+                    agentName: listing.agent.agentName,
+                    agencyName: listing.agent.agencyName,
+                    agentPhone: listing.agent.agentPhone,
+                } %}
+            </div>
+        </div>
+
+        <div class="listing-page-intro__row mb20">
+            <div class="listing-page-intro__controls-wrap">
+                {% include 'layouts/modules/metrics.html.twig' with {
+                    metrics: listing.metrics,
+                } %}
+            </div>
+            <div class="listing-page-intro__controls-wrap">
+                {% include 'layouts/modules/controls-bar.html.twig' with {
+                    controlsArray: [
+                        {
+                            label: 'label',
+                            mod: 'icon-heart-frame',
+                            href: '#'
+                        },
+                        {
+                            label: 'label',
+                            mod: 'icon-share-frame',
+                            href: '#'
+                        },
+                        {
+                            label: 'Compare',
+                            mod: 'icon-compare-frame',
+                            href: '#'
+                        },
+                        {
+                            label: 'label',
+                            mod: 'icon-print-frame',
+                            href: '#'
+                        }
+                    ],
+                } %}
+            </div>
+        </div>
+
+        <div class="listing-page-intro__row mb20">
+            {% include 'layouts/modules/estate-gallery.html.twig' with {
+                'images': listing.images,
+            } %}
+        </div>
+
+        <div class="listing-page-intro__row">
+            <div class="listing-page-intro__controls-wrap">
+                <div class="buttons-row mtr10">
+                    <div class="buttons-row__item mt10">
+                        {% include 'layouts/controls/button.html.twig' with {
+                            'href': '#',
+                            'mod': '_small icon-facebook',
+                            'text': 'Share',
+                        } %}
+                    </div>
+                    <div class="buttons-row__item mt10">
+                        {% include 'layouts/controls/button.html.twig' with {
+                            'href': '#',
+                            'mod': '_small icon-twitter',
+                            'text': 'Tweet',
+                        } %}
+                    </div>
+                </div>
+            </div>
+            <div class="listing-page-intro__controls-wrap">
+                {% include 'layouts/modules/controls-bar.html.twig' with {
+                    controlsArray: [
+                        {
+                            text: 'Map',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Street view',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Schools',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Crime',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Commute',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Shop & Eat',
+                            mod: 'js-'
+                        },
+                    ],
+                } %}
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 387px" class="mb30">
+        {% include 'layouts/modules/agent.html.twig' with {
+            confidentiality: true,
+            agentPhoto: listing.agent.agentPhoto,
+            agentName: listing.agent.agentName,
+            agencyName: listing.agent.agencyName,
+            agentPhone: listing.agent.agentPhone,
+        } %}
+    </div>
+
+    <div style="width: 794px" class="mb30">
+        {% include 'layouts/modules/agent.html.twig' with {
+            confidentiality: true,
+            twoCol: true,
+            agentPhoto: listing.agent.agentPhoto,
+            agentName: listing.agent.agentName,
+            agencyName: listing.agent.agencyName,
+            agentPhone: listing.agent.agentPhone,
+        } %}
+    </div>
+</section>

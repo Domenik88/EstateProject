@@ -1,0 +1,29 @@
+{# TODO: add labels #}
+{% set metricsLabels = {
+    bedRooms: 'Beds',
+    bathRooms: 'Baths',
+    stories: '',
+    lotSize: 'lot sqft',
+    lotSizeUnits: '',
+    sqrtFootage: 'sqft',
+    sqrtFootageUnits: '',
+    yearBuilt: 'built'
+} %}
+
+<div class="metrics mtr10">
+    {% for key, val in metrics|cast_to_array %}
+        {% if val and val|length %}
+            <div class="metrics__item mt10">
+                <span class="metrics__val small-text">
+                    {{ val }}
+                </span>
+
+                {% if metricsLabels[key] %}
+                    <span class="metrics__label small-text2">
+                        {{ metricsLabels[key] }}
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

@@ -1,0 +1,57 @@
+.price-card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 20px 20px 20px 40px;
+	border-radius: 20px;
+	border: 1px solid $gray-line;
+	min-height: 190px;
+	
+	&__current {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	
+	&__original {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		color: $gray1;
+	}
+	
+	&__mortgage {
+		color: $gray1;
+	}
+	
+	&__arrow {
+		margin-left: 10px;
+		
+		&::before {
+			font-size: 15px;
+			color: $gray1;
+		}
+	}
+	
+	&__info {
+		margin-left: 10px;
+		
+		&::before {
+			font-size: 18px;
+			color: $turquoise;
+		}
+	}
+	
+	&__line-through {
+		position: relative;
+		
+		&::before {
+			content: '';
+			width: calc(100% + 2px);
+			height: 1px;
+			background: $dark1;
+			@include absolute(-0.3em,auto,0,-1px);
+		}
+	}
+}

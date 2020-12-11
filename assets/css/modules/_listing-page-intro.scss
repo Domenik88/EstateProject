@@ -1,0 +1,40 @@
+.listing-page-intro {
+	
+	&__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+	
+	&__title-wrap {
+		width: calc(100% / 12 * 6 - 40px / 3);
+	}
+	
+	&__price-wrap {
+		width: calc(100% / 12 * 3 - 40px / 3);
+	}
+	
+	&__agent-wrap {
+		width: calc(100% / 12 * 3 - 40px / 3);
+	}
+	
+	&__subtitle {
+		color: $dark1;
+	}
+	
+	&__label {
+		color: $gray1;
+	}
+	
+	&__row {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
+
+.estate-header {
+
+}
+

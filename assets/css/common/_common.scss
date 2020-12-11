@@ -47,3 +47,24 @@ span {
     z-index: 5;
     position: relative;
 }
+
+.menu-wrap {
+    @include absolute(calc(100% - 20px),100vw,auto,auto);
+    height: auto;
+    transform: translateY(20px);
+    opacity: 0;
+    transition-property: right, opacity, transform;
+    transition-duration: 0s, .3s, .3s;
+    transition-delay: .3s, 0s, 0s;
+    background: $white;
+    border: 1px solid $gray-line;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.menu-wrap-active {
+    right: 0;
+    transform: translateY(0);
+    opacity: 1;
+    transition-delay: 0s, 0s, 0s;
+}

@@ -14,6 +14,7 @@ var $_ = {
         this.initDefaultSlider();
         this.initTriggerSlider();
         this.initToggleActive();
+        this.initEstateGallerySlider();
     },
     
     initCache() {
@@ -35,6 +36,8 @@ var $_ = {
         this.$total = $('.js-total');
 
         this.$toggleActive = $('.js-toggle-active');
+
+        this.$estateGallerySlider = $('.js-estate-gallery-slider');
 
         this.$map = $('#y-map');
         this.mapIsInit = false;
@@ -69,6 +72,28 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initEstateGallerySlider() {
+        const
+            $currentSlider = $_.$estateGallerySlider,
+            { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
+
+
+        $_.$estateGallerySlider.on('init', function (event, slick) {
+            if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+        })
+            .slick({
+                lazyLoad: 'ondemand',
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: true,
+                prevArrow: $arrowLeft,
+                nextArrow: $arrowRight,
+                fade: false,
+                infinite: false,
+                dots: false
+            });
     },
 
     initToggleActive() {

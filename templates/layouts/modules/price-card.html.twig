@@ -1,0 +1,30 @@
+{% set priceAreUp = originalListingPrice ? listingPrice > originalListingPrice : false %}
+{% set priceAreDown = originalListingPrice ? listingPrice < originalListingPrice : false %}
+
+<div class="price-card">
+    <div class="price-card__current subtitle">
+        {{ listingPrice|format_currency('CAD', {fraction_digit: 0}) }}
+
+        {% if priceAreUp %}
+            <div class="price-card__arrow icon-arrow-up"></div>
+        {% endif %}
+
+        {% if priceAreDown %}
+            <div class="price-card__arrow icon-arrow-down"></div>
+        {% endif %}
+    </div>
+
+    {% if priceAreUp or priceAreDown %}
+        <div class="price-card__original body-text2">
+            <div class="price-card__line-through">
+                {{ originalListingPrice|format_currency('CAD', {fraction_digit: 0}) }}
+            </div>
+
+            <div class="price-card__info icon-info"></div>
+        </div>
+    {% endif %}
+
+    <div class="price-card__mortgage small-text2 mt10">
+        Esr. Mortgage $1.221/mo
+    </div>
+</div>
