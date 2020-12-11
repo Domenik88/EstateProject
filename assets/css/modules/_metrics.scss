@@ -1,3 +1,29 @@
 .metrics {
-
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	
+	&__item {
+		padding: 5px 20px;
+		background: $gray2;
+		border-radius: 30px;
+		display: flex;
+		align-items: baseline;
+		justify-content: flex-start;
+		margin-right: 10px;
+		
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	
+	&__val {
+		color: $dark1;
+	}
+	
+	&__label {
+		color: $gray1;
+		margin-left: 5px;
+	}
 }

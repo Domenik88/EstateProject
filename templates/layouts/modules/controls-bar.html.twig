@@ -1,9 +1,9 @@
 <div class="controls-bar">
     {% for item in controlsArray %}
-        {% set dataLabel = item.dataLabel|default(false) ? "data-label=" ~ dataLabel %}
-        {% set dataPopupAttribute = item.dataPopup|default(false) ? "data-popup=" ~ item.dataPopup|json_encode() %}
+        {% set dataLabel = item.label|default(false) ? "data-label=" ~ item.label : '' %}
+        {% set dataPopupAttribute = item.dataPopup|default(false) ? "data-popup=" ~ item.dataPopup|json_encode() : '' %}
         {% set html_tag = item.href|default(false) ? 'a' :'div' %}
-        {% set href = item.href|default(false) ? "href=" ~ item.href %}
+        {% set href = item.href|default(false) ? "href=" ~ item.href : '' %}
 
         <{{html_tag}}
             class="controls-bar__item {{ item.mod|default('') }}"
@@ -12,9 +12,9 @@
             {{ href }}
         >
             {% if item.text|default(false) %}
-                <div class="controls-bar__text">
+                <span class="controls-bar__text button1">
                     {{ item.text }}
-                </div>
+                </span>
             {% endif %}
         </{{html_tag}}>
     {% endfor %}

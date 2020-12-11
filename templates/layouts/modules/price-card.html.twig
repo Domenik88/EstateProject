@@ -1,5 +1,5 @@
-{% set priceAreUp = listingPrice > originalListingPrice  %}
-{% set priceAreDown = listingPrice < originalListingPrice  %}
+{% set priceAreUp = originalListingPrice ? listingPrice > originalListingPrice : false %}
+{% set priceAreDown = originalListingPrice ? listingPrice < originalListingPrice : false %}
 
 <div class="price-card">
     <div class="price-card__current subtitle">

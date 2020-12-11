@@ -45,18 +45,22 @@
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
+                            label: 'label',
                             mod: 'icon-heart-frame',
                             href: '#'
                         },
                         {
+                            label: 'label',
                             mod: 'icon-share-frame',
                             href: '#'
                         },
                         {
+                            label: 'Compare',
                             mod: 'icon-compare-frame',
                             href: '#'
                         },
                         {
+                            label: 'label',
                             mod: 'icon-print-frame',
                             href: '#'
                         }
@@ -66,17 +70,59 @@
         </div>
 
         <div class="listing-page-intro__row mb20">
-            <div class="estate-gallery">
-
-            </div>
+            {% include 'layouts/modules/estate-gallery.html.twig' with {
+                'images': listing.images,
+            } %}
         </div>
 
         <div class="listing-page-intro__row">
             <div class="listing-page-intro__controls-wrap">
-
+                <div class="buttons-row mtr10">
+                    <div class="buttons-row__item mt10">
+                        {% include 'layouts/controls/button.html.twig' with {
+                            'href': '#',
+                            'mod': '_small icon-facebook',
+                            'text': 'Share',
+                        } %}
+                    </div>
+                    <div class="buttons-row__item mt10">
+                        {% include 'layouts/controls/button.html.twig' with {
+                            'href': '#',
+                            'mod': '_small icon-twitter',
+                            'text': 'Tweet',
+                        } %}
+                    </div>
+                </div>
             </div>
             <div class="listing-page-intro__controls-wrap">
-
+                {% include 'layouts/modules/controls-bar.html.twig' with {
+                    controlsArray: [
+                        {
+                            text: 'Map',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Street view',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Schools',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Crime',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Commute',
+                            mod: 'js-'
+                        },
+                        {
+                            text: 'Shop & Eat',
+                            mod: 'js-'
+                        },
+                    ],
+                } %}
             </div>
         </div>
     </div>

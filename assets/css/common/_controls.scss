@@ -11,6 +11,21 @@
 	}
 }
 
+.buttons-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	
+	&__item {
+		margin-right: 10px;
+		
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
+
 .btn-style {
 	$r: &;
 	position: relative;
@@ -54,6 +69,26 @@
 		&::before {
 			font-size: 14px;
 		}
+	}
+	
+	&.icon-twitter {
+		background: $twitter;
+	}
+	
+	&.icon-facebook {
+		background: $facebook;
+	}
+	
+	&.icon-youtube {
+		background: $youtube;
+	}
+	
+	&.icon-linkedin {
+		background: $linkedin;
+	}
+	
+	&.icon-pinterest {
+		background: $pinterest;
 	}
 }
 
