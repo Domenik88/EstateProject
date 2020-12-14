@@ -1,6 +1,8 @@
 {% set mod = twoCol|default(false) ? '_2-col' : '' %}
+{% set collapseMod = confidentialityCollapse|default(false) ? '_collapse' : '' %}
+{% set collapseJsMod = confidentialityCollapse|default(false) ? 'js-conf-collapse-form' : '' %}
 
-<form class="contact-form {{ mod }} js-ajax-form">
+<form class="contact-form {{ mod }} {{ collapseMod }} {{ collapseJsMod }} js-ajax-form">
     <div class="contact-form__col">
         <div class="contact-form__list mb20">
             <div class="contact-form__row">
@@ -54,7 +56,7 @@
         </div>
 
         {% if confidentiality|default(false) and not twoCol|default(false) %}
-            <div class="contact-form__check-wrap mb30">
+            <div class="contact-form__check-wrap js-collapse mb30">
                 {% include 'layouts/modules/agreement-check.html.twig' %}
             </div>
         {% endif %}

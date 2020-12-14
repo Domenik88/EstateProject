@@ -5,6 +5,34 @@
 {% block body %}
     {% include 'layouts/sections/listing-page-intro.html.twig' %}
 
+    {% embed 'layouts/containers/content-with-sticky-menu.html.twig' %}
+        {% block col_left %}
+            <div style="height: 2000px; width: 100%; background: green;"></div>
+        {% endblock %}
+
+        {% block col_right %}
+            {% include 'layouts/modules/agent.html.twig' with {
+                confidentiality: true,
+                confidentialityCollapse: true,
+                agentPhoto: listing.agent.agentPhoto,
+                agentName: listing.agent.agentName,
+                agencyName: listing.agent.agencyName,
+                agentPhone: listing.agent.agentPhone,
+            } %}
+        {% endblock %}
+    {% endembed %}
+
+    <div style="width: 794px; display: none;" class="mb30">
+        {% include 'layouts/modules/agent.html.twig' with {
+            confidentiality: true,
+            twoCol: true,
+            agentPhoto: listing.agent.agentPhoto,
+            agentName: listing.agent.agentName,
+            agencyName: listing.agent.agencyName,
+            agentPhone: listing.agent.agentPhone,
+        } %}
+    </div>
+
 
 
 

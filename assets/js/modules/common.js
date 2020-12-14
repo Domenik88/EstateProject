@@ -15,6 +15,8 @@ var $_ = {
         this.initTriggerSlider();
         this.initToggleActive();
         this.initEstateGallerySlider();
+        this.initStickyBlock();
+        this.initConfCollapseForm();
     },
     
     initCache() {
@@ -38,6 +40,12 @@ var $_ = {
         this.$toggleActive = $('.js-toggle-active');
 
         this.$estateGallerySlider = $('.js-estate-gallery-slider');
+
+        this.$stickyContainer = $('.js-sticky-container');
+        this.$stickyBlock = $('.js-sticky-block');
+
+        this.$collapse = $('.js-collapse');
+        this.$confCollapseForm = $('.js-conf-collapse-form');
 
         this.$map = $('#y-map');
         this.mapIsInit = false;
@@ -72,6 +80,50 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initStickyBlock() {
+        $_.$stickyBlock.each((key, item) => {
+            const
+                $currentStickyBlock = $(item),
+                $relatedStickyContainer = $currentStickyBlock.closest($_.$stickyContainer);
+
+            $_.$window.on('scroll', () => {
+                const
+                    { top: wrapTop, bottom: wrapBottom } = $relatedStickyContainer[0].getBoundingClientRect(),
+                    { height: blockHeight } = $currentStickyBlock[0].getBoundingClientRect(),
+                    { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
+                    offset = headerHeight + 20;
+
+                if (wrapBottom <= (blockHeight + offset)) {
+                    $currentStickyBlock.attr('style', '');
+                    $currentStickyBlock.removeClass('_stick-to-top').addClass('_stick-to-bottom');
+                } else if (wrapTop <= offset) {
+                    $currentStickyBlock.css('top', offset);
+                    $currentStickyBlock.removeClass('_stick-to-bottom').addClass('_stick-to-top');
+                } else {
+                    $currentStickyBlock.attr('style', '');
+                    $currentStickyBlock.removeClass('_stick-to-bottom _stick-to-top');
+                }
+            });
+        });
+    },
+
+    initConfCollapseForm() {
+        $_.$confCollapseForm.each((key, item) => {
+            const
+                $currentForm = $(item),
+                $innerCollapseBlock = $currentForm.find($_.$collapse),
+                $innerInputs = $currentForm.find('input[type="text"]');
+
+            $currentForm.on('change', () => {
+                const
+                    values = $innerInputs.map((key, item) => item.value.length > 0).toArray(),
+                    method = values.indexOf(true) !== -1 ? 'slideDown' : 'slideUp';
+
+                $innerCollapseBlock[method](300);
+            });
+        });
     },
 
     initEstateGallerySlider() {

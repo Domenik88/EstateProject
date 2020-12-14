@@ -126,25 +126,4 @@
             </div>
         </div>
     </div>
-
-    <div style="width: 387px" class="mb30">
-        {% include 'layouts/modules/agent.html.twig' with {
-            confidentiality: true,
-            agentPhoto: listing.agent.agentPhoto,
-            agentName: listing.agent.agentName,
-            agencyName: listing.agent.agencyName,
-            agentPhone: listing.agent.agentPhone,
-        } %}
-    </div>
-
-    <div style="width: 794px" class="mb30">
-        {% include 'layouts/modules/agent.html.twig' with {
-            confidentiality: true,
-            twoCol: true,
-            agentPhoto: listing.agent.agentPhoto,
-            agentName: listing.agent.agentName,
-            agencyName: listing.agent.agencyName,
-            agentPhone: listing.agent.agentPhone,
-        } %}
-    </div>
 </section>

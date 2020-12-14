@@ -1,0 +1,47 @@
+.content-with-sticky-menu {
+	$r: &;
+	
+	&__table {
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+	}
+	
+	&__col {
+		position: relative;
+		
+		&_left {
+			width: calc(100% / 12 * 8 - 10px);
+		}
+		
+		&_right {
+			width: calc(100% / 12 * 4 - 10px);
+		}
+	}
+	
+	&__sticky-block {
+		pointer-events: none;
+	}
+	
+	&__sticky-sizer {
+		pointer-events: auto;
+	}
+	
+	&__sticky-block {
+		&._stick-to-top {
+			@include fixed(0,0,auto);
+			@extend .container;
+			
+			#{$r}__sticky-sizer {
+				width: calc(100% / 12 * 4 - 10px);
+			}
+		}
+		&._stick-to-bottom {
+			@include absolute(auto,0,0);
+		}
+	}
+	
+	&__sticky-sizer {
+		margin-left: auto;
+	}
+}

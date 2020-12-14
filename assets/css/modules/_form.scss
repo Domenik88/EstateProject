@@ -68,6 +68,12 @@
             width: calc(50% - 10px);
         }
     }
+    
+    &._collapse {
+        #{$r}__check-wrap {
+            display: none;
+        }
+    }
 }
 
 .tel-wrap {
