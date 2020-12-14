@@ -1,0 +1,30 @@
+@keyframes show-item {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.show-more-wrap {
+	& > ._animate {
+		opacity: 0;
+		animation: show-item .5s ease both;
+	}
+	
+	@for $i from 1 through 8 {
+		&._show-#{$i} {
+			& > *:nth-child(#{$i}) ~ *:not(.show-more-btn) {
+				display: none;
+			}
+		}
+	}
+	
+	.show-more-btn {
+		margin-top: 20px;
+	}
+}

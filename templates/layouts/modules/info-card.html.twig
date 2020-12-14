@@ -1,0 +1,60 @@
+<div class="info-card">
+    <h5 class="info-card__title {{ infoCard.icon ?? '' }} h5">
+        {{ infoCard.title }}
+    </h5>
+
+    {% if infoCard.list ?? false %}
+        <div class="info-card__list">
+            {% for item in infoCard.list %}
+                <div class="info-card__row">
+
+                    {% if item.subtitle ?? false %}
+                        <div class="info-card__subtitle body-text2">
+                            {{ item.subtitle }}
+                        </div>
+                    {% endif %}
+
+                    {% if item.label ?? false %}
+                        <div class="info-card__label small-text2">
+                            {{ item.label }}
+                        </div>
+                    {% endif %}
+
+                    <div class="info-card__table">
+                        <div class="info-card__col">
+                            {% if item.status ?? false %}
+                                <div class="info-card__status small-text {{ item.status.mod }}">
+                                    {{ item.status.text }}
+                                </div>
+                            {% endif %}
+
+                            {% if item.val ?? false %}
+                                <div class="info-card__val small-text2">
+                                    {{ item.val }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="info-card__col">
+                            {% if item.rating ?? false %}
+                                <div class="info-card__rating small-text2">
+                                    {{ item.rating }}
+                                </div>
+                            {% endif %}
+
+                            {% if item.details ?? false %}
+                                <a class="info-card__details" href="details">Details</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if infoCard.description ?? false %}
+        <p class="info-card__description tiny-text">
+            {{ infoCard.description }}
+        </p>
+    {% endif %}
+</div>

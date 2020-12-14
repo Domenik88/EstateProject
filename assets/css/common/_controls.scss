@@ -90,6 +90,18 @@
 	&.icon-pinterest {
 		background: $pinterest;
 	}
+	
+	&:not(._active) {
+		.toggle-text-active {
+			display: none;
+		}
+	}
+	
+	&._active {
+		.toggle-text-initial {
+			display: none;
+		}
+	}
 }
 
 .cross-btn {

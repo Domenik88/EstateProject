@@ -17,6 +17,7 @@ var $_ = {
         this.initEstateGallerySlider();
         this.initStickyBlock();
         this.initConfCollapseForm();
+        this.initShowMore();
     },
     
     initCache() {
@@ -46,6 +47,9 @@ var $_ = {
 
         this.$collapse = $('.js-collapse');
         this.$confCollapseForm = $('.js-conf-collapse-form');
+
+        this.$showMoreWrap = $('.js-show-more-wrap');
+        this.$showMoreButton = $('.js-show-more-btn');
 
         this.$map = $('#y-map');
         this.mapIsInit = false;
@@ -137,6 +141,44 @@ var $_ = {
 
                 $innerCollapseBlock[method](props);
             });
+        });
+    },
+
+    initShowMore() {
+        $_.$showMoreButton.on('click', (e) => {
+            const
+                $btn = $(e.currentTarget),
+                $hiddenElements = $btn.prevAll(':hidden'),
+                show = $hiddenElements.length,
+                $elementsToToggle = show ? $hiddenElements : $btn.prevAll().filter(
+                    (key, item) => $(item).data('showed')
+                );
+
+            if (show) {
+                $elementsToToggle.each((key, item) => {
+                    const
+                        $item = $(item),
+                        isAnimated = $item.hasClass('_animate');
+
+                    if (!isAnimated) {
+                        const delay = `${($elementsToToggle.length - key)*100 + 300}ms`;
+
+                        $item.css('animation-delay', delay).addClass('_animate');
+                    }
+                })
+            }
+
+            $elementsToToggle.slideToggle({
+                duration: 300,
+                step: () => {
+                    console.log('step')
+                }
+            }).data('showed', !!show);
+            $btn.toggleClass('_active');
+        });
+
+        $_.$body.on('body:resize:width', function () {
+            $_.$showMoreButton.removeClass('_active').prevAll().attr('style', '').data('showed', false);
         });
     },
 
