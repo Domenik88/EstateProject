@@ -1,0 +1,67 @@
+.property-details {
+	padding-right: 40px;
+	
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.property-table {
+	position: relative;
+	border: 1px solid $gray-line;
+	border-radius: 30px;
+	
+	&__top {
+		border-bottom: 1px solid $gray-line;
+		padding-left: 50px;
+		padding-right: 50px;
+	}
+	
+	&__list {
+		position: relative;
+		width: calc(100% + 50px);
+		left: -25px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	
+	&__col {
+		width: calc(100% / 3 - 50px);
+		margin: 0 25px;
+	}
+	
+	&__row {
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	
+	&__label {
+		color: $gray1;
+	}
+	
+	&__val {
+		color: $dark1;
+	}
+	
+	&__bottom {
+		padding-left: 50px;
+		padding-right: 50px;
+	}
+	
+	&__title {
+		position: relative;
+		
+		&.icon-mls {
+			padding-right: 120px;
+			
+			&::before {
+				@include absolute(0,0,auto,auto);
+				font-size: 40px;
+				color: $gray1;
+				display: block;
+			}
+		}
+	}
+}

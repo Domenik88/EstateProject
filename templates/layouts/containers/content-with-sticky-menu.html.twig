@@ -1,0 +1,15 @@
+<div class="content-with-sticky-menu">
+    <div class="content-with-sticky-menu__table container">
+        <div class="content-with-sticky-menu__col content-with-sticky-menu__col_left">
+            {% block col_left %}{% endblock %}
+        </div>
+
+        <div class="content-with-sticky-menu__col content-with-sticky-menu__col_right js-sticky-container">
+            <div class="content-with-sticky-menu__sticky-block js-sticky-block">
+                <div class="content-with-sticky-menu__sticky-sizer">
+                    {% block col_right %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,15 +3,16 @@
 	align-items: flex-end;
 	justify-content: space-between;
 	
-	&__title {
+	&__text {
 		flex: 1 0 0;
+		padding-right: 40px;
+		
+		&:last-child {
+			padding-right: 0;
+		}
 	}
 	
-	&__btn-wrap {
+	&__slider-nav-wrap {
 	
 	}
-}
-
-.content-title {
-	max-width: 715px;
 }
