@@ -9,7 +9,7 @@
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'name',
                     'placeholder': 'Enter your name',
-                    'inputMod': '',
+                    'inputMod': 'required',
                 } %}
             </div>
 
@@ -17,7 +17,7 @@
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'email',
                     'placeholder': 'Your email',
-                    'inputMod': 'usermail',
+                    'inputMod': 'required usermail',
                 } %}
             </div>
             <div class="contact-form__row">
@@ -48,7 +48,7 @@
                         {% include 'layouts/form/input.html.twig' with {
                             'name': 'phone',
                             'placeholder': 'Phone number',
-                            'inputMod': 'userphone',
+                            'inputMod': 'required',
                         } %}
                     </div>
                 </div>

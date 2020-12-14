@@ -7,7 +7,14 @@
 
     {% embed 'layouts/containers/content-with-sticky-menu.html.twig' %}
         {% block col_left %}
-            <div style="height: 2000px; width: 100%; background: green;"></div>
+            {% include 'layouts/sections/property-details.html.twig' with {
+                description: listing.description,
+                list: {
+                    location: listing.address,
+                    metrics: listing.metrics,
+                    financials: listing.financials,
+                }
+            } %}
         {% endblock %}
 
         {% block col_right %}

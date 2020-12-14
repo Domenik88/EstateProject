@@ -8,8 +8,8 @@
 
 .text-block {
 	p {
-		//@extend .p3;
-		//@extend .mb20;
+		@extend .small-text2;
+		@extend .mb20;
 		
 		&:last-child {
 			margin-bottom: 0;
@@ -17,27 +17,33 @@
 	}
 	
 	h1 {
-		//@extend .h1;
-		//@extend .mt20;
-		//@extend .mb40;
+		@extend .h1;
+		@extend .mb50;
 	}
 	
 	h2 {
-		//@extend .h2;
-		//@extend .mt20;
-		//@extend .mb40;
+		@extend .h2;
+		@extend .mb50;
 	}
 	
-	h3,
+	h3 {
+		@extend .h3;
+		@extend .mb40;
+	}
+	
 	h4 {
-		//@extend .p4;
-		//@extend .mb40;
+		@extend .h4;
+		@extend .mb30;
 	}
 	
-	h5,
+	h5 {
+		@extend .h5;
+		@extend .mb20;
+	}
+	
 	h6 {
-		//@extend .p2;
-		//@extend .mb20;
+		@extend .h6;
+		@extend .mb20;
 	}
 	
 	ul {

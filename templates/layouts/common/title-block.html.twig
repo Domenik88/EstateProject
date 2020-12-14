@@ -1,0 +1,16 @@
+{% set titleTag = tag|default('h2') %}
+{% set autoWrapMod = (titleTag is same as 'h2') ? 'mb40' : 'mb50' %}
+
+<div class="title-block {{ wrapMod|default(false) ? wrapMod : autoWrapMod }}">
+    <{{ titleTag }} class="title-block__text {{ titleTag }}">
+        {{ text }}
+    </{{ titleTag }}>
+
+    {% if sliderNav|default(false) %}
+        <div class="title-block__slider-nav-wrap">
+            {% include 'layouts/modules/slider-nav.html.twig' with {
+                wrapMod: '_horizontal'
+            } %}
+        </div>
+    {% endif %}
+</div>

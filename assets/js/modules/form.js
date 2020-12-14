@@ -49,9 +49,6 @@ jQuery(function($) {
             );
             
             $.validator.addClassRules({
-                userphone: {
-                    required: true
-                },
                 usermail: {
                     email: true
                 },

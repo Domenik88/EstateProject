@@ -83,28 +83,36 @@ var $_ = {
     },
 
     initStickyBlock() {
+        function setSticky($currentStickyBlock, $relatedStickyContainer) {
+            const
+                { top: wrapTop, bottom: wrapBottom } = $relatedStickyContainer[0].getBoundingClientRect(),
+                { height: blockHeight } = $currentStickyBlock[0].getBoundingClientRect(),
+                { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
+                offset = headerHeight + 20;
+
+            if (wrapBottom <= (blockHeight + offset)) {
+                $currentStickyBlock.attr('style', '');
+                $currentStickyBlock.removeClass('_stick-to-top').addClass('_stick-to-bottom');
+            } else if (wrapTop <= offset) {
+                $currentStickyBlock.css('top', offset);
+                $currentStickyBlock.removeClass('_stick-to-bottom').addClass('_stick-to-top');
+            } else {
+                $currentStickyBlock.attr('style', '');
+                $currentStickyBlock.removeClass('_stick-to-bottom _stick-to-top');
+            }
+        }
+
         $_.$stickyBlock.each((key, item) => {
             const
                 $currentStickyBlock = $(item),
                 $relatedStickyContainer = $currentStickyBlock.closest($_.$stickyContainer);
 
             $_.$window.on('scroll', () => {
-                const
-                    { top: wrapTop, bottom: wrapBottom } = $relatedStickyContainer[0].getBoundingClientRect(),
-                    { height: blockHeight } = $currentStickyBlock[0].getBoundingClientRect(),
-                    { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
-                    offset = headerHeight + 20;
+                setSticky($currentStickyBlock, $relatedStickyContainer);
+            });
 
-                if (wrapBottom <= (blockHeight + offset)) {
-                    $currentStickyBlock.attr('style', '');
-                    $currentStickyBlock.removeClass('_stick-to-top').addClass('_stick-to-bottom');
-                } else if (wrapTop <= offset) {
-                    $currentStickyBlock.css('top', offset);
-                    $currentStickyBlock.removeClass('_stick-to-bottom').addClass('_stick-to-top');
-                } else {
-                    $currentStickyBlock.attr('style', '');
-                    $currentStickyBlock.removeClass('_stick-to-bottom _stick-to-top');
-                }
+            $currentStickyBlock.on('trigger:update', () => {
+                setSticky($currentStickyBlock, $relatedStickyContainer);
             });
         });
     },
@@ -114,14 +122,20 @@ var $_ = {
             const
                 $currentForm = $(item),
                 $innerCollapseBlock = $currentForm.find($_.$collapse),
-                $innerInputs = $currentForm.find('input[type="text"]');
+                $innerInputs = $currentForm.find('input[type="text"]'),
+                $parentStickyBlock = $currentForm.closest('.js-sticky-block');
 
             $currentForm.on('change', () => {
                 const
                     values = $innerInputs.map((key, item) => item.value.length > 0).toArray(),
-                    method = values.indexOf(true) !== -1 ? 'slideDown' : 'slideUp';
+                    method = values.indexOf(true) !== -1 ? 'slideDown' : 'slideUp',
+                    props = {
+                        duration: 300,
+                    };
 
-                $innerCollapseBlock[method](300);
+                if ($parentStickyBlock.length) props.step = () => $parentStickyBlock.trigger('trigger:update');
+
+                $innerCollapseBlock[method](props);
             });
         });
     },

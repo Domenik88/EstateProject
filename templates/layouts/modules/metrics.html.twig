@@ -1,26 +1,25 @@
-{# TODO: add labels #}
 {% set metricsLabels = {
     bedRooms: 'Beds',
     bathRooms: 'Baths',
-    stories: '',
-    lotSize: 'lot sqft',
-    lotSizeUnits: '',
-    sqrtFootage: 'sqft',
-    sqrtFootageUnits: '',
+    stories: 'Stories',
+    lotSize: metrics.lotSizeUnits|default('lot sqft'),
+    sqrtFootage: metrics.sqrtFootageUnits|default('sqft'),
     yearBuilt: 'built'
 } %}
 
+{% set outputProps = ['bedRooms','bathRooms','stories','lotSize','sqrtFootage','yearBuilt'] %}
+
 <div class="metrics mtr10">
-    {% for key, val in metrics|cast_to_array %}
-        {% if val and val|length %}
+    {% for prop in outputProps %}
+        {% if attribute(metrics, prop)|default('')|length %}
             <div class="metrics__item mt10">
                 <span class="metrics__val small-text">
-                    {{ val }}
+                    {{ attribute(metrics, prop) }}
                 </span>
 
-                {% if metricsLabels[key] %}
+                {% if metricsLabels[prop] %}
                     <span class="metrics__label small-text2">
-                        {{ metricsLabels[key] }}
+                        {{ metricsLabels[prop] }}
                     </span>
                 {% endif %}
             </div>
