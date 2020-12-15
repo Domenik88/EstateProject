@@ -1,0 +1,192 @@
+{% set infoList = [
+    {
+        icon: 'icon-public-schools',
+        title: 'Public Schools',
+        description: 'Part of this information is provided by the Province of British Columbia under the Open Government License for Government of BC Information v.BC1.0. School boundaries and other statistics changes frequently and is for general informational purposes only. You should not use such information in determining the legal eligibility to attend any particular school.',
+        list: [
+            {
+                subtitle: 'Elementary',
+                label: 'Myrtle Philip Community School',
+                status: {
+                    text: 'Above Average',
+                    mod: '_green'
+                },
+                val: '1.73 km',
+                rating: 'Rating 7/10',
+                details: '#',
+            },
+            {
+                subtitle: 'Secondary',
+                label: 'Whistler Secondary',
+                status: {
+                    text: 'Above Average',
+                    mod: '_green'
+                },
+                val: '5.59 km',
+                rating: 'Rating 8/10',
+                details: '#',
+            },
+        ]
+    },
+    {
+        icon: 'icon-noise',
+        title: 'Noise/ Power Lines',
+        list: [
+            {
+                subtitle: 'Road Noise',
+                status: {
+                    text: 'Unlikely',
+                    mod: '_green'
+                },
+            },
+            {
+                subtitle: 'Railway/Sky train Noise',
+                status: {
+                    text: 'Unlikely',
+                    mod: '_green'
+                },
+            },
+            {
+                subtitle: 'Airport/Port Noise',
+                status: {
+                    text: 'Unlikely',
+                    mod: '_green'
+                },
+            },
+            {
+                subtitle: 'Close to major Power Lines',
+                status: {
+                    text: 'Unlikely',
+                    mod: '_green'
+                },
+            },
+        ]
+    },
+    {
+        icon: 'icon-bus',
+        title: 'Closest Transit',
+        list: [
+            {
+                subtitle: 'Bus Stop',
+                label: 'Lorimer at Marketplace',
+                val: '0.13 km',
+                details: '#',
+            }
+        ]
+    },
+    {
+        icon: 'icon-private-schools',
+        title: 'Private Schools',
+        list: [
+            {
+                subtitle: 'Elementary',
+                label: 'Collingwood School',
+                status: {
+                    text: 'Above Average',
+                    mod: '_green'
+                },
+                val: '137.29 km',
+                rating: 'Rating 10/10',
+                details: '#',
+            },
+            {
+                subtitle: 'Secondary',
+                label: 'Collingwood School',
+                status: {
+                    text: 'Above Average',
+                    mod: '_green'
+                },
+                val: '137.29 km',
+                rating: 'Rating 10/10',
+                details: '#',
+            },
+        ]
+    },
+    {
+        icon: 'icon-climate',
+        title: 'Climate',
+        list: [
+            {
+                subtitle: 'Station Distance',
+                val: '0.85km',
+            },
+            {
+                subtitle: 'Station Elevation',
+                val: '658 m',
+            },
+            {
+                subtitle: 'Temperature',
+                status: {
+                    text: 'Low',
+                    mod: '_green'
+                },
+                details: '#',
+            },
+            {
+                subtitle: 'Rainfall',
+                status: {
+                    text: 'Low',
+                    mod: '_green'
+                },
+                details: '#',
+            },
+            {
+                subtitle: 'Snowfall',
+                status: {
+                    text: 'Very high',
+                    mod: '_orange'
+                },
+                details: '#',
+            },
+        ]
+    },
+    {
+        icon: 'icon-environment',
+        title: 'Other',
+        list: [
+            {
+                subtitle: 'Agricultural Land Reserve (ALR)',
+                status: {
+                    text: 'Unlikely',
+                    mod: '_green'
+                },
+                details: '#',
+            },
+            {
+                subtitle: 'Flood Area',
+                status: {
+                    text: 'Possibly',
+                    mod: '_orange'
+                },
+                details: '#',
+            },
+            {
+                subtitle: 'Close to Cemeteries',
+                status: {
+                    text: 'Unlikely',
+                    mod: '_green'
+                },
+                details: '#',
+            },
+        ]
+    },
+] %}
+
+<section class="neighborhood-info mb70">
+    {% include 'layouts/common/title-block.html.twig' with {
+        tag: 'h3',
+        text: title|default('Neighborhood Info'),
+    } %}
+
+    {% include 'layouts/modules/info-cards.html.twig' with {
+        infoList: infoList,
+    } %}
+
+    {% if description|default(false) %}
+        {% embed 'layouts/common/show-more-wrap.html.twig' %}
+            {% block show_more_wrap_content %}
+                {{ description|raw }}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+</section>

@@ -2,5 +2,12 @@
 {% set dataPopupAttribute = dataPopup|default(false) ? "data-popup=" ~ dataPopup|json_encode() %}
 
 <{{html_tag}} class="btn-style{{ mod|default(false) ? ' ' ~ mod }}" {{ dataPopupAttribute }}>
-    <span class="btn-style__text">{{ text ?? '' }}</span>
+    <span class="btn-style__text">
+        {% if text|default(false) %}
+            {{ text }}
+        {% elseif toggleTextInitial and toggleTextActive %}
+            <span class="toggle-text-initial">{{ toggleTextInitial }}</span>
+            <span class="toggle-text-active">{{ toggleTextActive }}</span>
+        {% endif %}
+    </span>
 </{{html_tag}}>

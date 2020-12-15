@@ -224,52 +224,32 @@ class ListingSearchDataService
             'AddressSmall'                           => '',
             'Location'                               => '',
         ];
-        $seoDescription = "[AddressFull] is a [SubType] that currently for sale for $[ListPrice] with [Beds] bedrooms and [Baths] bathrooms, with [FloorArea] sq.ft living area. It was built in [YearBuilt]. It was listed in MLS® under # [MLS]. This listing is located in [City].
-                            
-                            [LblPrice] The Median List price for the property is [MedianListCityPrice]% [MedianCityPriceStatus] than comparables in the city.
-                            
-                            [PrivateSchLbl] The closest elementary independent school with good rating is [ClosesteleIndSchool]. The School's rating is [SchoolRating]/10 and it is located [IndSchDistance] km.
-                            The closest Secondary Private School with good rating is [ClosestSecPrivateSchool]. The School's rating is [PrivateSchoolRating]/10. The school is located [SecPrivateSchDistance] km from it.
-                            
-                            [TransitLbl] [Start Condition]The closest Skytrain/Railway station to [Street], [City] is [SkytrainStationName] on [SkytrainStationLine] line in [SkytrainDistance] km from this home. [End Condition]The closest Bus station is [BusStationName] in [BusDistance] km away.
-                            
-                            [EducationLbl] [TotalPeopleWithDegree]% of people with university certificate/degree live in [DemographicsArea] which is [DegreeStatus] in comparison with the BC average. [TotalPeopleWithoutDegree]% of population in [DemographicsArea] have no certificate or degree. This number is [NoDegreeStatus] compared to the average in British Columbia.
-                            
-                            [IncomeLbl] Median Household Income near this dwelling in [DemographicsArea] is [MedianHouseHoldIncome] which is [MedianIncomeStatus] in comparison with the BC average.
-                            
-                            [UnemploymentLbl] Unemployment rate in the area around Listing # [MLS] is [UnemploymentRate] which is [UnemploymentStatus] in comparison to the other British Columbia neighbourhoods.
-                            
-                            [ClimateLbl] The closest weather station is [ClosestWeatherStation]. It is located [ClosestWeatherStationDistance]km away. Weather station elevation is [ClosestWeatherStationElevation]m.  
-                            
-                            Daily average temperature around this station is [ClosestWeatherStationTemperature]C which is [ClosestWeatherStationTemperatureStatus] compared to the  local average. 
-                            
-                            Rainfall is about [ClosestWeatherStationRainfallRate]mm yearly which is [ClosestWeatherStationRainfallStatus] compared to the local averages.
-                            
-                            Snowfall is [ClosesWeatherStationSnowfallRate]mm yearly. This number is [ClosesWeatherStationSnowFallStatus] compared to other local neighbourhoods.
-                            
-                            [FloodAreaLbl] According to an official flood area map [Street] home for sale is [FloodStatus] . This information is for general informational purposes only. You should not use such information in determining the chances of this house being flooded.
-                            
-                            [CemeteriesLbl]  [MLS] is [Cemeteries].
-                            
-                            [ALRLbl]  [SubType] [Street] [ALRStatus].
-                            
-                            [PopulationChangeLbl] This real estate is located in Subdivision where population change between 2006 and 2011 was [PopulationChange]%. This is [PopulationChangeStatus] in comparison to average growth rate of this region.
-                            
-                            [AverageChildrenLbl]  Average Number of Children in Subdivision is [ChildrenRate]. This is [ChildrenStatus] number in comparison to the whole region.
-                            
-                            [MedianAgeLbl]  [MedianAgeRate]% of population in this area is 65 and over. This percentage is [MedianAgeStatus] in comparison to other BC cities.
-                            
-                            [PopulationDensityLbl]  Population Density in the area is [PopulationDensityStatus]. [PopulationDensityRate] people per sq.km. 
-                            
-                            [SinglesLbl] [Street], [City] property for sale is situated in the area with a/an [SinglesStatus] percentage of singles, [SinglesRate]%.
-                            
-                            [CitizenshipLbl] [AddressFull], MLS #[MLS] is situated in [DemographicsArea], [City]. [CitizenshipRate]% are Canadian Citizens in this neighbourhood, which is [CitizenshipStatus] in comparison to local rate.
-                            
-                            [RentLbl] This [City] home for sale is in the neighbourhood with a/an [GrossRentStatus] amount of rented dwellings. [RentRate]% of all dwellings are currently occupied by renters. Average gross rent is $[GrossRentAmount] which is [RentStatus] compared to the local average
-                            
-                            [AverageOwnerPaymentsLbl]  Average Owner payments are [AverageOwnerPaymentsStatus] in this area. $[AverageOwnerPaymentsCount] owners spent in average for the dwelling.
-                            
-                            [TransportLbl]  [PublicTransportRate]% of all population in the area around this real estate using Public Transport and only [WalkingBicycleRate]% walking and using bicycle.";
+        $seoDescription = "
+            <p>[AddressFull] is a [SubType] that currently for sale for $[ListPrice] with [Beds] bedrooms and [Baths] bathrooms, with [FloorArea] sq.ft living area. It was built in [YearBuilt]. It was listed in MLS® under # [MLS]. This listing is located in [City].</p>
+            <p>[LblPrice] The Median List price for the property is [MedianListCityPrice]% [MedianCityPriceStatus] than comparables in the city.</p>
+            <p>[PrivateSchLbl] The closest elementary independent school with good rating is [ClosesteleIndSchool]. The School's rating is [SchoolRating]/10 and it is located [IndSchDistance] km.</p>
+            <p>The closest Secondary Private School with good rating is [ClosestSecPrivateSchool]. The School's rating is [PrivateSchoolRating]/10. The school is located [SecPrivateSchDistance] km from it.</p>
+            <p>[TransitLbl] [Start Condition]The closest Skytrain/Railway station to [Street], [City] is [SkytrainStationName] on [SkytrainStationLine] line in [SkytrainDistance] km from this home. [End Condition]The closest Bus station is [BusStationName] in [BusDistance] km away.</p>
+            <p>[EducationLbl] [TotalPeopleWithDegree]% of people with university certificate/degree live in [DemographicsArea] which is [DegreeStatus] in comparison with the BC average. [TotalPeopleWithoutDegree]% of population in [DemographicsArea] have no certificate or degree. This number is [NoDegreeStatus] compared to the average in British Columbia.</p>
+            <p>[IncomeLbl] Median Household Income near this dwelling in [DemographicsArea] is [MedianHouseHoldIncome] which is [MedianIncomeStatus] in comparison with the BC average.</p>
+            <p>[UnemploymentLbl] Unemployment rate in the area around Listing # [MLS] is [UnemploymentRate] which is [UnemploymentStatus] in comparison to the other British Columbia neighbourhoods.</p>
+            <p>[ClimateLbl] The closest weather station is [ClosestWeatherStation]. It is located [ClosestWeatherStationDistance]km away. Weather station elevation is [ClosestWeatherStationElevation]m.</p>  
+            <p>Daily average temperature around this station is [ClosestWeatherStationTemperature]C which is [ClosestWeatherStationTemperatureStatus] compared to the  local average.</p> 
+            <p>Rainfall is about [ClosestWeatherStationRainfallRate]mm yearly which is [ClosestWeatherStationRainfallStatus] compared to the local averages.</p>
+            <p>Snowfall is [ClosesWeatherStationSnowfallRate]mm yearly. This number is [ClosesWeatherStationSnowFallStatus] compared to other local neighbourhoods.</p>
+            <p>[FloodAreaLbl] According to an official flood area map [Street] home for sale is [FloodStatus] . This information is for general informational purposes only. You should not use such information in determining the chances of this house being flooded.</p>
+            <p>[CemeteriesLbl]  [MLS] is [Cemeteries].</p>
+            <p>[ALRLbl]  [SubType] [Street] [ALRStatus].</p>
+            <p>[PopulationChangeLbl] This real estate is located in Subdivision where population change between 2006 and 2011 was [PopulationChange]%. This is [PopulationChangeStatus] in comparison to average growth rate of this region.</p>
+            <p>[AverageChildrenLbl]  Average Number of Children in Subdivision is [ChildrenRate]. This is [ChildrenStatus] number in comparison to the whole region.</p>
+            <p>[MedianAgeLbl]  [MedianAgeRate]% of population in this area is 65 and over. This percentage is [MedianAgeStatus] in comparison to other BC cities.</p>
+            <p>[PopulationDensityLbl]  Population Density in the area is [PopulationDensityStatus]. [PopulationDensityRate] people per sq.km.</p> 
+            <p>[SinglesLbl] [Street], [City] property for sale is situated in the area with a/an [SinglesStatus] percentage of singles, [SinglesRate]%.</p>
+            <p>[CitizenshipLbl] [AddressFull], MLS #[MLS] is situated in [DemographicsArea], [City]. [CitizenshipRate]% are Canadian Citizens in this neighbourhood, which is [CitizenshipStatus] in comparison to local rate.</p>
+            <p>[RentLbl] This [City] home for sale is in the neighbourhood with a/an [GrossRentStatus] amount of rented dwellings. [RentRate]% of all dwellings are currently occupied by renters. Average gross rent is $[GrossRentAmount] which is [RentStatus] compared to the local average</p>
+            <p>[AverageOwnerPaymentsLbl]  Average Owner payments are [AverageOwnerPaymentsStatus] in this area. $[AverageOwnerPaymentsCount] owners spent in average for the dwelling.</p>
+            <p>[TransportLbl]  [PublicTransportRate]% of all population in the area around this real estate using Public Transport and only [WalkingBicycleRate]% walking and using bicycle.</p>
+        ";
         $keys = array_keys($shortCodesData);
         $values = array_values($shortCodesData);
         $keys = array_map(function($item) {

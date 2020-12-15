@@ -15,6 +15,10 @@
                     financials: listing.financials,
                 }
             } %}
+
+            {% include 'layouts/sections/neighborhood-info.html.twig' with {
+                description: listing.listingSeo.description
+            } %}
         {% endblock %}
 
         {% block col_right %}

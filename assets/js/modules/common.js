@@ -17,6 +17,7 @@ var $_ = {
         this.initEstateGallerySlider();
         this.initStickyBlock();
         this.initConfCollapseForm();
+        this.initShowMore();
     },
     
     initCache() {
@@ -46,6 +47,9 @@ var $_ = {
 
         this.$collapse = $('.js-collapse');
         this.$confCollapseForm = $('.js-conf-collapse-form');
+
+        this.$showMoreWrap = $('.js-show-more-wrap');
+        this.$showMoreButton = $('.js-show-more-btn');
 
         this.$map = $('#y-map');
         this.mapIsInit = false;
@@ -102,6 +106,15 @@ var $_ = {
             }
         }
 
+        function setStickyTop($currentStickyBlock) {
+            const
+                { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
+                offset = headerHeight + 20;
+
+            $currentStickyBlock.css('top', offset);
+            $currentStickyBlock.removeClass('_stick-to-bottom').addClass('_stick-to-top');
+        }
+
         $_.$stickyBlock.each((key, item) => {
             const
                 $currentStickyBlock = $(item),
@@ -113,6 +126,10 @@ var $_ = {
 
             $currentStickyBlock.on('trigger:update', () => {
                 setSticky($currentStickyBlock, $relatedStickyContainer);
+            });
+
+            $currentStickyBlock.on('trigger:set-sticky-top', () => {
+                setStickyTop($currentStickyBlock);
             });
         });
     },
@@ -137,6 +154,53 @@ var $_ = {
 
                 $innerCollapseBlock[method](props);
             });
+        });
+    },
+
+    initShowMore() {
+        $_.$showMoreButton.on('click', (e) => {
+            const
+                $btn = $(e.currentTarget),
+                $wrap = $btn.closest($_.$jsWrap),
+                $stickyBlocks = $wrap.find($_.$stickyBlock),
+                $hiddenElements = $btn.prevAll(':hidden'),
+                show = $hiddenElements.length,
+                $elementsToToggle = show ? $hiddenElements : $btn.prevAll().filter(
+                    (key, item) => $(item).data('showed')
+                ),
+                animationsProps = {
+                    duration: 300,
+                };
+
+            if ($stickyBlocks.length && !show) animationsProps.step = (step, data) => {
+                if ($elementsToToggle.eq(0).is(data.elem)) $stickyBlocks.trigger('trigger:update');
+            }
+
+            if ($stickyBlocks.length && show) {
+                $stickyBlocks.trigger('trigger:set-sticky-top');
+                animationsProps.complete = () => $stickyBlocks.trigger('trigger:update');
+            }
+
+            if (show) {
+                $elementsToToggle.each((key, item) => {
+                    const
+                        $item = $(item),
+                        isAnimated = $item.hasClass('_animate');
+
+                    if (!isAnimated) {
+                        const delay = `${($elementsToToggle.length - key)*100 + 300}ms`;
+
+                        $item.css('animation-delay', delay).addClass('_animate');
+                    }
+                })
+            }
+
+            $elementsToToggle.slideToggle(animationsProps).data('showed', !!show);
+            $btn.toggleClass('_active');
+        });
+
+        $_.$body.on('body:resize:width', function () {
+            $_.$showMoreButton.removeClass('_active').prevAll().attr('style', '').data('showed', false);
         });
     },
 

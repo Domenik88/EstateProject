@@ -62,6 +62,12 @@
 		border: 2px solid $fuchsia;
 		background: transparent;
 	}
+
+	&._bordered-gray {
+		color: $dark1;
+		border: 1px solid $gray-line;
+		background: transparent;
+	}
 	
 	&._small {
 		height: 31px;
@@ -89,6 +95,18 @@
 	
 	&.icon-pinterest {
 		background: $pinterest;
+	}
+	
+	&:not(._active) {
+		.toggle-text-active {
+			display: none;
+		}
+	}
+	
+	&._active {
+		.toggle-text-initial {
+			display: none;
+		}
 	}
 }
 

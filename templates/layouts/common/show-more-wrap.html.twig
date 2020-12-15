@@ -1,0 +1,10 @@
+<div class="show-more-wrap text-block {{ mod|default('_show-8') }} js-show-more-wrap">
+    {% block show_more_wrap_content %}{% endblock %}
+
+    {% include 'layouts/controls/button.html.twig' with {
+        'href': '#',
+        'mod': 'show-more-btn _bordered-gray js-show-more-btn',
+        'toggleTextInitial': 'Show more',
+        'toggleTextActive': 'Hide',
+    } %}
+</div>
