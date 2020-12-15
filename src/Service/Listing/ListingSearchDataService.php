@@ -225,32 +225,30 @@ class ListingSearchDataService
             'Location'                               => '',
         ];
         $seoDescription = "
-            <p>313 4360 Lorimer Rd, Whistler, BC - V8E 1A5 is a Apartment/Condo that currently for sale for $699999 with 1 bedrooms and 1 bathrooms, with 547 sq.ft living area. It was built in 1997. It was listed in MLS® under # R2468653 and available for 147 days on Estateblock.com. This listing is located in Whistler Village.</p>
-            <p>Apartment/Condo for sale is situated in Whistler Village in Whistler.</p>
-            <p>Price : The Median List price for the property is 0.00% than comparables in the city and 0.00% than similar homes in the neighbourhood.</p>
-            <p>Public Schools : This home is serviced by Myrtle Philip Community School. The property is located 1.73 km from the school. Myrtle Philip Community School has a rating of 7/10. This home is also serviced by Whistler Secondary and located 5.59 km from it. Whistler Secondary has a rating of 8/10.</p>
-            <p>Private Schools : The closest elementary independent school with good rating is Collingwood School. The School's rating is 10/10 and it is located 137.29 km.</p>
-            <p>The closest Secondary Private School with good rating is Collingwood School. The School's rating is 10/10. The school is located 137.29 km from it.</p>
-            <p>Total Crime : The freshest crime data for BC municipalities from Statistics Canada are from 2015. There were 1334 crime incidents excluding traffic incidents. The overall crime rate (excluding traffic) is 12236.29. Rate is the amount of incidents per 100,000 population. Comparing to other South West BC cities it has a High rate in 2015.</p>
-            <p>Drug Crime : Drug crime rate is High comparing to other neighbourhoods. The drug crime rate is 2375.71. This is the amount of</p>
-            
-            <p>313 4360 Lorimer Rd, Whistler, BC - V8E 1A5 is a Apartment/Condo that currently for sale for $699999 with 1 bedrooms and 1 bathrooms, with 547 sq.ft living area. It was built in 1997. It was listed in MLS® under # R2468653 and available for 147 days on Estateblock.com. This listing is located in Whistler Village.</p>
-            <p>Apartment/Condo for sale is situated in Whistler Village in Whistler.</p>
-            <p>Price : The Median List price for the property is 0.00% than comparables in the city and 0.00% than similar homes in the neighbourhood.</p>
-            <p>Public Schools : This home is serviced by Myrtle Philip Community School. The property is located 1.73 km from the school. Myrtle Philip Community School has a rating of 7/10. This home is also serviced by Whistler Secondary and located 5.59 km from it. Whistler Secondary has a rating of 8/10.</p>
-            <p>Private Schools : The closest elementary independent school with good rating is Collingwood School. The School's rating is 10/10 and it is located 137.29 km.</p>
-            <p>The closest Secondary Private School with good rating is Collingwood School. The School's rating is 10/10. The school is located 137.29 km from it.</p>
-            <p>Total Crime : The freshest crime data for BC municipalities from Statistics Canada are from 2015. There were 1334 crime incidents excluding traffic incidents. The overall crime rate (excluding traffic) is 12236.29. Rate is the amount of incidents per 100,000 population. Comparing to other South West BC cities it has a High rate in 2015.</p>
-            <p>Drug Crime : Drug crime rate is High comparing to other neighbourhoods. The drug crime rate is 2375.71. This is the amount of</p>
-            
-            <p>313 4360 Lorimer Rd, Whistler, BC - V8E 1A5 is a Apartment/Condo that currently for sale for $699999 with 1 bedrooms and 1 bathrooms, with 547 sq.ft living area. It was built in 1997. It was listed in MLS® under # R2468653 and available for 147 days on Estateblock.com. This listing is located in Whistler Village.</p>
-            <p>Apartment/Condo for sale is situated in Whistler Village in Whistler.</p>
-            <p>Price : The Median List price for the property is 0.00% than comparables in the city and 0.00% than similar homes in the neighbourhood.</p>
-            <p>Public Schools : This home is serviced by Myrtle Philip Community School. The property is located 1.73 km from the school. Myrtle Philip Community School has a rating of 7/10. This home is also serviced by Whistler Secondary and located 5.59 km from it. Whistler Secondary has a rating of 8/10.</p>
-            <p>Private Schools : The closest elementary independent school with good rating is Collingwood School. The School's rating is 10/10 and it is located 137.29 km.</p>
-            <p>The closest Secondary Private School with good rating is Collingwood School. The School's rating is 10/10. The school is located 137.29 km from it.</p>
-            <p>Total Crime : The freshest crime data for BC municipalities from Statistics Canada are from 2015. There were 1334 crime incidents excluding traffic incidents. The overall crime rate (excluding traffic) is 12236.29. Rate is the amount of incidents per 100,000 population. Comparing to other South West BC cities it has a High rate in 2015.</p>
-            <p>Drug Crime : Drug crime rate is High comparing to other neighbourhoods. The drug crime rate is 2375.71. This is the amount of</p>
+            <p>[AddressFull] is a [SubType] that currently for sale for $[ListPrice] with [Beds] bedrooms and [Baths] bathrooms, with [FloorArea] sq.ft living area. It was built in [YearBuilt]. It was listed in MLS® under # [MLS]. This listing is located in [City].</p>
+            <p>[LblPrice] The Median List price for the property is [MedianListCityPrice]% [MedianCityPriceStatus] than comparables in the city.</p>
+            <p>[PrivateSchLbl] The closest elementary independent school with good rating is [ClosesteleIndSchool]. The School's rating is [SchoolRating]/10 and it is located [IndSchDistance] km.</p>
+            <p>The closest Secondary Private School with good rating is [ClosestSecPrivateSchool]. The School's rating is [PrivateSchoolRating]/10. The school is located [SecPrivateSchDistance] km from it.</p>
+            <p>[TransitLbl] [Start Condition]The closest Skytrain/Railway station to [Street], [City] is [SkytrainStationName] on [SkytrainStationLine] line in [SkytrainDistance] km from this home. [End Condition]The closest Bus station is [BusStationName] in [BusDistance] km away.</p>
+            <p>[EducationLbl] [TotalPeopleWithDegree]% of people with university certificate/degree live in [DemographicsArea] which is [DegreeStatus] in comparison with the BC average. [TotalPeopleWithoutDegree]% of population in [DemographicsArea] have no certificate or degree. This number is [NoDegreeStatus] compared to the average in British Columbia.</p>
+            <p>[IncomeLbl] Median Household Income near this dwelling in [DemographicsArea] is [MedianHouseHoldIncome] which is [MedianIncomeStatus] in comparison with the BC average.</p>
+            <p>[UnemploymentLbl] Unemployment rate in the area around Listing # [MLS] is [UnemploymentRate] which is [UnemploymentStatus] in comparison to the other British Columbia neighbourhoods.</p>
+            <p>[ClimateLbl] The closest weather station is [ClosestWeatherStation]. It is located [ClosestWeatherStationDistance]km away. Weather station elevation is [ClosestWeatherStationElevation]m.</p>  
+            <p>Daily average temperature around this station is [ClosestWeatherStationTemperature]C which is [ClosestWeatherStationTemperatureStatus] compared to the  local average.</p> 
+            <p>Rainfall is about [ClosestWeatherStationRainfallRate]mm yearly which is [ClosestWeatherStationRainfallStatus] compared to the local averages.</p>
+            <p>Snowfall is [ClosesWeatherStationSnowfallRate]mm yearly. This number is [ClosesWeatherStationSnowFallStatus] compared to other local neighbourhoods.</p>
+            <p>[FloodAreaLbl] According to an official flood area map [Street] home for sale is [FloodStatus] . This information is for general informational purposes only. You should not use such information in determining the chances of this house being flooded.</p>
+            <p>[CemeteriesLbl]  [MLS] is [Cemeteries].</p>
+            <p>[ALRLbl]  [SubType] [Street] [ALRStatus].</p>
+            <p>[PopulationChangeLbl] This real estate is located in Subdivision where population change between 2006 and 2011 was [PopulationChange]%. This is [PopulationChangeStatus] in comparison to average growth rate of this region.</p>
+            <p>[AverageChildrenLbl]  Average Number of Children in Subdivision is [ChildrenRate]. This is [ChildrenStatus] number in comparison to the whole region.</p>
+            <p>[MedianAgeLbl]  [MedianAgeRate]% of population in this area is 65 and over. This percentage is [MedianAgeStatus] in comparison to other BC cities.</p>
+            <p>[PopulationDensityLbl]  Population Density in the area is [PopulationDensityStatus]. [PopulationDensityRate] people per sq.km.</p> 
+            <p>[SinglesLbl] [Street], [City] property for sale is situated in the area with a/an [SinglesStatus] percentage of singles, [SinglesRate]%.</p>
+            <p>[CitizenshipLbl] [AddressFull], MLS #[MLS] is situated in [DemographicsArea], [City]. [CitizenshipRate]% are Canadian Citizens in this neighbourhood, which is [CitizenshipStatus] in comparison to local rate.</p>
+            <p>[RentLbl] This [City] home for sale is in the neighbourhood with a/an [GrossRentStatus] amount of rented dwellings. [RentRate]% of all dwellings are currently occupied by renters. Average gross rent is $[GrossRentAmount] which is [RentStatus] compared to the local average</p>
+            <p>[AverageOwnerPaymentsLbl]  Average Owner payments are [AverageOwnerPaymentsStatus] in this area. $[AverageOwnerPaymentsCount] owners spent in average for the dwelling.</p>
+            <p>[TransportLbl]  [PublicTransportRate]% of all population in the area around this real estate using Public Transport and only [WalkingBicycleRate]% walking and using bicycle.</p>
         ";
         $keys = array_keys($shortCodesData);
         $values = array_values($shortCodesData);
