@@ -1,0 +1,23 @@
+.default-slider {
+	position: relative;
+	width: calc(100% + 50px);
+	left: -25px;
+	@include slider-preload(&);
+	
+	.slick-track {
+		display: flex;
+		align-items: stretch;
+		justify-content: flex-start;
+	}
+	
+	&__item {
+		position: relative;
+		width: calc(100% / 3);
+		padding: 0 25px;
+		height: auto;
+		
+		.estate-card {
+			height: 100%;
+		}
+	}
+}

@@ -1,11 +1,11 @@
 <div class="info-card">
-    <h5 class="info-card__title pb20 mb20 {{ infoCard.icon ?? '' }} h5">
-        {{ infoCard.title }}
+    <h5 class="info-card__title pb20 mb20 {{ icon ?? '' }} h5">
+        {{ title }}
     </h5>
 
-    {% if infoCard.list ?? false %}
+    {% if list ?? false %}
         <div class="info-card__list">
-            {% for item in infoCard.list %}
+            {% for item in list %}
                 <div class="info-card__row pb20 mb20">
 
                     {% if item.subtitle ?? false %}
@@ -52,9 +52,9 @@
         </div>
     {% endif %}
 
-    {% if infoCard.description ?? false %}
+    {% if description ?? false %}
         <p class="info-card__description pt20 mt20 tiny-text">
-            {{ infoCard.description }}
+            {{ description }}
         </p>
     {% endif %}
 </div>

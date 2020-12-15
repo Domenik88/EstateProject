@@ -13,11 +13,13 @@
                     location: listing.address,
                     metrics: listing.metrics,
                     financials: listing.financials,
-                }
+                },
+                containerMod: '',
             } %}
 
             {% include 'layouts/sections/neighborhood-info.html.twig' with {
-                description: listing.listingSeo.description
+                description: listing.listingSeo.description,
+                containerMod: '',
             } %}
         {% endblock %}
 
@@ -32,6 +34,20 @@
             } %}
         {% endblock %}
     {% endembed %}
+
+    {% if similarListings is not empty %}
+        {% include 'layouts/sections/slider-section.html.twig' with {
+            title: 'Other Listings in this Building',
+            slides: similarListings,
+        } %}
+    {% endif %}
+
+    {% if similarListings is not empty %}
+        {% include 'layouts/sections/slider-section.html.twig' with {
+            title: 'Nearby Listings',
+            slides: similarListings,
+        } %}
+    {% endif %}
 
     <div style="width: 794px; display: none;" class="mb30">
         {% include 'layouts/modules/agent.html.twig' with {

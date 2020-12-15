@@ -1,26 +1,43 @@
 {% set metricsLabels = {
-    bedRooms: 'Beds',
-    bathRooms: 'Baths',
-    stories: 'Stories',
-    lotSize: metrics.lotSizeUnits|default('lot sqft'),
-    sqrtFootage: metrics.sqrtFootageUnits|default('sqft'),
-    yearBuilt: 'built'
+    bedRooms: {
+        suffix: 'Beds',
+    },
+    bathRooms: {
+        suffix: 'Baths',
+    },
+    stories: {
+        suffix: 'Stories',
+    },
+    lotSize: {
+        prefix: 'lot',
+        suffix: metrics.lotSizeUnits|default('sqft'),
+    },
+    sqrtFootage: {
+        suffix: metrics.sqrtFootageUnits|default('sqft'),
+    },
+    yearBuilt: {
+        suffix: 'built',
+    }
 } %}
 
-{% set outputProps = ['bedRooms','bathRooms','stories','lotSize','sqrtFootage','yearBuilt'] %}
+{% set defaultOutputProps = ['bedRooms','bathRooms','stories','lotSize','sqrtFootage','yearBuilt'] %}
 
-<div class="metrics mtr10">
-    {% for prop in outputProps %}
+<div class="metrics {{ wrapMod ?? 'mtr10' }}">
+    {% for prop in outputProps ?? defaultOutputProps %}
         {% if attribute(metrics, prop)|default('')|length %}
-            <div class="metrics__item mt10">
-                <span class="metrics__val small-text">
-                    {{ attribute(metrics, prop) }}
-                </span>
+            <div class="metrics__item {{ itemMod ?? 'mt10' }}">
+                {% if metricsLabels[prop] and metricsLabels[prop].prefix|default(false) %}
+                    <span class="metrics__label {{ labelMod ?? 'small-text2' }}">{{
+                        metricsLabels[prop].prefix
+                    }}</span>
+                {% endif %}
 
-                {% if metricsLabels[prop] %}
-                    <span class="metrics__label small-text2">
-                        {{ metricsLabels[prop] }}
-                    </span>
+                <span class="metrics__val {{ valMod ?? 'small-text' }}">{{ attribute(metrics, prop) }}</span>
+
+                {% if metricsLabels[prop] and metricsLabels[prop].suffix|default(false) %}
+                    <span class="metrics__label {{ labelMod ?? 'small-text2' }}">{{
+                        metricsLabels[prop].suffix
+                    }}</span>
                 {% endif %}
             </div>
         {% endif %}

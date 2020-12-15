@@ -1,5 +1,5 @@
 {% set titleTag = tag|default('h2') %}
-{% set autoWrapMod = (titleTag is same as 'h2') ? 'mb40' : 'mb50' %}
+{% set autoWrapMod = (titleTag is same as 'h2') ? 'mb50' : 'mb40' %}
 
 <div class="title-block {{ wrapMod|default(false) ? wrapMod : autoWrapMod }}">
     <{{ titleTag }} class="title-block__text {{ titleTag }}">

@@ -1,0 +1,263 @@
+@keyframes estate-card-show {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.estate-cards-list {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	width: calc(100% + 16px);
+	left: -8px;
+	
+	.estate-card {
+	    width: calc(100% / 3 - 16px);
+	    margin: 0 8px 20px;
+		opacity: 0;
+		animation: estate-card-show .7s ease both;
+		
+		@for $i from 1 through 12 {
+			&:nth-child(#{$i}) {
+				animation-delay: #{($i - 1) * 100 + ms};
+			}
+		}
+	}
+}
+
+.estate-cards-slider {
+	position: relative;
+	width: 100%;
+	border-radius: 20px;
+	overflow: hidden;
+	z-index: 3;
+	@include slider-preload(&);
+	background: $gray2;
+	
+	&__item {
+		position: relative;
+		width: 100%;
+		height: 260px;
+		z-index: 2;
+		@include rh(260/366);
+	}
+	
+	&__img {
+		display: block;
+		z-index: 1;
+	}
+}
+
+.estate-card {
+	position: relative;
+	border-radius: 20px;
+	overflow: hidden;
+	background: $white;
+	
+	&::before {
+		content: '';
+		@include absolute;
+		width: 100%;
+		height: 100%;
+		border: 1px solid $gray-line;
+		box-sizing: border-box;
+		border-radius: inherit;
+		z-index: 1;
+	}
+	
+	&__slider-wrap {
+		position: relative;
+		z-index: 2;
+	}
+	
+	&__labels-wrap,
+	&__controls-wrap {
+		width: 100%;
+		display: flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		pointer-events: none;
+		z-index: 5;
+	}
+	
+	&__labels-wrap {
+		@include absolute(0,auto,auto);
+		padding: 10px 10px 0;
+		align-items: flex-start;
+	}
+	
+	&__controls-wrap {
+		@include absolute(auto,auto);
+		padding: 0 10px 10px;
+		align-items: flex-end;
+	}
+	
+	&__label {
+		position: relative;
+		margin-bottom: 10px;
+		margin-right: 8px;
+		padding: 0 8px;
+		color: $dark1;
+		
+		&::before {
+			content: '';
+			@include absolute(0,auto,auto);
+			z-index: -1;
+			width: 100%;
+			height: calc(100% - 1px);
+			border-radius: 10px;
+			background: $yellow;
+		}
+		
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	
+	&__price,
+	&__btn {
+		height: 33px;
+		background: $white;
+		border-radius: 100px;
+		margin-top: 10px;
+		color: $dark1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		pointer-events: auto;
+	}
+	
+	&__price {
+		padding: 0 15px;
+	}
+	
+	&__btn {
+		width: 33px;
+		margin-left: 10px;
+		
+		&_space-right {
+			margin-right: auto;
+		}
+		
+		&_bordered {
+			border: 1px solid $gray-line;
+		}
+		
+		&.icon-heart-frame {
+			&::before {
+				font-size: 12px;
+			}
+		}
+		
+		&.icon-angle-left,
+		&.icon-angle-right {
+			cursor: pointer;
+			
+			&::before {
+				font-size: 9px;
+				transition: $default-transition;
+			}
+			
+			&.slick-disabled {
+				pointer-events: none;
+				
+				&::before {
+					opacity: 0.3;
+				}
+			}
+		}
+	}
+	
+	&__description {
+		position: relative;
+		padding-left: 40px;
+		padding-right: 40px;
+		z-index: 2;
+	}
+	
+	&__metrics-wrap {
+	
+	}
+	
+	&__title {
+		color: $dark1;
+	}
+	
+	&__table {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		color: $gray1;
+	}
+	
+	&__col {
+		width: calc(50% - 10px);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	
+	&__text {
+		&.icon-mls-min {
+			display: inline-flex;
+			align-items: center;
+			justify-content: flex-start;
+			
+			&::before {
+				font-size: 18px;
+				margin-left: 5px;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+//.estate-card {
+//    position: relative;
+//    width: calc(100% / 3 - 16px);
+//    margin: 0 8px 20px;
+//    transition: background-color .3s ease;
+//    opacity: 0;
+//    animation: estate-card-show .7s ease both;
+//
+//    @for $i from 1 through 12 {
+//        &:nth-child(#{$i}) {
+//            animation-delay: #{($i - 1) * 100 + ms};
+//        }
+//    }
+//
+//    &:hover {
+//        background-color: green;
+//    }
+//
+//    &__slider {
+//        position: relative;
+//        width: 100%;
+//        height: 170px;
+//        margin-bottom: 20px;
+//        @extend .responsive-slides;
+//        background: #eee;
+//
+//        &:not(.slick-initialized) {
+//            .estate-slider-item {
+//                display: none;
+//            }
+//        }
+//    }
+//}
+//

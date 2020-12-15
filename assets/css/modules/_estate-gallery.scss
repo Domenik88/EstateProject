@@ -28,6 +28,7 @@
 	position: relative;
 	width: calc(100% + 20px);
 	left: -10px;
+	@include slider-preload(&);
 	
 	&__item {
 		width: 100%;
