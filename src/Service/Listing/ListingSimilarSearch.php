@@ -25,7 +25,7 @@ class ListingSimilarSearch
 
     public function getSimilarListingsData($listingData): ?object
     {
-        $yearBuiltRange = $this->inRange($listingData->yearBuilt,ListingConstants::YEAR_BUILT);
+        $yearBuiltRange = $this->inRange($listingData->metrics->yearBuilt,ListingConstants::YEAR_BUILT);
         $livingAreaRange = $this->inRange($listingData->metrics->sqrtFootage,ListingConstants::LIVING_AREA);
         $lotSizeRange = $this->inRange($listingData->metrics->lotSize,ListingConstants::LOT_SIZE);
 
