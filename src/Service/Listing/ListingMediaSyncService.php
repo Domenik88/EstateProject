@@ -38,14 +38,18 @@ class ListingMediaSyncService
         $listingPicPathForUpload = sys_get_temp_dir() . ListingConstants::UPLOAD_LISTING_PIC_PATH . 'listing/' . $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/';
         $cloudDestination = 'listings/' . $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/';
         try {
+            if ( !is_dir($listingPicPathForUpload) ) {
+                $this->filesystem->mkdir($listingPicPathForUpload);
+            }
             $photoNamesArray = $this->ddfService->fetchListingPhotosFromFeed($listing, $listingPicPathForUpload);
             $this->awsService->upload($listingPicPathForUpload, $cloudDestination);
             $singleListingWithPhotos = $this->listingService->setListingPhotosNamesObject($listing, $photoNamesArray);
-            $this->filesystem->remove($listingPicPathForUpload);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
             throw $e;
+        } finally {
+            $this->filesystem->remove($listingPicPathForUpload);
         }
 
         return $singleListingWithPhotos;
