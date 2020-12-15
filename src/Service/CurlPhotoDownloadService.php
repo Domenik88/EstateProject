@@ -34,9 +34,6 @@ class CurlPhotoDownloadService
     {
         $curl = new Curl();
 
-        if ( !is_dir($destination) ) {
-            $this->filesystem->mkdir($destination);
-        }
         $photosCounter = 1;
         $photoNamesArray = [];
         foreach ( $photoUrls as $photoUrl ) {
@@ -44,15 +41,18 @@ class CurlPhotoDownloadService
                 $curl->get($photoUrl);
                 $im = imagecreatefromstring($curl->getResponse());
                 $fullFileName = $destination . $baseFileName . '-' . $photosCounter . '.jpg';
-                imagejpeg($im, $fullFileName);
-                if (file_exists($fullFileName) && (imagesx($im) > 1200 || imagesy($im) > 1200)) {
-                    $this->imageResizeService->resizeImage($fullFileName);
+                if(imagejpeg($im, $fullFileName)) {
+                    if ( file_exists($fullFileName) && ( imagesx($im) > 1200 || imagesy($im) > 1200 ) ) {
+                        $this->imageResizeService->resizeImage($fullFileName);
+                    }
+                    $photoNamesArray[ $photosCounter ] = $baseFileName . '-' . $photosCounter . '.jpg';
+                } else {
+                    $this->logger->error('Fail-create-image :: ' . $fullFileName);
                 }
-                $photoNamesArray[$photosCounter] = $baseFileName . '-' . $photosCounter . '.jpg';
-                $photosCounter++;
             } catch ( \Exception $e ) {
                 $this->logger->error($e->getMessage());
-                $this->logger->error('imagecreatefromstring::' . $photoUrl);
+            } finally {
+                $photosCounter++;
             }
         }
         $curl->close();
