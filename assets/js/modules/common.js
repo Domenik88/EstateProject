@@ -106,6 +106,15 @@ var $_ = {
             }
         }
 
+        function setStickyTop($currentStickyBlock) {
+            const
+                { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
+                offset = headerHeight + 20;
+
+            $currentStickyBlock.css('top', offset);
+            $currentStickyBlock.removeClass('_stick-to-bottom').addClass('_stick-to-top');
+        }
+
         $_.$stickyBlock.each((key, item) => {
             const
                 $currentStickyBlock = $(item),
@@ -117,6 +126,10 @@ var $_ = {
 
             $currentStickyBlock.on('trigger:update', () => {
                 setSticky($currentStickyBlock, $relatedStickyContainer);
+            });
+
+            $currentStickyBlock.on('trigger:set-sticky-top', () => {
+                setStickyTop($currentStickyBlock);
             });
         });
     },
@@ -148,11 +161,25 @@ var $_ = {
         $_.$showMoreButton.on('click', (e) => {
             const
                 $btn = $(e.currentTarget),
+                $wrap = $btn.closest($_.$jsWrap),
+                $stickyBlocks = $wrap.find($_.$stickyBlock),
                 $hiddenElements = $btn.prevAll(':hidden'),
                 show = $hiddenElements.length,
                 $elementsToToggle = show ? $hiddenElements : $btn.prevAll().filter(
                     (key, item) => $(item).data('showed')
-                );
+                ),
+                animationsProps = {
+                    duration: 300,
+                };
+
+            if ($stickyBlocks.length && !show) animationsProps.step = (step, data) => {
+                if ($elementsToToggle.eq(0).is(data.elem)) $stickyBlocks.trigger('trigger:update');
+            }
+
+            if ($stickyBlocks.length && show) {
+                $stickyBlocks.trigger('trigger:set-sticky-top');
+                animationsProps.complete = () => $stickyBlocks.trigger('trigger:update');
+            }
 
             if (show) {
                 $elementsToToggle.each((key, item) => {
@@ -168,12 +195,7 @@ var $_ = {
                 })
             }
 
-            $elementsToToggle.slideToggle({
-                duration: 300,
-                step: () => {
-                    console.log('step')
-                }
-            }).data('showed', !!show);
+            $elementsToToggle.slideToggle(animationsProps).data('showed', !!show);
             $btn.toggleClass('_active');
         });
 

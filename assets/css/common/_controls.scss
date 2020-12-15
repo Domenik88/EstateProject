@@ -62,6 +62,12 @@
 		border: 2px solid $fuchsia;
 		background: transparent;
 	}
+
+	&._bordered-gray {
+		color: $dark1;
+		border: 1px solid $gray-line;
+		background: transparent;
+	}
 	
 	&._small {
 		height: 31px;

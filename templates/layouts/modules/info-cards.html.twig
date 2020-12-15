@@ -1,7 +1,9 @@
 <div class="info-cards-wrap mb70">
-    {% for item in infoList %}
-        {% include 'layouts/modules/info-card.html.twig' with {
-            infoCard: item
-        } %}
-    {% endfor %}
+    <div class="info-cards-wrap__list">
+        {% for item in infoList %}
+            {% include 'layouts/modules/info-card.html.twig' with {
+                infoCard: item
+            } %}
+        {% endfor %}
+    </div>
 </div>
