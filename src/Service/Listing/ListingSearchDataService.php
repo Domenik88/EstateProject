@@ -26,7 +26,6 @@ class ListingSearchDataService
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getRawData()[ 'ListingContractDate' ]);
         $listingObject = (object)[
-            'yearBuilt'       => $listing->getYearBuilt(),
             'mlsNumber'       => $listing->getMlsNum(),
             'listingId'       => $listing->getFeedListingID(),
             'feedId'          => $listing->getFeedID(),
@@ -91,7 +90,7 @@ class ListingSearchDataService
     {
         return (object)[
             'listingPrice'         => $listing->getListPrice(),
-            'strataMaintenanceFee' => $listing->getRawData()['AssociationFee'],
+            'strataMaintenanceFee' => $listing->getRawData()[ 'AssociationFee' ],
             'grossTaxes'           => null,
             'grossTaxYear'         => null,
             'originalListingPrice' => $listing->getOriginalPrice(),
@@ -101,6 +100,7 @@ class ListingSearchDataService
     private function getListingMetricsObject(Listing $listing): object
     {
         return (object)[
+            'yearBuilt'        => $listing->getYearBuilt(),
             'bedRooms'         => $listing->getBedrooms(),
             'bathRooms'        => (int)$listing->getRawData()[ 'BathroomsTotal' ],
             'stories'          => (int)$listing->getRawData()[ 'Stories' ],
