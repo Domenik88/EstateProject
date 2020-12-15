@@ -1,0 +1,17 @@
+<section class="slider-section {{ wrapMod ?? 'mb70' }}">
+    <div class="slider-section__container js-wrap {{ containerMod ?? 'container' }}">
+        {% if title|default(false) %}
+            {% include 'layouts/common/title-block.html.twig' with {
+                tag: titleTag|default('h3'),
+                text: title,
+                sliderNav: true,
+            } %}
+        {% endif %}
+
+        {% if slides|default(false) %}
+            {% include 'layouts/modules/default-slider.html.twig' with {
+                slides: slides
+            } %}
+        {% endif %}
+    </div>
+</section>

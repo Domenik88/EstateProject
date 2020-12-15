@@ -1,0 +1,21 @@
+{% set defaultSliderParameters = {
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    lazyLoadSrcAttr: 'none',
+} %}
+
+<div class="default-slider js-default-slider" data-slider-parameters="{{ defaultSliderParameters|json_encode() }}">
+    {% for item in slides|cast_to_array %}
+        <div class="default-slider__item">
+            {% include 'layouts/modules/estate-card.html.twig' with {
+                favourite: item.favourite|default(false),
+                address: item.address|default(false),
+                metrics: item.metrics|default(false),
+                financials: item.financials|default(false),
+                images: item.images|default(false),
+                isNew: item.isNew|default(false),
+                ownershipType: item.ownershipType|default(false),
+            } %}
+        </div>
+    {% endfor %}
+</div>

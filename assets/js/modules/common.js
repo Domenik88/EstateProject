@@ -32,7 +32,8 @@ var $_ = {
         this.$scrollTop = $('.js-scroll-top');
         this.$navLink = $('.js-nav-link');
         this.$checkInWindow = $('.js-check-in-window');
-        
+
+        this.$sliderNav = $('.js-slider-nav');
         this.$arrowLeft = $('.js-arrow-left');
         this.$arrowRight = $('.js-arrow-right');
         this.$current = $('.js-current');
@@ -294,24 +295,28 @@ var $_ = {
         $_.$defaultSlider.each(function (key, item) {
             const
                 $currentSlider = $(item),
+                $innerSlider = $currentSlider.find($_.$defaultSlider),
+                dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
-            
+
             $currentSlider
-            .on('init', function (event, slick) {
-                $_.$body.trigger('update:lazy-load');
-                if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
-            })
-            .slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: true,
-                prevArrow: $arrowLeft,
-                nextArrow: $arrowRight,
-                fade: false,
-                infinite: false,
-                dots: false
-            });
-        })
+                .on('init', function (event, slick) {
+                    $_.$body.trigger('update:lazy-load');
+                    if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+                    if ($innerSlider.length) $_._preventParentSliderSwipe($currentSlider, $innerSlider);
+                })
+                .slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    prevArrow: $arrowLeft,
+                    nextArrow: $arrowRight,
+                    fade: false,
+                    infinite: false,
+                    dots: false,
+                    ...dataParameters
+                });
+        });
     },
     
     initCustomScrollbar() {
@@ -574,15 +579,28 @@ var $_ = {
             }, delay)
         });
     },
+
+    _preventParentSliderSwipe($parent, $child) {
+        $child.on('touchstart mousedown', function(e) {
+            $parent.slick('slickSetOption', 'swipe', false, false);
+        });
+
+        $child.on('touchend mouseup mouseout', function(e) {
+            $parent.slick('slickSetOption', 'swipe', true, false);
+        });
+    },
     
     _getRelatedSliderNav($slider) {
-        const $wrap = $slider.closest($_.$jsWrap);
+        const
+            $wrap = $slider.closest($_.$jsWrap),
+            $sliderNav = $wrap.find($_.$sliderNav);
         
         return {
-            $arrowLeft: $wrap.find($_.$arrowLeft),
-            $arrowRight: $wrap.find($_.$arrowRight),
-            $current: $wrap.find($_.$current),
-            $total: $wrap.find($_.$total),
+            $sliderNav,
+            $arrowLeft: $sliderNav.find($_.$arrowLeft),
+            $arrowRight: $sliderNav.find($_.$arrowRight),
+            $current: $sliderNav.find($_.$current),
+            $total: $sliderNav.find($_.$total),
         }
     },
     

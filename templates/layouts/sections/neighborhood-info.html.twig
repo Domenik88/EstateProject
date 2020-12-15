@@ -172,21 +172,23 @@
     },
 ] %}
 
-<section class="neighborhood-info mb70">
-    {% include 'layouts/common/title-block.html.twig' with {
-        tag: 'h3',
-        text: title|default('Neighborhood Info'),
-    } %}
+<section class="neighborhood-info {{ wrapMod ?? 'mb70' }}">
+    <div class="neighborhood-info__container {{ containerMod ?? 'container' }}">
+        {% include 'layouts/common/title-block.html.twig' with {
+            tag: 'h3',
+            text: title|default('Neighborhood Info'),
+        } %}
 
-    {% include 'layouts/modules/info-cards.html.twig' with {
-        infoList: infoList,
-    } %}
+        {% include 'layouts/modules/info-cards.html.twig' with {
+            infoList: infoList,
+        } %}
 
-    {% if description|default(false) %}
-        {% embed 'layouts/common/show-more-wrap.html.twig' %}
-            {% block show_more_wrap_content %}
-                {{ description|raw }}
-            {% endblock %}
-        {% endembed %}
-    {% endif %}
+        {% if description|default(false) %}
+            {% embed 'layouts/common/show-more-wrap.html.twig' %}
+                {% block show_more_wrap_content %}
+                    {{ description|raw }}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+    </div>
 </section>

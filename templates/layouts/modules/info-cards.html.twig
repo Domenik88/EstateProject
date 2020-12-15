@@ -2,7 +2,10 @@
     <div class="info-cards-wrap__list">
         {% for item in infoList %}
             {% include 'layouts/modules/info-card.html.twig' with {
-                infoCard: item
+                icon: item.icon|default(false),
+                title: item.title|default(false),
+                list: item.list|default(false),
+                description: item.description|default(false),
             } %}
         {% endfor %}
     </div>

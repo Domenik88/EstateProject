@@ -1,4 +1,5 @@
 .metrics {
+	$r: &;
 	display: flex;
 	align-items: flex-start;
 	justify-content: flex-start;
@@ -25,5 +26,48 @@
 	&__label {
 		color: $gray1;
 		margin-left: 5px;
+		
+		&:first-child {
+			margin-left: 0;
+			margin-right: 5px;
+		}
+	}
+	
+	&._simple {
+		#{$r}__item {
+			padding: 0;
+			margin-right: 0;
+			border-radius: 0;
+			background: transparent;
+			
+			
+			&:last-child {
+				#{$r}__label {
+					&::after {
+						display: none;
+					}
+				}
+			}
+		}
+		
+		#{$r}__label {
+			margin-left: 0;
+			color: $gray0;
+			
+			&::before,
+			&::after {
+				pointer-events: none;
+				display: inline;
+				user-select: none;
+			}
+			
+			&::before {
+				content: '\00a0';
+			}
+			
+			&::after {
+				content: '\00a0|\00a0';
+			}
+		}
 	}
 }

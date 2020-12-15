@@ -8,40 +8,153 @@
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: flex-start;
-		background: $white;
-		border: 1px solid $gray-line;
-		box-sizing: border-box;
-		border-radius: 10px;
-		width: 42px;
-		height: 100px;
-		
-		&::before {
-			content: '';
-			@include absolute;
-			width: 100%;
-			height: 1px;
-			background: $gray-line;
-		}
 	}
 	
 	&__arrow {
 		color: $dark1;
-		height: 50%;
-		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		transition: $default-transition;
 		cursor: pointer;
+		border: 1px solid $gray-line;
+		box-sizing: content-box;
+		width: 40px;
+		height: 50px;
+		background: $white;
+		transition: $default-transition;
 		
 		&::before {
 			font-size: 12px;
+			transition: $default-transition;
+		}
+		
+		&:not(.slick-arrow) {
+			opacity: 0;
 		}
 		
 		&.slick-disabled {
-			opacity: 0.3;
 			pointer-events: none;
+			
+			&::before {
+				opacity: 0.3;
+			}
+		}
+		
+		&_left {
+			border-radius: 10px 10px 0 0;
+		}
+		
+		&_right {
+			border-radius: 0 0 10px 10px;
+			border-top-width: 0;
+		}
+	}
+	
+	&._horizontal & {
+		&__arrows-wrap {
+			flex-direction: row;
+		}
+		
+		&__arrow {
+			width: 50px;
+			height: 40px;
+			
+			&_left {
+				border-radius: 10px 0 0 10px;
+			}
+			
+			&_right {
+				border-radius: 0 10px 10px 0;
+				border-top-width: 1px;
+				border-left-width: 0;
+			}
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//
+//
+//.slider-nav {
+//	position: relative;
+//	pointer-events: auto;
+//
+//	&__arrows-wrap {
+//		position: relative;
+//		display: flex;
+//		flex-direction: column;
+//		align-items: flex-start;
+//		justify-content: flex-start;
+//		background: $white;
+//		border: 1px solid $gray-line;
+//		box-sizing: border-box;
+//		border-radius: 10px;
+//		width: 42px;
+//		height: 100px;
+//
+//		&::before {
+//			content: '';
+//			@include absolute;
+//			width: 100%;
+//			height: 1px;
+//			background: $gray-line;
+//		}
+//	}
+//
+//	&__arrow {
+//		color: $dark1;
+//		height: 50%;
+//		width: 100%;
+//		display: flex;
+//		flex-direction: column;
+//		align-items: center;
+//		justify-content: center;
+//		transition: $default-transition;
+//		cursor: pointer;
+//
+//		&::before {
+//			font-size: 12px;
+//		}
+//
+//		&.slick-disabled {
+//			opacity: 0.3;
+//			pointer-events: none;
+//		}
+//	}
+//
+//	&._horizontal & {
+//		&__arrows-wrap {
+//			flex-direction: row;
+//			width: 100px;
+//			height: 42px;
+//
+//			&::before {
+//				width: 1px;
+//				height: 100%;
+//			}
+//		}
+//
+//		&__arrow {
+//			height: 100%;
+//			width: 50%;
+//		}
+//	}
+//}
+
