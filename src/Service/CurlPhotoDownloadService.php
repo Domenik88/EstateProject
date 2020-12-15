@@ -45,7 +45,7 @@ class CurlPhotoDownloadService
                 $im = imagecreatefromstring($curl->getResponse());
                 $fullFileName = $destination . $baseFileName . '-' . $photosCounter . '.jpg';
                 imagejpeg($im, $fullFileName);
-                if (imagesx($im) > 1200 || imagesy($im) > 1200) {
+                if (file_exists($fullFileName) && (imagesx($im) > 1200 || imagesy($im) > 1200)) {
                     $this->imageResizeService->resizeImage($fullFileName);
                 }
                 $photoNamesArray[$photosCounter] = $baseFileName . '-' . $photosCounter . '.jpg';
