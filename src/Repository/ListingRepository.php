@@ -12,10 +12,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 
 /**
- * @method Listing|null find($id, $lockMode = null, $lockVersion = null)
- * @method Listing|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Listing|null find( $id, $lockMode = null, $lockVersion = null )
+ * @method Listing|null findOneBy( array $criteria, array $orderBy = null )
  * @method Listing[]    findAll()
- * @method Listing[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Listing[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
  */
 class ListingRepository extends ServiceEntityRepository
 {
@@ -48,19 +48,19 @@ class ListingRepository extends ServiceEntityRepository
         $rsm = new ResultSetMapping();
         $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status) 
                 select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status 
-                from listing_master lm on conflict (feed_id,feed_listing_id) do update set last_update_from_feed = excluded.last_update_from_feed",$rsm)->execute();
+                from listing_master lm on conflict (feed_id,feed_listing_id) do update set last_update_from_feed = excluded.last_update_from_feed", $rsm)->execute();
     }
 
     public function getAllListingsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
     {
-        $boxString = "box '((" . $neLat . ", ". $neLng . "),(" . $swLat . ", " . $swLng . "))'";
+        $boxString = "box '((" . $neLat . ", " . $neLng . "),(" . $swLat . ", " . $swLng . "))'";
         try {
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
             $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and processing_status != '" . ListingConstants::ERROR_PROCESSING_LISTING_STATUS . "' and coordinates IS NOT NULL and coordinates <@ $boxString AND deleted_date IS NULL";
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             return $query->getResult();
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
             return [];
@@ -76,40 +76,45 @@ class ListingRepository extends ServiceEntityRepository
             $params = [];
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-            if ($type) {
+            if ( $type ) {
                 $sqlArray[] = 'type = :propertyType';
                 $params[ 'propertyType' ] = $type;
             }
-            if ($ownershipType) {
+            if ( $ownershipType ) {
                 $sqlArray[] = 'ownership_type = :ownershipType';
                 $params[ 'ownershipType' ] = $ownershipType;
             }
-            if (isset($bedRooms)) {
+            if ( isset($bedRooms) ) {
                 $sqlArray[] = 'bedrooms = :bedroomsCount';
                 $params[ 'bedroomsCount' ] = $bedRooms;
             }
-            if ($livingAreaRange) {
+            if ( $livingAreaRange ) {
                 $sqlArray[] = 'living_area <@ int4range(:livingAreaFrom,:livingAreaTo)';
-                $params['livingAreaFrom'] = $livingAreaRange[0];
-                $params['livingAreaTo'] = $livingAreaRange[1];
+                $params[ 'livingAreaFrom' ] = $livingAreaRange[ 0 ];
+                $params[ 'livingAreaTo' ] = $livingAreaRange[ 1 ];
             }
-            if ($lotSizeRange) {
-                $sqlArray[] = 'lot_size <@ int4range(:lotSizeFrom,:lotSizeTo)';
-                $params['lotSizeFrom'] = $lotSizeRange[0];
-                $params['lotSizeTo'] = $lotSizeRange[1];
+            if ( $lotSizeRange ) {
+                if ( $lotSizeRange[ 0 ] != $lotSizeRange[ 1 ] ) {
+                    $sqlArray[] = 'lot_size <@ int4range(:lotSizeFrom,:lotSizeTo)';
+                    $params[ 'lotSizeFrom' ] = $lotSizeRange[ 0 ];
+                    $params[ 'lotSizeTo' ] = $lotSizeRange[ 1 ];
+                } else {
+                    $sqlArray[] = 'lot_size = :lotSize';
+                    $params[ 'lotSize' ] = $lotSizeRange[ 0 ];
+                }
             }
-            if ($yearBuiltRange) {
+            if ( $yearBuiltRange ) {
                 $sqlArray[] = 'year_built <@ int4range(:yearBuiltFrom,:yearBuiltTo)';
-                $params['yearBuiltFrom'] = $yearBuiltRange[0];
-                $params['yearBuiltTo'] = $yearBuiltRange[1];
+                $params[ 'yearBuiltFrom' ] = $yearBuiltRange[ 0 ];
+                $params[ 'yearBuiltTo' ] = $yearBuiltRange[ 1 ];
             }
             $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
-            if (isset($mlsNum)) {
+            if ( isset($mlsNum) ) {
                 $sqlArray[] = 'mls_num != :mlsNumber';
                 $params[ 'mlsNumber' ] = $mlsNum;
             }
             $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
-            if (!empty($sqlArray)){
+            if ( !empty($sqlArray) ) {
                 $sql .= ' and ' . implode(' and ', $sqlArray);
             }
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
@@ -117,7 +122,7 @@ class ListingRepository extends ServiceEntityRepository
                 $query->setParameter($key, $param);
             }
             return $query->getResult();
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             $this->logger->error($e->getMessage());
             $this->logger->error($e->getTraceAsString());
             return [];
