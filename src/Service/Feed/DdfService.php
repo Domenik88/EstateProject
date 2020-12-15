@@ -125,7 +125,7 @@ class DdfService
         return $photoNamesArray;
     }
 
-    public function extractImageUrl(string $imgDataString): array
+    public function extractImageUrl(string $imgDataString): ?string
     {
         return explode("\t",$imgDataString)[3];
     }
