@@ -1,0 +1,16 @@
+.mls-note {
+	&__wrap {
+		background: $gray3;
+		border-radius: 20px;
+	}
+	
+	&__text {
+		padding-right: 205px;
+		
+		&::before {
+			@include absolute(0,0,auto,auto);
+			font-size: 60px;
+			color: $gray1;
+		}
+	}
+}
