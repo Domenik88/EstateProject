@@ -1,5 +1,6 @@
 {% set defaultSliderParameters = {
     lazyLoad: 'ondemand',
+    dots: true
 } %}
 
 {% set estateCardFavouriteMod = favourite|default(false) ? 'icon-heart' : 'icon-heart-bordered' %}
@@ -14,31 +15,34 @@
             {% endfor %}
         </div>
 
-        <div class="estate-card__labels-wrap">
-            {% if isNew|default(false) %}
-                <span class="estate-card__label schild">NEW</span>
-            {% endif %}
+        <div class="estate-card__header">
+            <div class="estate-card__labels-wrap">
+                {% if isNew|default(false) %}
+                    <span class="estate-card__label schild">NEW</span>
+                {% endif %}
 
-            {% if ownershipType|default(false) %}
-                <span class="estate-card__label schild">for sale by owner</span>
-            {% endif %}
+                {# TODO: for sale by owner #}
+                {% if forSaleByOwner|default(false) %}
+                    <span class="estate-card__label schild">for sale by owner</span>
+                {% endif %}
+            </div>
+
+            <a class="estate-card__btn estate-card__btn_space-right {{ estateCardFavouriteMod }}" href="#"></a>
         </div>
 
         <div class="estate-card__controls-wrap js-slider-nav">
-            {% if financials.listingPrice|default(false) %}
-                <span class="estate-card__price body-text">{{ financials.listingPrice|format_currency('CAD', {fraction_digit: 0}) }}</span>
-            {% endif %}
-
-            <a class="estate-card__btn estate-card__btn_space-right {{ estateCardFavouriteMod }}" href="#"></a>
-            <span class="estate-card__btn estate-card__btn_bordered icon-angle-left js-arrow-left"></span>
-            <span class="estate-card__btn estate-card__btn_bordered icon-angle-right js-arrow-right"></span>
-
+            <span class="estate-card__arrow icon-angle-left js-arrow-left"></span>
+            <span class="estate-card__arrow icon-angle-right js-arrow-right"></span>
         </div>
     </div>
 
-    <div class="estate-card__description pt30 pb40">
+    <div class="estate-card__description pt30 pb30">
+        {% if financials.listingPrice|default(false) %}
+            <span class="estate-card__title subtitle mb10">{{ financials.listingPrice|format_currency('CAD', {fraction_digit: 0}) }}</span>
+        {% endif %}
+
         {% if address.streetAddress|default(false) and address.city|default(false) %}
-            <h5 class="estate-card__title h5 mb10">
+            <h5 class="estate-card__location h5 mb10">
                 {{ address.streetAddress ~ ', ' ~  address.city }}
             </h5>
         {% endif %}
@@ -56,31 +60,8 @@
             </div>
         {% endif %}
 
-        <div class="estate-card__table tiny-text">
-            <div class="estate-card__col estate-card__col_left">
-                {# TODO type (Apartment/Condo) #}
-                {% if metrics.type|default(false) %}
-                    <span class="estate-card__text">{{ metrics.type }}</span>
-                {% endif %}
-
-                {% if metrics.yearBuilt|default(false) %}
-                    <span class="estate-card__text">{{ 'Year Built ' ~ metrics.yearBuilt }}</span>
-                {% endif %}
-
-                {% if financials.grossTaxes|default(false) %}
-                    <span class="estate-card__text">{{ 'Maint. Fee ' ~ financials.grossTaxes }}</span>
-                {% endif %}
-            </div>
-
-            <div class="estate-card__col estate-card__col_right">
-                {% if company|default(false) %}
-                    <span class="estate-card__text">{{ company }}</span>
-                {% endif %}
-
-                {% if mlsNumber|default(false) %}
-                    <span class="estate-card__text icon-mls-min">{{ 'MLS® ' ~ mlsNumber }}</span>
-                {% endif %}
-            </div>
-        </div>
+        {% if mlsNumber|default(false) %}
+            <span class="estate-card__text icon-mls-min tiny-text">{{ 'MLS® ' ~ mlsNumber }}</span>
+        {% endif %}
     </div>
 </div>

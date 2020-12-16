@@ -77,26 +77,24 @@
 		z-index: 2;
 	}
 	
-	&__labels-wrap,
-	&__controls-wrap {
-		width: 100%;
+	&__header {
 		display: flex;
+		align-items: flex-start;
 		justify-content: flex-start;
-		flex-wrap: wrap;
 		pointer-events: none;
 		z-index: 5;
+		@include absolute(0,auto,auto);
+		padding: 10px 10px 0;
+		width: 100%;
 	}
 	
 	&__labels-wrap {
-		@include absolute(0,auto,auto);
-		padding: 10px 10px 0;
+		display: flex;
 		align-items: flex-start;
-	}
-	
-	&__controls-wrap {
-		@include absolute(auto,auto);
-		padding: 0 10px 10px;
-		align-items: flex-end;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		width: calc(100% - 33px);
+		padding-right: 20px;
 	}
 	
 	&__label {
@@ -121,59 +119,58 @@
 		}
 	}
 	
-	&__price,
+	&__controls-wrap {
+		width: 100%;
+		height: 31px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		padding: 0 10px;
+		pointer-events: none;
+		@include absolute;
+		z-index: 6;
+	}
+	
+	&__arrow,
 	&__btn {
-		height: 33px;
-		background: $white;
 		border-radius: 100px;
-		margin-top: 10px;
+		background: rgba(255,255,255,.5);
 		color: $dark1;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		pointer-events: auto;
+		cursor: pointer;
+	}
+	
+	&__arrow {
+		height: 31px;
+		width: 31px;
+		box-shadow: 0 0 0 1px rgba(225,230,231,.5);
+		transition: $default-transition;
+		
+		&::before {
+			font-size: 9px;
+		}
+		
+		&.slick-disabled {
+			pointer-events: none;
+			opacity: 0.3;
+		}
+	}
+	
+	&__btn {
+		height: 33px;
+		width: 33px;
+		
+		&::before {
+			font-size: 12px;
+		}
 	}
 	
 	&__price {
 		padding: 0 15px;
-	}
-	
-	&__btn {
-		width: 33px;
-		margin-left: 10px;
-		
-		&_space-right {
-			margin-right: auto;
-		}
-		
-		&_bordered {
-			border: 1px solid $gray-line;
-		}
-		
-		&.icon-heart-frame {
-			&::before {
-				font-size: 12px;
-			}
-		}
-		
-		&.icon-angle-left,
-		&.icon-angle-right {
-			cursor: pointer;
-			
-			&::before {
-				font-size: 9px;
-				transition: $default-transition;
-			}
-			
-			&.slick-disabled {
-				pointer-events: none;
-				
-				&::before {
-					opacity: 0.3;
-				}
-			}
-		}
 	}
 	
 	&__description {
@@ -183,34 +180,19 @@
 		z-index: 2;
 	}
 	
-	&__metrics-wrap {
-	
-	}
-	
-	&__title {
+	&__title,
+	&__location {
 		color: $dark1;
 	}
 	
-	&__table {
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-		color: $gray1;
-	}
-	
-	&__col {
-		width: calc(50% - 10px);
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		justify-content: flex-start;
-	}
-	
 	&__text {
+		color: $gray1;
+		
 		&.icon-mls-min {
 			display: inline-flex;
 			align-items: center;
 			justify-content: flex-start;
+			flex-direction: row-reverse;
 			
 			&::before {
 				font-size: 18px;
@@ -219,45 +201,3 @@
 		}
 	}
 }
-
-
-
-
-
-
-
-
-//.estate-card {
-//    position: relative;
-//    width: calc(100% / 3 - 16px);
-//    margin: 0 8px 20px;
-//    transition: background-color .3s ease;
-//    opacity: 0;
-//    animation: estate-card-show .7s ease both;
-//
-//    @for $i from 1 through 12 {
-//        &:nth-child(#{$i}) {
-//            animation-delay: #{($i - 1) * 100 + ms};
-//        }
-//    }
-//
-//    &:hover {
-//        background-color: green;
-//    }
-//
-//    &__slider {
-//        position: relative;
-//        width: 100%;
-//        height: 170px;
-//        margin-bottom: 20px;
-//        @extend .responsive-slides;
-//        background: #eee;
-//
-//        &:not(.slick-initialized) {
-//            .estate-slider-item {
-//                display: none;
-//            }
-//        }
-//    }
-//}
-//
