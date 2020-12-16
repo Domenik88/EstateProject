@@ -304,6 +304,7 @@ var $_ = {
                     $_.$body.trigger('update:lazy-load');
                     if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
                     if ($innerSlider.length) $_._preventParentSliderSwipe($currentSlider, $innerSlider);
+                    if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
                 })
                 .slick({
                     slidesToShow: 1,
@@ -522,6 +523,51 @@ var $_ = {
             $_.$header.removeClass('_active');
             $_._scroll(offset);
         })
+    },
+
+    _getTranslateStyles(x = 0, y = 0) {
+        return {
+            "-webkit-transform": `translate3d(${x}px, ${y}px, 0)`,
+            "-moz-transform": `translate3d(${x}px, ${y}px, 0)`,
+            "-ms-transform": `translate3d(${x}px, ${y}px, 0)`,
+            "-o-transform": `translate3d(${x}px, ${y}px, 0)`,
+            transform: `translate3d(${x}px, ${y}px, 0)`,
+        }
+    },
+
+    _initSliderDotsNav(obj) {
+        const
+            { slick, dotsCount: dotsCountParam } = obj,
+            dotsCount = dotsCountParam ? (dotsCountParam % 2 !== 0 ? dotsCountParam : dotsCountParam - 1) : 5,
+            dotsMid = (dotsCount - 1) / 2;
+
+        if (!slick.$dots.data('isInit')) {
+            slick.$dots.data('isInit', true).wrap('<div class="slider-dots-nav"></div>');
+
+            const
+                $wrap = slick.$dots.parent(),
+                $dots = slick.$dots.children(),
+                dotWidth = $dots.width(),
+                dotHeight = $dots.height(),
+                wrapWidth = dotWidth * dotsCount,
+                dotsAreFit = slick.slideCount < dotsCount;
+
+            $wrap.css({'width': wrapWidth, 'height': dotHeight});
+
+            if (dotsAreFit) {
+                $wrap.addClass('_center');
+            } else {
+                slick.$slider.on('beforeChange', (event, slick, currentSlide, nextSlide) => {
+                    const
+                        offset = dotWidth * (nextSlide - dotsMid),
+                        minOffset = 0,
+                        maxOffset = slick.$dots.width() - Math.abs(wrapWidth),
+                        fixOffset = offset < 0 ? minOffset : (offset > maxOffset ? maxOffset : offset);
+
+                    slick.$dots.css($_._getTranslateStyles(-fixOffset));
+                });
+            }
+        }
     },
     
     _toggleActiveClasses($el) {

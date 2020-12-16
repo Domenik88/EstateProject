@@ -37,14 +37,7 @@
 
     {% if similarListings is not empty %}
         {% include 'layouts/sections/slider-section.html.twig' with {
-            title: 'Other Listings in this Building',
-            slides: similarListings,
-        } %}
-    {% endif %}
-
-    {% if similarListings is not empty %}
-        {% include 'layouts/sections/slider-section.html.twig' with {
-            title: 'Nearby Listings',
+            title: 'Similar nearby listings',
             slides: similarListings,
         } %}
     {% endif %}

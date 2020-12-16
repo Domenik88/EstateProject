@@ -68,3 +68,15 @@ span {
     opacity: 1;
     transition-delay: 0s, 0s, 0s;
 }
+
+.default-img-bg {
+    background-image: url(../../images/default-img.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.default-img-bg-small {
+    background-image: url(../../images/default-img-small.svg);
+    background-size: cover;
+    background-position: center center;
+}
