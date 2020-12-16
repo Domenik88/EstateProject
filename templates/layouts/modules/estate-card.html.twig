@@ -8,11 +8,15 @@
 <div class="estate-card">
     <div class="estate-card__slider-wrap js-wrap">
         <div class="estate-cards-slider js-default-slider" data-slider-parameters="{{ defaultSliderParameters|json_encode }}">
-            {% for img in images %}
-                <div class="estate-cards-slider__item">
-                    <img class="estate-cards-slider__img of" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-lazy="{{ img }}" />
-                </div>
-            {% endfor %}
+            {% if images|length %}
+                {% for img in images %}
+                    <div class="estate-cards-slider__item">
+                        <img class="estate-cards-slider__img of" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-lazy="{{ img }}" />
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="estate-cards-slider__item default-img-bg"></div>
+            {% endif %}
         </div>
 
         <div class="estate-card__header">
