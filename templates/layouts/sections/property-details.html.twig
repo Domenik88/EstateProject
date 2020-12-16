@@ -34,7 +34,9 @@
             grossTaxYear: 'Gross Taxes Year',
         },
 
-        outputProps: ['listingPrice','strataMaintenanceFee','grossTaxes','grossTaxYear',]
+        outputProps: ['listingPrice','strataMaintenanceFee','grossTaxes','grossTaxYear',],
+
+        formatValAsCurrency: true
     },
 } %}
 
@@ -43,7 +45,7 @@
         {% include 'layouts/common/title-block.html.twig' with {
             tag: 'h3',
             text: title|default('Property details'),
-        } %}
+        } only %}
 
         {% if description|default(false) %}
             <p class="property-details__description table-text mb50">
@@ -65,10 +67,11 @@
                                         <span class="property-table__label">
                                             {{ attribute(detailsOutputParams, key).colLabels[prop] }}
                                         </span>
-
-                                            <span class="property-table__val">
-                                            {{ attribute(val, prop) }}
-                                        </span>
+                                            <span class="property-table__val">{{
+                                                attribute(detailsOutputParams, key).formatValAsCurrency|default(false)
+                                                ? attribute(val, prop)|format_currency('CAD', {fraction_digit: 0})
+                                                : attribute(val, prop)
+                                            }}</span>
                                         </div>
                                     {% endif %}
                                 {% endfor %}

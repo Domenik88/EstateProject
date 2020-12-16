@@ -3,76 +3,12 @@
 {% block title %}Hello ListingController!{% endblock %}
 
 {% block body %}
-    {% include 'layouts/sections/listing-page-intro.html.twig' %}
-
-    {% embed 'layouts/containers/content-with-sticky-menu.html.twig' %}
-        {% block col_left %}
-            {% include 'layouts/sections/property-details.html.twig' with {
-                description: listing.description,
-                list: {
-                    location: listing.address,
-                    metrics: listing.metrics,
-                    financials: listing.financials,
-                },
-                containerMod: '',
-            } %}
-
-            {% include 'layouts/sections/neighborhood-info.html.twig' with {
-                description: listing.listingSeo.description,
-                containerMod: '',
-            } %}
-        {% endblock %}
-
-        {% block col_right %}
-            {% include 'layouts/modules/agent.html.twig' with {
-                confidentiality: true,
-                confidentialityCollapse: true,
-                agentPhoto: listing.agent.agentPhoto,
-                agentName: listing.agent.agentName,
-                agencyName: listing.agent.agencyName,
-                agentPhone: listing.agent.agentPhone,
-            } %}
-        {% endblock %}
-    {% endembed %}
-
-    {% if similarListings is not empty %}
-        {% include 'layouts/sections/slider-section.html.twig' with {
-            title: 'Other Listings in this Building',
-            slides: similarListings,
-        } %}
-    {% endif %}
-
-    {% if similarListings is not empty %}
-        {% include 'layouts/sections/slider-section.html.twig' with {
-            title: 'Nearby Listings',
-            slides: similarListings,
-        } %}
-    {% endif %}
-
-    <div style="width: 794px; display: none;" class="mb30">
-        {% include 'layouts/modules/agent.html.twig' with {
-            confidentiality: true,
-            twoCol: true,
-            agentPhoto: listing.agent.agentPhoto,
-            agentName: listing.agent.agentName,
-            agencyName: listing.agent.agencyName,
-            agentPhone: listing.agent.agentPhone,
-        } %}
-    </div>
-
-
-
-
-{#########################################################################################}
-{#########################################################################################}
-{#########################################################################################}
-
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;position: relative;z-index: 1; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    .example-wrapper table, .example-wrapper table td { border: solid 1px}
-    .example-wrapper img {display: block}
-</style>
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;position: relative;z-index: 1; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .example-wrapper table, .example-wrapper table td { border: solid 1px}
+        .example-wrapper img {display: block}
+    </style>
     <div class="example-wrapper">
         {% if is_granted('ROLE_ADMIN') %}
             <a href="...">Admin Delete</a>
@@ -87,10 +23,62 @@
             <a href="#" onclick="history.back();">Назад</a>
             {{ dump(listing) }}
             {{ dump(similarListings) }}
-{#            <h2>Listing photos</h2>#}
-{#            {% for photo in listing.images %}#}
-{#                <img src="{{ photo }}">#}
-{#            {% endfor %}#}
         {% endif %}
+    </div>
+
+
+    {% include 'layouts/sections/listing-page-intro.html.twig' %}
+
+    {% embed 'layouts/containers/content-with-sticky-menu.html.twig' %}
+        {% block col_left %}
+            {% include 'layouts/sections/property-details.html.twig' with {
+                description: listing.description,
+                list: {
+                    location: listing.address,
+                    metrics: listing.metrics,
+                    financials: listing.financials,
+                },
+                containerMod: '',
+            } only %}
+
+            {% include 'layouts/sections/neighborhood-info.html.twig' with {
+                description: listing.listingSeo.description,
+                containerMod: '',
+            } only %}
+        {% endblock %}
+
+        {% block col_right %}
+            {% include 'layouts/modules/agent.html.twig' with {
+                confidentiality: true,
+                confidentialityCollapse: true,
+                agentPhoto: listing.agent.agentPhoto,
+                agentName: listing.agent.agentName,
+                agencyName: listing.agent.agencyName,
+                agentPhone: listing.agent.agentPhone,
+            } only %}
+        {% endblock %}
+    {% endembed %}
+
+    {% if similarListings is not empty %}
+        {% include 'layouts/sections/slider-section.html.twig' with {
+            title: 'Similar nearby listings',
+            slides: similarListings,
+            wrapMod: 'mb100'
+        } only %}
+    {% endif %}
+
+    {% include 'layouts/sections/book-a-tour.html.twig' %}
+
+    {% include 'layouts/sections/mls-note.html.twig' %}
+
+    <div style="width: 794px; display: none;" class="mb30">
+        {% include 'layouts/modules/agent.html.twig' with {
+            confidentiality: true,
+            twoCol: true,
+            agentPhoto: listing.agent.agentPhoto,
+            agentName: listing.agent.agentName,
+            agencyName: listing.agent.agencyName,
+            agentPhone: listing.agent.agentPhone,
+        } only %}
     </div>
 {% endblock %}

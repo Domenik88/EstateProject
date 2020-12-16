@@ -19,7 +19,7 @@
                 {% include 'layouts/modules/price-card.html.twig' with {
                     'listingPrice': listing.financials.listingPrice,
                     'originalListingPrice': listing.financials.originalListingPrice,
-                }%}
+                } only %}
             </div>
 
             <div class="listing-page-intro__agent-wrap">
@@ -29,7 +29,7 @@
                     agentName: listing.agent.agentName,
                     agencyName: listing.agent.agencyName,
                     agentPhone: listing.agent.agentPhone,
-                } %}
+                } only %}
             </div>
         </div>
 
@@ -37,7 +37,7 @@
             <div class="listing-page-intro__controls-wrap">
                 {% include 'layouts/modules/metrics.html.twig' with {
                     metrics: listing.metrics,
-                } %}
+                } only %}
             </div>
             <div class="listing-page-intro__controls-wrap">
                 {% include 'layouts/modules/controls-bar.html.twig' with {
@@ -63,14 +63,14 @@
                             href: '#'
                         }
                     ],
-                } %}
+                } only %}
             </div>
         </div>
 
         <div class="listing-page-intro__row mb20">
             {% include 'layouts/modules/estate-gallery.html.twig' with {
                 'images': listing.images,
-            } %}
+            } only %}
         </div>
 
         <div class="listing-page-intro__row">
@@ -81,14 +81,14 @@
                             'href': '#',
                             'mod': '_small icon-facebook',
                             'text': 'Share',
-                        } %}
+                        } only %}
                     </div>
                     <div class="buttons-row__item mt10">
                         {% include 'layouts/controls/button.html.twig' with {
                             'href': '#',
                             'mod': '_small icon-twitter',
                             'text': 'Tweet',
-                        } %}
+                        } only %}
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                             mod: 'js-'
                         },
                     ],
-                } %}
+                } only %}
             </div>
         </div>
     </div>
