@@ -32,12 +32,12 @@ class CurlPhotoDownloadService
 
     public function photoDownload(array $photoUrls, string $destination, string $baseFileName): array
     {
-        $curl = new Curl();
 
         $photosCounter = 1;
         $photoNamesArray = [];
         foreach ( $photoUrls as $photoUrl ) {
             try {
+                $curl = new Curl();
                 $curl->get($photoUrl);
                 $im = imagecreatefromstring($curl->getResponse());
                 $fullFileName = $destination . $baseFileName . '-' . $photosCounter . '.jpg';
@@ -54,9 +54,9 @@ class CurlPhotoDownloadService
                 $this->logger->error('Fail to process :: ' . $photoUrl);
             } finally {
                 $photosCounter++;
+                $curl->close();
             }
         }
-        $curl->close();
         if (count($photoUrls) > 0 && count($photoNamesArray) == 0) {
             throw new \Exception("Could not download any photos for urls");
         }
