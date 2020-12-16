@@ -5,7 +5,7 @@
 } %}
 
 <div class="default-slider js-default-slider" data-slider-parameters="{{ defaultSliderParameters|json_encode() }}">
-    {% for item in slides|cast_to_array %}
+    {% for item in slides %}
         <div class="default-slider__item">
             {% include 'layouts/modules/estate-card.html.twig' with {
                 favourite: item.favourite|default(false),
@@ -16,7 +16,7 @@
                 isNew: item.isNew|default(false),
                 ownershipType: item.ownershipType|default(false),
                 mlsNumber: item.mlsNumber|default(false),
-            } %}
+            } only %}
         </div>
     {% endfor %}
 </div>

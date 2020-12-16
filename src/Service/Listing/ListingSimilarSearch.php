@@ -23,7 +23,7 @@ class ListingSimilarSearch
         $this->listingSearchDataService = $listingSearchDataService;
     }
 
-    public function getSimilarListingsData($listingData): ?object
+    public function getSimilarListingsData($listingData): ?array
     {
         $yearBuiltRange = $this->inRange($listingData->metrics->yearBuilt,ListingConstants::YEAR_BUILT);
         $livingAreaRange = $this->inRange($listingData->metrics->sqrtFootage,ListingConstants::LIVING_AREA);
@@ -34,7 +34,7 @@ class ListingSimilarSearch
         foreach ( $similarListingsData as $similarListingData ) {
             $similarListings[] = $this->listingSearchDataService->constructSearchListingData($similarListingData);
         }
-        return (object)$similarListings;
+        return $similarListings;
     }
 
     function inRange($number, $range)
