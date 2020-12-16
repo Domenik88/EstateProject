@@ -51,6 +51,7 @@ class CurlPhotoDownloadService
                 }
             } catch ( \Exception $e ) {
                 $this->logger->error($e->getMessage());
+                $this->logger->error('Fail to process :: ' . $photoUrl);
             } finally {
                 $photosCounter++;
             }
