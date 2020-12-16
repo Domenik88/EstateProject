@@ -152,6 +152,11 @@ class Listing
      */
     private $originalPrice;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $showOnHomepage;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
@@ -507,6 +512,18 @@ class Listing
     public function setOriginalPrice(?float $originalPrice): self
     {
         $this->originalPrice = $originalPrice;
+
+        return $this;
+    }
+
+    public function getShowOnHomepage(): ?bool
+    {
+        return $this->showOnHomepage;
+    }
+
+    public function setShowOnHomepage(bool $showOnHomepage): self
+    {
+        $this->showOnHomepage = $showOnHomepage;
 
         return $this;
     }

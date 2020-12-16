@@ -42,6 +42,7 @@ class ListingSearchDataService
             'agent'           => $this->getAgentObject(),
             'isNew'           => $daysOnTheMarket <= 3,
             'listingSeo'      => $this->getListingSeoObject($listing),
+            'status'          => $listing->getStatus() . ', ' . $listing->getProcessingStatus(),
         ];
         return $listingObject;
     }

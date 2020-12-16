@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+{% block body %}
+    <style>
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+    <div class="content-wrapper">
+        <h1>Admin Listing list</h1>
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+        <div class="mb-3">
+            You can go to, <a href="{{ path('admin_profile') }}">Admin profile</a>
+        </div>
+        <ul>
+            <li>Your controller at <code><a href="{{ '/mount/space-1/.user/domains/estateblock20/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
+            <li>Your template at <code><a href="{{ '/mount/space-1/.user/domains/estateblock20/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
+        </ul>
+        {{ dump(listingList) }}
+    </div>
+{% endblock %}

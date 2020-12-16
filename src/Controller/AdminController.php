@@ -6,6 +6,7 @@ use App\Entity\Admin;
 use App\Form\AdminType;
 use App\Form\NewAdminType;
 use App\Repository\AdminRepository;
+use App\Service\Listing\ListingService;
 use App\Service\User\AdminUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class AdminController extends AbstractController
 {
+    private ListingService $listingService;
+    const LIMIT = 50;
+
+    public function __construct(ListingService $listingService)
+    {
+        $this->listingService = $listingService;
+    }
+
     /**
      * @Route("/", name="admin", defaults={"title":"Administrator panel"})
      */
@@ -36,6 +45,21 @@ class AdminController extends AbstractController
     {
         return $this->render('admin/profile.html.twig', [
             'controller_name' => 'AdminController',
+            'title' =>  $request->attributes->get('title'),
+        ]);
+    }
+
+    /**
+     * @Route("/listings/{page}", name="admin_listing_list", requirements={"page"="\d+"}, defaults={"title":"Preferences"})
+     */
+    public function preferences(Request $request, int $page = 1)
+    {
+        $offset = ($page - 1) * self::LIMIT;
+        $adminListingListSearchResult = $this->listingService->getListingList('ddf',$page,self::LIMIT,$offset);
+        return $this->render('admin/admin-listing-list.html.twig', [
+            'controller_name' => 'AdminController',
+            'listingList' => $adminListingListSearchResult,
+            'ajaxPath' => '/listing/list/coordinates/',
             'title' =>  $request->attributes->get('title'),
         ]);
     }

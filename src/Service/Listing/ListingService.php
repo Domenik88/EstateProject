@@ -114,7 +114,28 @@ class ListingService
         return $existingListing;
     }
 
-    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
+    public function getAdminListingList(int $currentPage, int $limit = 50, int $offset = 0)
+    {
+        $results = $this->listingRepository->findBy([
+            'deletedDate' => null,
+        ],
+            null,
+            $limit,
+            $offset);
+        $listingListCount = $this->getAdminListingListCount();
+        $pageCounter = ceil($listingListCount / $limit);
+
+        return new ListingListSearchResult($listingListCount, $results, $currentPage, $pageCounter);
+    }
+
+    public function getAdminListingListCount()
+    {
+        return $this->listingRepository->count([
+            'deletedDate' => null,
+        ]);
+    }
+
+    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): ?ListingListSearchResult
     {
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
