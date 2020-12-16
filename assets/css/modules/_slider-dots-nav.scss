@@ -2,7 +2,7 @@
 	display: block;
 	position: relative;
 	overflow: hidden;
-	@include absolute(auto, 0, 10px);
+	@include absolute(auto);
 	
 	.slick-dots {
 		@include absolute(0, auto, auto, 0);
@@ -16,7 +16,7 @@
 		li {
 			position: relative;
 			width: 17px;
-			height: 7px;
+			height: 27px;
 			display: flex;
 			align-items: center;
 			justify-content: center;

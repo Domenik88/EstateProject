@@ -1,0 +1,45 @@
+.circles-bg {
+	@include absolute-cm(0,auto,auto,calc(50% - (1568px/2)));
+	width: 1568px;
+	height: 100%;
+	min-height: 616px;
+	z-index: -1;
+	
+	&__circle {
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center center;
+		@include rh;
+		
+		&_orange {
+			@include absolute(0,auto,auto);
+			width: #{round((394/1568)*100) + '%'};
+		}
+		
+		&_blue {
+			@include absolute(auto,auto,0,#{round((535/1568)*100) + '%'});
+			width: #{round((349/1568)*100) + '%'};
+		}
+		
+		&_purple {
+			@include absolute(auto,0,#{round((15/616)*100) + '%'},auto);
+			width: #{round((453/1568)*100) + '%'};
+		}
+	}
+	
+	&._in-window & {
+		&__circle {
+			&_orange {
+				background-image: url(../../images/bg/circle-orange.png);
+			}
+			
+			&_blue {
+				background-image: url(../../images/bg/circle-blue.png);
+			}
+			
+			&_purple {
+				background-image: url(../../images/bg/circle-purple.png);
+			}
+		}
+	}
+}

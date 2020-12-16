@@ -21,7 +21,7 @@
             {% include 'layouts/controls/button.html.twig' with {
                 'href': '#',
                 'text': 'Go See This Home Now',
-            } %}
+            } only %}
         {% endif %}
 
         {% if not simple|default(false) %}
@@ -32,8 +32,9 @@
 
             {% include 'layouts/modules/contact-form.html.twig' with {
                 'confidentiality': confidentiality|default(false),
+                'confidentialityCollapse': confidentialityCollapse|default(false),
                 'btnText': 'Go See This Home Now'
-            } %}
+            } only %}
         {% endif %}
     </div>
 </div>

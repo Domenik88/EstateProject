@@ -10,7 +10,7 @@
                     'name': 'name',
                     'placeholder': 'Enter your name',
                     'inputMod': 'required',
-                } %}
+                } only %}
             </div>
 
             <div class="contact-form__row">
@@ -18,7 +18,7 @@
                     'name': 'email',
                     'placeholder': 'Your email',
                     'inputMod': 'required usermail',
-                } %}
+                } only %}
             </div>
             <div class="contact-form__row">
                 <div class="tel-wrap">
@@ -42,14 +42,14 @@
                                     'text': 'CA +2222',
                                 },
                             ]
-                        } %}
+                        } only %}
                     </div>
                     <div class="tel-wrap__phone">
                         {% include 'layouts/form/input.html.twig' with {
                             'name': 'phone',
                             'placeholder': 'Phone number',
                             'inputMod': 'required',
-                        } %}
+                        } only %}
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
         {% include 'layouts/controls/button.html.twig' with {
             'button': true,
             'text': btnText|default(''),
-        } %}
+        } only %}
     </div>
 
     {% if confidentiality|default(false) and twoCol|default(false) %}

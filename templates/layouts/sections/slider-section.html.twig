@@ -5,13 +5,13 @@
                 tag: titleTag|default('h3'),
                 text: title,
                 sliderNav: true,
-            } %}
+            } only %}
         {% endif %}
 
         {% if slides|default(false) %}
             {% include 'layouts/modules/default-slider.html.twig' with {
                 slides: slides
-            } %}
+            } only %}
         {% endif %}
     </div>
 </section>

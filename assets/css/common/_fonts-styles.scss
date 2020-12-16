@@ -130,6 +130,15 @@
     }
 }
 
+.link-fuchsia {
+    color: $fuchsia;
+    transition: $default-transition;
+
+    &:hover {
+        color: red;
+    }
+}
+
 .link-gray {
     color: $gray1;
     transition: $default-transition;

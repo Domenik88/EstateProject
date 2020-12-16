@@ -177,11 +177,11 @@
         {% include 'layouts/common/title-block.html.twig' with {
             tag: 'h3',
             text: title|default('Neighborhood Info'),
-        } %}
+        } only %}
 
         {% include 'layouts/modules/info-cards.html.twig' with {
             infoList: infoList,
-        } %}
+        } only %}
 
         {% if description|default(false) %}
             {% embed 'layouts/common/show-more-wrap.html.twig' %}

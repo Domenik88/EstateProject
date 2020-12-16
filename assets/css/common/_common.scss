@@ -38,14 +38,20 @@ span {
 }
 
 .container {
-    margin: 0 auto;
+    position: relative;
     width: 100%;
     max-width: 1280px;
     padding-left: 40px;
     padding-right: 40px;
-    box-sizing: border-box;
+    margin: 0 auto;
     z-index: 5;
+}
+
+.inner-container {
     position: relative;
+    width: calc(100% / 12 * 10);
+    margin: 0 auto;
+    z-index: 5;
 }
 
 .menu-wrap {
@@ -73,10 +79,12 @@ span {
     background-image: url(../../images/default-img.svg);
     background-size: cover;
     background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .default-img-bg-small {
     background-image: url(../../images/default-img-small.svg);
     background-size: cover;
     background-position: center center;
+    background-repeat: no-repeat;
 }
