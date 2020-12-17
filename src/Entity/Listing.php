@@ -155,7 +155,7 @@ class Listing
     /**
      * @ORM\Column(type="boolean")
      */
-    private $showOnHomepage;
+    private $selfListing;
 
     public function __construct()
     {
@@ -516,14 +516,14 @@ class Listing
         return $this;
     }
 
-    public function getShowOnHomepage(): ?bool
+    public function getSelfListing(): ?bool
     {
-        return $this->showOnHomepage;
+        return $this->selfListing;
     }
 
-    public function setShowOnHomepage(bool $showOnHomepage): self
+    public function setSelfListing(bool $selfListing): self
     {
-        $this->showOnHomepage = $showOnHomepage;
+        $this->selfListing = $selfListing;
 
         return $this;
     }

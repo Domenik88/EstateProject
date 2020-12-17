@@ -6,6 +6,7 @@ use App\Entity\Admin;
 use App\Form\AdminType;
 use App\Form\NewAdminType;
 use App\Repository\AdminRepository;
+use App\Repository\ListingRepository;
 use App\Service\Listing\ListingService;
 use App\Service\User\AdminUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,13 +56,22 @@ class AdminController extends AbstractController
     public function preferences(Request $request, int $page = 1)
     {
         $offset = ($page - 1) * self::LIMIT;
-        $adminListingListSearchResult = $this->listingService->getListingList('ddf',$page,self::LIMIT,$offset);
+        $adminListingListSearchResult = $this->listingService->getAdminListingList($page,self::LIMIT,$offset);
         return $this->render('admin/admin-listing-list.html.twig', [
             'controller_name' => 'AdminController',
             'listingList' => $adminListingListSearchResult,
             'ajaxPath' => '/listing/list/coordinates/',
             'title' =>  $request->attributes->get('title'),
         ]);
+    }
+
+    /**
+     * @Route("/listings/listing-{mlsId}", name="admin_listing_ajax", methods={"POST"})
+     */
+    public function setEstateblockListing(string $mlsId)
+    {
+        $response = $this->listingService->setAdminListingSelfListing($mlsId);
+        return $this->json($response);
     }
 
     /**

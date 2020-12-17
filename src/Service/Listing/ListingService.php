@@ -119,13 +119,16 @@ class ListingService
         $results = $this->listingRepository->findBy([
             'deletedDate' => null,
         ],
-            null,
+            ['feedListingID' => 'DESC'],
             $limit,
             $offset);
         $listingListCount = $this->getAdminListingListCount();
         $pageCounter = ceil($listingListCount / $limit);
+        foreach ( $results as $result ) {
+            $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
+        }
 
-        return new ListingListSearchResult($listingListCount, $results, $currentPage, $pageCounter);
+        return new ListingListSearchResult($listingListCount, $listingList, $currentPage, $pageCounter);
     }
 
     public function getAdminListingListCount()
@@ -133,6 +136,19 @@ class ListingService
         return $this->listingRepository->count([
             'deletedDate' => null,
         ]);
+    }
+
+    public function setAdminListingSelfListing(string $mlsId)
+    {
+        $singleListing = $this->listingRepository->findOneBy([
+            'feedListingID' => $mlsId
+        ]);
+        $selfListingStatus = $singleListing->getSelfListing() ? false : true;
+        $singleListing->setSelfListing($selfListingStatus);
+
+        $this->entityManager->flush();
+
+        return true;
     }
 
     public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): ?ListingListSearchResult
