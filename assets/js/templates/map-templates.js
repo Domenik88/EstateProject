@@ -32,35 +32,32 @@ export const mapTemplates = {
     `).join(''),
 
     yelpMarkerPopup: ({
-        display_phone,
-        phone,
-        image_url,
-        displayAddress,
         name,
         rating,
         review_count,
-        url,
+        image_url,
+        categoriesTitles,
     }) => `
         <div class="yelp-marker-popup-inner">
-            <div class="yelp-marker-popup-inner__top">
-                <div class="yelp-marker-popup-inner__description">
-                    <h1>${name}</h1>
-                    <p>${displayAddress}</p>
-                    <a href="tel:${phone}">${display_phone}</a>
-                </div>
-                
-                <div class="yelp-marker-popup-inner__img-wrap">
-                    ${image_url && `<img src=${image_url} alt="#" class="of"/>`}
-                </div>
+            <div class="yelp-marker-popup-inner__img-wrap ${!image_url && 'default-img-bg-small'}">
+                ${image_url && `<img src=${image_url} alt="#" class="of"/>`}
             </div>
             
-            <div class="yelp-marker-popup-inner__bottom">
+            <div class="yelp-marker-popup-inner__info">
+                <div class="yelp-marker-popup-inner__description">
+                    <span class="yelp-marker-popup-inner__title h6">${name}</span>
+                    <span class="yelp-marker-popup-inner__categories tiny-text">${categoriesTitles}</span>
+                </div>
+                
                 <div class="yelp-marker-popup-inner__rating-wrap">
                     <div class="rating _${rating.toString().replace('.','')}"></div>
-                    <p>Yelp Rating based on <span class="highlight">${review_count}</span> reviews</p>
-                </div>
-                <div class="yelp-marker-popup-inner__link-wrap">
-                    <a href="${url}" target="_blank" class="simple-button">link</a>
+                    
+                    <div class="yelp-marker-popup-inner__reviews very-tiny">
+                        <span>${review_count}</span>
+                        <span>&nbsp;Reviews</span>
+                    </div>
+                    
+                    <a class="yelp-marker-popup-inner__yelp" href="#"></a>
                 </div>
             </div>
         </div>

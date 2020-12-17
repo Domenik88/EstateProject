@@ -54,9 +54,9 @@
 	max-width: 60%;
 	transform: scale(.8);
 	$border-width: 2px;
-	$color-big: green;
-	$color-med: #469346;
-	$color-small: #618661;
+	$color-big: $fuchsia;
+	$color-med: $turquoise;
+	$color-small: $gray0;
 	animation: preloader-scale 6s linear infinite;
 	animation-play-state: paused;
 	z-index: 90;

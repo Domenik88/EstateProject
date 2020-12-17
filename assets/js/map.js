@@ -13,6 +13,7 @@ class EstateMap {
         this.initDrawButtons();
         this.initSliderCheckTimer();
         this.initEvents();
+        this.initYelpNav();
     }
 
     initCache(id) {
@@ -33,6 +34,7 @@ class EstateMap {
         this.$cardsScrollWrap = this.$iw.find('.js-cards-scroll-wrap');
         this.$estateCardsPagination = this.$iw.find('.js-estate-cards-pagination');
         this.$yelpSelect = this.$iw.find('.js-yelp-select');
+        this.$yelpNavLink = this.$iw.find('.js-yelp-nav-link');
 
         this.dataParams = this.$map.data('params');
 
@@ -52,7 +54,7 @@ class EstateMap {
         this.resizeTimerDelay = 300;
 
         this.markerPopupWidth = 270;
-        this.yelpMarkerPopupWidth = 500;
+        this.yelpMarkerPopupWidth = 290;
 
         this.markers = null;
         this.yelpMarkers = null;
@@ -60,7 +62,8 @@ class EstateMap {
 
         this.$estateCardsWrapPosition = this.$estateCardsWrap.length && this.$estateCardsWrap[0].getBoundingClientRect();
 
-        this.proxy = window.location.hostname === 'estateblock20' ? 'https://cors-anywhere.herokuapp.com/' : '';
+        // TODO: REMOVE
+        this.proxy = 'https://cors-anywhere.herokuapp.com/';
     }
 
     initEvents() {
@@ -93,6 +96,9 @@ class EstateMap {
     }
 
     initMap() {
+        console.log(this.dataParams);
+        console.log(this.dataParams.center);
+
         const
             { center, zoom=13, minZoom=10 } = this.dataParams,
 
@@ -135,6 +141,25 @@ class EstateMap {
         }).addTo(this.map);
 
         this.$map.addClass('map-initialized')
+    }
+
+    initYelpNav() {
+        const $activeNavLink = this.$yelpNavLink.filter('._active');
+
+        if ($activeNavLink.length) {
+            this.yelpTerm = $activeNavLink.data('val');
+            this._setBox();
+            this._yelpSearch();
+        }
+
+        this.$yelpNavLink.on('click', (e) => {
+            const $currentTarget = $(e.currentTarget);
+
+            this.yelpTerm = $currentTarget.data('val');
+            this.$yelpNavLink.removeClass('_active');
+            $currentTarget.addClass('_active');
+            this._yelpSearch();
+        });
     }
 
     initDrawButtons() {
@@ -553,6 +578,7 @@ class EstateMap {
 
                 { latitude, longitude } = coordinates,
                 categoriesAliases = categories.map(item => item.alias).join(' '),
+                categoriesTitles = categories.map(item => item.title).join(', '),
                 displayAddress = location.display_address.join(', '),
 
                 marker = L.marker(
@@ -561,15 +587,11 @@ class EstateMap {
                 ),
 
                 popup = L.responsivePopup().setContent(mapTemplates.yelpMarkerPopup({
-                    display_phone,
-                    phone,
-                    image_url,
-                    displayAddress,
                     name,
                     rating,
                     review_count,
-                    url,
-                    categoriesAliases,
+                    image_url,
+                    categoriesTitles,
                 }));
 
             marker.bindPopup(
@@ -621,6 +643,8 @@ class EstateMap {
     }
 
     _yelpSearch() {
+        console.log('###');
+
         const
             { yelpPreloader } = this.dataParams,
             mapBounds = this.map.getBounds(),
@@ -648,14 +672,15 @@ class EstateMap {
         if (yelpPreloader) this.$mapContainer.addClass('_loading');
 
         $.ajax(requestParameters).done((data) => {
+            console.log(data);
             this._addYelpMarkers(data);
         })
-            .fail((err) => {
-                console.log(err);
-            })
-            .always(() => {
-                this.$mapContainer.removeClass('_loading');
-            })
+        .fail((err) => {
+            console.log(err);
+        })
+        .always(() => {
+            this.$mapContainer.removeClass('_loading');
+        })
     }
 
     _runRefreshTimer() {
@@ -667,6 +692,7 @@ class EstateMap {
                     this._refreshMap();
                 }
             } else {
+                console.log('else');
                 this._refreshMap();
             }
         }, this.refreshMapTimerDelay);
@@ -771,9 +797,13 @@ class EstateMap {
 }
 
 $(document).ready(() => {
-    new EstateMap('#estate-map');
+    console.log('### MAP ###')
+
+    if ($('#estate-map').length) new EstateMap('#estate-map');
 
     $('body').on('trigger:init-map', (e, id) => {
+        console.log(id);
+
         const $map = $(id);
         if ($map.length && !$map.hasClass('map-initialized')) new EstateMap(id);
     });

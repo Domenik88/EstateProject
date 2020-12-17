@@ -45,6 +45,11 @@
                 description: listing.listingSeo.description,
                 containerMod: '',
             } only %}
+
+            {% include 'layouts/sections/local-info.html.twig' with {
+                containerMod: '',
+                coordinates: listing.coordinates
+            } only %}
         {% endblock %}
 
         {% block col_right %}
@@ -81,4 +86,9 @@
             agentPhone: listing.agent.agentPhone,
         } only %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('map') }}
 {% endblock %}

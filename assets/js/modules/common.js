@@ -18,6 +18,7 @@ var $_ = {
         this.initStickyBlock();
         this.initConfCollapseForm();
         this.initShowMore();
+        this.initSlideMenu();
     },
     
     initCache() {
@@ -49,14 +50,19 @@ var $_ = {
         this.$collapse = $('.js-collapse');
         this.$confCollapseForm = $('.js-conf-collapse-form');
 
-        this.$showMoreWrap = $('.js-show-more-wrap');
         this.$showMoreButton = $('.js-show-more-btn');
 
         this.$map = $('#y-map');
         this.mapIsInit = false;
         
         this.$defaultSlider = $('.js-default-slider');
-        
+
+
+        this.$slideMenu = $('.js-slide-menu');
+        this.$slideMenuItem = $('.js-slide-menu-item');
+        this.$slideMenuWrap = $('.js-slide-menu-wrap');
+        this.$slideMenuButton = $('.js-slide-menu-button');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -85,6 +91,86 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initSlideMenu: function () {
+        function checkDrag(params) {
+            const
+                { $currentMenu, $relatedWrap, ui } = params,
+                { right: wrapRight, width: wrapWidth } = $relatedWrap[0].getBoundingClientRect(),
+                { right: menuRight, width: menuWidth } = $currentMenu[0].getBoundingClientRect(),
+                widthDiff = Math.min(wrapWidth - menuWidth, 0);
+
+            if (menuRight > wrapRight) {
+                $relatedWrap.removeClass('_end');
+            } else {
+                $relatedWrap.addClass('_end');
+            }
+
+            if (ui && ui.position) {
+                ui.position.left = Math.min(0, ui.position.left);
+                ui.position.left = Math.max(widthDiff, ui.position.left);
+            }
+        }
+
+        function bindButton(params) {
+            const { $currentMenu, $relatedWrap, $relatedMenuItems, $relatedButton } = params;
+
+            $relatedButton.on('click', () => {
+                const
+                    { right: wrapRight, left: wrapLeft, width: wrapWidth } = $relatedWrap[0].getBoundingClientRect(),
+                    { left: menuLeft, width: menuWidth } = $currentMenu[0].getBoundingClientRect(),
+                    widthDiff = menuWidth - wrapWidth;
+
+                $relatedMenuItems.each((key, item) => {
+                    const { right: itemRight } = item.getBoundingClientRect();
+
+                    if (itemRight > wrapRight) {
+                        const
+                            diffRight = itemRight - wrapRight,
+                            diffLeft = menuLeft - wrapLeft,
+                            offset = diffLeft - diffRight - $relatedButton.width(),
+                            fixOffset = Math.min(Math.abs(offset), Math.abs(widthDiff));
+
+                        if (fixOffset === widthDiff) $relatedWrap.addClass('_end');
+                        $currentMenu.stop(true, true).animate({'left': -fixOffset}, 300);
+                        return false;
+                    }
+                })
+            });
+        }
+
+        $_.$slideMenu.each((key, item) => {
+            const
+                $currentMenu = $(item),
+                $relatedWrap = $currentMenu.closest($_.$slideMenuWrap),
+                $relatedMenuItems = $relatedWrap.find($_.$slideMenuItem),
+                $relatedButton = $relatedWrap.find($_.$slideMenuButton);
+
+            $currentMenu.draggable({
+                axis: 'x',
+                create: () => {
+                    checkDrag({
+                        $currentMenu,
+                        $relatedWrap,
+                    })
+
+                    bindButton({
+                        $currentMenu,
+                        $relatedWrap,
+                        $relatedMenuItems,
+                        $relatedButton,
+                    });
+                }
+            })
+            .on('drag', ( event, ui ) => {
+                checkDrag({
+                    $currentMenu,
+                    $relatedWrap,
+                    ui,
+                });
+            });
+        })
     },
 
     initStickyBlock() {
@@ -588,9 +674,9 @@ var $_ = {
         $_.$checkInWindow.each(function (key, item) {
             const
                 $el = $(item),
-                dataTrigger = $el.data('trigger'),
                 dataTriggerIn = $el.data('trigger-in'),
                 dataTriggerOut = $el.data('trigger-out'),
+                dataBodyTrigger = $el.data('trigger-body'),
                 dataActiveOutOfTop = $el.data('active-out-of-top'),
                 disableOut = $el.data('disable-out'),
                 dataFirstDelay = $el.data('first-inw-delay'),
@@ -619,7 +705,12 @@ var $_ = {
                         $el.data('in-window', true);
                         $el.addClass('_in-window');
                         if (dataTriggerIn) $el.trigger(dataTriggerIn);
-                        if (dataTrigger) $_.$body.trigger(dataTrigger);
+
+                        if (dataBodyTrigger) {
+                            const { trigger, data='' } = dataBodyTrigger;
+
+                            $_.$body.trigger(trigger, data)
+                        }
                     }
                 }
             }, delay)

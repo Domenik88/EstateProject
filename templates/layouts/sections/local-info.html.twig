@@ -1,0 +1,39 @@
+{% set localInfoMapDataTrigger = {
+    trigger: 'trigger:init-map',
+    data: '#local-info-map'
+} %}
+
+{% set localInfoMapParameters = {
+    center: coordinates|default(false),
+    zoom: 13,
+    minZoom: 10,
+    refreshYelp: true,
+    yelpPreloader: true,
+} %}
+
+<section class="local-info {{ wrapMod ?? 'mb70' }}">
+    <div class="local-info__container {{ containerMod ?? 'container' }} js-map-interface-wrap">
+        {% include 'layouts/common/title-block.html.twig' with {
+            tag: 'h3',
+            text: title|default('Local Info'),
+        } only %}
+
+        {% if coordinates|default(false) %}
+            {% include 'layouts/modules/slide-menu.html.twig' with {
+                wrapMod: 'mb20'
+            } only %}
+
+            <div class="local-info__map-wrap js-check-in-window" data-trigger-body="{{
+                localInfoMapDataTrigger|json_encode
+            }}">
+                <div class="map-container js-map-container">
+                    {% include 'layouts/common/preloader.html.twig' %}
+
+                    <div class="map" id="local-info-map" data-params='{{
+                        localInfoMapParameters|json_encode
+                    }}'></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
