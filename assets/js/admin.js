@@ -7,12 +7,7 @@ $('.js-estate-change').on('click', (e) => {
             type: 'POST',
             dataType: 'json',
         };
-    $currentTarget.addClass('_loading');
     $.ajax(requestParameters).done(() => {
-        $currentTarget.removeClass('_loading').addClass('_success');
-        $currentTarget.removeClass('btn-warning').addClass('btn-success');
+        $currentTarget.toggleClass('active');
     })
-        .always(() => {
-            $currentTarget.removeClass('_loading');
-        })
 });

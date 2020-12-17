@@ -35,8 +35,10 @@
                     {% for listing in listingList.results %}
                         {% if listing.selfListing %}
                             {% set self = 0 %}
+                            {% set ariaPressed = 'true' %}
                         {% else %}
                             {% set self = 1 %}
+                            {% set ariaPressed = 'false' %}
                         {% endif %}
                         <tr>
                             <td></td>
@@ -44,7 +46,9 @@
                             <td>{{ listing.listingId }}</td>
                             <td>{{ listing.status }}</td>
                             <td>
-                                <button class="btn btn-warning js-estate-change" data-url="/admin/listings/listing-{{ listing.listingId }}">1</button>
+                                <button type="button" class="btn btn-lg btn-toggle js-estate-change" data-toggle="button" aria-pressed="{{ ariaPressed }}" autocomplete="off" data-url="/admin/listings/listing-{{ listing.listingId }}">
+                                    <div class="handle"></div>
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}

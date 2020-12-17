@@ -34,6 +34,7 @@ Encore
     ])
     .addEntry('adminLte', [
         './assets/js/admin.js',
+        './assets/css/admin.scss',
         './node_modules/admin-lte/plugins/jquery/jquery.min.js',
         './node_modules/admin-lte/plugins/jquery-ui/jquery-ui.min.js',
         './node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js',
