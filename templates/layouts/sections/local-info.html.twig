@@ -23,7 +23,7 @@
                 wrapMod: 'mb20'
             } only %}
 
-            <div class="local-info__map-wrap js-check-in-window" data-trigger-body="{{
+            <div class="local-info__map-wrap mb30 js-check-in-window" data-trigger-body="{{
                 localInfoMapDataTrigger|json_encode
             }}">
                 <div class="map-container js-map-container">
@@ -34,6 +34,18 @@
                     }}'></div>
                 </div>
             </div>
+
+            <div class="local-info__yelp-cards-wrap js-wrap">
+                <div class="local-info__slider-wrap">
+                    <div class="yelp-cards-slider js-yelp-cards-slider"></div>
+                </div>
+
+                <div class="local-info__nav-wrap">
+                    {% include 'layouts/modules/slider-nav.html.twig' %}
+                </div>
+            </div>
+
+
         {% endif %}
     </div>
 </section>

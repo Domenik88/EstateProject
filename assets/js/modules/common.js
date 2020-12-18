@@ -321,7 +321,7 @@ var $_ = {
 
     initTriggerSlider() {
         $_.$body.on('trigger:init-slider', (e, obj) => {
-            const { $sliders, $slides } = obj;
+            const { $sliders, $slides, sliderParams={} } = obj;
             
             if ($sliders.length) {
                 $sliders.each((key, item) => {
@@ -343,11 +343,12 @@ var $_ = {
                             slidesToShow: 1,
                             slidesToScroll: 1,
                             arrows: true,
-                            // prevArrow: $arrowLeft,
-                            // nextArrow: $arrowRight,
+                            prevArrow: $arrowLeft,
+                            nextArrow: $arrowRight,
                             fade: false,
                             infinite: false,
-                            dots: false
+                            dots: false,
+                            ...sliderParams
                         });
                 });
             }

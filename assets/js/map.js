@@ -35,6 +35,7 @@ class EstateMap {
         this.$estateCardsPagination = this.$iw.find('.js-estate-cards-pagination');
         this.$yelpSelect = this.$iw.find('.js-yelp-select');
         this.$yelpNavLink = this.$iw.find('.js-yelp-nav-link');
+        this.$yelpCardsSlider = this.$iw.find('.js-yelp-cards-slider');
 
         this.dataParams = this.$map.data('params');
 
@@ -57,7 +58,9 @@ class EstateMap {
         this.yelpMarkerPopupWidth = 290;
 
         this.markers = null;
+        this.yelpMarkersObj = null;
         this.yelpMarkers = null;
+
         this.schoolsLayers = null;
 
         this.$estateCardsWrapPosition = this.$estateCardsWrap.length && this.$estateCardsWrap[0].getBoundingClientRect();
@@ -74,7 +77,6 @@ class EstateMap {
         this.map.on('moveend', () => {
             this._setBox();
             this._runRefreshTimer();
-            console.log(this.map.getZoom());
         });
 
         this.$estateCardsWrap.on('trigger:check-sliders', () => {
@@ -96,9 +98,6 @@ class EstateMap {
     }
 
     initMap() {
-        console.log(this.dataParams);
-        console.log(this.dataParams.center);
-
         const
             { center, zoom=13, minZoom=10 } = this.dataParams,
 
@@ -129,8 +128,6 @@ class EstateMap {
         this.map.setView(center);
 
         // this._runRefreshTimer()
-        // console.log(this.map.getPanes());
-        // console.log(this.map.getCenter());
 
         L.control.layers(baseMaps, null, {
             position: 'bottomright'
@@ -439,9 +436,12 @@ class EstateMap {
         const { categoriesAliases='', term='' } = data;
 
         return L.divIcon({
-            iconSize: [30, 30],
-            iconAnchor: [15, 30],
-            popupAnchor: [0, -15],
+            // iconSize: [30, 30],
+            // iconAnchor: [15, 30],
+            // popupAnchor: [0, -15],
+            iconSize: [42, 49],
+            iconAnchor: [21, 49],
+            popupAnchor: [0, -49],
             html: `<div class="yelp-marker-inner ${term} ${categoriesAliases}"></div>`,
             className: 'yelp-marker-icon',
         });
@@ -560,10 +560,11 @@ class EstateMap {
 
     _addYelpMarkers(data) {
         const { businesses } = data;
-        let yelpMarkersArray = [];
+        this.yelpMarkersObj = {};
 
         for (let i = 0; i < businesses.length; i++) {
             const {
+                    id,
                     coordinates,
                     display_phone,
                     phone,
@@ -592,6 +593,7 @@ class EstateMap {
                     review_count,
                     image_url,
                     categoriesTitles,
+                    url
                 }));
 
             marker.bindPopup(
@@ -603,6 +605,7 @@ class EstateMap {
                     riseOffset: 9999,
                     keepInView: true,
                     autoPan: false,
+                    hasTip: false,
                 }
             );
 
@@ -610,12 +613,61 @@ class EstateMap {
                 marker.openPopup();
             });
 
-            yelpMarkersArray.push(marker);
+            marker.on('mouseout', () => {
+                marker.closePopup();
+            });
+
+            this.yelpMarkersObj[id] = marker;
         }
 
         if (this.yelpMarkers) this.yelpMarkers.clearLayers();
-        this.yelpMarkers = L.layerGroup(yelpMarkersArray);
+        this.yelpMarkers = L.layerGroup(Object.values(this.yelpMarkersObj));
         this.map.addLayer(this.yelpMarkers);
+    }
+
+    _addYelpCards(data) {
+        if (this.$yelpCardsSlider.length) {
+            const { businesses } = data;
+            let yelpCardsArray = [];
+
+            for (let i = 0; i < businesses.length; i++) {
+                const {
+                        id,
+                        image_url,
+                        name,
+                        url,
+                        categories,
+                    } = businesses[i],
+
+                    categoriesTitles = categories.map(item => item.title).join(', '),
+
+                    $card = $(mapTemplates.yelpCard({
+                        name,
+                        image_url,
+                        categoriesTitles,
+                        url,
+                    }));
+
+                $card.on('mouseenter', () => {
+                    this.yelpMarkersObj[id].fire('mouseover');
+                });
+
+                $card.on('mouseleave', () => {
+                    this.yelpMarkersObj[id].fire('mouseout');
+                });
+
+                yelpCardsArray.push($card);
+            }
+
+            this.$body.trigger('trigger:init-slider', {
+                $sliders: this.$yelpCardsSlider,
+                $slides: [yelpCardsArray],
+                sliderParams: {
+                    slidesToShow: 5,
+                    slidesToScroll: 5,
+                }
+            });
+        }
     }
 
     _searchMarkers(box) {
@@ -643,8 +695,6 @@ class EstateMap {
     }
 
     _yelpSearch() {
-        console.log('###');
-
         const
             { yelpPreloader } = this.dataParams,
             mapBounds = this.map.getBounds(),
@@ -672,8 +722,8 @@ class EstateMap {
         if (yelpPreloader) this.$mapContainer.addClass('_loading');
 
         $.ajax(requestParameters).done((data) => {
-            console.log(data);
             this._addYelpMarkers(data);
+            this._addYelpCards(data);
         })
         .fail((err) => {
             console.log(err);
@@ -692,7 +742,6 @@ class EstateMap {
                     this._refreshMap();
                 }
             } else {
-                console.log('else');
                 this._refreshMap();
             }
         }, this.refreshMapTimerDelay);
@@ -797,13 +846,11 @@ class EstateMap {
 }
 
 $(document).ready(() => {
-    console.log('### MAP ###')
+    console.log('### MAP ###');
 
     if ($('#estate-map').length) new EstateMap('#estate-map');
 
     $('body').on('trigger:init-map', (e, id) => {
-        console.log(id);
-
         const $map = $(id);
         if ($map.length && !$map.hasClass('map-initialized')) new EstateMap(id);
     });

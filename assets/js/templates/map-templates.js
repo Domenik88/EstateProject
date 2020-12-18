@@ -37,6 +37,7 @@ export const mapTemplates = {
         review_count,
         image_url,
         categoriesTitles,
+        url,
     }) => `
         <div class="yelp-marker-popup-inner">
             <div class="yelp-marker-popup-inner__img-wrap ${!image_url && 'default-img-bg-small'}">
@@ -57,9 +58,26 @@ export const mapTemplates = {
                         <span>&nbsp;Reviews</span>
                     </div>
                     
-                    <a class="yelp-marker-popup-inner__yelp" href="#"></a>
+                    <a class="yelp-logo" href="${url}" target="_blank"></a>
                 </div>
             </div>
+        </div>
+    `,
+
+    yelpCard: ({
+        name,
+        image_url,
+        categoriesTitles,
+        url,
+    }) => `
+        <div class="yelp-card">
+            <div class="yelp-card__img-wrap mb10 ${!image_url && 'default-img-bg-small'}">
+                ${image_url && `<img src=${image_url} alt="#" class="of"/>`}
+            </div>
+            
+            <span class="yelp-card__title h6 mb5">${name}</span>
+            <span class="yelp-card__categories mb5 tiny-text">${categoriesTitles}</span>
+            <a class="yelp-logo" href="${url}" target="_blank"></a>
         </div>
     `,
 }

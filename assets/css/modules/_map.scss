@@ -218,11 +218,31 @@
     
     .leaflet-popup-content-wrapper {
         padding: 0;
-        border-radius: 0;
+        border-radius: 10px;
         
         .leaflet-popup-content {
             margin: 0;
         }
+    }
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    @include absolute(0, 0, auto, auto);
+    @extend .icon-cross;
+    font-size: 0;
+    line-height: 0;
+    letter-spacing: 0;
+    padding: 9px 9px 6px 6px;
+    width: auto;
+    height: auto;
+    
+    &::before {
+        display: block;
+        font-family: $icomoon;
+        font-size: 9px;
+        line-height: 1;
+        font-weight: 100;
+        color: $dark1;
     }
 }
 
@@ -400,13 +420,6 @@
         margin-top: 1px;
     }
     
-    &__yelp {
-        width: 30px;
-        @include rh(0.5);
-        background: url(../../images/map/yelp/yelp-logo.png) center center no-repeat;
-        background-size: contain;
-    }
-    
     &__categories {
         color: $gray1;
     }
@@ -414,6 +427,15 @@
     &__reviews {
         color: $gray1;
     }
+}
+
+.yelp-logo {
+    position: relative;
+    display: block;
+    width: 30px;
+    @include rh(0.5);
+    background: url(../../images/map/yelp/yelp-logo.png) center center no-repeat;
+    background-size: contain;
 }
 
 .rating {
@@ -462,5 +484,43 @@
     
     &._0 {
         background-image: url(../../images/map/rating/rating_0.png);
+    }
+}
+
+.yelp-cards-slider {
+    position: relative;
+    width: calc(100% + 20px);
+    left: -10px;
+    
+    .yelp-card {
+        padding: 0 10px;
+    }
+}
+
+.yelp-card {
+    &__img-wrap {
+        position: relative;
+        @include rh;
+        width: 100%;
+        max-width: 120px;
+        border-radius: 20px;
+        overflow: hidden;
+        z-index: 2;
+        
+        img {
+            z-index: 1;
+        }
+    }
+    
+    &__title {
+        color: $dark1;
+    }
+    
+    &__categories {
+        color: $gray1;
+    }
+    
+    .yelp-logo {
+        width: 41px;
     }
 }
