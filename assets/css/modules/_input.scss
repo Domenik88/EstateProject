@@ -7,12 +7,6 @@
     }
 }
 
-@mixin error-styles {
-    &.error {
-        border-color: $red !important;
-    }
-}
-
 @mixin input-style {
     position: relative;
     z-index: 9;
@@ -22,23 +16,28 @@
     padding: 5px 15px;
     box-sizing: border-box;
     display: block;
-    //font-family: $raleway;
-    //@include p5;
-    @include error-styles;
-    //color: $c;
-    border: 1px solid $gray0;
     border-radius: 10px;
+    
     background: transparent;
+    border: 1px solid $gray0;
     color: $gray1;
-    //
-    //&:hover {
-    //    background: $gray02;
-    //}
-    //
-    //&:focus {
-    //    border-color: $c;
-    //}
-    //
+    
+    &:hover {
+        background: $gray0;
+    }
+
+    &:focus {
+        background: transparent;
+        color: $gray2;
+        font-weight: 700;
+    }
+    
+    &.error {
+        background: transparent;
+        color: $gray2;
+        border-color: $pink-red;
+    }
+
     &::-webkit-input-placeholder {
         @include small-text2;
         color: $gray1;
@@ -57,17 +56,61 @@
     }
     
     &._fill-white {
-        border: none;
         background: $white;
+        color: $gray1;
+        border-color: $white;
+    
+        &:hover {
+            background: $gray3;
+            border-color: $gray3;
+        }
+    
+        &:focus {
+            background: $white;
+            border-color: $gray2;
+            color: $dark1;
+            font-weight: 700;
+        }
+    
+        &.error {
+            background: $pink-pdra;
+            border-color: $pink-pdra;
+            color: $dark1;
+            font-weight: 700;
+        }
     }
     
     &._fill-gray {
         border: none;
         background: $gray2;
+        
+        &:hover {
+            background: $gray3;
+        }
     }
     
-    &._bright-border {
+    &._bordered {
+        background: $white;
+        color: $gray1;
         border-color: $gray-line;
+    
+        &:hover {
+            background: $gray4;
+        }
+    
+        &:focus {
+            background: $white;
+            border-color: $gray2;
+            color: $dark1;
+            font-weight: 700;
+        }
+    
+        &.error {
+            background: $pink-pdra;
+            border-color: $pink-pdra;
+            color: $dark1;
+            font-weight: 700;
+        }
     }
     
     @include media_1700 {

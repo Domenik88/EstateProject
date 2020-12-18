@@ -56,10 +56,21 @@
 }
 
 .estate-card {
+	$r: &;
 	position: relative;
 	border-radius: 20px;
 	overflow: hidden;
 	background: $white;
+	
+	.circle-button {
+		opacity: .5;
+	}
+	
+	&:hover {
+		.circle-button:not(.slick-disabled) {
+			opacity: 1;
+		}
+	}
 	
 	&::before {
 		content: '';

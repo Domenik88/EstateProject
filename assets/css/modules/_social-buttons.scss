@@ -18,11 +18,14 @@
 	}
 	
 	&__item {
+		position: relative;
 		margin-top: 20px;
 		margin-right: 20px;
 		width: 57px;
 		height: 57px;
 		border-radius: 20px;
+		transition: $default-transition;
+		color: $white;
 		
 		&:last-child {
 			margin-right: 0;
@@ -31,27 +34,82 @@
 		&::before {
 			display: block;
 			font-size: 57px;
-			color: $white;
+		}
+		
+		&::after {
+			content: '';
+			@include absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			box-sizing: border-box;
+			border-width: 1px;
+			border-style: solid;
 		}
 		
 		&.icon-twitter-frame {
 			background: $twitter;
+			
+			&::after {
+				border-color: $twitter;
+			}
+			
+			&:hover {
+				background: $white;
+				color: $twitter;
+			}
 		}
 		
 		&.icon-facebook-frame {
 			background: $facebook;
+			
+			&::after {
+				border-color: $facebook;
+			}
+			
+			&:hover {
+				background: $white;
+				color: $facebook;
+			}
 		}
 		
 		&.icon-youtube-frame {
 			background: $youtube;
+			
+			&::after {
+				border-color: $youtube;
+			}
+			
+			&:hover {
+				background: $white;
+				color: $youtube;
+			}
 		}
 		
 		&.icon-linkedin-frame {
 			background: $linkedin;
+			
+			&::after {
+				border-color: $linkedin;
+			}
+			
+			&:hover {
+				background: $white;
+				color: $linkedin;
+			}
 		}
 		
 		&.icon-pinterest-frame {
 			background: $pinterest;
+			
+			&::after {
+				border-color: $pinterest;
+			}
+			
+			&:hover {
+				background: $white;
+				color: $pinterest;
+			}
 		}
 		
 	}

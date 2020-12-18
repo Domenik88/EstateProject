@@ -218,6 +218,8 @@ var $_ = {
             $currentStickyBlock.on('trigger:set-sticky-top', () => {
                 setStickyTop($currentStickyBlock);
             });
+
+            setSticky($currentStickyBlock, $relatedStickyContainer);
         });
     },
 
@@ -411,11 +413,12 @@ var $_ = {
         function initScroll(el) {
             const
                 $currentTarget = $(el),
+                dataMinSize = $currentTarget.data('min-size') || 50,
                 dataTriggerOnScroll = $currentTarget.data('trigger-on-scroll');
 
             const scroll = new SimpleBar(el, {
                 autoHide: false,
-                scrollbarMinSize: 100,
+                scrollbarMinSize: dataMinSize,
             });
     
             if (scroll && scroll.getScrollElement) {

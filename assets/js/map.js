@@ -99,7 +99,7 @@ class EstateMap {
 
     initMap() {
         const
-            { center, zoom=13, minZoom=10 } = this.dataParams,
+            { center, zoom=13, minZoom=10, initialMarker } = this.dataParams,
 
             OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -127,7 +127,17 @@ class EstateMap {
 
         this.map.setView(center);
 
-        // this._runRefreshTimer()
+        if (initialMarker) {
+            L.marker(
+                L.latLng(center.lat,center.lng),
+                {
+                    icon: this._constructYelpDivIcon({
+                        term: 'realestate'
+                    }),
+                    zIndexOffset: 99999
+                }
+            ).addTo(this.map);
+        }
 
         L.control.layers(baseMaps, null, {
             position: 'bottomright'
@@ -436,13 +446,10 @@ class EstateMap {
         const { categoriesAliases='', term='' } = data;
 
         return L.divIcon({
-            // iconSize: [30, 30],
-            // iconAnchor: [15, 30],
-            // popupAnchor: [0, -15],
             iconSize: [42, 49],
             iconAnchor: [21, 49],
             popupAnchor: [0, -49],
-            html: `<div class="yelp-marker-inner ${term} ${categoriesAliases}"></div>`,
+            html: `<div class="yelp-marker-inner icon-${term} ${categoriesAliases}"></div>`,
             className: 'yelp-marker-icon',
         });
     }
@@ -613,10 +620,6 @@ class EstateMap {
                 marker.openPopup();
             });
 
-            marker.on('mouseout', () => {
-                marker.closePopup();
-            });
-
             this.yelpMarkersObj[id] = marker;
         }
 
@@ -650,10 +653,12 @@ class EstateMap {
 
                 $card.on('mouseenter', () => {
                     this.yelpMarkersObj[id].fire('mouseover');
+                    $(this.yelpMarkersObj[id]._icon).addClass('_active');
                 });
 
                 $card.on('mouseleave', () => {
-                    this.yelpMarkersObj[id].fire('mouseout');
+                    this.yelpMarkersObj[id].closePopup();
+                    $(this.yelpMarkersObj[id]._icon).removeClass('_active');
                 });
 
                 yelpCardsArray.push($card);
