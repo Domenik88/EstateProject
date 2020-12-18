@@ -108,7 +108,7 @@ jQuery(function($){
                 $popup = $('.js-popup-' + target),
                 $recaptcha = $popup.find('.js-recaptcha');
 
-            $('body').trigger('trigger:init-map', '#test-popup-map')
+            $('body').trigger('trigger:init-map', '#test-popup-map');
 
             if ($recaptcha.length) popup.$body.trigger('trigger:init-recaptcha');
 

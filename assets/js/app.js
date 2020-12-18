@@ -4,6 +4,8 @@ import SimpleBar from 'simplebar'
 window.SimpleBar = SimpleBar;
 
 require('jquery');
+require('./plugin/jquery-ui.min.js');
+require('./plugin/jquery.ui.touch-punch.min.js');
 require('jquery-lazy');
 require('objectFitPolyfill');
 require('./plugin/slick.js');

@@ -1,0 +1,49 @@
+{% set defaultSlideMenuList = [
+    {
+        text: 'Highlights',
+        val: 'all'
+    },
+    {
+        text: 'Restaurants',
+        val: 'restaurants'
+    },
+    {
+        text: 'Groceries',
+        val: 'grocery'
+    },
+    {
+        text: 'Nightlife',
+        val: 'nightlife'
+    },
+    {
+        text: 'Cafes',
+        val: 'cafes'
+    },
+    {
+        text: 'Shopping',
+        val: 'shopping'
+    },
+    {
+        text: 'Arts & Entertainment',
+        val: 'arts'
+    },
+] %}
+
+<div class="slide-menu {{ wrapMod|default('') }} js-slide-menu-wrap">
+    <div class="slide-menu__overflow-wrap">
+        <div class="slide-menu__list js-slide-menu">
+            {% for item in list|default(defaultSlideMenuList) %}
+                <div class="slide-menu__item js-slide-menu-item">
+                    <div
+                        class="slide-menu__link button1 js-yelp-nav-link {{ loop.index0 ?: '_active' }}"
+                        data-val="{{ item.val }}"
+                    >
+                        {{ item.text }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="slide-menu__button circle-button icon-angle-right js-slide-menu-button"></div>
+</div>

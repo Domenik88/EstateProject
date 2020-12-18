@@ -131,44 +131,6 @@
 		z-index: 6;
 	}
 	
-	&__arrow,
-	&__btn {
-		border-radius: 100px;
-		background: rgba(255,255,255,.5);
-		color: $dark1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		pointer-events: auto;
-		cursor: pointer;
-	}
-	
-	&__arrow {
-		height: 31px;
-		width: 31px;
-		box-shadow: 0 0 0 1px rgba(225,230,231,.5);
-		transition: $default-transition;
-		
-		&::before {
-			font-size: 9px;
-		}
-		
-		&.slick-disabled {
-			pointer-events: none;
-			opacity: 0.3;
-		}
-	}
-	
-	&__btn {
-		height: 33px;
-		width: 33px;
-		
-		&::before {
-			font-size: 12px;
-		}
-	}
-	
 	&__price {
 		padding: 0 15px;
 	}
