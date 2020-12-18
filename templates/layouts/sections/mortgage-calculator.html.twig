@@ -1,0 +1,22 @@
+<section class="mortgage-calculator {{ wrapMod ?? 'mb70' }}">
+    <div class="mortgage-calculator__container {{ containerMod ?? 'container' }}">
+        {% include 'layouts/common/title-block.html.twig' with {
+            tag: 'h3',
+            text: title|default('Calculate your monthly mortgage payments'),
+        } only %}
+
+        <div class="mortgage-calculator__table">
+            <div class="mortgage-calculator__col mortgage-calculator__col_left">
+                <div class="mortgage-calculator-options pt50 pb50">
+
+                </div>
+            </div>
+
+            <div class="mortgage-calculator__col mortgage-calculator__col_right">
+                <div class="mortgage-calculator-result pt50 pb50">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

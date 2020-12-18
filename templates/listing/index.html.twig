@@ -49,6 +49,11 @@
                 containerMod: '',
                 coordinates: listing.coordinates
             } only %}
+
+            {% include 'layouts/sections/mortgage-calculator.html.twig' with {
+                wrapMod: '',
+                containerMod: '',
+            } only %}
         {% endblock %}
 
         {% block col_right %}

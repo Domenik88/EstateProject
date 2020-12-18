@@ -319,6 +319,7 @@
 		color: $dark1;
 		display: block;
 		z-index: 2;
+		transition: $default-transition;
 	}
 	
 	&::after {
@@ -335,7 +336,10 @@
 	
 	&.slick-disabled {
 		pointer-events: none;
-		opacity: 0.5;
+		
+		&::before {
+			opacity: .3;
+		}
 	}
 	
 	&._bordered {
