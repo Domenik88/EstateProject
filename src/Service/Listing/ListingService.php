@@ -286,4 +286,19 @@ class ListingService
         return $this->listingRepository->getAllListingsInMapBox($neLat, $neLng, $swLat, $swLng);
     }
 
+    public function getSelfListingsForHomepage(): ?array
+    {
+        $results = $this->listingRepository->findBy([
+            'selfListing' => true,
+            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
+            'deletedDate' => null,
+        ],
+        ['lastUpdateFromFeed' => 'DESC']);
+
+        foreach ( $results as $result ) {
+            $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
+        }
+
+        return $listingList;
+    }
 }
