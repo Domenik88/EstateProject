@@ -29,7 +29,10 @@ Encore
     ])
     .addEntry('map', [
         './assets/js/map.js',
-        './assets/css/app.scss',
+        './assets/css/map.scss',
+    ])
+    .addEntry('listing', [
+        './assets/js/map.js',
         './assets/css/map.scss',
     ])
     .addEntry('adminLte', [
