@@ -9,18 +9,16 @@
     {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
     <div class="content-wrapper">
         <h1>Admin Listing list</h1>
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-        <div class="mb-3">
-            You can go to, <a href="{{ path('admin_profile') }}">Admin profile</a>
-        </div>
         {% if listingList.results is empty %}
         <h2>No listings found!</h2>
         {% else %}
             <div class="box-body">
+
+                <form role="form" action="{{ path('admin_listing_list') }}" method="post">
+                    <label for="search">Search from Mls Number </label>
+                    <input type="search" name="search" id="search" placeholder="Mls Number"/>
+                    <button type="submit" class="btn btn-info btn-xs">search</button>
+                </form>
                 <table class="table table-bordered">
                     <thead style="background-color: gold">
                     <tr>
@@ -40,18 +38,13 @@
                             {% set self = 1 %}
                             {% set ariaPressed = 'false' %}
                         {% endif %}
-                        {% if listing.status == 'new' %}
-                            {% set disabledToggle = ' disabled' %}
-                        {% else %}
-                            {% set disabledToggle = '' %}
-                        {% endif %}
                         <tr>
                             <td></td>
                             <td>{{ listing.mlsNumber }}</td>
                             <td>{{ listing.listingId }}</td>
                             <td>{{ listing.status }} / {{ listing.processingStatus }}</td>
                             <td>
-                                <button type="button" {{ disabledToggle }} class="btn-toggle js-estate-change{{ disabledToggle }}" data-toggle="button" aria-pressed="{{ ariaPressed }}" autocomplete="off" data-url="/admin/listings/listing-{{ listing.listingId }}">
+                                <button type="button" class="btn-toggle js-estate-change" data-toggle="button" aria-pressed="{{ ariaPressed }}" autocomplete="off" data-url="{{ path('admin_listing_ajax', {mlsId: listing.listingId}) }}">
                                     <div class="handle"></div>
                                 </button>
                             </td>

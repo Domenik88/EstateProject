@@ -55,13 +55,19 @@ class AdminController extends AbstractController
      */
     public function preferences(Request $request, int $page = 1)
     {
-        $offset = ($page - 1) * self::LIMIT;
-        $adminListingListSearchResult = $this->listingService->getAdminListingList($page,self::LIMIT,$offset);
+        if (!empty($request->request->all()) && !empty($request->request->all()['search'])) {
+            $search = $request->request->all()['search'];
+            $criteria = [ 'deletedDate' => null, 'mlsNum' => $search ];
+            $listingListSearchResult = $this->listingService->getAdminListingList($criteria);
+        } else {
+            $offset = ( $page - 1 ) * self::LIMIT;
+            $criteria = [ 'deletedDate' => null ];
+            $listingListSearchResult = $this->listingService->getAdminListingList($criteria, $page, self::LIMIT, $offset);
+        }
+
         return $this->render('admin/admin-listing-list.html.twig', [
-            'controller_name' => 'AdminController',
-            'listingList' => $adminListingListSearchResult,
+            'listingList' => $listingListSearchResult,
             'ajaxPath' => '/listing/list/coordinates/',
-            'title' =>  $request->attributes->get('title'),
         ]);
     }
 
@@ -69,6 +75,15 @@ class AdminController extends AbstractController
      * @Route("/listings/listing-{mlsId}", name="admin_listing_ajax", methods={"POST"})
      */
     public function setEstateblockListing(string $mlsId)
+    {
+        $response = $this->listingService->setAdminListingSelfListing($mlsId);
+        return $this->json($response);
+    }
+
+    /**
+     * @Route("/listings/search", name="admin_listing_search")
+     */
+    public function searchListing(string $mlsId)
     {
         $response = $this->listingService->setAdminListingSelfListing($mlsId);
         return $this->json($response);
