@@ -289,7 +289,7 @@ class ListingService
         return $this->listingRepository->getAllListingsInMapBox($neLat, $neLng, $swLat, $swLng);
     }
 
-    public function getSelfListingsForHomepage(): ?array
+    public function getSelfListingsForHomepage(): array
     {
         $results = $this->listingRepository->findBy([
             'selfListing' => true,
@@ -297,7 +297,7 @@ class ListingService
             'deletedDate' => null,
         ],
         ['lastUpdateFromFeed' => 'DESC']);
-
+        $listingList = [];
         foreach ( $results as $result ) {
             $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
         }
