@@ -129,4 +129,17 @@ class ListingRepository extends ServiceEntityRepository
         }
     }
 
+    public function getCounters(array $cities): ?array
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.city, COUNT(l.mlsNum) as counter')
+            ->where("l.city IN ('" . implode('\',\'', $cities) . "')")
+            ->andWhere('l.deletedDate is null')
+            ->andWhere("l.status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "')")
+            ->groupBy('l.city')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

@@ -305,4 +305,15 @@ class ListingService
 
         return $listingList;
     }
+
+    public function getCitiesCounters(): ?array
+    {
+        $cityes = ['Vancouver','North Vancouver','Burnaby','Coquitlam','Surrey','Richmond','West Vancouver','Langley','Maple Ridge','Pitt Meadows','Mission','Abbotsford','Chilliwack','Pitt Meadows','Mission'];
+        $result = $this->listingRepository->getCounters($cityes);
+        foreach ( $result as $item ) {
+            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter']);
+        }
+
+        return $cityCounters;
+    }
 }

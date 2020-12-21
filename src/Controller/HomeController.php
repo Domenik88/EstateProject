@@ -21,8 +21,10 @@ class HomeController extends AbstractController
     public function index()
     {
         $selfListings = $this->listingService->getSelfListingsForHomepage();
+        $cityCounters = $this->listingService->getCitiesCounters();
         return $this->render('default/index.html.twig', [
             'selfListings' => $selfListings,
+            'cityCounters' => $cityCounters,
         ]);
     }
 }
