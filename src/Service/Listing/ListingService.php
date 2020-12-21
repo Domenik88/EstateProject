@@ -114,7 +114,7 @@ class ListingService
         return $existingListing;
     }
 
-    public function getAdminListingList(array $criteria, int $currentPage = 1, int $limit = 50, int $offset = 0)
+    public function getAdminListingList(array $criteria, int $currentPage = 1, int $limit = 50, int $offset = 0): ListingListSearchResult
     {
         $results = $this->listingRepository->findBy(
             $criteria,
@@ -122,6 +122,7 @@ class ListingService
             $limit,
             $offset);
         $listingListCount = $this->getAdminListingListCount();
+        $listingList = [];
         foreach ( $results as $result ) {
             $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
         }
