@@ -1,4 +1,3 @@
-"use strict";
 jQuery(function($) {
     var sel = {
         init() {

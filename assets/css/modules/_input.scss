@@ -22,6 +22,9 @@
     border: 1px solid $gray0;
     color: $gray1;
     
+    font-family: $montserrat;
+    @include small-text2;
+    
     &:hover {
         background: $gray0;
     }
@@ -110,6 +113,30 @@
             border-color: $pink-pdra;
             color: $dark1;
             font-weight: 700;
+        }
+    }
+    
+    &._bordered-bright {
+        background: $white;
+        color: $dark1;
+        border-color: $gray-line;
+    
+        &:hover {
+            background: $gray4;
+        }
+    
+        &:focus {
+            background: $white;
+            border-color: $gray2;
+            color: $dark1;
+            font-weight: normal;
+        }
+    
+        &.error {
+            background: $pink-pdra;
+            border-color: $pink-pdra;
+            color: $dark1;
+            font-weight: normal;
         }
     }
     

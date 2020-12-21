@@ -19,6 +19,7 @@ var $_ = {
         this.initConfCollapseForm();
         this.initShowMore();
         this.initSlideMenu();
+        this.initFormatInput();
     },
     
     initCache() {
@@ -57,6 +58,8 @@ var $_ = {
         
         this.$defaultSlider = $('.js-default-slider');
 
+        this.$formatInput = $('.js-format-input');
+
 
         this.$slideMenu = $('.js-slide-menu');
         this.$slideMenuItem = $('.js-slide-menu-item');
@@ -93,7 +96,34 @@ var $_ = {
         is_touch_device();
     },
 
-    initSlideMenu: function () {
+    initFormatInput() {
+        $_.$formatInput.each((key, item) => {
+            const
+                $currentInput = $(item),
+                dataFormatParams = $currentInput.data('format-props');
+
+            $currentInput.val(_formatInputVal({
+                dataFormatParams,
+                val: $currentInput.val(),
+            }));
+
+            $currentInput.on('change', () => {
+                $currentInput.val(_formatInputVal({
+                    dataFormatParams,
+                    val: $currentInput.val(),
+                }));
+            });
+
+            $currentInput.on('trigger:set-val', (e, val) => {
+                $currentInput.val(_formatInputVal({
+                    dataFormatParams,
+                    val,
+                }));
+            });
+        });
+    },
+
+    initSlideMenu() {
         function checkDrag(params) {
             const
                 { $currentMenu, $relatedWrap, ui } = params,
@@ -746,17 +776,13 @@ var $_ = {
     },
     
     _initSliderCounter(slick, $current, $total) {
-        $current.html($_._addZero(slick.currentSlide + 1));
-        $total.html($_._addZero(slick.slideCount));
+        $current.html(_addZero(slick.currentSlide + 1));
+        $total.html(_addZero(slick.slideCount));
         
         slick.$slider.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-            $current.html($_._addZero(nextSlide + 1))
+            $current.html(_addZero(nextSlide + 1))
         });
     },
-    
-    _addZero(num) {
-        return `${num < 10 ? '0' : ''}${num}`
-    }
 };
 
 $(document).ready(() => {

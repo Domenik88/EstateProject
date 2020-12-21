@@ -90,3 +90,22 @@
         padding-left: 10px;
     }
 }
+
+.merge-inputs {
+    .input-style {
+        &:not(:last-child) {
+            .input-style__input {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right: none;
+            }
+        }
+        
+        &:not(:first-child) {
+            .input-style__input {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+}

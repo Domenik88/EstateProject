@@ -165,6 +165,15 @@
     }
 }
 
+.link-turquoise {
+    color: $turquoise;
+    transition: $default-transition;
+
+    &:hover {
+        color: $blue;
+    }
+}
+
 .link-light-gray {
     color: $gray1;
     transition: $default-transition;

@@ -61,6 +61,14 @@
 		position: relative;
 		z-index: 2;
 	}
+	
+	&._turquoise {
+		background: $turquoise;
+		
+		&:hover {
+			background: $blue;
+		}
+	}
 
 	&._bordered {
 		color: $dark1;

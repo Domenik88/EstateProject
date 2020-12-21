@@ -1,3 +1,113 @@
+{% set mortgageCalculatorForm = [
+    {
+        label: 'Home Price',
+        inputs: [
+            {
+                val: '377987',
+                name: 'home-price',
+                inputMod: 'js-format-input',
+                formatCurrency: true,
+                prefix: 'CA$',
+                min: 1,
+                max: 99999999
+            },
+        ],
+        range: {
+            relInputName: 'home-price',
+        },
+    },
+    {
+        label: 'Down Payment',
+        inputs: [
+            {
+                val: '377987',
+                name: 'down-payment-val',
+                inputMod: 'js-format-input',
+                formatCurrency: true,
+                prefix: 'CA$',
+                min: 1,
+                max: 99999999
+            },
+            {
+                val: '30',
+                name: 'down-payment-percent',
+                inputMod: 'js-format-input',
+                suffix: '%',
+                min: 0,
+                max: 100
+            },
+        ],
+        range: {
+            relInputName: 'down-payment-val',
+        },
+    },
+    {
+        label: 'Interest Rate',
+        inputs: [
+            {
+                val: '377987',
+                name: 'interest-rate',
+                inputMod: 'js-format-input',
+                formatCurrency: true,
+                prefix: 'CA$',
+                min: 1,
+                max: 99999999
+            },
+        ],
+        range: {
+            relInputName: 'interest-rate',
+        },
+    },
+    {
+        label: 'Loan Type',
+        select: {
+            name: 'loan-type',
+            options: [
+                {
+                    'value': 30,
+                    'text': '30-year fixed',
+                },
+                {
+                    'value': 20,
+                    'text': '20-year fixed',
+                },
+                {
+                    'value': 10,
+                    'text': '10-year fixed',
+                },
+            ],
+        }
+    },
+] %}
+
+{% set mortgageCalculatorResult = [
+    {
+        mod: '_ct-a',
+        label: 'Principal & Interest',
+        val: '$16,877',
+    },
+    {
+        mod: '_ct-b',
+        label: 'Property Taxes',
+        val: '$202',
+    },
+    {
+        mod: '_ct-c',
+        label: 'Home Insurance',
+        val: '$75',
+    },
+    {
+        mod: '_ct-d',
+        label: 'Property Taxes',
+        val: '$513',
+    },
+    {
+        mod: '_ct-e',
+        label: 'Property Taxes',
+        val: '$157',
+    },
+] %}
+
 <section class="mortgage-calculator {{ wrapMod ?? 'mb70' }}">
     <div class="mortgage-calculator__container {{ containerMod ?? 'container' }}">
         {% include 'layouts/common/title-block.html.twig' with {
@@ -5,18 +115,97 @@
             text: title|default('Calculate your monthly mortgage payments'),
         } only %}
 
-        <div class="mortgage-calculator__table">
+        <div class="mortgage-calculator__table mb40">
             <div class="mortgage-calculator__col mortgage-calculator__col_left">
-                <div class="mortgage-calculator-options pt50 pb50">
+                <FORM class="mortgage-calc-form js-mortgage-calc-form pt50 pb50">
+                    {% for item in mortgageCalculatorForm %}
+                        <div class="mortgage-calc-form__row mb50">
+                            <div class="mortgage-calc-form__flex-wrap mb20">
+                                <span class="mortgage-calc-form__label small-text">{{ item.label }}</span>
 
-                </div>
+                                <div class="mortgage-calc-form__input-wrap {{
+                                    item.inputs|default(false)|length > 1 ? 'merge-inputs'
+                                }}">
+                                    {% for input in item.inputs|default(false) %}
+                                        {% include 'layouts/form/input.html.twig' with {
+                                            'name': input.name,
+                                            'value': input.val|default(''),
+                                            'placeholder': '',
+                                            'inputMod': '_bordered-bright' ~ ' ' ~ input.inputMod|default(''),
+                                            'dataFormatProps': {
+                                                'formatCurrency': input.formatCurrency|default(false),
+                                                'prefix': input.prefix|default(''),
+                                                'suffix': input.suffix|default(''),
+                                                'min': input.min|default(false),
+                                                'max': input.max|default(false),
+                                            }
+                                        } only %}
+                                    {% endfor %}
+
+                                    {% if item.select|default(false) %}
+                                        {% include 'layouts/form/select.html.twig' with {
+                                            'name': item.select.name,
+                                            'inputMod': '_bordered',
+                                            'wrapMod': '',
+                                            'textMod': 'small-text2',
+                                            'options': item.select.options
+                                        } only %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if item.range|default(false) %}
+                                <div class="range js-range" data-params="{{ {
+                                    relativeInputName: item.range.relInputName,
+                                    trigger: 'trigger:set-value',
+                                    options: {
+                                        range: 'min',
+                                        value: [0, 10000000],
+                                        start: 0,
+                                        max: 10000000
+                                    },
+                                }|json_encode }}"></div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </FORM>
             </div>
 
             <div class="mortgage-calculator__col mortgage-calculator__col_right">
-                <div class="mortgage-calculator-result pt50 pb50">
+                <div class="mortgage-calc-result pt50 pb50">
+                    <div class="mortgage-calc-result__chart-wrap mb50">
+                        <div class="ct-chart js-ct-chart"></div>
 
+                        <div class="mortgage-calc-result__total-container">
+                            <div class="mortgage-calc-result__total-wrap">
+                                <span class="mortgage-calc-result__total h3">CA$22,200</span>
+                                <span class="mortgage-calc-result__period small-text2">/month</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mortgage-calc-result__list">
+                        {% for item in mortgageCalculatorResult %}
+                            <div class="mortgage-calc-result__row mb15 {{ item.mod }}">
+                                <span class="mortgage-calc-result__label small-text2">{{ item.label }}</span>
+                                <span class="mortgage-calc-result__val small-text">{{ item.val }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="mortgage-calculator__bottom">
+            {% include 'layouts/controls/button.html.twig' with {
+                'href': '#',
+                'text': 'Get Pre-Qualified',
+                'mod': '_turquoise'
+            } %}
+
+            <span class="mortgage-calculator__label">
+                or <a class="link-turquoise" href="#">See today's mortgage rates</a>
+            </span>
         </div>
     </div>
 </section>
