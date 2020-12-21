@@ -1,0 +1,77 @@
+.btn-toggle {
+  margin: 0 4rem;
+  padding: 0;
+  position: relative;
+  border: none;
+  height: 1.5rem;
+  width: 3rem;
+  border-radius: 1.5rem;
+  color: #6b7381;
+  background: #83858a;
+  &:before {
+    content: 'Off';
+    left: -4rem;
+  }
+  &:after {
+    content: 'On';
+    right: -4rem;
+    opacity: .5;
+  }
+  & > .handle {
+    position: absolute;
+    top: 0.1875rem;
+    left: 0.1875rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 1.125rem;
+    background: #fff;
+    transition: left .25s;
+  }
+  &.active {
+    transition: background-color .25s;
+    background-color: #29b5a8;
+    & > .handle {
+      left: 1.6875rem;
+      transition: left .25s;
+    }
+    &:before {
+      opacity: .5;
+    }
+    &:after {
+      opacity: 1;
+    }
+  }
+  &.disabled {
+    opacity: .5;
+    &:before {
+      opacity: .5;
+    }
+    &:after {
+      opacity: .5;
+    }
+  }
+}
+.btn-toggle:focus,
+.btn-toggle:focus.active,
+.btn-toggle.focus,
+.btn-toggle.focus.active {
+  outline: none;
+}
+.btn-toggle:before,
+.btn-toggle:after {
+  line-height: 1.5rem;
+  width: 4rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: absolute;
+  bottom: 0;
+  transition: opacity .25s;
+  color: #6b7381;
+}
+.btn-toggle.btn-secondary:before,
+.btn-toggle.btn-secondary:after {
+  color: #6b7381;
+}

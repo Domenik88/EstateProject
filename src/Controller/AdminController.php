@@ -6,6 +6,8 @@ use App\Entity\Admin;
 use App\Form\AdminType;
 use App\Form\NewAdminType;
 use App\Repository\AdminRepository;
+use App\Repository\ListingRepository;
+use App\Service\Listing\ListingService;
 use App\Service\User\AdminUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class AdminController extends AbstractController
 {
+    private ListingService $listingService;
+    const LIMIT = 50;
+
+    public function __construct(ListingService $listingService)
+    {
+        $this->listingService = $listingService;
+    }
+
     /**
      * @Route("/", name="admin", defaults={"title":"Administrator panel"})
      */
@@ -38,6 +48,45 @@ class AdminController extends AbstractController
             'controller_name' => 'AdminController',
             'title' =>  $request->attributes->get('title'),
         ]);
+    }
+
+    /**
+     * @Route("/listings/{page}", name="admin_listing_list", requirements={"page"="\d+"}, defaults={"title":"Preferences"})
+     */
+    public function preferences(Request $request, int $page = 1)
+    {
+        if (!empty($request->request->all()) && !empty($request->request->all()['search'])) {
+            $search = $request->request->all()['search'];
+            $criteria = [ 'deletedDate' => null, 'mlsNum' => $search ];
+            $listingListSearchResult = $this->listingService->getAdminListingList($criteria);
+        } else {
+            $offset = ( $page - 1 ) * self::LIMIT;
+            $criteria = [ 'deletedDate' => null ];
+            $listingListSearchResult = $this->listingService->getAdminListingList($criteria, $page, self::LIMIT, $offset);
+        }
+
+        return $this->render('admin/admin-listing-list.html.twig', [
+            'listingList' => $listingListSearchResult,
+            'ajaxPath' => '/listing/list/coordinates/',
+        ]);
+    }
+
+    /**
+     * @Route("/listings/listing-{mlsId}", name="admin_listing_ajax", methods={"POST"})
+     */
+    public function setEstateblockListing(string $mlsId)
+    {
+        $response = $this->listingService->setAdminListingSelfListing($mlsId);
+        return $this->json($response);
+    }
+
+    /**
+     * @Route("/listings/search", name="admin_listing_search")
+     */
+    public function searchListing(string $mlsId)
+    {
+        $response = $this->listingService->setAdminListingSelfListing($mlsId);
+        return $this->json($response);
     }
 
     /**

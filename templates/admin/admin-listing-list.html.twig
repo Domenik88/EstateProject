@@ -1,0 +1,72 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+{% block body %}
+    <style>
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+    <div class="content-wrapper">
+        <h1>Admin Listing list</h1>
+        {% if listingList.results is empty %}
+        <h2>No listings found!</h2>
+        {% else %}
+            <div class="box-body">
+
+                <form role="form" action="{{ path('admin_listing_list') }}" method="post">
+                    <label for="search">Search from Mls Number </label>
+                    <input type="search" name="search" id="search" placeholder="Mls Number"/>
+                    <button type="submit" class="btn btn-info btn-xs">search</button>
+                </form>
+                <table class="table table-bordered">
+                    <thead style="background-color: gold">
+                    <tr>
+                        <th style="width: 10px">#</th>
+                        <td>Mls Num</td>
+                        <td>Feed listing id</td>
+                        <td>Status / Processing status</td>
+                        <td style="width: 40px">Self Listing</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for listing in listingList.results %}
+                        {% if listing.selfListing %}
+                            {% set self = 0 %}
+                            {% set ariaPressed = 'true' %}
+                        {% else %}
+                            {% set self = 1 %}
+                            {% set ariaPressed = 'false' %}
+                        {% endif %}
+                        <tr>
+                            <td></td>
+                            <td>{{ listing.mlsNumber }}</td>
+                            <td>{{ listing.listingId }}</td>
+                            <td>{{ listing.status }} / {{ listing.processingStatus }}</td>
+                            <td>
+                                <button type="button" class="btn-toggle js-estate-change" data-toggle="button" aria-pressed="{{ ariaPressed }}" autocomplete="off" data-url="{{ path('admin_listing_ajax', {mlsId: listing.listingId}) }}">
+                                    <div class="handle"></div>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        {% if listingList.pagesCount > 1 %}
+            <div class="example-wrapper">
+                <h2>Pagination</h2>
+                <div>
+                    {% for page in 1..listingList.pagesCount %}
+                        {% if page != listingList.currentPage %}
+                            <a href="/admin/listings/{{ page }}">{{ page }}</a>
+                        {% else %}
+                            <a>{{ page }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

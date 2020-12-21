@@ -114,7 +114,47 @@ class ListingService
         return $existingListing;
     }
 
-    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0)
+    public function getAdminListingList(array $criteria, int $currentPage = 1, int $limit = 50, int $offset = 0)
+    {
+        $results = $this->listingRepository->findBy(
+            $criteria,
+            ['feedListingID' => 'DESC'],
+            $limit,
+            $offset);
+        $listingListCount = $this->getAdminListingListCount();
+        foreach ( $results as $result ) {
+            $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
+        }
+        $pageCounter = 1;
+        if (count($listingList) != 1)
+        {
+            $pageCounter = ceil($listingListCount / $limit);
+        }
+
+        return new ListingListSearchResult($listingListCount, $listingList, $currentPage, $pageCounter);
+    }
+
+    public function getAdminListingListCount()
+    {
+        return $this->listingRepository->count([
+            'deletedDate' => null,
+        ]);
+    }
+
+    public function setAdminListingSelfListing(string $mlsId)
+    {
+        $singleListing = $this->listingRepository->findOneBy([
+            'feedListingID' => $mlsId
+        ]);
+        $selfListingStatus = $singleListing->getSelfListing() ? false : true;
+        $singleListing->setSelfListing($selfListingStatus);
+
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): ?ListingListSearchResult
     {
         $results = $this->listingRepository->findBy([
             'feedID' => $feedName,
@@ -249,4 +289,19 @@ class ListingService
         return $this->listingRepository->getAllListingsInMapBox($neLat, $neLng, $swLat, $swLng);
     }
 
+    public function getSelfListingsForHomepage(): ?array
+    {
+        $results = $this->listingRepository->findBy([
+            'selfListing' => true,
+            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
+            'deletedDate' => null,
+        ],
+        ['lastUpdateFromFeed' => 'DESC']);
+
+        foreach ( $results as $result ) {
+            $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
+        }
+
+        return $listingList;
+    }
 }

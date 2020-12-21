@@ -152,6 +152,11 @@ class Listing
      */
     private $originalPrice;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $selfListing;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
@@ -507,6 +512,18 @@ class Listing
     public function setOriginalPrice(?float $originalPrice): self
     {
         $this->originalPrice = $originalPrice;
+
+        return $this;
+    }
+
+    public function getSelfListing(): ?bool
+    {
+        return $this->selfListing;
+    }
+
+    public function setSelfListing(bool $selfListing): self
+    {
+        $this->selfListing = $selfListing;
 
         return $this;
     }
