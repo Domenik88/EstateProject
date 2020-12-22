@@ -13,10 +13,14 @@ class CitiesCounterResult
 {
     public string $city;
     public int $count;
+    public string $feedID;
+    public string $stateOrProvince;
 
-    public function __construct(string $city, int $count)
+    public function __construct(string $city, int $count, string $feedID, string $stateOrProvince)
     {
         $this->city = $city;
         $this->count = $count;
+        $this->feedID = $feedID;
+        $this->stateOrProvince = $stateOrProvince;
     }
 }

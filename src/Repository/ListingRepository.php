@@ -129,14 +129,20 @@ class ListingRepository extends ServiceEntityRepository
         }
     }
 
-    public function getCounters(array $cities): ?array
+    public function getCounters(array $cities, string $stateOrProvince, string $feedId): ?array
     {
         return $this->createQueryBuilder('l')
             ->select('l.city, COUNT(l.mlsNum) as counter')
-            ->where("l.city IN ('" . implode('\',\'', $cities) . "')")
-            ->andWhere('l.deletedDate is null')
-            ->andWhere("l.status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "')")
+            ->where("l.city IN (:sities)")
+            ->andWhere('l.deletedDate IS NULL')
+            ->andWhere('l.stateOrProvince = :stateOrProvince')
+            ->andWhere("l.status IN (:statuses)")
+            ->andWhere('l.feedID = :feedID')
             ->groupBy('l.city')
+            ->setParameter('sities', $cities)
+            ->setParameter('stateOrProvince', $stateOrProvince)
+            ->setParameter('statuses', [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ])
+            ->setParameter('feedID', $feedId)
             ->getQuery()
             ->getResult()
             ;

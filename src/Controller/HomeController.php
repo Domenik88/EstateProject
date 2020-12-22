@@ -25,6 +25,7 @@ class HomeController extends AbstractController
         return $this->render('default/index.html.twig', [
             'selfListings' => $selfListings,
             'cityCounters' => $cityCounters,
+            'landingPageRouteName' => '',
         ]);
     }
 }

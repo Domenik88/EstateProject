@@ -309,9 +309,10 @@ class ListingService
     public function getCitiesCounters(): ?array
     {
         $cityes = ['Vancouver','North Vancouver','Burnaby','Coquitlam','Surrey','Richmond','West Vancouver','Langley','Maple Ridge','Pitt Meadows','Mission','Abbotsford','Chilliwack','Pitt Meadows','Mission'];
-        $result = $this->listingRepository->getCounters($cityes);
+        $result = $this->listingRepository->getCounters($cityes, 'British Columbia', 'ddf');
+        $cityCounters = [];
         foreach ( $result as $item ) {
-            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter']);
+            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia');
         }
 
         return $cityCounters;
