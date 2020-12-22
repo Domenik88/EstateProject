@@ -13,11 +13,11 @@
         
         &::before {
             font-family: $icomoon;
-            @include absolute(auto, auto, 0.05em, calc(100% + 20px));
+            @include absolute(auto, auto, 0.45em, calc(100% + 20px));
             display: block;
             color: $dark1;
             pointer-events: none;
-            font-size: 5px;
+            font-size: 6px;
             line-height: 1;
         }
     }

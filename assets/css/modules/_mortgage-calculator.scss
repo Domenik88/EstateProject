@@ -97,8 +97,8 @@
 	background: $gray4;
 	border-radius: 20px;
 	width: 100%;
-	padding-left: 40px;
-	padding-right: 40px;
+	padding-left: 30px;
+	padding-right: 30px;
 	
 	.ct-series-a {
 		fill: $blue;
@@ -123,6 +123,9 @@
 	&__chart-wrap {
 		position: relative;
 		width: 100%;
+		max-width: 260px;
+		margin-left: auto;
+		margin-right: auto;
 		@include rh;
 		
 		.ct-chart {
@@ -152,7 +155,7 @@
 	}
 	
 	&__list {
-		padding: 0 10px;
+	
 	}
 	
 	&__row {
@@ -169,6 +172,7 @@
 			height: 20px;
 			border-radius: 50%;
 			margin-right: 15px;
+			flex: 0 0 auto;
 		}
 		
 		&._ct-a {
@@ -204,7 +208,7 @@
 	
 	&__label {
 		margin-right: auto;
-		padding-right: 20px;
+		padding-right: 10px;
 	}
 	
 	&__val {

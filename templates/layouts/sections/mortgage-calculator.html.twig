@@ -3,65 +3,71 @@
         label: 'Home Price',
         inputs: [
             {
-                val: '377987',
-                name: 'home-price',
-                inputMod: 'js-format-input',
+                val: homePrice,
+                name: 'home_price',
+                inputMod: 'js-format-input js-home-price',
                 formatCurrency: true,
                 prefix: 'CA$',
-                min: 1,
-                max: 99999999
+                min: 0,
+                max: homePrice*2
             },
         ],
         range: {
-            relInputName: 'home-price',
+            relInputName: 'home_price',
+            min: 0,
+            max: homePrice*2
         },
     },
     {
         label: 'Down Payment',
         inputs: [
             {
-                val: '377987',
-                name: 'down-payment-val',
-                inputMod: 'js-format-input',
+                val: homePrice*0.1,
+                name: 'down_payment',
+                inputMod: 'js-format-input js-down-payment',
                 formatCurrency: true,
                 prefix: 'CA$',
-                min: 1,
-                max: 99999999
+                min:  0,
+                max: homePrice,
             },
             {
-                val: '30',
-                name: 'down-payment-percent',
-                inputMod: 'js-format-input',
+                val: 30,
+                name: 'down_payment_percent',
+                inputMod: 'js-format-input js-down-payment-percent',
                 suffix: '%',
                 min: 0,
                 max: 100
             },
         ],
         range: {
-            relInputName: 'down-payment-val',
+            relInputName: 'down_payment_percent',
+            min: 0,
+            max: 100
         },
     },
     {
         label: 'Interest Rate',
         inputs: [
             {
-                val: '377987',
-                name: 'interest-rate',
+                val: '5',
+                name: 'interest_rate',
                 inputMod: 'js-format-input',
-                formatCurrency: true,
-                prefix: 'CA$',
+                suffix: '%',
                 min: 1,
-                max: 99999999
+                max: 10
             },
         ],
         range: {
-            relInputName: 'interest-rate',
+            relInputName: 'interest_rate',
+            min: 1,
+            max: 10,
+            start: 5,
         },
     },
     {
         label: 'Loan Type',
         select: {
-            name: 'loan-type',
+            name: 'loan_type',
             options: [
                 {
                     'value': 30,
@@ -72,8 +78,16 @@
                     'text': '20-year fixed',
                 },
                 {
+                    'value': 15,
+                    'text': '15-year fixed',
+                },
+                {
                     'value': 10,
                     'text': '10-year fixed',
+                },
+                {
+                    'value': 5,
+                    'text': '5-year fixed',
                 },
             ],
         }
@@ -84,7 +98,8 @@
     {
         mod: '_ct-a',
         label: 'Principal & Interest',
-        val: '$16,877',
+        val: '',
+        valMod: 'js-calc-total'
     },
     {
         mod: '_ct-b',
@@ -98,13 +113,8 @@
     },
     {
         mod: '_ct-d',
-        label: 'Property Taxes',
+        label: 'Mortgage ins. & other',
         val: '$513',
-    },
-    {
-        mod: '_ct-e',
-        label: 'Property Taxes',
-        val: '$157',
     },
 ] %}
 
@@ -160,9 +170,9 @@
                                     trigger: 'trigger:set-value',
                                     options: {
                                         range: 'min',
-                                        value: [0, 10000000],
-                                        start: 0,
-                                        max: 10000000
+                                        min: item.range.min|default(0),
+                                        max: item.range.max|default(10000000),
+                                        start: item.range.start|default(0),
                                     },
                                 }|json_encode }}"></div>
                             {% endif %}
@@ -178,7 +188,7 @@
 
                         <div class="mortgage-calc-result__total-container">
                             <div class="mortgage-calc-result__total-wrap">
-                                <span class="mortgage-calc-result__total h3">CA$22,200</span>
+                                <span class="mortgage-calc-result__total h3 js-calc-total"></span>
                                 <span class="mortgage-calc-result__period small-text2">/month</span>
                             </div>
                         </div>
@@ -188,7 +198,7 @@
                         {% for item in mortgageCalculatorResult %}
                             <div class="mortgage-calc-result__row mb15 {{ item.mod }}">
                                 <span class="mortgage-calc-result__label small-text2">{{ item.label }}</span>
-                                <span class="mortgage-calc-result__val small-text">{{ item.val }}</span>
+                                <span class="mortgage-calc-result__val small-text {{ item.valMod|default('') }}">{{ item.val }}</span>
                             </div>
                         {% endfor %}
                     </div>

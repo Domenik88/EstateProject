@@ -55,6 +55,7 @@
             {% include 'layouts/sections/mortgage-calculator.html.twig' with {
                 wrapMod: '',
                 containerMod: '',
+                homePrice: listing.financials.listingPrice
             } only %}
         {% endblock %}
 

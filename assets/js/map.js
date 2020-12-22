@@ -807,7 +807,9 @@ class EstateMap {
         clearTimeout(this.resizeTimer);
 
         this.resizeTimer = setTimeout(() => {
-            this.$estateCardsWrapPosition = this.$estateCardsWrap[0].getBoundingClientRect();
+            if (this.$estateCardsWrap.length) {
+                this.$estateCardsWrapPosition = this.$estateCardsWrap[0].getBoundingClientRect();
+            }
         }, this.resizeTimerDelay);
     }
 

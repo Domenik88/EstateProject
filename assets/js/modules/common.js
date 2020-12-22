@@ -114,11 +114,15 @@ var $_ = {
                 }));
             });
 
-            $currentInput.on('trigger:set-val', (e, val) => {
+            $currentInput.on('trigger:set-val', (e, data) => {
+                const { val, change=false } = data;
+
                 $currentInput.val(_formatInputVal({
                     dataFormatParams,
                     val,
                 }));
+
+                if (change) $currentInput.change();
             });
         });
     },

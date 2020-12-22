@@ -17,7 +17,7 @@ require('./plugin/jquery.validate.min.js');
 require('./modules/select.js');
 require('./modules/form.js');
 require('./modules/popup.js');
-require('./modules/chart.js');
+require('./modules/mortgage-calc.js');
 require('./modules/range.js');
 require('./modules/common.js');
 

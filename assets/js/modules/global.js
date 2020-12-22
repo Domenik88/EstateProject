@@ -9,6 +9,10 @@ window._formatInputVal = (obj) => {
     return prefix + finalVal + suffix;
 }
 
+window._formatCurrencyCa = (str) => {
+    return '$CA' + _formatCurrency(str);
+}
+
 window._formatCurrency = (str) => {
     return str.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,');
 }

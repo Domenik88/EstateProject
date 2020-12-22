@@ -15,17 +15,18 @@ jQuery(function($){
                     $item = $(item),
                     { relativeInputName, trigger, options={} } = $item.data('params') || {},
                     $relativeInput = $(`input[name="${relativeInputName}"]`),
-                    { range, start, value } = options;
+                    { range, start, min, max } = options;
 
                 $item.slider({
                     range: range,
-                    min: value[0],
-                    max: value[1],
+                    min: min,
+                    max: max,
+                    start: start,
                     create: () => {
                         $item.slider("value", _getPureNumber($relativeInput.val()));
                     },
                     slide: (event, ui) => {
-                        $relativeInput.trigger('trigger:set-val', ui.value);
+                        $relativeInput.trigger('trigger:set-val', {val: ui.value, change: true});
                     }
                 });
 
@@ -35,7 +36,17 @@ jQuery(function($){
 
                 $item.on('trigger:set-value', (e, val) => {
                     $item.slider("value", val);
-                })
+                });
+
+                $relativeInput.on('trigger:set-range-props', (e, data) => {
+                    const {
+                        sliderOptions
+                    } = data;
+
+                    $item.slider( "option", {
+                        ...sliderOptions
+                    });
+                });
             });
         },
     };
