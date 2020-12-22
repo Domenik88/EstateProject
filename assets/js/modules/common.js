@@ -20,6 +20,7 @@ var $_ = {
         this.initShowMore();
         this.initSlideMenu();
         this.initFormatInput();
+        this.initPrintListing();
     },
     
     initCache() {
@@ -66,6 +67,8 @@ var $_ = {
         this.$slideMenuWrap = $('.js-slide-menu-wrap');
         this.$slideMenuButton = $('.js-slide-menu-button');
 
+        this.$printListing = $('.js-print-listing');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -94,6 +97,22 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initPrintListing() {
+        if (!$_.$printListing.length) return false;
+
+        $_.$printListing.on('click', () => {
+            window.print();
+        });
+
+        window.onbeforeprint = () => {
+            $_.$body.addClass('_print');
+        };
+
+        window.onafterprint = () => {
+            $_.$body.removeClass('_print');
+        };
     },
 
     initFormatInput() {

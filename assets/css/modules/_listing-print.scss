@@ -1,0 +1,23 @@
+@media print {
+	body._print {
+		.wrapper {
+			& > *:not(.listing-print-popup) {
+				display: none;
+			}
+		}
+		
+		.listing-print-popup {
+			display: block;
+		}
+	}
+}
+
+.listing-print-popup {
+	position: relative;
+	display: none;
+	width: 100%;
+	height: auto;
+	min-height: 100vh;
+	border: 1px solid red;
+	box-shadow: inset 0 0 0 1000px green;
+}
