@@ -21,8 +21,10 @@ class HomeController extends AbstractController
     public function index()
     {
         $selfListings = $this->listingService->getSelfListingsForHomepage();
+        $featuredProperties = $this->listingService->getFeaturedProperties();
         return $this->render('default/index.html.twig', [
             'selfListings' => $selfListings,
+            'featuredProperties' => $featuredProperties,
         ]);
     }
 }
