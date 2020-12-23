@@ -1,4 +1,3 @@
-'use strict'
 jQuery(function($) {
     
     window.form_adjuster = {

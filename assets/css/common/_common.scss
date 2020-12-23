@@ -9,6 +9,22 @@ span {
     display: block;
 }
 
+.at-resp-share-element {
+    .at-share-btn-elements {
+        position: relative;
+        margin-top: -5px;
+        
+        .at-share-btn {
+            margin: 5px 10px 0 0;
+        }
+        
+        .at-label {
+            display: inline;
+        }
+    }
+}
+
+
 ._ta-center {
     text-align: center;
 }
@@ -87,4 +103,10 @@ span {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+}
+
+.lc-cm {
+    &:last-child {
+        margin-bottom: 0;
+    }
 }

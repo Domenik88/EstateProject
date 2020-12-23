@@ -12,14 +12,7 @@
 		
 		&_left {
 			width: calc(100% / 12 * 8 - 10px);
-			
-			& > section:not(.mortgage-calculator) {
-				padding-right: 40px;
-				
-				&:last-child {
-					margin-bottom: 0;
-				}
-			}
+			padding-right: 40px;
 		}
 		
 		&_right {

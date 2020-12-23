@@ -1,4 +1,3 @@
-'use strict'
 jQuery(function($){
     const popup = {
         init() {
