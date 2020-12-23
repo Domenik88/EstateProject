@@ -22,8 +22,10 @@ class HomeController extends AbstractController
     {
         $selfListings = $this->listingService->getSelfListingsForHomepage();
         $cityCounters = $this->listingService->getCitiesCounters();
+        $featuredProperties = $this->listingService->getFeaturedProperties();
         return $this->render('default/index.html.twig', [
             'selfListings' => $selfListings,
+            'featuredProperties' => $featuredProperties,
             'cityCounters' => $cityCounters,
             'landingPageRouteName' => '',
         ]);

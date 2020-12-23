@@ -24,8 +24,7 @@ class ListingSearchDataService
     public function constructSearchListingData(Listing $listing): object
     {
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
-        $listingContractDate = array_key_exists('ListingContractDate', $listing->getRawData()) ? $listing->getRawData()[ 'ListingContractDate' ] : null;
-        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listingContractDate);
+        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
             'mlsNumber'        => $listing->getMlsNum(),
             'listingId'        => $listing->getFeedListingID(),
@@ -41,11 +40,12 @@ class ListingSearchDataService
             'financials'       => $this->getListingFinancialsObject($listing),
             'listingAgent'     => $this->getListingAgentObject($listing),
             'agent'            => $this->getAgentObject(),
-            'isNew'            => $daysOnTheMarket <= 3,
+            'isNew'            => !is_null($daysOnTheMarket) ? $daysOnTheMarket <= 3 : false,
             'listingSeo'       => $this->getListingSeoObject($listing),
             'status'           => $listing->getStatus(),
             'processingStatus' => $listing->getProcessingStatus(),
             'selfListing'      => $listing->getSelfListing(),
+            'contractDate'     => $listing->getContractDate(),
         ];
         return $listingObject;
     }
@@ -60,7 +60,11 @@ class ListingSearchDataService
 
     private function getListingDaysOnTheMarket($listingContractDate): ?int
     {
-        return date_diff(new DateTime(), new DateTime($listingContractDate))->days;
+        if (!is_null($listingContractDate)) {
+            return date_diff(new DateTime(), $listingContractDate)->days;
+        } else {
+            return null;
+        }
     }
 
     private function getListingAddressObject(Listing $listing): object
@@ -149,7 +153,7 @@ class ListingSearchDataService
             'YearBuilt'                              => $listing->getYearBuilt(),
             'MLS'                                    => $listing->getMlsNum(),
             'City'                                   => $listing->getCity(),
-            'DayOnMarket'                            => $this->getListingDaysOnTheMarket(array_key_exists('ListingContractDate', $listing->getRawData()) ? $listing->getRawData()[ 'ListingContractDate' ] : null),
+            'DayOnMarket'                            => $this->getListingDaysOnTheMarket($listing->getContractDate()),
             'LblPrice'                               => '',
             'MedianListCityPrice'                    => '',
             'MedianCityPriceStatus'                  => '',
