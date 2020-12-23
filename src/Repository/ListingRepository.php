@@ -133,7 +133,7 @@ class ListingRepository extends ServiceEntityRepository
     public function getCounters(array $cities, string $stateOrProvince, string $feedId): ?array
     {
         return $this->createQueryBuilder('l')
-            ->select('l.city, COUNT(l.mlsNum) as counter')
+            ->select('l.city, COUNT(l) as counter')
             ->where("l.city IN (:sities)")
             ->andWhere('l.deletedDate IS NULL')
             ->andWhere('l.stateOrProvince = :stateOrProvince')
