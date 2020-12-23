@@ -21,7 +21,6 @@ final class Version20201221212931 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE listing ADD contract_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
-        $this->addSql('ALTER TABLE listing ALTER self_listing DROP DEFAULT');
     }
 
     public function down(Schema $schema) : void
@@ -29,6 +28,5 @@ final class Version20201221212931 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE listing DROP contract_date');
-        $this->addSql('ALTER TABLE listing ALTER self_listing SET DEFAULT \'false\'');
     }
 }
