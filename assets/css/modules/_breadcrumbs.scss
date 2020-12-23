@@ -2,27 +2,27 @@
     a, span {
         display: inline;
         position: relative;
+        @extend .tiny-text;
     }
     
     a {
-        margin-right: 20px;
+        position: relative;
+        margin-right: 43px;
+        @extend .icon-angle-right-thin;
+        @extend .link-light-gray;
         
-        &:last-child {
-            margin-right: 0;
-        }
-        
-        &::after {
-            content: '•';
-            @include absolute(auto, auto, 0.05em, calc(100% + 10px));
+        &::before {
+            font-family: $icomoon;
+            @include absolute(auto, auto, 0.45em, calc(100% + 20px));
             display: block;
-            color: $white;
+            color: $dark1;
             pointer-events: none;
+            font-size: 6px;
             line-height: 1;
         }
-        
-        &:hover {
-        
-        }
-        
+    }
+    
+    span {
+        color: $dark1;
     }
 }

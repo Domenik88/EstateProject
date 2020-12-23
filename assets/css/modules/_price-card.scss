@@ -23,6 +23,10 @@
 	
 	&__mortgage {
 		color: $gray1;
+		
+		span {
+			display: inline;
+		}
 	}
 	
 	&__arrow {

@@ -60,12 +60,12 @@
 		transition: $default-transition;
 		cursor: pointer;
 		
-		&:hover,
+		&:hover {
+			color: $gray0;
+		}
+
 		&._active {
 			color: $dark1;
-		}
-		
-		&._active {
 			border-color: $dark1;
 		}
 	}

@@ -7,11 +7,11 @@
 .simplebar-track {
 	&.simplebar-vertical {
 		height: 100%;
-		background: #eee;
+		background: transparent;
 		top: 0;
-		right: 8px;
+		right: 10px;
 		margin: auto;
-		width: 4px;
+		width: 3px;
 		
 		.simplebar-visible {
 			&:before {
@@ -21,8 +21,8 @@
 				bottom: 0;
 				left: 0;
 				right: 0;
-				border-radius: 0;
-				background: green;
+				background: $gray5;
+				border-radius: 3px;
 			}
 		}
 	}

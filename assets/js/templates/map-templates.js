@@ -40,13 +40,13 @@ export const mapTemplates = {
         url,
     }) => `
         <div class="yelp-marker-popup-inner">
-            <div class="yelp-marker-popup-inner__img-wrap ${!image_url && 'default-img-bg-small'}">
+            <a class="yelp-marker-popup-inner__img-wrap ${!image_url && 'default-img-bg-small'}" href="${url}" target="_blank">
                 ${image_url && `<img src=${image_url} alt="#" class="of"/>`}
-            </div>
+            </a>
             
             <div class="yelp-marker-popup-inner__info">
                 <div class="yelp-marker-popup-inner__description">
-                    <span class="yelp-marker-popup-inner__title h6">${name}</span>
+                    <a class="yelp-marker-popup-inner__title link-dark h6" href="${url}" target="_blank">${name}</a>
                     <span class="yelp-marker-popup-inner__categories tiny-text">${categoriesTitles}</span>
                 </div>
                 
@@ -71,11 +71,11 @@ export const mapTemplates = {
         url,
     }) => `
         <div class="yelp-card">
-            <div class="yelp-card__img-wrap mb10 ${!image_url && 'default-img-bg-small'}">
+            <a class="yelp-card__img-wrap mb10 ${!image_url && 'default-img-bg-small'}" href="${url}" target="_blank">
                 ${image_url && `<img src=${image_url} alt="#" class="of"/>`}
-            </div>
+            </a>
             
-            <span class="yelp-card__title h6 mb5">${name}</span>
+            <a class="yelp-card__title link-dark h6 mb5" href="${url}" target="_blank">${name}</a>
             <span class="yelp-card__categories mb5 tiny-text">${categoriesTitles}</span>
             <a class="yelp-logo" href="${url}" target="_blank"></a>
         </div>

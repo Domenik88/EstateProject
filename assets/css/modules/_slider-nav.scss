@@ -24,6 +24,10 @@
 		background: $white;
 		transition: $default-transition;
 		
+		&:hover {
+			background: $gray4;
+		}
+		
 		&::before {
 			font-size: 12px;
 			transition: $default-transition;

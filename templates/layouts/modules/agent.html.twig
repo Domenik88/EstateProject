@@ -12,7 +12,7 @@
                 <div class="agent__agency tiny-text">{{ agencyName }}</div>
 
                 {% if simple|default(false) %}
-                    <a class="agent__phone body-text2 mt10" href="tel:{{ agentPhone }}">{{ agentPhone }}</a>
+                    <a class="agent__phone link-white-fuchsia body-text2 mt10" href="tel:{{ agentPhone }}">{{ agentPhone }}</a>
                 {% endif %}
             </div>
         </div>
@@ -26,7 +26,7 @@
 
         {% if not simple|default(false) %}
             <div class="agent__phone-wrap mb10">
-                <a class="agent__phone agent__phone_highlight body-text" href="tel:{{ agentPhone }}">{{ agentPhone }}</a>
+                <a class="agent__phone link-fuchsia body-text" href="tel:{{ agentPhone }}">{{ agentPhone }}</a>
                 <div class="agent__phone-label small-text">{{ 'Call or Text Now!' }}</div>
             </div>
 

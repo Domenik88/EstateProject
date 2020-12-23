@@ -44,6 +44,11 @@
 	overflow: hidden;
 	box-sizing: border-box;
 	z-index: 5;
+	transition: $default-transition;
+	
+	&:hover {
+		background: $fuchsia-hover;
+	}
 	
 	&::before {
 		display: block;
@@ -56,17 +61,35 @@
 		position: relative;
 		z-index: 2;
 	}
+	
+	&._turquoise {
+		background: $turquoise;
+		
+		&:hover {
+			background: $blue;
+		}
+	}
 
 	&._bordered {
 		color: $dark1;
 		border: 2px solid $fuchsia;
 		background: transparent;
+		
+		&:hover {
+			background: $fuchsia-hover;
+			border-color: $fuchsia-hover;
+			color: $white;
+		}
 	}
 
 	&._bordered-gray {
 		color: $dark1;
 		border: 1px solid $gray-line;
 		background: transparent;
+		
+		&:hover {
+			background: $gray4;
+		}
 	}
 	
 	&._small {
@@ -144,9 +167,14 @@
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
+	transition: $default-transition;
 
 	&::before {
 		font-size: 12px;
+	}
+	
+	&:hover {
+		background: $fuchsia-hover;
 	}
 
 	&._big {
@@ -178,6 +206,12 @@
 	display: inline-flex;
 	align-items: flex-start;
 	justify-content: space-between;
+	
+	&:hover {
+		#{$r}__indicator {
+			background: $gray4;
+		}
+	}
 	
 	&__input {
 		@include absolute;
@@ -269,6 +303,7 @@
 
 .circle-button {
 	$r: &;
+	position: relative;
 	width: 33px;
 	height: 33px;
 	border-radius: 50%;
@@ -276,15 +311,34 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background: $white;
-	border: 1px solid $gray-line;
 	pointer-events: auto;
 	cursor: pointer;
+	transition: $default-transition;
+	
+	&:hover {
+		&::after {
+			background: $gray4;
+		}
+	}
 	
 	&::before {
+		position: relative;
 		font-size: 9px;
 		color: $dark1;
 		display: block;
+		z-index: 2;
+		transition: $default-transition;
+	}
+	
+	&::after {
+		content: '';
+		@include absolute;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		box-sizing: border-box;
+		background: $white;
+		z-index: 1;
 		transition: $default-transition;
 	}
 	
@@ -292,33 +346,13 @@
 		pointer-events: none;
 		
 		&::before {
-			opacity: 0.3;
+			opacity: .3;
 		}
 	}
 	
-	&._transparent {
-		border: none;
-		background: rgba(255,255,255,.5);
-	}
-	
-	&._transparent-bordered {
-		width: 31px;
-		height: 31px;
-		background: rgba(255,255,255,.5);
-		box-shadow: 0 0 0 1px rgba(225,230,231,.5);
-		border: none;
-		transition: $default-transition;
-		
-		&::before {
-			transition: none;
-		}
-		
-		&.slick-disabled {
-			opacity: 0.3;
-			
-			&::before {
-				opacity: 1;
-			}
+	&._bordered {
+		&::after {
+			border: 1px solid $gray-line;
 		}
 	}
 	

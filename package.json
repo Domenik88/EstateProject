@@ -2,6 +2,7 @@
     "dependencies": {
         "@carto/carto.js": "^4.2.1",
         "admin-lte": "^3.0.5",
+        "chartist": "^0.11.4",
         "jquery": "^3.5.1",
         "jquery-lazy": "^1.7.11",
         "leaflet": "^1.7.1",

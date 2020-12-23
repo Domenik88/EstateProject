@@ -1,0 +1,217 @@
+.mortgage-calculator {
+	&__table {
+		position: relative;
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+		
+		&::before {
+			content: '';
+			@include absolute;
+			width: 100%;
+			height: 100%;
+			border: 1px solid $gray-line;
+			box-sizing: border-box;
+			border-radius: 20px;
+			z-index: 1;
+		}
+	}
+	
+	&__bottom {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	
+	&__label {
+		margin-left: 10px;
+	}
+	
+	&__col {
+		position: relative;
+		display: flex;
+		align-items: stretch;
+		justify-content: center;
+		z-index: 2;
+		
+		&_left {
+			width: calc(100% / 7.5 * 4);
+		}
+		
+		&_right {
+			width: calc(100% / 7.5 * 3.5);
+		}
+	}
+}
+
+.mortgage-calc-form {
+	width: 100%;
+	padding-left: 30px;
+	padding-right: 30px;
+	
+	&__row {
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	
+	&__flex-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	
+	&__label {
+		color: $gray0;
+		padding-right: 20px;
+	}
+	
+	&__input-wrap {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		
+		.select-module {
+			width: 190px;
+		}
+		
+		.input-style {
+			&:nth-child(1) {
+				width: 140px;
+			}
+			
+			&:nth-child(2) {
+				width: 60px;
+				
+				.input-style__input {
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+			}
+		}
+	}
+}
+
+.mortgage-calc-result {
+	$r: &;
+	background: $gray4;
+	border-radius: 20px;
+	width: 100%;
+	padding-left: 30px;
+	padding-right: 30px;
+	
+	.ct-series-a {
+		fill: $blue;
+	}
+	
+	.ct-series-b {
+		fill: $blue2;
+	}
+	
+	.ct-series-c {
+		fill: $pink-pdra;
+	}
+	
+	.ct-series-d {
+		fill: $pink;
+	}
+	
+	.ct-series-e {
+		fill: $pink-red;
+	}
+	
+	&__chart-wrap {
+		position: relative;
+		width: 100%;
+		max-width: 260px;
+		margin-left: auto;
+		margin-right: auto;
+		@include rh;
+		
+		.ct-chart {
+			@include absolute(-2%, auto, auto, -2%);
+			width: 104%;
+			height: 104%;
+			
+			
+			svg {
+				display: block;
+				//width: 100% !important;
+				//height: auto !important;
+			}
+		}
+	}
+	
+	&__total-container {
+		padding: 40px;
+		box-sizing: border-box;
+		@include absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	&__list {
+	
+	}
+	
+	&__row {
+		@extend .lc-cm;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		
+		&::before {
+			content: '';
+			position: relative;
+			display: block;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			margin-right: 15px;
+			flex: 0 0 auto;
+		}
+		
+		&._ct-a {
+			&::before {
+				background: $blue;
+			}
+		}
+		
+		&._ct-b {
+			&::before {
+				background: $blue2;
+			}
+		}
+		
+		&._ct-c {
+			&::before {
+				background: $pink-pdra;
+			}
+		}
+		
+		&._ct-d {
+			&::before {
+				background: $pink;
+			}
+		}
+		
+		&._ct-e {
+			&::before {
+				background: $pink-red;
+			}
+		}
+	}
+	
+	&__label {
+		margin-right: auto;
+		padding-right: 10px;
+	}
+	
+	&__val {
+		color: $dark1;
+	}
+}
