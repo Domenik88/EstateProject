@@ -4,7 +4,11 @@ namespace App\Controller;
 
 use App\Service\Listing\ListingService;
 use App\Service\Listing\ListingSimilarSearch;
+use App\Service\Viewing\ViewingRequestData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ListingController extends AbstractController
@@ -19,11 +23,11 @@ class ListingController extends AbstractController
     }
 
     /**
-     * @Route("/listing/{province}/{listingId}-{feedName}", name="listing")
+     * @Route("/listing/{province}/{mlsNum}-{feedName}", name="listing")
      */
-    public function index(string $province, string $listingId, string $feedName)
+    public function index(string $province, string $mlsNum, string $feedName)
     {
-        $listingData = $this->listingService->getListingData($province,$listingId,$feedName);
+        $listingData = $this->listingService->getListingData($province,$mlsNum,$feedName);
         $similarListings = $this->listingSimilarSearch->getSimilarListingsData($listingData);
         return $this->render('listing/index.html.twig', [
             'controller_name' => 'ListingController',
@@ -31,4 +35,17 @@ class ListingController extends AbstractController
             'similarListings' => $similarListings,
         ]);
     }
+
+    /**
+     * @Route("/addToFavorites/{mlsNum}-{feedName}", name="add_to_favorites", methods={"POST"})
+     */
+    public function favorite(Request $request, string $mlsNum, string $feedName): Response
+    {
+        if ( !$request->isXmlHttpRequest() ) {
+            throw new NotFoundHttpException();
+        }
+        $response = $this->listingService->toggleFavoriteListing($mlsNum,$feedName);
+        return $this->json($response);
+    }
+
 }

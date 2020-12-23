@@ -21,6 +21,7 @@ var $_ = {
         this.initSlideMenu();
         this.initFormatInput();
         this.initPrintListing();
+        this.initAddToFavorites();
     },
     
     initCache() {
@@ -68,6 +69,7 @@ var $_ = {
         this.$slideMenuButton = $('.js-slide-menu-button');
 
         this.$printListing = $('.js-print-listing');
+        this.$addToFavorites = $('.js-favorite-listing');
 
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
@@ -113,6 +115,23 @@ var $_ = {
         window.onafterprint = () => {
             $_.$body.removeClass('_print');
         };
+    },
+
+    initAddToFavorites() {
+        $_.$addToFavorites.on('click', (e) => {
+            e.preventDefault();
+            const
+                $currentTarget = $(e.currentTarget),
+                dataUrl = $currentTarget.data('url'),
+                requestParameters = {
+                    url: dataUrl,
+                    type: 'POST',
+                    dataType: 'json',
+                };
+            $.ajax(requestParameters).done(() => {
+                $currentTarget.toggleClass('active');
+            })
+        });
     },
 
     initFormatInput() {

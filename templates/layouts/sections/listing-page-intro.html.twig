@@ -32,7 +32,6 @@
                 } only %}
             </div>
         </div>
-
         <div class="listing-page-intro__row mb20">
             <div class="listing-page-intro__controls-wrap">
                 {% include 'layouts/modules/metrics.html.twig' with {
@@ -40,11 +39,13 @@
                 } only %}
             </div>
             <div class="listing-page-intro__controls-wrap">
+                {% set favoritePath = path('add_to_favorites', {mlsNum: listing.mlsNumber, feedName: 'ddf'}) %}
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
                             label: 'label',
-                            mod: 'icon-heart-frame',
+                            url: favoritePath,
+                            mod: 'icon-heart-frame js-favorite-listing',
                             href: '#'
                         },
                         {
