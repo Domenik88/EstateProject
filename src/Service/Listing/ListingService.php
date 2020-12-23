@@ -308,6 +308,18 @@ class ListingService
         return $listingList;
     }
 
+    public function getCitiesCounters(): ?array
+    {
+        $cityes = ['Vancouver','North Vancouver','Burnaby','Coquitlam','Surrey','Richmond','West Vancouver','Langley','Maple Ridge','Pitt Meadows','Mission','Abbotsford','Chilliwack','Pitt Meadows','Mission'];
+        $result = $this->listingRepository->getCounters($cityes, 'British Columbia', 'ddf');
+        $cityCounters = [];
+        foreach ( $result as $item ) {
+            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia');
+        }
+
+        return $cityCounters;
+    }
+
     public function getFeaturedProperties()
     {
         $results = $this->listingRepository->getListingsByCriteria(new ListingCriteria('ddf',[ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ]));
@@ -318,4 +330,5 @@ class ListingService
 
         return $featuredProperties;
     }
+
 }

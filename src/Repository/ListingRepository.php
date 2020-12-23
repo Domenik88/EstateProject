@@ -130,6 +130,25 @@ class ListingRepository extends ServiceEntityRepository
         }
     }
 
+    public function getCounters(array $cities, string $stateOrProvince, string $feedId): ?array
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.city, COUNT(l) as counter')
+            ->where("l.city IN (:sities)")
+            ->andWhere('l.deletedDate IS NULL')
+            ->andWhere('l.stateOrProvince = :stateOrProvince')
+            ->andWhere("l.status IN (:statuses)")
+            ->andWhere('l.feedID = :feedID')
+            ->groupBy('l.city')
+            ->setParameter('sities', $cities)
+            ->setParameter('stateOrProvince', $stateOrProvince)
+            ->setParameter('statuses', [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ])
+            ->setParameter('feedID', $feedId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function getListingsByCriteria(ListingCriteria $criteria, int $page = 1, int $pageSize = 50)
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
@@ -141,7 +160,7 @@ class ListingRepository extends ServiceEntityRepository
                 ORDER BY l.contract_date DESC NULLS LAST 
                 LIMIT :limit 
                 OFFSET :offset",
-        $rsm);
+            $rsm);
         $query->setParameter('feedId', $criteria->feedId);
         $query->setParameter('statuses', $criteria->statuses);
         $query->setParameter('limit', $pageSize);
