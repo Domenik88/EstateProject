@@ -1,8 +1,13 @@
-{% set wrap_mod = wrapMod|default(false) ? ' ' ~ wrapMod : '' %}
-{% set input_mod = inputMod|default(false) ? ' ' ~ inputMod : '' %}
+{% set dataFormatProps = dataFormatProps|default(false) ? "data-format-props=" ~ dataFormatProps|json_encode() %}
 
-<div class="input-style{{ wrap_mod }}">
+<div class="input-style {{ wrapMod|default('') }}">
     <div class="input-style__container">
-        <input class="input-style__input{{ input_mod }}" type="text" name="{{ name }}" placeholder="{{ placeholder }}" value="" />
+        <input
+            class="input-style__input {{ inputMod|default('') }}"
+            type="text" name="{{ name }}"
+            placeholder="{{ placeholder }}"
+            value="{{ value|default('') }}"
+            {{ dataFormatProps }}
+        />
     </div>
 </div>

@@ -43,12 +43,11 @@
 	}
 	
 	&__phone {
-		color: $white;
 		display: inline-block;
+		margin-right: 10px;
 		
-		&_highlight {
-			color: $fuchsia;
-			margin-right: 10px;
+		&:last-child {
+			margin-right: 0;
 		}
 	}
 	

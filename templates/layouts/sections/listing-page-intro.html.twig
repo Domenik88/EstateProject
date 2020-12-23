@@ -58,9 +58,8 @@
                             href: '#'
                         },
                         {
-                            label: 'label',
-                            mod: 'icon-print-frame',
-                            href: '#'
+                            label: 'Print',
+                            mod: 'icon-print-frame js-print-listing',
                         }
                     ],
                 } only %}
@@ -75,22 +74,7 @@
 
         <div class="listing-page-intro__row">
             <div class="listing-page-intro__controls-wrap">
-                <div class="buttons-row mtr10">
-                    <div class="buttons-row__item mt10">
-                        {% include 'layouts/controls/button.html.twig' with {
-                            'href': '#',
-                            'mod': '_small icon-facebook',
-                            'text': 'Share',
-                        } only %}
-                    </div>
-                    <div class="buttons-row__item mt10">
-                        {% include 'layouts/controls/button.html.twig' with {
-                            'href': '#',
-                            'mod': '_small icon-twitter',
-                            'text': 'Tweet',
-                        } only %}
-                    </div>
-                </div>
+                <div class="addthis_inline_share_toolbox"></div>
             </div>
             <div class="listing-page-intro__controls-wrap">
                 {% include 'layouts/modules/controls-bar.html.twig' with {
