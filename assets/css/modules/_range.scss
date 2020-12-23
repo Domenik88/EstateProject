@@ -1,0 +1,62 @@
+.range {
+	&.ui-widget-content {
+		position: relative;
+		border: none;
+		height: 4px;
+		background-color: $gray5;
+		background-image: none;
+		border-radius: 5px;
+	}
+	
+	.ui-slider-range {
+		@include absolute(0,auto,auto);
+		height: 100%;
+		width: auto;
+		background: $turquoise;
+		border-radius: inherit;
+	}
+	
+	.ui-slider-handle {
+		outline: none;
+		cursor: pointer;
+		box-sizing: border-box;
+		width: 20px;
+		height: 20px;
+		z-index: 5;
+		top: 50%;
+		transform: translateY(-50%);
+		background: transparent;
+		margin-left: -10px;
+		position: relative;
+		background: $white;
+		border: 1px solid $gray5;
+		border-radius: 50%;
+		transition: background .3s ease;
+		
+		&::before {
+			content: '';
+			@include absolute;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: $turquoise;
+			transition: background .3s ease;
+		}
+		
+		&:hover {
+			background: $gray2;
+		}
+		
+		&:active {
+			background: $turquoise;
+			
+			&::before {
+				background: $white;
+			}
+		}
+		
+		&._up {
+			z-index: 10;
+		}
+	}
+}

@@ -120,12 +120,12 @@
     text-transform: uppercase;
 }
 
-.link-style {
-    color: green;
+.link-dark {
+    color: $dark1;
     transition: $default-transition;
 
     &:hover {
-        color: red;
+        color: $turquoise;
     }
 }
 
@@ -134,7 +134,25 @@
     transition: $default-transition;
 
     &:hover {
-        color: red;
+        color: $blue;
+    }
+}
+
+.link-purple-lb {
+    color: $turquoise;
+    transition: $default-transition;
+
+    &:hover {
+        color: $blue2;
+    }
+}
+
+.link-white-fuchsia {
+    color: $white;
+    transition: $default-transition;
+    
+    &:hover {
+        color: $fuchsia-hover;
     }
 }
 
@@ -143,12 +161,35 @@
     transition: $default-transition;
 
     &:hover {
-        color: red;
+        color: $fuchsia-hover;
+    }
+}
+
+.link-turquoise {
+    color: $turquoise;
+    transition: $default-transition;
+
+    &:hover {
+        color: $blue;
+    }
+}
+
+.link-light-gray {
+    color: $gray1;
+    transition: $default-transition;
+    
+    &:hover,
+    &._current {
+        color: $dark1;
+    }
+    
+    &._current {
+        font-weight: 700;
     }
 }
 
 .link-gray {
-    color: $gray1;
+    color: $gray0;
     transition: $default-transition;
     
     &:hover,

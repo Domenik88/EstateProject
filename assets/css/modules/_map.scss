@@ -304,58 +304,85 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center bottom;
-        
-        &.arts {
-            background-image: url(../../images/map/yelp/arts.svg);
+    
+        &::after,
+        &::before {
+            @include absolute;
+            font-size: 49px;
+            line-height: 1;
+            font-weight: 100;
+            letter-spacing: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
         }
         
-        &.bicycles {
-            background-image: url(../../images/map/yelp/bicycles.svg);
+        &::after {
+            content: "\e931";
+            font-family: $icomoon;
+            transition: color .3s ease;
+            z-index: 1;
         }
         
-        &.cafes {
-            background-image: url(../../images/map/yelp/cafes.svg);
+        &::before {
+            color: $white;
+            z-index: 2;
+        }
+    
+        &.icon-bicycles,
+        &.icon-driving,
+        &.icon-transit,
+        &.icon-walking {
+            color: #757AFF;
         }
         
-        &.driving {
-            background-image: url(../../images/map/yelp/driving.svg);
+        &.icon-arts {
+            color: #4AB2D8;
         }
         
-        &.education {
-            background-image: url(../../images/map/yelp/education.svg);
+        &.icon-cafes {
+            color: #9B441F;
         }
         
-        &.fitness {
-            background-image: url(../../images/map/yelp/fitness.svg);
+        &.icon-education {
+            color: #E8D000;
         }
         
-        &.groceries {
-            background-image: url(../../images/map/yelp/groceries.svg);
+        &.icon-fitness {
+            color: #374246;
         }
         
-        &.nightlife {
-            background-image: url(../../images/map/yelp/nightlife.svg);
+        &.icon-groceries {
+            color: #90BF0B;
         }
         
-        &.restaurants {
-            background-image: url(../../images/map/yelp/restaurants.svg);
+        &.icon-nightlife {
+            color: #3ACAC1;
         }
         
-        &.shopping {
-            background-image: url(../../images/map/yelp/shopping.svg);
+        &.icon-restaurants {
+            color: #F15A7F;
         }
         
-        &.transit {
-            background-image: url(../../images/map/yelp/transit.svg);
+        &.icon-shopping {
+            color: #633ABA;
         }
         
-        &.walking {
-            background-image: url(../../images/map/yelp/walking.svg);
+        &.icon-realestate {
+            color: #448114;
         }
     }
     
-    &:hover {
+    &:hover,
+    &._active {
         z-index: 9999 !important;
+        
+        .yelp-marker-inner:not(.icon-realestate) {
+            &::after {
+                color: $dark1;
+            }
+        }
     }
 }
 
@@ -374,6 +401,7 @@
     padding: 10px;
     
     &__img-wrap {
+        display: block;
         position: relative;
         width: 60px;
         height: 60px;
@@ -499,6 +527,7 @@
 
 .yelp-card {
     &__img-wrap {
+        display: block;
         position: relative;
         @include rh;
         width: 100%;
