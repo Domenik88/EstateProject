@@ -1,0 +1,25 @@
+.listing-gallery {
+	&__list {
+		position: relative;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		width: calc(100% + 20px);
+		left: -10px;
+	}
+	
+	&__item {
+		position: relative;
+		height: 430px;
+		width: calc(50% - 20px);
+		margin: 0 10px 20px;
+		
+		&:nth-child(5n - 4) {
+			width: 20%;
+		}
+		&:nth-child(5n - 2) {
+			width: 20%;
+		}
+	}
+}

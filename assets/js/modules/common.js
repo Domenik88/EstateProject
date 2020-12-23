@@ -21,6 +21,7 @@ var $_ = {
         this.initSlideMenu();
         this.initFormatInput();
         this.initPrintListing();
+        this.initContentTabs();
     },
     
     initCache() {
@@ -61,6 +62,9 @@ var $_ = {
 
         this.$formatInput = $('.js-format-input');
 
+        this.$contentTab = $('.js-content-tab');
+        this.$contentTabNav = $('.js-content-tab-nav');
+
 
         this.$slideMenu = $('.js-slide-menu');
         this.$slideMenuItem = $('.js-slide-menu-item');
@@ -68,6 +72,8 @@ var $_ = {
         this.$slideMenuButton = $('.js-slide-menu-button');
 
         this.$printListing = $('.js-print-listing');
+        this.$listingPrintPopup = $('.js-listing-print-popup');
+        this.$dataContent = $('.js-data-content');
 
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
@@ -99,11 +105,44 @@ var $_ = {
         is_touch_device();
     },
 
+    initContentTabs() {
+        $_.$contentTabNav.on('click', (e) => {
+            console.log('click');
+
+            const
+                $currentLink = $(e.currentTarget),
+                dataContentId = $currentLink.data('content-id'),
+                $wrap = $currentLink.closest($_.$jsWrap),
+                $siblingNav = $wrap.find($_.$contentTabNav),
+                $relatedTab = $wrap.find($_.$contentTab).filter(`[data-content-id="${dataContentId}"]`);
+            
+            $siblingNav.removeClass('_active');
+            $currentLink.addClass('_active');
+            $relatedTab.addClass('_active').siblings().removeClass('_active');
+        });
+    },
+
     initPrintListing() {
         if (!$_.$printListing.length) return false;
 
+        let firstLoad = true;
+
         $_.$printListing.on('click', () => {
-            window.print();
+            const $map = $('#listing-print-map');
+
+            if (firstLoad) {
+                firstLoad = false;
+
+                $map.on('trigger:open-street-map-lite-loaded', () => {
+                    setTimeout(() => {
+                        window.print();
+                    }, 1000);
+                });
+            } else {
+                window.print();
+            }
+
+            pasteContent();
         });
 
         window.onbeforeprint = () => {
@@ -113,6 +152,22 @@ var $_ = {
         window.onafterprint = () => {
             $_.$body.removeClass('_print');
         };
+
+        function pasteContent() {
+            const $dataContentItems = $_.$listingPrintPopup.find($_.$dataContent);
+
+            $dataContentItems.each((key, item) => {
+                const
+                    $currentItem = $(item),
+                    dataContent = $currentItem.data('content'),
+                    dataSrc = $currentItem.data('src');
+
+                if (typeof dataContent !== "undefined") $currentItem.html(dataContent);
+                if (typeof dataSrc !== "undefined") $currentItem.attr('src', dataSrc);
+            });
+
+            $_.$body.trigger('trigger:init-map', '#listing-print-map');
+        }
     },
 
     initFormatInput() {

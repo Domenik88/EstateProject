@@ -297,9 +297,10 @@
 
 .yelp-marker-icon {
     .yelp-marker-inner {
+        position: relative;
+        display: block;
         width: 100%;
         height: 100%;
-        border-radius: 50%;
         box-sizing: content-box;
         background-size: contain;
         background-repeat: no-repeat;
@@ -317,14 +318,14 @@
             align-items: center;
             justify-content: flex-end;
         }
-        
+
         &::after {
             content: "\e931";
             font-family: $icomoon;
             transition: color .3s ease;
             z-index: 1;
         }
-        
+
         &::before {
             color: $white;
             z-index: 2;
@@ -371,6 +372,10 @@
         
         &.icon-realestate {
             color: #448114;
+    
+            @media print {
+                color: $black;
+            }
         }
     }
     

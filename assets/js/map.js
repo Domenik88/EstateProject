@@ -99,21 +99,33 @@ class EstateMap {
 
     initMap() {
         const
-            { center, zoom=13, minZoom=10, initialMarker } = this.dataParams,
+            { center, zoom=13, minZoom=10, initialMarker, disableControls=false } = this.dataParams,
 
             OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                tileloadstart: () => {
+                    alert(1)
+                }
+
             }),
 
             Here = L.tileLayer('https://2.aerial.maps.ls.hereapi.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/512/png8?apiKey={accessToken}', {
                 attribution: '&copy; HERE 2019',
-                accessToken: 'r8YkmrDOzfX6spDJx1q3azz9rMoIn7zTSNdWIInUzbM'
+                accessToken: 'r8YkmrDOzfX6spDJx1q3azz9rMoIn7zTSNdWIInUzbM',
             }),
 
             baseMaps = {
                 "Streets": OpenStreetMap,
                 "Satellite": Here,
             };
+
+        OpenStreetMap.on('load', () => {
+            this.$map.trigger('trigger:open-street-map-lite-loaded');
+        });
+
+        Here.on('load', () => {
+            this.$map.trigger('trigger:here-lite-loaded');
+        });
 
         this.map = L.map(this.$map[0], {
             zoom: zoom,
@@ -139,13 +151,15 @@ class EstateMap {
             ).addTo(this.map);
         }
 
-        L.control.layers(baseMaps, null, {
-            position: 'bottomright'
-        }).addTo(this.map);
+        if (!disableControls) {
+            L.control.layers(baseMaps, null, {
+                position: 'bottomright'
+            }).addTo(this.map);
 
-        L.control.zoom({
-            position: 'bottomright'
-        }).addTo(this.map);
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(this.map);
+        }
 
         this.$map.addClass('map-initialized')
     }
@@ -688,7 +702,6 @@ class EstateMap {
         if (cardsPreloader) this.$estateCardsWrap.addClass('_loading');
 
         $.ajax(requestParameters).done((data) => {
-            console.log(data);
             this._parseMarkersData(data);
         })
             .fail((err) => {

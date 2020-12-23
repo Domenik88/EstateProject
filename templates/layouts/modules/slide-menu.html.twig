@@ -1,31 +1,31 @@
 {% set defaultSlideMenuList = [
     {
         text: 'Highlights',
-        val: 'all'
+        dataVal: 'all'
     },
     {
         text: 'Restaurants',
-        val: 'restaurants'
+        dataVal: 'restaurants'
     },
     {
         text: 'Groceries',
-        val: 'groceries'
+        dataVal: 'groceries'
     },
     {
         text: 'Nightlife',
-        val: 'nightlife'
+        dataVal: 'nightlife'
     },
     {
         text: 'Cafes',
-        val: 'cafes'
+        dataVal: 'cafes'
     },
     {
         text: 'Shopping',
-        val: 'shopping'
+        dataVal: 'shopping'
     },
     {
         text: 'Arts & Entertainment',
-        val: 'arts'
+        dataVal: 'arts'
     },
 ] %}
 
@@ -33,10 +33,15 @@
     <div class="slide-menu__overflow-wrap">
         <div class="slide-menu__list js-slide-menu">
             {% for item in list|default(defaultSlideMenuList) %}
+                {% set slideMenuDataVal = item.dataVal|default(false) ? 'data-val=' ~ item.dataVal %}
+                {% set slideMenuDataContentId = item.contentId|default(false) ? 'data-content-id=' ~ item.contentId %}
+
                 <div class="slide-menu__item js-slide-menu-item">
                     <div
-                        class="slide-menu__link button1 js-yelp-nav-link {{ loop.index0 ?: '_active' }}"
-                        data-val="{{ item.val }}"
+                        class="slide-menu__link button1 {{ item.linkMod|default('') }}
+                        {{ firstActive|default(false) ? (loop.index0 ?: '_active') }}"
+                        {{ slideMenuDataVal }}
+                        {{ slideMenuDataContentId }}
                     >
                         {{ item.text }}
                     </div>

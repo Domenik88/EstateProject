@@ -10,7 +10,7 @@ window._formatInputVal = (obj) => {
 }
 
 window._formatCurrencyCa = (str) => {
-    return '$CA' + _formatCurrency(str);
+    return 'CA$' + _formatCurrency(str);
 }
 
 window._formatCurrency = (str) => {

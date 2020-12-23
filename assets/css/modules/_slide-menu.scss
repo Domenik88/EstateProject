@@ -51,6 +51,10 @@
 		display: block;
 		white-space: nowrap;
 		padding-right: 30px;
+		
+		&:last-child {
+			padding-right: 0;
+		}
 	}
 	
 	&__link {

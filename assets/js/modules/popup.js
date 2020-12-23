@@ -103,7 +103,7 @@ jQuery(function($){
         _clickHandler(e) {
             const
                 $btn = $(e.currentTarget),
-                { target, overlay_mod } = $btn.data('popup'),
+                { target, fire_click_selector, overlay_mod } = $btn.data('popup'),
                 $popup = $('.js-popup-' + target),
                 $recaptcha = $popup.find('.js-recaptcha');
 
@@ -116,6 +116,10 @@ jQuery(function($){
             if (overlay_mod) {
                 if (popup.overlayMods.indexOf(overlay_mod) === -1) popup.overlayMods.push(overlay_mod);
                 popup.$overlay.addClass(overlay_mod);
+            }
+
+            if (fire_click_selector) {
+                $popup.find(fire_click_selector).click();
             }
             
             $popup.add(popup.$overlay).addClass('_active');
