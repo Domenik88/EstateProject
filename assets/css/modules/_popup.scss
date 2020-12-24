@@ -42,7 +42,7 @@ $baseAnimationDuration: .7s;
 	transform: translateX(-105%);
 	display: flex;
 	justify-content: flex-start;
-	pointer-events: none;
+	//pointer-events: none;
 	align-items: center;
 	flex-direction: column;
 	box-sizing: border-box;
@@ -64,7 +64,7 @@ $baseAnimationDuration: .7s;
 	
 	&__container {
 		position: relative;
-		pointer-events: auto;
+		//pointer-events: auto;
 		box-sizing: border-box;
 		max-height: 100%;
 		padding: 60px 0 50px;
@@ -113,7 +113,10 @@ $baseAnimationDuration: .7s;
 		padding: 0;
 
 		#{$r}__container {
-			padding: 70px 100px;
+			@extend .pt70;
+			@extend .pb100;
+			padding-left: 100px;
+			padding-right: 100px;
 			height: 100%;
 			width: 100%;
 			max-width: 1920px;
@@ -126,7 +129,7 @@ $baseAnimationDuration: .7s;
 
 		#{$r}__scroll-wrap {
 			height: 100%;
-			max-height: 100%;
+			max-height: none;
 			padding: 0;
 
 			.simplebar-content {
@@ -207,4 +210,51 @@ $baseAnimationDuration: .7s;
 	width: 100%;
 	height: 500px;
 	@extend .responsive-slides;
+}
+
+
+.popup-map-container {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	
+	
+	&__nav-wrap {
+	
+	}
+	
+	&__content {
+		height: calc(100% - 70px);
+	}
+	
+	&__table {
+		position: relative;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		height: 100%;
+	}
+	
+	&__col {
+		position: relative;
+		height: 100%;
+		
+		&_left {
+			width: calc(100% / 12 * 9);
+			padding-right: 10px;
+		}
+		
+		&_right {
+			width: calc(100% / 12 * 3);
+			padding-left: 40px;
+		}
+	
+	}
+	
+	&__scroll-wrap {
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+		
+	}
 }

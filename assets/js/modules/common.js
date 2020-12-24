@@ -8,7 +8,8 @@ var $_ = {
         this.initForms();
         this.initScrollTopButton();
         this.initScrollEvents();
-        this.initCustomScrollbar();
+        this.initSimpleScrollbar();
+        this.initSmoothScrollbar();
         this.initNavLinks();
         this.initLazyLoad();
         this.initDefaultSlider();
@@ -64,7 +65,7 @@ var $_ = {
 
         this.$contentTab = $('.js-content-tab');
         this.$contentTabNav = $('.js-content-tab-nav');
-
+        this.$tabImg = $('.js-tab-img');
 
         this.$slideMenu = $('.js-slide-menu');
         this.$slideMenuItem = $('.js-slide-menu-item');
@@ -85,7 +86,8 @@ var $_ = {
         };
         
         this.selectors = {
-            scrollbar: '.js-custom-scrollbar',
+            simpleScrollbar: '.js-simple-scrollbar',
+            smoothScrollbar: '.js-smooth-scrollbar',
             lazyLoad: '.js-lazy',
         };
         
@@ -107,18 +109,27 @@ var $_ = {
 
     initContentTabs() {
         $_.$contentTabNav.on('click', (e) => {
-            console.log('click');
-
             const
                 $currentLink = $(e.currentTarget),
                 dataContentId = $currentLink.data('content-id'),
                 $wrap = $currentLink.closest($_.$jsWrap),
+                $tabImages = $wrap.find($_.$tabImg),
                 $siblingNav = $wrap.find($_.$contentTabNav),
                 $relatedTab = $wrap.find($_.$contentTab).filter(`[data-content-id="${dataContentId}"]`);
             
             $siblingNav.removeClass('_active');
             $currentLink.addClass('_active');
             $relatedTab.addClass('_active').siblings().removeClass('_active');
+
+            if ($tabImages.length) {
+                $tabImages.each((key, item) => {
+                    const
+                        $item = $(item),
+                        dataSrc = $item.data('src');
+
+                    $item.attr('src', dataSrc);
+                });
+            }
         });
     },
 
@@ -517,7 +528,7 @@ var $_ = {
         });
     },
     
-    initCustomScrollbar() {
+    initSimpleScrollbar() {
         function initScroll(el) {
             const
                 $currentTarget = $(el),
@@ -526,7 +537,7 @@ var $_ = {
 
             const scroll = new SimpleBar(el, {
                 autoHide: false,
-                scrollbarMinSize: dataMinSize,
+                scrollbarMinSize: dataMinSize
             });
     
             if (scroll && scroll.getScrollElement) {
@@ -544,7 +555,7 @@ var $_ = {
             }
         }
 
-        $($_.selectors.scrollbar).each((key, el) => {
+        $($_.selectors.simpleScrollbar).each((key, el) => {
             initScroll(el);
         });
 
@@ -553,6 +564,55 @@ var $_ = {
 
             initScroll(el);
         });
+    },
+
+    initSmoothScrollbar: function() {
+        // setTimeout(() => {
+        //     $('.controls-bar .js-call-popup').eq(0).click()
+        // }, 500);
+
+        function setScrollBars() {
+            const $scrollbar = $($_.selectors.smoothScrollbar);
+
+            $scrollbar.each(function (key, item) {
+                const
+                    $breakpointDetect = $(item).find('.js-bp-detect'),
+                    isInit = Scrollbar.has(item);
+
+                if ($breakpointDetect.length) {
+                    if ($breakpointDetect.eq(0).is(':hidden')) {
+                        init(item, isInit);
+                    } else {
+                        if (isInit) Scrollbar.destroy(item);
+                    }
+                } else {
+                    init(item, isInit);
+                }
+            });
+        }
+
+        function init(item, update) {
+            if (update) {
+                Scrollbar.get(item).update();
+
+            } else {
+                Scrollbar.init(item, {
+                    damping: 0.1,
+                    continuousScrolling: false,
+                    thumbMinSize: 50,
+                });
+            }
+        }
+
+        $_.$body.on('body:resize', function () {
+            setScrollBars();
+        });
+
+        $_.$body.on('body:trigger:init:scrollbars', function () {
+            setScrollBars();
+        });
+
+        setScrollBars();
     },
     
     initScrollTopButton () {

@@ -2,7 +2,7 @@
     <div class="listing-gallery__list">
         {% for item in images|default(false) %}
             <div class="listing-gallery__item">
-                <img class="listing-gallery__img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ item }}" />
+                <img class="listing-gallery__img of {{ imgMod|default('') }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ item }}" />
             </div>
         {% endfor %}
     </div>

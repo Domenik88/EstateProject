@@ -1,4 +1,7 @@
 .listing-gallery {
+	position: relative;
+	overflow: hidden;
+	
 	&__list {
 		position: relative;
 		display: flex;
@@ -14,12 +17,21 @@
 		height: 430px;
 		width: calc(50% - 20px);
 		margin: 0 10px 20px;
+		background: $gray2;
+		border-radius: 20px;
+		overflow: hidden;
+		z-index: 2;
 		
 		&:nth-child(5n - 4) {
-			width: 20%;
+			width: calc(25% - 20px);
 		}
 		&:nth-child(5n - 2) {
-			width: 20%;
+			width: calc(25% - 20px);
 		}
+	}
+	
+	&__img {
+		display: block;
+		z-index: 1;
 	}
 }

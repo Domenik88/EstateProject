@@ -12,10 +12,11 @@
     <div class="popup-style__container">
         <div class="cross-btn js-close-popup"></div>
 
-        <div class="popup-style__scroll-wrap js-custom-scrollbar">
+        <div class="popup-style__scroll-wrap js-smooth-scrollbar">
+            <div class="bp-detect hide-on-700 js-bp-detect"></div>
             <div class="popup-style__content ">
                 <div class="popup-map-container js-map-interface-wrap js-wrap">
-                    <div class="popup-map-container__nav-wrap">
+                    <div class="popup-map-container__nav-wrap mb40">
                         {% include 'layouts/modules/slide-menu.html.twig' with {
                             list: [
                                 {
@@ -66,15 +67,16 @@
                     <div class="popup-map-container__content content-tabs-container">
                         <div class="popup-map-container__table content-tab js-content-tab" data-content-id="gallery">
                             <div class="popup-map-container__col popup-map-container__col_left">
-                                <div class="popup-map-container__scroll-wrap js-custom-scrollbar">
+                                <div class="popup-map-container__scroll-wrap js-smooth-scrollbar">
                                     {% include 'layouts/modules/listing-gallery.html.twig' with {
                                         images: images|default(false),
+                                        imgMod: 'js-tab-img'
                                     } only %}
                                 </div>
                             </div>
 
-                            <div class="popup-map-container__col popup-map-container__col_left">
-                                <div class="popup-map-container__scroll-wrap js-custom-scrollbar">
+                            <div class="popup-map-container__col popup-map-container__col_right">
+                                <div class="popup-map-container__scroll-wrap js-smooth-scrollbar">
                                     {% include 'layouts/modules/agent.html.twig' with {
                                         confidentiality: true,
                                         confidentialityCollapse: false,
@@ -92,7 +94,7 @@
 
                             </div>
 
-                            <div class="popup-map-container__col popup-map-container__col_left">
+                            <div class="popup-map-container__col popup-map-container__col_right">
 
                             </div>
                         </div>
