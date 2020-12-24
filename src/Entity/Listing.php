@@ -162,9 +162,15 @@ class Listing
      */
     private $contractDate;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favoriteListings")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -541,6 +547,33 @@ class Listing
     public function setContractDate(?\DateTimeInterface $contractDate): self
     {
         $this->contractDate = $contractDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addFavoriteListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFavoriteListing($this);
+        }
 
         return $this;
     }

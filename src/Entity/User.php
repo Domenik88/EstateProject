@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -56,9 +57,16 @@ class User implements UserInterface
      */
     private $viewings;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Listing::class, inversedBy="users")
+     * @JoinTable(name="favorite_listings")
+     */
+    private $favoriteListings;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
+        $this->favoriteListings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,6 +197,30 @@ class User implements UserInterface
                 $viewing->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Listing[]
+     */
+    public function getFavoriteListings(): Collection
+    {
+        return $this->favoriteListings;
+    }
+
+    public function addFavoriteListing(Listing $favoriteListing): self
+    {
+        if (!$this->favoriteListings->contains($favoriteListing)) {
+            $this->favoriteListings[] = $favoriteListing;
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteListing(Listing $favoriteListing): self
+    {
+        $this->favoriteListings->removeElement($favoriteListing);
 
         return $this;
     }
