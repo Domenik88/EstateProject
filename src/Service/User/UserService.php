@@ -26,14 +26,18 @@ class UserService
         $this->entityManager = $entityManager;
     }
 
-    public function toggleFavoriteListing(string $listingId, string $feedID, int $userId)
+    public function toggleFavoriteListing(string $listingId, int $userId)
     {
         // TODO: add listing in favorites to user and add user identificator here and logic in twig side
         $user = $this->userRepository->find($userId);
         $listing = $this->listingRepository->findOneBy([
             'id' => $listingId,
         ]);
-        $user->addFavoriteListing($listing);
+        if (!$user->getFavoriteListings()->contains($listing)) {
+            $user->addFavoriteListing($listing);
+        } else {
+            $user->removeFavoriteListing($listing);
+        }
 
         $this->entityManager->flush();
 

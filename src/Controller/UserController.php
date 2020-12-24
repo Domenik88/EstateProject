@@ -103,14 +103,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/addToFavorites/{listingId}-{feedName}-{userId}", name="add_to_favorites", methods={"POST"})
+     * @Route("/addToFavorites/{listingId}-{userId}", name="add_to_favorites", methods={"POST"})
      */
-    public function favorite(Request $request, string $listingId, string $feedName, int $userId): Response
+    public function favorite(Request $request, string $listingId, int $userId): Response
     {
         if ( !$request->isXmlHttpRequest() ) {
             throw new NotFoundHttpException();
         }
-        $response = $this->userService->toggleFavoriteListing($listingId,$feedName,$userId);
+        $response = $this->userService->toggleFavoriteListing($listingId,$userId);
         return $this->json($response);
     }
 }

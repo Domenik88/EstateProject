@@ -40,18 +40,24 @@
             </div>
             <div class="listing-page-intro__controls-wrap">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    {% set favoritePath = path('add_to_favorites', {listingId: listing.listingId, feedName: 'ddf', userId: app.user.id}) %}
+                    {% set favoritePath = path('add_to_favorites', {listingId: listing.listingId, userId: app.user.id}) %}
                     {% set loginHref = '#' %}
+                    {% if listing.userFavorite %}
+                        {% set favoriteMod = 'icon-heart-frame js-favorite-listing active' %}
+                    {% else %}
+                        {% set favoriteMod = 'icon-heart-frame js-favorite-listing' %}
+                    {% endif %}
                 {% else %}
                     {% set favoritePath = '' %}
                     {% set loginHref = path('app_login') %}
+                    {% set favoriteMod = 'icon-heart-frame js-favorite-listing' %}
                 {% endif %}
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
                             label: 'label',
                             url: favoritePath,
-                            mod: 'icon-heart-frame js-favorite-listing',
+                            mod: favoriteMod,
                             href: loginHref
                         },
                         {

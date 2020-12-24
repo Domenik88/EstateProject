@@ -11,14 +11,17 @@ namespace App\Service\Listing;
 
 use App\Entity\Listing;
 use DateTime;
+use Symfony\Component\Security\Core\Security;
 
 class ListingSearchDataService
 {
     private ListingMediaService $listingMediaService;
+    private Security $security;
 
-    public function __construct(ListingMediaService $listingMediaService)
+    public function __construct(ListingMediaService $listingMediaService, Security $security)
     {
         $this->listingMediaService = $listingMediaService;
+        $this->security = $security;
     }
 
     public function constructSearchListingData(Listing $listing): object
@@ -47,6 +50,7 @@ class ListingSearchDataService
             'processingStatus' => $listing->getProcessingStatus(),
             'selfListing'      => $listing->getSelfListing(),
             'contractDate'     => $listing->getContractDate(),
+            'userFavorite'     => $this->security->getUser() ? $this->security->getUser()->getFavoriteListings()->contains($listing) : false,
         ];
         return $listingObject;
     }
