@@ -27,7 +27,8 @@ class ListingSearchDataService
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
             'mlsNumber'        => $listing->getMlsNum(),
-            'listingId'        => $listing->getFeedListingID(),
+            'listingFeedId'    => $listing->getFeedListingID(),
+            'listingId'        => $listing->getId(),
             'feedId'           => $listing->getFeedID(),
             'type'             => $listing->getType(),
             'ownershipType'    => $listing->getOwnershipType(),
@@ -60,7 +61,7 @@ class ListingSearchDataService
 
     private function getListingDaysOnTheMarket($listingContractDate): ?int
     {
-        if (!is_null($listingContractDate)) {
+        if ( !is_null($listingContractDate) ) {
             return date_diff(new DateTime(), $listingContractDate)->days;
         } else {
             return null;

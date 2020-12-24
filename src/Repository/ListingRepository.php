@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Listing;
+use App\Entity\User;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -10,7 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @method Listing|null find( $id, $lockMode = null, $lockVersion = null )

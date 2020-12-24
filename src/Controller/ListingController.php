@@ -36,16 +36,4 @@ class ListingController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/addToFavorites/{mlsNum}-{feedName}", name="add_to_favorites", methods={"POST"})
-     */
-    public function favorite(Request $request, string $mlsNum, string $feedName): Response
-    {
-        if ( !$request->isXmlHttpRequest() ) {
-            throw new NotFoundHttpException();
-        }
-        $response = $this->listingService->toggleFavoriteListing($mlsNum,$feedName);
-        return $this->json($response);
-    }
-
 }

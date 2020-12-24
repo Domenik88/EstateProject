@@ -331,9 +331,4 @@ class ListingService
         return $featuredProperties;
     }
 
-    public function toggleFavoriteListing(string $mlsNum, string $feedID)
-    {
-        // TODO: add listing in favorites to user and add user identificator here and logic in twig side
-        return true;
-    }
 }
