@@ -1,0 +1,33 @@
+.content-tabs-container {
+	position: relative;
+	width: 100%;
+}
+
+.content-tab {
+	position: relative;
+	transition-property: opacity, transform;
+	
+	&::before,
+	&::after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+	
+	&:not(._active) {
+		@include absolute(0,0,auto);
+		opacity: 0;
+		transform: translateY(10px);
+		transition-delay: 0s, .3s;
+		transition-duration: .3s, 0s;
+		z-index: 1;
+	}
+	
+	&._active {
+		opacity: 1;
+		transform: translateY(0);
+		transition-delay: .5s, .5s;
+		transition-duration: .5s, .5s;
+		z-index: 2;
+	}
+}

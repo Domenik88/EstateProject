@@ -80,24 +80,27 @@
     {% endif %}
 
     {% include 'layouts/sections/book-a-tour.html.twig' %}
-
     {% include 'layouts/sections/mls-note.html.twig' %}
-
-    <div style="width: 794px; display: none;" class="mb30">
-        {% include 'layouts/modules/agent.html.twig' with {
-            confidentiality: true,
-            twoCol: true,
-            agentPhoto: listing.agent.agentPhoto,
-            agentName: listing.agent.agentName,
-            agencyName: listing.agent.agencyName,
-            agentPhone: listing.agent.agentPhone,
-        } only %}
-    </div>
 
     {% include 'layouts/popups/popup-overlay.html.twig' %}
     {% include 'layouts/popups/map-popup.html.twig' %}
-    {% include 'layouts/popups/listing-print-popup.html.twig' with {
 
+    {% include 'layouts/popups/listing-popup.html.twig' with {
+        agent: listing.agent,
+        images: listing.images,
+        coordinates: listing.coordinates,
+    } only %}
+
+    {% include 'layouts/popups/listing-print-popup.html.twig' with {
+        address: listing.address,
+        image: listing.images[0],
+        agent: listing.agent,
+        description: listing.description,
+        metrics: listing.metrics,
+        financials: listing.financials,
+        mlsNumber: listing.mlsNumber,
+        type: listing.type,
+        coordinates: listing.coordinates,
     } only %}
 {% endblock %}
 

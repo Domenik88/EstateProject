@@ -9,6 +9,14 @@ span {
     display: block;
 }
 
+.bp-detect {
+    @include absolute(0,auto,auto,-100vw);
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+    opacity: 0;
+}
+
 .at-resp-share-element {
     .at-share-btn-elements {
         position: relative;

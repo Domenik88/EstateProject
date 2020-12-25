@@ -1,0 +1,57 @@
+<form class="map-menu pt50">
+    <div class="map-menu__container">
+        {% if title|default(false) %}
+            <span class="map-menu__title h4 pb20">{{ title }}</span>
+        {% endif %}
+
+        {% if yelpLabel|default(false) %}
+            <span class="map-menu__yelp-label tiny-text pb20">
+                Amenity information provided by <a class="yelp-logo" href="https://www.yelp.com/" target="_blank"></a>
+            </span>
+        {% endif %}
+
+        {% if select|default(false) %}
+            {% include 'layouts/form/select.html.twig' with select only %}
+        {% endif %}
+
+        {% if slideMenu|default(false) %}
+            {% include 'layouts/modules/slide-menu.html.twig' with {
+                wrapMod: '_gray pb20',
+                firstActive: true,
+                list: slideMenu is same as('default') ? false : slideMenu
+            } only %}
+        {% endif %}
+
+        {% if text|default(false) %}
+            <span class="map-menu__text tiny-text mb10">{{ text }}</span>
+        {% endif %}
+
+        <div class="map-menu__content-wrap">
+            <div class="map-menu__scroll-container">
+                <div class="map-menu__scroll-wrap js-smooth-scrollbar">
+                    <div class="map-menu__content pb50 {{ contentMod|default('') }}"></div>
+                </div>
+            </div>
+        </div>
+
+        {% if buttons|default(false) %}
+            <div class="map-menu__buttons-wrap pt20 pb30">
+                {% include 'layouts/controls/button.html.twig' with {
+                    'mod': ' _small-paddings _bordered-gray _gray-text js-checkbox-select',
+                    'text': 'Select all',
+                } only %}
+
+                {% include 'layouts/controls/button.html.twig' with {
+                    'mod': ' _small-paddings _bordered-gray _gray-text js-checkbox-reset',
+                    'text': 'Reset',
+                } only %}
+
+                {% include 'layouts/controls/button.html.twig' with {
+                    'mod': ' _small-paddings',
+                    'button': true,
+                    'text': 'Search',
+                } only %}
+            </div>
+        {% endif %}
+    </div>
+</form>

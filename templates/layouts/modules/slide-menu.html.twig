@@ -1,31 +1,38 @@
 {% set defaultSlideMenuList = [
     {
         text: 'Highlights',
-        val: 'all'
+        dataVal: 'all',
+        linkMod: 'js-yelp-nav-link',
     },
     {
         text: 'Restaurants',
-        val: 'restaurants'
+        dataVal: 'restaurants',
+        linkMod: 'js-yelp-nav-link',
     },
     {
         text: 'Groceries',
-        val: 'groceries'
+        dataVal: 'groceries',
+        linkMod: 'js-yelp-nav-link',
     },
     {
         text: 'Nightlife',
-        val: 'nightlife'
+        dataVal: 'nightlife',
+        linkMod: 'js-yelp-nav-link',
     },
     {
         text: 'Cafes',
-        val: 'cafes'
+        dataVal: 'cafes',
+        linkMod: 'js-yelp-nav-link',
     },
     {
         text: 'Shopping',
-        val: 'shopping'
+        dataVal: 'shopping',
+        linkMod: 'js-yelp-nav-link',
     },
     {
         text: 'Arts & Entertainment',
-        val: 'arts'
+        dataVal: 'arts',
+        linkMod: 'js-yelp-nav-link',
     },
 ] %}
 
@@ -33,10 +40,21 @@
     <div class="slide-menu__overflow-wrap">
         <div class="slide-menu__list js-slide-menu">
             {% for item in list|default(defaultSlideMenuList) %}
+                {% set slideMenuDataVal = item.dataVal|default(false) ? 'data-val=' ~ item.dataVal %}
+
+                {% set slideMenuDataInitMap = item.initMap|default(false) ? 'data-init-map=' ~ item.initMap %}
+
+                {% set slideMenuDataContentId = item.contentId|default(false) ? 'data-content-id=' ~
+                    (item.contentId is iterable ? item.contentId|json_encode : item.contentId)
+                %}
+
                 <div class="slide-menu__item js-slide-menu-item">
                     <div
-                        class="slide-menu__link button1 js-yelp-nav-link {{ loop.index0 ?: '_active' }}"
-                        data-val="{{ item.val }}"
+                        class="slide-menu__link button1 {{ item.linkMod|default('') }}
+                        {{ firstActive|default(false) ? (loop.index0 ?: '_active') }}"
+                        {{ slideMenuDataVal }}
+                        {{ slideMenuDataInitMap }}
+                        {{ slideMenuDataContentId }}
                     >
                         {{ item.text }}
                     </div>
@@ -45,5 +63,6 @@
         </div>
     </div>
 
-    <div class="slide-menu__button circle-button _bordered icon-angle-right js-slide-menu-button"></div>
+    <div class="slide-menu__button slide-menu__button_left circle-button _bordered icon-angle-left js-slide-menu-btn-left"></div>
+    <div class="slide-menu__button slide-menu__button_right circle-button _bordered icon-angle-right js-slide-menu-btn-right"></div>
 </div>

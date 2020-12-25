@@ -21,7 +21,8 @@
 
         {% if coordinates|default(false) %}
             {% include 'layouts/modules/slide-menu.html.twig' with {
-                wrapMod: 'mb20'
+                wrapMod: 'mb20',
+                firstActive: true,
             } only %}
 
             <div class="local-info__map-wrap mb30 js-check-in-window" data-trigger-body="{{
@@ -45,8 +46,6 @@
                     {% include 'layouts/modules/slider-nav.html.twig' %}
                 </div>
             </div>
-
-
         {% endif %}
     </div>
 </section>

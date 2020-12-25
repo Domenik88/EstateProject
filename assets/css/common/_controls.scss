@@ -69,6 +69,14 @@
 			background: $blue;
 		}
 	}
+	
+	&._turquoise {
+		background: $turquoise;
+		
+		&:hover {
+			background: $blue;
+		}
+	}
 
 	&._bordered {
 		color: $dark1;
@@ -85,7 +93,7 @@
 	&._bordered-gray {
 		color: $dark1;
 		border: 1px solid $gray-line;
-		background: transparent;
+		background: $white;
 		
 		&:hover {
 			background: $gray4;
@@ -98,6 +106,18 @@
 		&::before {
 			font-size: 14px;
 		}
+	}
+	
+	&._gray-text {
+		color: $gray0;
+		
+		&:hover {
+			color: $dark1;
+		}
+	}
+	
+	&._small-paddings {
+		padding: 0 10px;
 	}
 	
 	&.icon-twitter {
@@ -134,9 +154,10 @@
 }
 
 .cross-btn {
-	@include absolute(0,0,auto,auto);
+	@include absolute-cm(0,0,auto,auto);
 	display: block;
 	width: 33px;
+	height: 33px;
 	cursor: pointer;
 	z-index: 10;
 	transition: $default-transition;
@@ -146,9 +167,10 @@
 	
 	&::before {
 		display: block;
-		position: relative;
+		@include absolute-cm(-1px,auto,auto,-1px);
 		font-family: $icomoon;
 		font-size: 33px;
+		pointer-events: none;
 	}
 
 	&:hover {

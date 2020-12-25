@@ -92,12 +92,26 @@
     line-height: 18px;
 }
 
+.tiny-text_bold {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+}
+
 .very-tiny {
     font-family: $montserrat;
     font-style: normal;
     font-weight: 500;
     font-size: 9px;
     line-height: 1;
+}
+
+.very-tiny_space {
+    font-family: $montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 14px;
 }
 
 .button1 {

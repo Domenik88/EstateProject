@@ -1,40 +1,23 @@
-.simplebar-wrapper {
-	width: 100%;
-	max-height: none;
-	padding-right: 15px;
-}
-
-.simplebar-track {
-	&.simplebar-vertical {
-		height: 100%;
-		background: transparent;
-		top: 0;
-		right: 10px;
-		margin: auto;
-		width: 3px;
-		
-		.simplebar-visible {
-			&:before {
-				opacity: 1;
-				transition: none;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				background: $gray5;
-				border-radius: 3px;
-			}
-		}
+[data-scrollbar] {
+	.scroll-content {
+		padding-right: 15px;
 	}
-}
-
-.scroll-left {
-	.simplebar-track {
-		&.simplebar-vertical {
-			height: calc(100% - 10px);
-			right: auto;
-			left: 8px;
-			bottom: auto;
+	
+	.scrollbar-track-y {
+		width: 3px;
+		background: transparent;
+		
+		.scrollbar-thumb {
+			width: 3px;
+			background: $gray5;
+			border-radius: 3px;
+			transition: background .3s ease;
+			cursor: pointer;
+			
+			&:hover,
+			&:active {
+				background: $dark1;
+			}
 		}
 	}
 }

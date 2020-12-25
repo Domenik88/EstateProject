@@ -15,14 +15,15 @@
 	align-items: flex-start;
 	justify-content: flex-start;
 	flex-wrap: wrap;
-	width: calc(100% + 16px);
-	left: -8px;
+	width: calc(100% + 20px);
+	left: -10px;
 	
 	.estate-card {
-	    width: calc(100% / 3 - 16px);
-	    margin: 0 8px 20px;
+	    width: calc(100% / 2 - 20px);
+	    margin: 0 10px 20px;
 		opacity: 0;
 		animation: estate-card-show .7s ease both;
+		height: 470px; // TODO: remove
 		
 		@for $i from 1 through 12 {
 			&:nth-child(#{$i}) {

@@ -1,40 +1,149 @@
-<div class="listing-print-popup">
-    <div class="listing-print-popup__top">
-        <div class="listing-print-popup__logo-wrap">
+{% set listingPrintPopupMapParameters = {
+    center: coordinates|default(false),
+    initialMarker: true,
+    zoom: 13,
+    minZoom: 10,
+    disableControls: true,
+} %}
 
+{% set listingPrintProps = [
+    {
+        label: 'Price',
+        value: financials.listingPrice|format_currency('CAD', {fraction_digit: 0})|default('-'),
+    },
+    {
+        label: 'Address',
+        value: address.streetAddress|default('-'),
+    },
+    {
+        label: 'City',
+        value: address.city|default('-'),
+    },
+    {
+        label: 'State',
+        value: address.state|default('-'),
+    },
+    {
+        label: 'Zip Code',
+        value: address.postalCode|default('-'),
+    },
+    {
+        label: 'Area',
+        value: address.country|default('-'),
+    },
+    {
+        label: 'Type',
+        value: type|default('-'),
+    },
+    {
+        label: 'Stories',
+        value: metrics.stories|default('-'),
+    },
+    {
+        label: 'sqft',
+        value: metrics.sqrtFootage|default('-') ~ ' ' ~ metrics.sqrtFootageUnits|default('sqft'),
+    },
+    {
+        label: 'Beds | Baths',
+        value: metrics.bedRooms|default('-') ~ ' | ' ~ metrics.bathRooms|default('-'),
+    },
+    {
+        label: 'Year Built',
+        value: metrics.yearBuilt|default('-'),
+    },
+    {
+        label: 'MLS® Number',
+        value: mlsNumber|default('-'),
+    },
+] %}
+
+<div class="listing-print-popup js-listing-print-popup">
+    <div class="listing-print-popup__top mb30">
+        <div class="listing-print-popup__logo-wrap">
+            <img class="agent-print__logo ofcn js-data-content"
+                 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                 data-src="{{ asset('build/images/logo.svg') }}"
+            >
         </div>
 
         <div class="listing-print-popup__agent-wrap">
+            <div class="agent-print">
+                <div class="agent-print__photo-wrap">
+                    <img class="agent-print__photo of js-data-content"
+                         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                         data-src="{{ agent.agentPhoto|default('') }}"
+                    >
+                </div>
 
+                <div class="agent-print__info">
+                    <span
+                        class="agent-print__title table-text js-data-content"
+                        data-content="Call For Appointment to See This Home"
+                    ></span>
+
+                    <div class="agent-print__contacts">
+                        <span
+                            class="agent-print__name body-text js-data-content"
+                            data-content="{{ agent.agentName|default('') }}"
+                        ></span>
+
+                        <span
+                            class="agent-print__tel body-text2 js-data-content"
+                            data-content="{{ agent.agentPhone|default('') }}"
+                        ></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <span class="listing-print-popup__title h4 mb20">
+    <span
+        class="listing-print-popup__title h4 mb20 js-data-content"
+        data-content="{{ address.streetAddress|default('') ~ ', ' ~  address.city|default('') }}"
+    ></span>
 
-    </span>
-
-    <div class="listing-print-popup__table">
+    <div class="listing-print-popup__table mb20">
         <div class="listing-print-popup__col">
-
+            <img class="agent-print__img of js-data-content"
+                 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                 data-src="{{ image|default('') }}"
+            >
         </div>
 
         <div class="listing-print-popup__col js-print-map-container">
-
+            <div class="map" id="listing-print-map" data-params='{{
+                listingPrintPopupMapParameters|json_encode
+            }}'></div>
         </div>
     </div>
 
-    <div class="listing-print-popup__props">
-        <div class="listing-print-popup__props-item">
-
-        </div>
+    <div class="print-props-table mb10">
+        {% for item in listingPrintProps %}
+            <div class="print-props-table__item mb20">
+                <span
+                    class="print-props-table__label tiny-text js-data-content"
+                    data-content="{{ item.label }}"
+                ></span>
+                <span
+                    class="print-props-table__value tiny-text_bold js-data-content"
+                    data-content="{{ item.value }}"
+                ></span>
+            </div>
+        {% endfor %}
     </div>
 
-    <span class="listing-print-popup__title h5 mb10">
+    <span
+        class="listing-print-popup__title h5 mb10 js-data-content"
+        data-content="Property Description"
+    ></span>
 
-    </span>
+    <p
+        class="listing-print-popup__description tiny-text mb20 js-data-content"
+        data-content="{{ description|default('') }}"
+    ></p>
 
-    <div class="listed-by very-tiny">
-        <p></p>
-        <p></p>
+    <div class="listed-by very-tiny_space">
+        <p class="mb10 js-data-content" data-content="{{ listedText|default('The data relating to real estate on this website comes in part from the MLS® Reciprocity program of either the Real Estate Board of Greater Vancouver (REBGV), the Fraser Valley Real Estate Board (FVREB) or the Chilliwack and District Real Estate Board (CADREB). Real estate listings held by participating real estate firms are marked with the MLS® logo and detailed information about the listing includes the name of the listing agent. This representation is based in whole or part on data generated by either the REBGV, the FVREB or the CADREB which assumes no responsibility for its accuracy. The materials contained on this page may not be reproduced without the express written consent of either the REBGV, the FVREB or the CADREB.') }}"></p>
+        <p class="icon-mls-min js-data-content" data-content="{{ listedBy|default('Listed by: Renanza Realty') }}"></p>
     </div>
 </div>

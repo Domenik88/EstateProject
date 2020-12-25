@@ -93,28 +93,60 @@
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
+                            text: 'Photos',
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-content-id='gallery']"
+                            }
+                        },
+                        {
                             text: 'Map',
-                            mod: 'js-'
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-val='map']"
+                            }
                         },
                         {
                             text: 'Street view',
-                            mod: 'js-'
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-val='street-view']"
+                            }
                         },
                         {
                             text: 'Schools',
-                            mod: 'js-'
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-val='schools']"
+                            }
                         },
                         {
                             text: 'Crime',
-                            mod: 'js-'
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-val='crime']"
+                            }
                         },
                         {
                             text: 'Commute',
-                            mod: 'js-'
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-val='commute']"
+                            }
                         },
                         {
                             text: 'Shop & Eat',
-                            mod: 'js-'
+                            mod: 'js-call-popup',
+                            dataPopup: {
+                                target: 'listing-popup',
+                                fire_click_selector: ".js-content-tab-nav[data-val='yelp']"
+                            }
                         },
                     ],
                 } only %}

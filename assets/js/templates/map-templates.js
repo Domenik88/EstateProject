@@ -36,7 +36,7 @@ export const mapTemplates = {
         rating,
         review_count,
         image_url,
-        categoriesTitles,
+        categories,
         url,
     }) => `
         <div class="yelp-marker-popup-inner">
@@ -47,7 +47,7 @@ export const mapTemplates = {
             <div class="yelp-marker-popup-inner__info">
                 <div class="yelp-marker-popup-inner__description">
                     <a class="yelp-marker-popup-inner__title link-dark h6" href="${url}" target="_blank">${name}</a>
-                    <span class="yelp-marker-popup-inner__categories tiny-text">${categoriesTitles}</span>
+                    <span class="yelp-marker-popup-inner__categories tiny-text">${categories.map(item => item.title).join(', ')}</span>
                 </div>
                 
                 <div class="yelp-marker-popup-inner__rating-wrap">
@@ -64,10 +64,16 @@ export const mapTemplates = {
         </div>
     `,
 
+    yelpSimpleCard: (data) => `
+        <div class="yelp-simple-card">
+            ${mapTemplates.yelpMarkerPopup(data)}
+        </div>
+    `,
+
     yelpCard: ({
         name,
         image_url,
-        categoriesTitles,
+        categories,
         url,
     }) => `
         <div class="yelp-card">
@@ -76,7 +82,7 @@ export const mapTemplates = {
             </a>
             
             <a class="yelp-card__title link-dark h6 mb5" href="${url}" target="_blank">${name}</a>
-            <span class="yelp-card__categories mb5 tiny-text">${categoriesTitles}</span>
+            <span class="yelp-card__categories mb5 tiny-text">${categories.map(item => item.title).join(', ')}</span>
             <a class="yelp-logo" href="${url}" target="_blank"></a>
         </div>
     `,
