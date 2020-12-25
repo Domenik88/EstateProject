@@ -1,0 +1,63 @@
+.map-menu {
+	background: $gray2;
+	border-radius: 20px;
+	padding-left: 50px;
+	padding-right: 50px;
+	height: 100%;
+	width: 100%;
+	
+	[data-scrollbar] {
+		.scroll-content {
+			padding-right: 30px;
+		}
+		
+		.scrollbar-track-y {
+			.scrollbar-thumb {
+				background: $gray1;
+			}
+		}
+	}
+	
+	&__container {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		height: 100%;
+		width: 100%;
+	}
+	
+	&__content-wrap {
+		position: relative;
+		width: 100%;
+		flex: 1 1 0;
+	}
+	
+	&__scroll-container {
+		@include absolute(0,auto,auto);
+		height: 100%;
+		width: calc(100% + 30px);
+	}
+	
+	&__scroll-wrap {
+		position: relative;
+		height: 100%;
+		width: 100%;
+	}
+	
+	&__yelp-label {
+		position: relative;
+		display: inline-flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		color: $gray1;
+		
+		.yelp-logo {
+			flex: 0 0 auto;
+			margin-left: 5px;
+			margin-top: -2px;
+			width: 40px;
+			height: 20px;
+		}
+	}
+}

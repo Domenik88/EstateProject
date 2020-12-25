@@ -99,8 +99,6 @@ jQuery(function($){
         },
 
         initChart() {
-            if (!$(mc_.chartSelector).length) return false;
-
             mc_.chart = new Chartist.Pie(mc_.chartSelector, {
                 series: [16877, 202, 75, 513],
             }, {
@@ -114,6 +112,6 @@ jQuery(function($){
     };
 
     $(document).ready(function() {
-        mc_.init();
+        if ($('.js-ct-chart').length) mc_.init();
     });
 });

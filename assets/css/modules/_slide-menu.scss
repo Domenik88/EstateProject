@@ -9,16 +9,25 @@
 	padding-top: 8px;
 	box-sizing: content-box;
 	
+	&::before,
 	&::after {
 		content: '';
 		display: block;
-		@include absolute(0,0,0,auto);
 		height: 100%;
 		z-index: 3;
 		transition: $default-transition;
 		pointer-events: none;
 		width: 58px;
-		background: linear-gradient(270deg, #FFFFFF 50%, rgba(255, 255, 255, 0) 100%);
+	}
+	
+	&::before {
+		@include absolute(0, auto, auto);
+		background: linear-gradient(90deg, $white 50%, rgba(255, 255, 255, 0) 100%);
+	}
+	
+	&::after {
+		@include absolute(0,0,0,auto);
+		background: linear-gradient(270deg, $white 50%, rgba(255, 255, 255, 0) 100%);
 	}
 	
 	&__overflow-wrap {
@@ -77,9 +86,27 @@
 	}
 	
 	&__button {
-		@include absolute(0, 0, auto, auto);
 		z-index: 10;
 		transition: $default-transition;
+		
+		&_left {
+			@include absolute(0, auto, auto);
+		}
+		
+		&_right {
+			@include absolute(0, 0, auto, auto);
+		}
+	}
+	
+	&._start {
+		&::before {
+			opacity: 0;
+		}
+		
+		#{$r}__button_left {
+			pointer-events: none;
+			opacity: 0;
+		}
 	}
 	
 	&._end {
@@ -87,9 +114,19 @@
 			opacity: 0;
 		}
 		
-		#{$r}__button {
-			cursor: default;
+		#{$r}__button_right {
+			pointer-events: none;
 			opacity: 0;
+		}
+	}
+	
+	&._gray {
+		&::before {
+			background: linear-gradient(90deg, $gray2 50%, rgba(255, 255, 255, 0) 100%);
+		}
+		
+		&::after {
+			background: linear-gradient(270deg, $gray2 50%, rgba(255, 255, 255, 0) 100%);
 		}
 	}
 }

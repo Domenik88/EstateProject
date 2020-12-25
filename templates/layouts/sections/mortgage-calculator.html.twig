@@ -22,7 +22,7 @@
         label: 'Down Payment',
         inputs: [
             {
-                val: homePrice*0.1,
+                val: homePrice*0.3,
                 name: 'down_payment',
                 inputMod: 'js-format-input js-down-payment',
                 formatCurrency: true,
@@ -53,15 +53,16 @@
                 name: 'interest_rate',
                 inputMod: 'js-format-input',
                 suffix: '%',
-                min: 1,
-                max: 10
+                min: 0.1,
+                max: 10,
+                dataMlt: 0.1,
             },
         ],
         range: {
             relInputName: 'interest_rate',
             min: 1,
-            max: 10,
-            start: 5,
+            max: 100,
+            start: 50,
         },
     },
     {
@@ -152,6 +153,7 @@
                                                 'suffix': input.suffix|default(''),
                                                 'min': input.min|default(false),
                                                 'max': input.max|default(false),
+                                                'mlt': input.dataMlt|default(false),
                                             }
                                         } only %}
                                     {% endfor %}

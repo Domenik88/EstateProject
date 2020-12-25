@@ -8,7 +8,6 @@ var $_ = {
         this.initForms();
         this.initScrollTopButton();
         this.initScrollEvents();
-        this.initSimpleScrollbar();
         this.initSmoothScrollbar();
         this.initNavLinks();
         this.initLazyLoad();
@@ -70,7 +69,8 @@ var $_ = {
         this.$slideMenu = $('.js-slide-menu');
         this.$slideMenuItem = $('.js-slide-menu-item');
         this.$slideMenuWrap = $('.js-slide-menu-wrap');
-        this.$slideMenuButton = $('.js-slide-menu-button');
+        this.$slideMenuBtnLeft = $('.js-slide-menu-btn-left');
+        this.$slideMenuBtnRight = $('.js-slide-menu-btn-right');
 
         this.$printListing = $('.js-print-listing');
         this.$listingPrintPopup = $('.js-listing-print-popup');
@@ -86,7 +86,6 @@ var $_ = {
         };
         
         this.selectors = {
-            simpleScrollbar: '.js-simple-scrollbar',
             smoothScrollbar: '.js-smooth-scrollbar',
             lazyLoad: '.js-lazy',
         };
@@ -108,17 +107,11 @@ var $_ = {
     },
 
     initContentTabs() {
-        $_.$contentTabNav.on('click', (e) => {
+        function switchTabs($wrap, dataContentId) {
             const
-                $currentLink = $(e.currentTarget),
-                dataContentId = $currentLink.data('content-id'),
-                $wrap = $currentLink.closest($_.$jsWrap),
                 $tabImages = $wrap.find($_.$tabImg),
-                $siblingNav = $wrap.find($_.$contentTabNav),
                 $relatedTab = $wrap.find($_.$contentTab).filter(`[data-content-id="${dataContentId}"]`);
-            
-            $siblingNav.removeClass('_active');
-            $currentLink.addClass('_active');
+
             $relatedTab.addClass('_active').siblings().removeClass('_active');
 
             if ($tabImages.length) {
@@ -129,6 +122,26 @@ var $_ = {
 
                     $item.attr('src', dataSrc);
                 });
+            }
+        }
+
+        $_.$contentTabNav.on('click', (e) => {
+            const
+                $currentLink = $(e.currentTarget),
+                dataContentId = $currentLink.data('content-id'),
+                dataInitMap = $currentLink.data('init-map'),
+                $wrap = $currentLink.closest($_.$jsWrap),
+                $siblingNav = $wrap.find($_.$contentTabNav);
+
+            $siblingNav.removeClass('_active');
+            $currentLink.addClass('_active');
+
+            if (dataInitMap) $_.$body.trigger('trigger:init-map', dataInitMap);
+
+            if ($.isArray(dataContentId)) {
+                dataContentId.forEach(item => switchTabs($wrap, item));
+            } else {
+                switchTabs($wrap, dataContentId);
             }
         });
     },
@@ -213,18 +226,26 @@ var $_ = {
     },
 
     initSlideMenu() {
+        function moveMenu(params) {
+            const { fixOffset, $currentMenu, $relatedWrap } = params;
+
+            $currentMenu.stop(true, true).animate({'left': -fixOffset}, 300, () => {
+                checkDrag({
+                    $currentMenu,
+                    $relatedWrap,
+                });
+            });
+        }
+
         function checkDrag(params) {
             const
                 { $currentMenu, $relatedWrap, ui } = params,
-                { right: wrapRight, width: wrapWidth } = $relatedWrap[0].getBoundingClientRect(),
-                { right: menuRight, width: menuWidth } = $currentMenu[0].getBoundingClientRect(),
+                { right: wrapRight, left: wrapLeft, width: wrapWidth } = $relatedWrap[0].getBoundingClientRect(),
+                { right: menuRight, left: menuLeft, width: menuWidth } = $currentMenu[0].getBoundingClientRect(),
                 widthDiff = Math.min(wrapWidth - menuWidth, 0);
 
-            if (menuRight > wrapRight) {
-                $relatedWrap.removeClass('_end');
-            } else {
-                $relatedWrap.addClass('_end');
-            }
+            $relatedWrap[menuRight > wrapRight ? 'removeClass' : 'addClass']('_end');
+            $relatedWrap[wrapLeft === menuLeft ? 'addClass' : 'removeClass']('_start');
 
             if (ui && ui.position) {
                 ui.position.left = Math.min(0, ui.position.left);
@@ -232,10 +253,40 @@ var $_ = {
             }
         }
 
-        function bindButton(params) {
-            const { $currentMenu, $relatedWrap, $relatedMenuItems, $relatedButton } = params;
+        function bindLeftButton(params) {
+            const { $currentMenu, $relatedWrap, $relatedMenuItems, $relatedButtonLeft } = params;
 
-            $relatedButton.on('click', () => {
+            $relatedButtonLeft.on('click', () => {
+                const
+                    { left: wrapLeft } = $relatedWrap[0].getBoundingClientRect(),
+                    { left: menuLeft } = $currentMenu[0].getBoundingClientRect();
+
+                $relatedMenuItems.each((key, item) => {
+                    const
+                        $item = $(item),
+                        { left: itemLeft } = item.getBoundingClientRect(),
+                        { left: nextItemLeft } = $item.next()[0].getBoundingClientRect();
+
+                    if (nextItemLeft >= wrapLeft) {
+                        const
+                            diffItemLeft = wrapLeft - itemLeft,
+                            diffWrapsLeft = wrapLeft - menuLeft,
+                            paddingRight =  parseInt($item.css('padding-right')),
+                            offset = diffWrapsLeft - diffItemLeft - $relatedButtonLeft.width() - paddingRight,
+                            fixOffset = Math.max(offset, 0);
+
+                        if (fixOffset === 0) $relatedWrap.addClass('_start');
+                        moveMenu({ fixOffset, $currentMenu, $relatedWrap });
+                        return false;
+                    }
+                })
+            });
+        }
+
+        function bindRightButton(params) {
+            const { $currentMenu, $relatedWrap, $relatedMenuItems, $relatedButtonRight } = params;
+
+            $relatedButtonRight.on('click', () => {
                 const
                     { right: wrapRight, left: wrapLeft, width: wrapWidth } = $relatedWrap[0].getBoundingClientRect(),
                     { left: menuLeft, width: menuWidth } = $currentMenu[0].getBoundingClientRect(),
@@ -246,16 +297,16 @@ var $_ = {
 
                     if (itemRight > wrapRight) {
                         const
-                            diffRight = itemRight - wrapRight,
-                            diffLeft = menuLeft - wrapLeft,
-                            offset = diffLeft - diffRight - $relatedButton.width(),
+                            diffItemRight = itemRight - wrapRight,
+                            diffWrapsLeft = menuLeft - wrapLeft,
+                            offset = diffWrapsLeft - diffItemRight - $relatedButtonRight.width(),
                             fixOffset = Math.min(Math.abs(offset), Math.abs(widthDiff));
 
                         if (fixOffset === widthDiff) $relatedWrap.addClass('_end');
-                        $currentMenu.stop(true, true).animate({'left': -fixOffset}, 300);
+                        moveMenu({ fixOffset, $currentMenu, $relatedWrap });
                         return false;
                     }
-                })
+                });
             });
         }
 
@@ -264,7 +315,8 @@ var $_ = {
                 $currentMenu = $(item),
                 $relatedWrap = $currentMenu.closest($_.$slideMenuWrap),
                 $relatedMenuItems = $relatedWrap.find($_.$slideMenuItem),
-                $relatedButton = $relatedWrap.find($_.$slideMenuButton);
+                $relatedButtonLeft = $relatedWrap.find($_.$slideMenuBtnLeft),
+                $relatedButtonRight = $relatedWrap.find($_.$slideMenuBtnRight);
 
             $currentMenu.draggable({
                 axis: 'x',
@@ -274,11 +326,18 @@ var $_ = {
                         $relatedWrap,
                     })
 
-                    bindButton({
+                    bindLeftButton({
                         $currentMenu,
                         $relatedWrap,
                         $relatedMenuItems,
-                        $relatedButton,
+                        $relatedButtonLeft,
+                    });
+
+                    bindRightButton({
+                        $currentMenu,
+                        $relatedWrap,
+                        $relatedMenuItems,
+                        $relatedButtonRight,
                     });
                 }
             })
@@ -527,44 +586,6 @@ var $_ = {
                 });
         });
     },
-    
-    initSimpleScrollbar() {
-        function initScroll(el) {
-            const
-                $currentTarget = $(el),
-                dataMinSize = $currentTarget.data('min-size') || 50,
-                dataTriggerOnScroll = $currentTarget.data('trigger-on-scroll');
-
-            const scroll = new SimpleBar(el, {
-                autoHide: false,
-                scrollbarMinSize: dataMinSize
-            });
-    
-            if (scroll && scroll.getScrollElement) {
-                const scrollElement = scroll.getScrollElement();
-        
-                $currentTarget.on('trigger:scroll-top', () => {
-                    scrollElement.scrollTop = 0;
-                });
-        
-                if (dataTriggerOnScroll) {
-                    scrollElement.addEventListener('scroll', () => {
-                        $currentTarget.trigger(dataTriggerOnScroll);
-                    });
-                }
-            }
-        }
-
-        $($_.selectors.simpleScrollbar).each((key, el) => {
-            initScroll(el);
-        });
-
-        $_.$body.on('trigger:init-scrollbar', (e, data) => {
-            const { el } = data;
-
-            initScroll(el);
-        });
-    },
 
     initSmoothScrollbar: function() {
         // setTimeout(() => {
@@ -596,10 +617,14 @@ var $_ = {
                 Scrollbar.get(item).update();
 
             } else {
+                const dataScrollOptions = $(item).data('scroll-options') || {};
+
                 Scrollbar.init(item, {
                     damping: 0.1,
-                    continuousScrolling: false,
                     thumbMinSize: 50,
+                    alwaysShowTracks: true,
+                    continuousScrolling: false,
+                    ...dataScrollOptions
                 });
             }
         }
@@ -610,6 +635,12 @@ var $_ = {
 
         $_.$body.on('body:trigger:init:scrollbars', function () {
             setScrollBars();
+        });
+
+        $_.$body.on('trigger:init-scrollbar', (e, data) => {
+            const { el } = data;
+
+            init(el);
         });
 
         setScrollBars();

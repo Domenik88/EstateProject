@@ -15,7 +15,7 @@
 .map-table {
     display: flex;
     align-items: stretch;
-    justify-content: flex-start;
+    justify-content: space-between;
     height: calc(100% - 100px);
     
     &__scroll-wrap {
@@ -26,32 +26,21 @@
     
     &__col {
         position: relative;
-        width: 50%;
         
         &_left {
-            //&::before {
-            //    content: '';
-            //    @include absolute;
-            //    width: 200px;
-            //    height: 200px;
-            //    background: green;
-            //    z-index: 99;
-            //}
+            width: calc(50% - 80px);
             
             .estate-content {
-                //transition: opacity .3s ease;
+            
             }
     
             &._loading {
-                //.estate-content {
-                //    opacity: .3;
-                //    pointer-events: none;
-                //}
+            
             }
         }
         
         &_right {
-        
+            width: calc(50% + 30px);
         }
     }
 }
@@ -395,6 +384,16 @@
 .estate-cards-pagination {
     & > div {
         padding-top: 40px;
+    }
+}
+
+.yelp-simple-card {
+    background: $white;
+    border-radius: 10px;
+    @extend .mb10;
+    
+    &:last-child {
+        margin-bottom: 0;
     }
 }
 

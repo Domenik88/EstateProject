@@ -220,7 +220,17 @@ $baseAnimationDuration: .7s;
 	
 	
 	&__nav-wrap {
-	
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		
+		.slide-menu {
+			width: calc(100% - 50px);
+		}
+		
+		.cross-btn {
+			position: relative;
+		}
 	}
 	
 	&__content {
@@ -241,12 +251,19 @@ $baseAnimationDuration: .7s;
 		
 		&_left {
 			width: calc(100% / 12 * 9);
-			padding-right: 10px;
 		}
 		
 		&_right {
 			width: calc(100% / 12 * 3);
-			padding-left: 40px;
+			padding-left: 25px;
+			
+			.content-tabs-container {
+				height: 100%;
+				
+				.content-tab {
+					height: 100%;
+				}
+			}
 		}
 	
 	}

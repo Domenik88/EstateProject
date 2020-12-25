@@ -1,16 +1,94 @@
-{% set listingPopupMapParameters = {
-    center: coordinates|default(false),
-    initialMarker: true,
-    zoom: 13,
-    minZoom: 10,
-    refreshYelp: true,
-    yelpPreloader: true,
+{% set listingPopupMapMenu = [
+    {
+        text: 'Photos',
+        linkMod: 'js-content-tab-nav',
+        contentId: 'gallery',
+    },
+    {
+        text: 'Map',
+        linkMod: 'js-content-tab-nav js-map-state-nav',
+        dataVal: 'map',
+        initMap: '#listing-popup-map',
+        contentId: ['map', '#'],
+    },
+    {
+        text: 'Street view',
+        linkMod: 'js-content-tab-nav js-map-state-nav',
+        dataVal: 'street-view',
+        initMap: '#listing-popup-map',
+        contentId: ['map', '#'],
+    },
+    {
+        text: 'Schools',
+        linkMod: 'js-content-tab-nav js-map-state-nav',
+        dataVal: 'schools',
+        initMap: '#listing-popup-map',
+        contentId: ['map', 'schools'],
+    },
+    {
+        text: 'Crime',
+        linkMod: 'js-content-tab-nav js-map-state-nav',
+        dataVal: 'crime',
+        initMap: '#listing-popup-map',
+        contentId: ['map', 'crime'],
+    },
+    {
+        text: 'Commute',
+        linkMod: 'js-content-tab-nav js-map-state-nav',
+        dataVal: 'commute',
+        initMap: '#listing-popup-map',
+        contentId: ['map', 'commute'],
+    },
+    {
+        text: 'Shop & Eat',
+        linkMod: 'js-content-tab-nav js-map-state-nav',
+        dataVal: 'yelp',
+        initMap: '#listing-popup-map',
+        contentId: ['map', 'shop-and-eat'],
+    },
+] %}
+
+{% set listingPopupMapSchoolsSelect = {
+    'name': 'schools-type--select',
+    'inputMod': '_fill-white',
+    'wrapMod': 'mb10',
+    'options': [
+        {
+            'value': 'val1',
+            'text': 'Assigned',
+        },
+        {
+            'value': 'val2',
+            'text': 'Property2',
+        },
+    ]
 } %}
 
+{% set listingPopupMapSchoolsSlideMenu = [
+    {
+        text: 'Elementary',
+        linkMod: '',
+        dataVal: '',
+    },
+    {
+        text: 'Middle',
+        linkMod: '',
+        dataVal: '',
+    },
+    {
+        text: 'High',
+        linkMod: '',
+        dataVal: '',
+    },
+    {
+        text: 'All',
+        linkMod: '',
+        dataVal: '',
+    },
+] %}
 
 <div class="popup-style popup-style_map js-popup js-popup-listing-popup">
     <div class="popup-style__container">
-        <div class="cross-btn js-close-popup"></div>
 
         <div class="popup-style__scroll-wrap js-smooth-scrollbar">
             <div class="bp-detect hide-on-700 js-bp-detect"></div>
@@ -18,50 +96,10 @@
                 <div class="popup-map-container js-map-interface-wrap js-wrap">
                     <div class="popup-map-container__nav-wrap mb40">
                         {% include 'layouts/modules/slide-menu.html.twig' with {
-                            list: [
-                                {
-                                    text: 'Photos',
-                                    linkMod: 'js-content-tab-nav',
-                                    contentId: 'gallery',
-                                },
-                                {
-                                    text: 'Map',
-                                    linkMod: 'js-content-tab-nav js-map-state-nav',
-                                    dataVal: 'map',
-                                    contentId: 'map',
-                                },
-                                {
-                                    text: 'Street view',
-                                    linkMod: 'js-content-tab-nav js-map-state-nav',
-                                    dataVal: 'street-view',
-                                    contentId: 'map',
-                                },
-                                {
-                                    text: 'Schools',
-                                    linkMod: 'js-content-tab-nav js-map-state-nav',
-                                    dataVal: 'schools',
-                                    contentId: 'map',
-                                },
-                                {
-                                    text: 'Crime',
-                                    linkMod: 'js-content-tab-nav js-map-state-nav',
-                                    dataVal: 'crime',
-                                    contentId: 'map',
-                                },
-                                {
-                                    text: 'Commute',
-                                    linkMod: 'js-content-tab-nav js-map-state-nav',
-                                    dataVal: 'commute',
-                                    contentId: 'map',
-                                },
-                                {
-                                    text: 'Shop & Eat',
-                                    linkMod: 'js-content-tab-nav js-map-state-nav',
-                                    dataVal: 'yelp',
-                                    contentId: 'map',
-                                },
-                            ]
+                            list: listingPopupMapMenu
                         } only %}
+
+                        <div class="cross-btn js-close-popup"></div>
                     </div>
 
                     <div class="popup-map-container__content content-tabs-container">
@@ -91,11 +129,49 @@
 
                         <div class="popup-map-container__table content-tab js-content-tab" data-content-id="map">
                             <div class="popup-map-container__col popup-map-container__col_left">
+                                <div class="map-container js-map-container">
+                                    {% include 'layouts/common/preloader.html.twig' %}
 
+                                    <div class="map" id="listing-popup-map" data-params='{{
+                                        {
+                                            center: coordinates|default(false),
+                                            initialMarker: true,
+                                            zoom: 13,
+                                            minZoom: 10,
+                                            refreshYelp: true,
+                                            yelpPreloader: true,
+                                        }|json_encode
+                                    }}'></div>
+                                </div>
                             </div>
 
                             <div class="popup-map-container__col popup-map-container__col_right">
+                                <div class="content-tabs-container">
+                                    <div class="content-tab js-content-tab" data-content-id="schools">
+                                        {% include 'layouts/modules/map-menu.html.twig' with {
+                                            title: 'Schools',
+                                            select: listingPopupMapSchoolsSelect,
+                                            slideMenu: listingPopupMapSchoolsSlideMenu
+                                        } only %}
+                                    </div>
 
+                                    <div class="content-tab js-content-tab" data-content-id="crime">
+
+                                    </div>
+
+                                    <div class="content-tab js-content-tab" data-content-id="commute">
+
+                                    </div>
+
+                                    <div class="content-tab js-content-tab" data-content-id="shop-and-eat">
+                                        {% include 'layouts/modules/map-menu.html.twig' with {
+                                            title: 'Shop & Eat',
+                                            yelpLabel: true,
+                                            slideMenu: 'default',
+                                            contentMod: 'js-yelp-cards-menu',
+                                        } only %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,3 +180,5 @@
         </div>
     </div>
 </div>
+
+

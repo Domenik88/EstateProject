@@ -87,7 +87,8 @@
 
     {% include 'layouts/popups/listing-popup.html.twig' with {
         agent: listing.agent,
-        images: listing.images
+        images: listing.images,
+        coordinates: listing.coordinates,
     } only %}
 
     {% include 'layouts/popups/listing-print-popup.html.twig' with {

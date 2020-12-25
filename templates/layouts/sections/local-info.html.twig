@@ -22,7 +22,6 @@
         {% if coordinates|default(false) %}
             {% include 'layouts/modules/slide-menu.html.twig' with {
                 wrapMod: 'mb20',
-                linkMod: 'js-yelp-nav-link',
                 firstActive: true,
             } only %}
 
@@ -47,8 +46,6 @@
                     {% include 'layouts/modules/slider-nav.html.twig' %}
                 </div>
             </div>
-
-
         {% endif %}
     </div>
 </section>

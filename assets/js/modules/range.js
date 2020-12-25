@@ -9,12 +9,23 @@ jQuery(function($){
             this.$range = $('.js-range');
         },
 
+        _normalizeNum(num) {
+            return num.toFixed(2) * 1000 / 1000;
+        },
+
+        _setSliderVal($slider, $relativeInput, mlt) {
+            const fixMlt = rs_._normalizeNum((1 / mlt) * _getPureNumber($relativeInput.val()));
+            $slider.slider("value", fixMlt);
+        },
+
         initRange(){
             rs_.$range.each((key, item) => {
                 const 
                     $item = $(item),
                     { relativeInputName, trigger, options={} } = $item.data('params') || {},
                     $relativeInput = $(`input[name="${relativeInputName}"]`),
+                    { mlt=1 } = $relativeInput.data('format-props') || {},
+                    fixMlt = mlt || 1,
                     { range, start, min, max } = options;
 
                 $item.slider({
@@ -23,19 +34,18 @@ jQuery(function($){
                     max: max,
                     start: start,
                     create: () => {
-                        $item.slider("value", _getPureNumber($relativeInput.val()));
+                        rs_._setSliderVal($item, $relativeInput, fixMlt);
                     },
                     slide: (event, ui) => {
-                        $relativeInput.trigger('trigger:set-val', {val: ui.value, change: true});
+                        $relativeInput.trigger('trigger:set-val', {
+                            val: rs_._normalizeNum(ui.value * fixMlt),
+                            change: true
+                        });
                     }
                 });
 
                 $relativeInput.on('change', () => {
-                    $item.slider("value", _getPureNumber($relativeInput.val()));
-                });
-
-                $item.on('trigger:set-value', (e, val) => {
-                    $item.slider("value", val);
+                    rs_._setSliderVal($item, $relativeInput, fixMlt);
                 });
 
                 $relativeInput.on('trigger:set-range-props', (e, data) => {

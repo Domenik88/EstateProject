@@ -1,8 +1,5 @@
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
-import SimpleBar from 'simplebar'
-window.SimpleBar = SimpleBar;
-
 import Chartist from 'chartist'
 window.Chartist = Chartist;
 

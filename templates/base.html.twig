@@ -2,7 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
+
         <title>{% block title %}Welcome!{% endblock %}</title>
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -12,16 +14,17 @@
             {% include 'layouts/header.html.twig' with {
                 'showSearch': true
             } %}
+
             {% block body %}{% endblock %}
+
             {% include 'layouts/footer.html.twig' %}
+
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
-
             {% endblock %}
         </div>
 
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fe1f1b039bb1c22"></script>
-
     </body>
 </html>
