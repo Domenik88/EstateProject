@@ -64,6 +64,7 @@ class ListingService
         $listing->setLivingArea($result['BuildingAreaTotal'] ? (int)$result['BuildingAreaTotal'] : 0);
         $listing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
         $listing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
+        $listing->setContractDate($result['ListingContractDate'] ? new \DateTime($result['ListingContractDate']) : null);
 
         $this->entityManager->persist($listing);
 
@@ -108,6 +109,7 @@ class ListingService
         $existingListing->setLivingArea($result['BuildingAreaTotal'] ? (int)$result['BuildingAreaTotal'] : 0);
         $existingListing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
         $existingListing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
+        $existingListing->setContractDate($result['ListingContractDate'] ? new \DateTime($result['ListingContractDate']) : null);
 
         $this->entityManager->flush();
 
@@ -305,4 +307,28 @@ class ListingService
 
         return $listingList;
     }
+
+    public function getCitiesCounters(): ?array
+    {
+        $cityes = ['Vancouver','North Vancouver','Burnaby','Coquitlam','Surrey','Richmond','West Vancouver','Langley','Maple Ridge','Pitt Meadows','Mission','Abbotsford','Chilliwack','Pitt Meadows','Mission'];
+        $result = $this->listingRepository->getCounters($cityes, 'British Columbia', 'ddf');
+        $cityCounters = [];
+        foreach ( $result as $item ) {
+            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia');
+        }
+
+        return $cityCounters;
+    }
+
+    public function getFeaturedProperties()
+    {
+        $results = $this->listingRepository->getListingsByCriteria(new ListingCriteria('ddf',[ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ]));
+        $featuredProperties = [];
+        foreach ( $results as $result ) {
+            $featuredProperties[] = $this->listingSearchDataService->constructSearchListingData($result);
+        }
+
+        return $featuredProperties;
+    }
+
 }

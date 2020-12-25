@@ -11,24 +11,27 @@ namespace App\Service\Listing;
 
 use App\Entity\Listing;
 use DateTime;
+use Symfony\Component\Security\Core\Security;
 
 class ListingSearchDataService
 {
     private ListingMediaService $listingMediaService;
+    private Security $security;
 
-    public function __construct(ListingMediaService $listingMediaService)
+    public function __construct(ListingMediaService $listingMediaService, Security $security)
     {
         $this->listingMediaService = $listingMediaService;
+        $this->security = $security;
     }
 
     public function constructSearchListingData(Listing $listing): object
     {
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
-        $listingContractDate = array_key_exists('ListingContractDate', $listing->getRawData()) ? $listing->getRawData()[ 'ListingContractDate' ] : null;
-        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listingContractDate);
+        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
             'mlsNumber'        => $listing->getMlsNum(),
-            'listingId'        => $listing->getFeedListingID(),
+            'listingFeedId'    => $listing->getFeedListingID(),
+            'listingId'        => $listing->getId(),
             'feedId'           => $listing->getFeedID(),
             'type'             => $listing->getType(),
             'ownershipType'    => $listing->getOwnershipType(),
@@ -41,11 +44,13 @@ class ListingSearchDataService
             'financials'       => $this->getListingFinancialsObject($listing),
             'listingAgent'     => $this->getListingAgentObject($listing),
             'agent'            => $this->getAgentObject(),
-            'isNew'            => $daysOnTheMarket <= 3,
+            'isNew'            => !is_null($daysOnTheMarket) ? $daysOnTheMarket <= 3 : false,
             'listingSeo'       => $this->getListingSeoObject($listing),
             'status'           => $listing->getStatus(),
             'processingStatus' => $listing->getProcessingStatus(),
             'selfListing'      => $listing->getSelfListing(),
+            'contractDate'     => $listing->getContractDate(),
+            'userFavorite'     => $this->security->getUser() ? $this->security->getUser()->getFavoriteListings()->contains($listing) : false,
         ];
         return $listingObject;
     }
@@ -60,7 +65,11 @@ class ListingSearchDataService
 
     private function getListingDaysOnTheMarket($listingContractDate): ?int
     {
-        return date_diff(new DateTime(), new DateTime($listingContractDate))->days;
+        if ( !is_null($listingContractDate) ) {
+            return date_diff(new DateTime(), $listingContractDate)->days;
+        } else {
+            return null;
+        }
     }
 
     private function getListingAddressObject(Listing $listing): object
@@ -149,7 +158,7 @@ class ListingSearchDataService
             'YearBuilt'                              => $listing->getYearBuilt(),
             'MLS'                                    => $listing->getMlsNum(),
             'City'                                   => $listing->getCity(),
-            'DayOnMarket'                            => $this->getListingDaysOnTheMarket(array_key_exists('ListingContractDate', $listing->getRawData()) ? $listing->getRawData()[ 'ListingContractDate' ] : null),
+            'DayOnMarket'                            => $this->getListingDaysOnTheMarket($listing->getContractDate()),
             'LblPrice'                               => '',
             'MedianListCityPrice'                    => '',
             'MedianCityPriceStatus'                  => '',

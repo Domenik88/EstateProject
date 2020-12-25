@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="listing",
  *     uniqueConstraints={
  *          @ORM\UniqueConstraint(name="listing_mls_num_feed_id_state_or_province_idx", columns={"mls_num", "feed_id", "state_or_province"}, options={"where": "((state_or_province IS NOT NULL) AND ((status)::text = 'live'::text) AND (mls_num IS NOT NULL) AND (deleted_date IS NULL))"}),
- *          @ORM\UniqueConstraint(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"})
+ *          @ORM\UniqueConstraint(name="listing_feed_id_feed_listing_id_idx", columns={"feed_id", "feed_listing_id"}, options={"where": "(deleted_date IS NULL)"})
  *     },
  * )
  */
@@ -155,11 +155,22 @@ class Listing
     /**
      * @ORM\Column(type="boolean")
      */
-    private $selfListing;
+    private $selfListing = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $contractDate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favoriteListings")
+     */
+    private $users;
 
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -524,6 +535,45 @@ class Listing
     public function setSelfListing(bool $selfListing): self
     {
         $this->selfListing = $selfListing;
+
+        return $this;
+    }
+
+    public function getContractDate(): ?\DateTimeInterface
+    {
+        return $this->contractDate;
+    }
+
+    public function setContractDate(?\DateTimeInterface $contractDate): self
+    {
+        $this->contractDate = $contractDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addFavoriteListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFavoriteListing($this);
+        }
 
         return $this;
     }

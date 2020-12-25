@@ -3,13 +3,17 @@
 namespace App\Repository;
 
 use App\Entity\Listing;
+use App\Entity\User;
 use App\Service\Listing\ListingConstants;
+use App\Service\Listing\ListingCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @method Listing|null find( $id, $lockMode = null, $lockVersion = null )
@@ -127,6 +131,44 @@ class ListingRepository extends ServiceEntityRepository
             $this->logger->error($e->getTraceAsString());
             return [];
         }
+    }
+
+    public function getCounters(array $cities, string $stateOrProvince, string $feedId): ?array
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.city, COUNT(l) as counter')
+            ->where("l.city IN (:sities)")
+            ->andWhere('l.deletedDate IS NULL')
+            ->andWhere('l.stateOrProvince = :stateOrProvince')
+            ->andWhere("l.status IN (:statuses)")
+            ->andWhere('l.feedID = :feedID')
+            ->groupBy('l.city')
+            ->setParameter('sities', $cities)
+            ->setParameter('stateOrProvince', $stateOrProvince)
+            ->setParameter('statuses', [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ])
+            ->setParameter('feedID', $feedId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getListingsByCriteria(ListingCriteria $criteria, int $page = 1, int $pageSize = 50)
+    {
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
+        $query = $this->entityManager->createNativeQuery("SELECT l.* FROM listing l
+                WHERE l.feed_id = :feedId 
+                    AND l.deleted_date IS NULL 
+                    AND l.status IN (:statuses) 
+                ORDER BY l.contract_date DESC NULLS LAST 
+                LIMIT :limit 
+                OFFSET :offset",
+            $rsm);
+        $query->setParameter('feedId', $criteria->feedId);
+        $query->setParameter('statuses', $criteria->statuses);
+        $query->setParameter('limit', $pageSize);
+        $query->setParameter('offset', ($page - 1) * $pageSize);
+        return $query->getResult();
     }
 
 }
