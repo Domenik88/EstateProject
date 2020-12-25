@@ -331,4 +331,152 @@ class ListingService
         return $featuredProperties;
     }
 
+    public function getSearchFormObject(): ?array
+    {
+        return [
+            'type' => $this->getPropertyTypes(),
+            'priceFrom' => $this->getPropertyPriceFrom(),
+            'priceTo' => $this->getPropertyPriceTo(),
+            'beds' => $this->getPropertyBedrooms(),
+            'baths' => $this->getPropertyBathrooms(),
+        ];
+    }
+
+    private function getPropertyTypes(): ?object
+    {
+        return (object)[
+            'Aaprtment/Condo',
+            'House',
+            'Multifamily',
+            'Townhouse',
+            'Land Only',
+            'Other',
+        ];
+    }
+
+    private function getPropertyPriceFrom(): ?object
+    {
+        return (object)[
+            'No min',
+            '$10k',
+            '$20k',
+            '$30k',
+            '$50k',
+            '$100k',
+            '$130k',
+            '$150k',
+            '$200k',
+            '$250k',
+            '$300k',
+            '$350k',
+            '$400k',
+            '$450k',
+            '$500k',
+            '$550k',
+            '$600k',
+            '$650k',
+            '$700k',
+            '$750k',
+            '$800k',
+            '$850k',
+            '$900k',
+            '$950k',
+            '$1m',
+            '$1.1m',
+            '$1.2m',
+            '$1.25m',
+            '$1.4m',
+            '$1.5m',
+            '$1.6m',
+            '$1.7m',
+            '$1.75m',
+            '$1.8m',
+            '$1.9m',
+            '$2m',
+            '$2.25m',
+            '$2.5m',
+            '$2.75m',
+            '$3m',
+            '$3.5m',
+            '$4m',
+            '$5m',
+            '$10m',
+            '$20m',
+        ];
+    }
+
+    private function getPropertyPriceTo(): ?object
+    {
+        return (object)[
+            'No max',
+            '$10k',
+            '$20k',
+            '$30k',
+            '$50k',
+            '$100k',
+            '$130k',
+            '$150k',
+            '$200k',
+            '$250k',
+            '$300k',
+            '$350k',
+            '$400k',
+            '$450k',
+            '$500k',
+            '$550k',
+            '$600k',
+            '$650k',
+            '$700k',
+            '$750k',
+            '$800k',
+            '$850k',
+            '$900k',
+            '$950k',
+            '$1m',
+            '$1.1m',
+            '$1.2m',
+            '$1.25m',
+            '$1.4m',
+            '$1.5m',
+            '$1.6m',
+            '$1.7m',
+            '$1.75m',
+            '$1.8m',
+            '$1.9m',
+            '$2m',
+            '$2.25m',
+            '$2.5m',
+            '$2.75m',
+            '$3m',
+            '$3.5m',
+            '$4m',
+            '$5m',
+            '$10m',
+            '$20m',
+        ];
+    }
+
+    private function getPropertyBathrooms(): ?object
+    {
+        return (object)[
+            'Any',
+            '1+',
+            '2+',
+            '3+',
+            '4+',
+            '5+',
+        ];
+    }
+
+    private function getPropertyBedrooms(): ?object
+    {
+        return (object)[
+            'Studio+',
+            '1+',
+            '2+',
+            '3+',
+            '4+',
+        ];
+    }
+
 }
