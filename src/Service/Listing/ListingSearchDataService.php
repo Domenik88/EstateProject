@@ -17,6 +17,7 @@ class ListingSearchDataService
 {
     private ListingMediaService $listingMediaService;
     private Security $security;
+    const ADMIN_ROLE = 'ROLE_ADMIN';
 
     public function __construct(ListingMediaService $listingMediaService, Security $security)
     {
@@ -26,6 +27,17 @@ class ListingSearchDataService
 
     public function constructSearchListingData(Listing $listing): object
     {
+        if ($this->security->getUser()) {
+            $userRoles = $this->security->getUser()->getRoles();
+            if ( !in_array(self::ADMIN_ROLE, $userRoles) ) {
+                $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
+            } else {
+                $userFavorite = false;
+            }
+        } else {
+            $userFavorite = false;
+        }
+//        die;
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
@@ -50,7 +62,7 @@ class ListingSearchDataService
             'processingStatus' => $listing->getProcessingStatus(),
             'selfListing'      => $listing->getSelfListing(),
             'contractDate'     => $listing->getContractDate(),
-            'userFavorite'     => $this->security->getUser() ? $this->security->getUser()->getFavoriteListings()->contains($listing) : false,
+            'userFavorite'     => $userFavorite,
         ];
         return $listingObject;
     }
