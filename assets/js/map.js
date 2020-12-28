@@ -175,11 +175,7 @@ class EstateMap {
         }
 
         this.$yelpNavLink.on('click', (e) => {
-            const $currentTarget = $(e.currentTarget);
-
-            this.yelpTerm = $currentTarget.data('val');
-            this.$yelpNavLink.removeClass('_active');
-            $currentTarget.addClass('_active');
+            this.yelpTerm = $(e.currentTarget).data('val');
             this._yelpSearch();
         });
     }

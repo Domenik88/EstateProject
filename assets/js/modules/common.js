@@ -23,6 +23,7 @@ var $_ = {
         this.initPrintListing();
         this.initContentTabs();
         this.initAddToFavorites();
+        this.initFullSearch();
     },
     
     initCache() {
@@ -72,11 +73,17 @@ var $_ = {
         this.$slideMenuWrap = $('.js-slide-menu-wrap');
         this.$slideMenuBtnLeft = $('.js-slide-menu-btn-left');
         this.$slideMenuBtnRight = $('.js-slide-menu-btn-right');
+        this.$slideMenuLink = $('.js-slide-menu-link');
 
         this.$printListing = $('.js-print-listing');
         this.$listingPrintPopup = $('.js-listing-print-popup');
         this.$dataContent = $('.js-data-content');
         this.$addToFavorites = $('.js-favorite-listing');
+
+        this.$fullSearch = $('.js-full-search');
+        this.$fullSearchTypeLink = $('.js-full-search-type-link');
+        this.$fullSearchTypeInput = $('.js-full-search-type');
+        this.$fullSearchTab = $('.js-fs-tab');
 
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
@@ -108,6 +115,29 @@ var $_ = {
         is_touch_device();
     },
 
+    initFullSearch() {
+        $_.$fullSearch.each((key, item) => {
+            const
+                $fullSearch = $(item),
+                $relatedTypeLinks = $fullSearch.find($_.$fullSearchTypeLink),
+                $relatedTypeInput = $fullSearch.find($_.$fullSearchTypeInput),
+                $relatedTabs = $fullSearch.find($_.$fullSearchTab);
+
+            $relatedTypeLinks.on('click', (e) => {
+                const
+                    $currentTarget = $(e.currentTarget),
+                    $dataVal = $currentTarget.data('val'),
+                    $dataToggle = $currentTarget.data('toggle') || 'default',
+                    $matchedTabs = $relatedTabs.filter(`[class*="-${$dataToggle}"]`);
+
+                $relatedTabs.addClass('_hide');
+                $matchedTabs.removeClass('_hide');
+
+                $relatedTypeInput.attr('value', $dataVal);
+            });
+        })
+    },
+
     initContentTabs() {
         function switchTabs($wrap, dataContentId) {
             const
@@ -132,11 +162,7 @@ var $_ = {
                 $currentLink = $(e.currentTarget),
                 dataContentId = $currentLink.data('content-id'),
                 dataInitMap = $currentLink.data('init-map'),
-                $wrap = $currentLink.closest($_.$jsWrap),
-                $siblingNav = $wrap.find($_.$contentTabNav);
-
-            $siblingNav.removeClass('_active');
-            $currentLink.addClass('_active');
+                $wrap = $currentLink.closest($_.$jsWrap);
 
             if (dataInitMap) $_.$body.trigger('trigger:init-map', dataInitMap);
 
@@ -367,7 +393,17 @@ var $_ = {
                     ui,
                 });
             });
-        })
+        });
+
+        $_.$slideMenuLink.on('click', (e) => {
+            const
+                $currentTarget = $(e.currentTarget),
+                $relatedMenu = $currentTarget.closest($_.$slideMenu),
+                $relatedLinks = $relatedMenu.find($_.$slideMenuLink);
+
+            $relatedLinks.removeClass('_active');
+            $currentTarget.addClass('_active');
+        });
     },
 
     initStickyBlock() {

@@ -42,6 +42,8 @@
             {% for item in list|default(defaultSlideMenuList) %}
                 {% set slideMenuDataVal = item.dataVal|default(false) ? 'data-val=' ~ item.dataVal %}
 
+                {% set slideMenuDataToggle = item.dataToggle|default(false) ? 'data-toggle=' ~ item.dataToggle %}
+
                 {% set slideMenuDataInitMap = item.initMap|default(false) ? 'data-init-map=' ~ item.initMap %}
 
                 {% set slideMenuDataContentId = item.contentId|default(false) ? 'data-content-id=' ~
@@ -50,11 +52,12 @@
 
                 <div class="slide-menu__item js-slide-menu-item">
                     <div
-                        class="slide-menu__link button1 {{ item.linkMod|default('') }}
+                        class="slide-menu__link button1 js-slide-menu-link {{ item.linkMod|default('') }}
                         {{ firstActive|default(false) ? (loop.index0 ?: '_active') }}"
                         {{ slideMenuDataVal }}
                         {{ slideMenuDataInitMap }}
                         {{ slideMenuDataContentId }}
+                        {{ slideMenuDataToggle }}
                     >
                         {{ item.text }}
                     </div>
