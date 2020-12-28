@@ -1,8 +1,12 @@
-<div class="select-language js-toggle-active js-bcc">
-    <span class="select-language__current button2">En</span>
-
-    <div class="select-language__list">
-        <a class="select-language__link link-gray small-text2 mb10 _current" href="#">En</a>
-        <a class="select-language__link link-gray small-text2 mb10" href="#">Zh</a>
-    </div>
-</div>
+{% embed 'layouts/containers/dropdown-button.html.twig' with {
+    placeholder: 'En',
+    textMod: 'button2',
+    wrapMod: '_fh',
+} only %}
+    {% block dropdown_content %}
+        <div class="list">
+            <a class="link-gray small-text2 mb10 _current" href="#">En</a>
+            <a class="link-gray small-text2" href="#">Zh</a>
+        </div>
+    {% endblock %}
+{% endembed %}

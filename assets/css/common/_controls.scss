@@ -70,11 +70,14 @@
 		}
 	}
 	
-	&._turquoise {
-		background: $turquoise;
+	&._dark {
+		background: $dark1;
+		color: $white;
+		border: 1px solid $dark1;
 		
 		&:hover {
-			background: $blue;
+			background: $white;
+			color: $dark1;
 		}
 	}
 
@@ -149,6 +152,20 @@
 	&._active {
 		.toggle-text-initial {
 			display: none;
+		}
+	}
+	
+	@include media_700 {
+		&._to-icon-on-700 {
+			padding: 0 12px;
+			
+			&::before {
+				margin-right: 0;
+			}
+			
+			#{$r}__text {
+				display: none;
+			}
 		}
 	}
 }

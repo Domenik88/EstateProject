@@ -1,0 +1,280 @@
+{% set fullSearchNavList = [
+    {
+        text: 'MLS®',
+        linkMod: '',
+        dataVal: '',
+    },
+    {
+        text: 'New Property',
+        linkMod: '',
+        dataVal: '',
+    },
+    {
+        text: 'Commercial',
+        linkMod: '',
+        dataVal: '',
+    },
+] %}
+
+{% set fullSearchPropertyTypeCheckboxes = [
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Apartment/Condo',
+        'text': 'Apartment/Condo',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'House',
+        'text': 'House',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Multifamily',
+        'text': 'Multifamily',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Townhouse',
+        'text': 'Townhouse',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Land Only',
+        'text': 'Land Only',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Other',
+        'text': 'Other',
+    },
+] %}
+
+{% set fullSearchCommercialTypeCheckboxes = [
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Agri-Business',
+        'text': 'Agri-Business',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Business',
+        'text': 'Business',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Business with Property',
+        'text': 'Business with Property',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Industrial',
+        'text': 'Industrial',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Land',
+        'text': 'Land',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Multi-Family',
+        'text': 'Multi-Family',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Office',
+        'text': 'Office',
+    },
+    {
+        'type': 'checkbox',
+        'name': 'property-type',
+        'value': 'Retail',
+        'text': 'Retail',
+    },
+] %}
+
+{% set fullSearchMinPriceSelect = {
+    'name': 'min-price',
+    'inputMod': '_bordered-bright',
+    'options': [
+        {
+            'value': 'none',
+            'text': 'No Min',
+        },
+        {
+            'value': '100',
+            'text': 'CA$100',
+        },
+        {
+            'value': '200',
+            'text': 'CA$200',
+        },
+    ]
+} %}
+
+{% set fullSearchMaxPriceSelect = {
+    'name': 'max-price',
+    'inputMod': '_bordered-bright',
+    'options': [
+        {
+            'value': 'none',
+            'text': 'No Max',
+        },
+        {
+            'value': '100',
+            'text': 'CA$100',
+        },
+        {
+            'value': '200',
+            'text': 'CA$200',
+        },
+    ]
+} %}
+
+{% set fullSearchBathSelect = {
+    'name': 'header-search-select',
+    'inputMod': '_fill-gray',
+    'options': [
+        {
+            'value': 'val1',
+            'text': 'New Property',
+        },
+        {
+            'value': 'val2',
+            'text': 'New Property1',
+        },
+        {
+            'value': 'val3',
+            'text': 'New Property2',
+        },
+    ]
+} %}
+
+<form class="full-search js-no-ajax">
+    <div class="full-search__nav-wrap mb20">
+        {% include 'layouts/modules/slide-menu.html.twig' with {
+            list: fullSearchNavList,
+            firstActive: true,
+            wrapMod: '_turquoise',
+        } only %}
+    </div>
+
+    <div class="full-search__fields-container mb20">
+        {% include 'layouts/form/input.html.twig' with {
+            'name': 'search-input',
+            'placeholder': 'Enter Neighbourhood, City, MLS®',
+            'inputMod': '_bordered',
+        } only %}
+
+        <div class="full-search__selects-container">
+            <div class="full-search__selects-group">
+                {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                    placeholder: 'Any',
+                    wrapMod: '_fh js-full-search-default',
+                    scroll: true,
+                    list: fullSearchPropertyTypeCheckboxes,
+                } only %}
+                    {% block dropdown_content %}
+                        <div class="list">
+                            {% for item in list %}
+                                {% include 'layouts/controls/check.html.twig' with {
+                                    type: item.type,
+                                    name: item.name,
+                                    value: item.value,
+                                    text: item.text,
+                                    wrapMod: loop.index is not same as(list|length) ? 'mb10' : ''
+                                } only %}
+                            {% endfor %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+
+                {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                    placeholder: 'Any',
+                    wrapMod: '_fh  js-full-search-commercial _hide',
+                    scroll: true,
+                    list: fullSearchCommercialTypeCheckboxes,
+                } only %}
+                    {% block dropdown_content %}
+                        <div class="list">
+                            {% for item in list %}
+                                {% include 'layouts/controls/check.html.twig' with {
+                                    type: item.type,
+                                    name: item.name,
+                                    value: item.value,
+                                    text: item.text,
+                                    wrapMod: loop.index is not same as(list|length) ? 'mb10' : ''
+                                } only %}
+                            {% endfor %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+
+                {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                    placeholder: 'Price',
+                    wrapMod: '_fh',
+                    popupMod: '_small-padding',
+                    selectMin: fullSearchMinPriceSelect,
+                    selectMax: fullSearchMaxPriceSelect,
+                } only %}
+                    {% block dropdown_content %}
+                        <div class="twin-fields">
+                            {% include 'layouts/form/select.html.twig' with selectMin only %}
+                            {% include 'layouts/form/select.html.twig' with selectMax only %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            </div>
+
+            <div class="full-search__selects-group">
+
+            </div>
+        </div>
+
+        <button class="icon-btn icon-search"></button>
+    </div>
+
+    <div class="full-search__buttons-wrap">
+        <div class="full-search__button-map-wrap">
+            {% include 'layouts/controls/button.html.twig' with {
+                'href': '#',
+                'text': 'Search by map',
+                'mod': '_dark _to-icon-on-700 icon-map'
+            } %}
+        </div>
+
+        <div class="full-search__button-search-wrap show-on-700">
+            {% include 'layouts/controls/button.html.twig' with {
+                'button': true,
+                'text': 'Search',
+                'mod': 'icon-search'
+            } %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</form>
+
+
+
+{#                {% include 'layouts/form/select.html.twig' with fullSearchPropertyTypeSelect only %}#}

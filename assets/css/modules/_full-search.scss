@@ -1,0 +1,11 @@
+.full-search {
+	._hide {
+		display: none;
+	}
+	
+	&__buttons-wrap {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-end;
+	}
+}

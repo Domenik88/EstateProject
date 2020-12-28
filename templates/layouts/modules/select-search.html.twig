@@ -1,0 +1,28 @@
+<form class="select-search js-no-ajax">
+    {% include 'layouts/form/select.html.twig' with {
+        'name': 'header-search-select',
+        'inputMod': '_fill-gray',
+        'options': [
+            {
+                'value': 'val1',
+                'text': 'New Property',
+            },
+            {
+                'value': 'val2',
+                'text': 'New Property1',
+            },
+            {
+                'value': 'val3',
+                'text': 'New Property2',
+            },
+        ]
+    } only %}
+
+    {% include 'layouts/form/input.html.twig' with {
+        'name': 'header-search-input',
+        'placeholder': 'Enter Neighbourhood, City, MLS®',
+        'inputMod': '_bordered',
+    } only %}
+
+    <button class="icon-btn icon-search"></button>
+</form>

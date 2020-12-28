@@ -29,3 +29,17 @@ $linkedin: #0A66C2;
 $pinterest: #E60023;
 
 $g1: linear-gradient(90deg, #FBAEC8 -0.05%, #757AFF 100%);
+
+$bg-grad-1: linear-gradient(90deg, #F9B7B4 -0.05%, #FCE0DF 100%);
+$bg-grad-2: linear-gradient(90deg, #F49E9A -0.05%, #FFEFEE 100%);
+$bg-grad-3: linear-gradient(90deg, #E1E7FF -0.05%, #FFFFFF 100%);
+
+.bg-grad-1 {
+	background: $bg-grad-1;
+}
+.bg-grad-2 {
+	background: $bg-grad-2;
+}
+.bg-grad-3 {
+	background: $bg-grad-3;
+}

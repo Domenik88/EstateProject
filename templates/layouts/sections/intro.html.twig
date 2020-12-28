@@ -1,0 +1,39 @@
+<section class="intro {{ wrapMod ?? '' }}">
+    {% if gradient|default(false) %}
+        <div class="intro__gradient {{ gradient }}"></div>
+    {% endif %}
+
+    {% if bg|default(false) %}
+        <div class="intro__bg-wrap js-lazy" data-loader="inlineSvg" data-src="{{ bg }}"></div>
+    {% endif %}
+
+    <div class="intro__container {{ containerMod ?? 'container' }}">
+        <div class="intro__content {{ contentMod ?? 'inner-container' }}">
+            {% if title|default(false) %}
+                <h1 class="intro__title h1">{{ title }}</h1>
+            {% endif %}
+
+            {% if fullSearch|default(false) %}
+                <div class="intro__full-search-wrap mt50">
+                    {% include 'layouts/modules/full-search.html.twig' %}
+                </div>
+            {% endif %}
+
+            {% if simpleSearch|default(false) %}
+                <div class="intro__simple-search-wrap mt20">
+                    {% include 'layouts/modules/simple-search.html.twig' %}
+                </div>
+            {% endif %}
+
+            {% if button|default(false) %}
+                <div class="intro__button-wrap mt20">
+                    {% include 'layouts/controls/button.html.twig' with {
+                        'href': '#',
+                        'text': 'See All 3940 Vancouver Real Estate',
+                        'mod': '_turquoise'
+                    } %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

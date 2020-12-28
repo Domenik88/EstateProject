@@ -1,0 +1,71 @@
+.dropdown-button {
+	$r: &;
+	position: relative;
+	width: 100%;
+	
+	&__popup {
+		z-index: 10;
+		@include absolute(calc(100% + 10px), 0, auto, auto);
+		background: $white;
+		pointer-events: none;
+		transform: rotateX(90deg) translateY(0);
+		transform-origin: 0 0;
+		transition: transform 1s ease, opacity 0.5s ease;
+		opacity: 0;
+		padding: 20px;
+		border: 1px solid $gray-line;
+		border-radius: 10px;
+		
+		&._small-padding {
+			padding: 10px;
+		}
+		
+		&._scroll-padding {
+			padding-right: 10px;
+		}
+	}
+	
+	&__scroll {
+		position: relative;
+		width: 100%;
+		max-height: 185px;
+		overflow: hidden;
+	}
+	
+	&__text {
+		position: relative;
+		width: 100%;
+		padding-right: 14px;
+		color: $dark1;
+		transition: $default-transition;
+		@extend .angle-down-after;
+		cursor: pointer;
+		
+		&:hover {
+			color: $fuchsia-hover;
+		}
+		
+		&._active {
+			& ~ #{$r}__popup {
+				transform: rotateX(0deg);
+				opacity: 1;
+				pointer-events: all;
+			}
+		}
+	}
+	
+	&__placeholder {
+	
+	}
+	
+	&__selected {
+		display: none;
+	}
+	
+	&._fh {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}

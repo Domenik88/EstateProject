@@ -8,7 +8,7 @@ var $_ = {
         this.initForms();
         this.initScrollTopButton();
         this.initScrollEvents();
-        this.initSmoothScrollbar();
+        this.initSmoothScroll();
         this.initNavLinks();
         this.initLazyLoad();
         this.initDefaultSlider();
@@ -88,7 +88,7 @@ var $_ = {
         };
         
         this.selectors = {
-            smoothScrollbar: '.js-smooth-scrollbar',
+            smoothScroll: '.js-smooth-scroll',
             lazyLoad: '.js-lazy',
         };
         
@@ -298,8 +298,8 @@ var $_ = {
                         moveMenu({ fixOffset, $currentMenu, $relatedWrap });
                         return false;
                     }
-                })
-            });
+                });
+            }).addClass('_init');
         }
 
         function bindRightButton(params) {
@@ -326,7 +326,7 @@ var $_ = {
                         return false;
                     }
                 });
-            });
+            }).addClass('_init');
         }
 
         $_.$slideMenu.each((key, item) => {
@@ -567,6 +567,20 @@ var $_ = {
                     
                     if (hasObjectFit) objectFitPolyfill($currentEl);
                 },
+
+                // data-loader="inlineSvg" data-src="path/name.svg"
+                inlineSvg: function(element) {
+                    const
+                        dataTrigger = element.data('trigger'),
+                        dataSrc = element.data('src');
+
+                    element.load(dataSrc, () => {
+                        const reInitCIW = element.find('.js-check-in-window').length;
+
+                        if (reInitCIW) $_.$checkInWindow = $('.js-check-in-window');
+                        if (dataTrigger) setTimeout(() => {$_.$body.trigger(dataTrigger)}, 500);
+                    });
+                },
             });
         }
         
@@ -606,13 +620,13 @@ var $_ = {
         });
     },
 
-    initSmoothScrollbar: function() {
+    initSmoothScroll: function() {
         // setTimeout(() => {
         //     $('.controls-bar .js-call-popup').eq(0).click()
         // }, 500);
 
         function setScrollBars() {
-            const $scrollbar = $($_.selectors.smoothScrollbar);
+            const $scrollbar = $($_.selectors.smoothScroll);
 
             $scrollbar.each(function (key, item) {
                 const
@@ -727,9 +741,9 @@ var $_ = {
                     isBcc = $target.hasClass('js-bcc'),
                     $closestBcc = $target.closest('.js-bcc'),
                     $targetToPrevent = isBcc ? $target : $closestBcc,
-                    dataBccPrevent = $targetToPrevent.data('bcc-prevent'),
-                    dataSelector = '[data-bcc-prevent="'+dataBccPrevent+'"]',
-                    $targetsToClose = $bccItems.not($targetToPrevent).not(dataSelector);
+                    $closestBccSibling = $target.closest('.js-bcc-sibling'),
+                    $relatedBcc = $closestBccSibling.siblings('.js-bcc'),
+                    $targetsToClose = $bccItems.not($targetToPrevent).not($relatedBcc);
                 
                 $targetsToClose.removeClass('_active');
             }
