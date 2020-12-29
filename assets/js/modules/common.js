@@ -24,6 +24,7 @@ var $_ = {
         this.initContentTabs();
         this.initAddToFavorites();
         this.initFullSearch();
+        this.initDropdownButton();
     },
     
     initCache() {
@@ -85,6 +86,9 @@ var $_ = {
         this.$fullSearchTypeInput = $('.js-full-search-type');
         this.$fullSearchTab = $('.js-fs-tab');
 
+        this.$dropdownButton = $('.js-dropdown-button');
+        this.$dropdownSelected = $('.js-dropdown-selected');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -115,6 +119,79 @@ var $_ = {
         is_touch_device();
     },
 
+    initDropdownButton() {
+        function toggleButton($btn, selected) {
+            $btn[selected ? 'addClass' : 'removeClass']('_selected');
+        }
+
+        function findFieldText($btn, val) {
+            return $btn.find(`[value="${val}"]`).text();
+        }
+
+        function showSelected(data) {
+            const
+                { $currentButton, $selectedContainer, $innerFields, dataProps } = data,
+                { patternSimple, patternTwin, patternMulti, patternReplace } = dataProps,
+                values = $innerFields.serializeArray();
+
+            if (patternSimple) {
+                const value = values[0] && values[0].value;
+                if (value) $selectedContainer.html(patternSimple.replace(patternReplace, value));
+                toggleButton($currentButton, !!value);
+            }
+
+            if (patternTwin) {
+                const { first, last, both } = patternTwin;
+
+                console.log('patternTwin');
+                console.log(values);
+
+                const
+                    valueFirst = values[0] && values[0].value,
+                    valueSecond = values[1] && values[1].value;
+
+                if (valueFirst && valueSecond) {
+                    $selectedContainer.html(both.replace(patternReplace, valueFirst).replace(patternReplace, valueSecond));
+                } else if (valueFirst) {
+                    $selectedContainer.html(first.replace(patternReplace, valueFirst));
+                } else {
+                    $selectedContainer.html(last.replace(patternReplace, valueSecond));
+                }
+
+                toggleButton($currentButton, !!(valueFirst || valueSecond));
+            }
+
+            if (patternMulti) {
+                const { single, multi } = patternMulti;
+
+                console.log('patternMulti');
+                console.log(values);
+
+            }
+        }
+
+        $_.$dropdownButton.each((key, item) => {
+            const
+                $currentButton = $(item),
+                $selectedContainer = $currentButton.find($_.$dropdownSelected),
+                $innerFields = $currentButton.find('input, select'),
+                dataProps = $currentButton.data('props');
+
+            console.log(dataProps);
+
+            if (dataProps) {
+                $innerFields.on('change', () => {
+                    showSelected({
+                        $currentButton,
+                        $selectedContainer,
+                        $innerFields,
+                        dataProps,
+                    });
+                });
+            }
+        });
+    },
+
     initFullSearch() {
         $_.$fullSearch.each((key, item) => {
             const
@@ -132,8 +209,9 @@ var $_ = {
 
                 $relatedTabs.addClass('_hide');
                 $matchedTabs.removeClass('_hide');
-
                 $relatedTypeInput.attr('value', $dataVal);
+
+                $_.$body.trigger('body:trigger:init:scrollbars');
             });
         })
     },

@@ -114,8 +114,9 @@
     inputMod: '_bordered-bright',
     options: [
         {
-            value: 'none',
+            value: false,
             text: 'No Min',
+            selected: true,
         },
         {
             value: '100',
@@ -133,8 +134,9 @@
     inputMod: '_bordered-bright',
     options: [
         {
-            value: 'none',
+            value: false,
             text: 'No Max',
+            selected: true,
         },
         {
             value: '100',
@@ -222,7 +224,7 @@
 
 {% set fullSearchBuildingSizeSelect = {
     name: 'building-size',
-    inputMod: '_fill-white',
+    inputMod: '_transparent',
     wrapMod: ' js-fs-tab js-fs-tab-commercial _hide',
     options: [
         {
@@ -250,7 +252,7 @@
 
 {% set fullSearchlotSizeSelect = {
     name: 'lot-size',
-    inputMod: '_fill-white',
+    inputMod: '_transparent',
     wrapMod: ' js-fs-tab js-fs-tab-commercial _hide',
     options: [
         {
@@ -291,7 +293,7 @@
         {% include 'layouts/form/input.html.twig' with {
             name: 'search-input',
             placeholder: 'Enter Neighbourhood, City, MLS®',
-            inputMod: '_bordered',
+            inputMod: '_transparent',
         } only %}
 
         <div class="full-search__selects-container">
@@ -301,6 +303,13 @@
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
                     scroll: true,
                     list: fullSearchPropertyTypeCheckboxes,
+                    dataProps: {
+                        patternReplace: '@',
+                        patternMulti: {
+                            single: '@',
+                            multi: 'Home&#32;Types&#32;(@)',
+                        },
+                    }
                 } only %}
                     {% block dropdown_content %}
                         <div class="list">
@@ -310,7 +319,7 @@
                                     name: item.name,
                                     value: item.value,
                                     text: item.text,
-                                    wrapMod: loop.index is not same as(list|length) ? 'mb10' : ''
+                                    wrapMod: loop.index is not same as(list|length) ? '_dark-gray mb10' : '_dark-gray'
                                 } only %}
                             {% endfor %}
                         </div>
@@ -322,6 +331,13 @@
                     wrapMod: '_fh  js-fs-tab js-fs-tab-commercial _hide',
                     scroll: true,
                     list: fullSearchCommercialTypeCheckboxes,
+                    dataProps: {
+                        patternReplace: '@',
+                        patternMulti: {
+                            single: '@',
+                            multi: 'Home&#32;Types&#32;(@)',
+                        },
+                    }
                 } only %}
                     {% block dropdown_content %}
                         <div class="list">
@@ -344,6 +360,14 @@
                     popupMod: '_small-padding',
                     selectMin: fullSearchMinPriceSelect,
                     selectMax: fullSearchMaxPriceSelect,
+                    dataProps: {
+                        patternReplace: '@',
+                        patternTwin: {
+                            first: '@+',
+                            last: 'ca$0&#32;-&#32;@',
+                            both: '@&#32;-&#32;@',
+                        },
+                    }
                 } only %}
                     {% block dropdown_content %}
                         <div class="twin-fields">
@@ -360,6 +384,10 @@
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
                     popupMod: '_small-padding',
                     beds: fullSearchBedsRadioOptions,
+                    dataProps: {
+                        patternReplace: '@',
+                        patternSimple: "@&#32;Beds"
+                    }
                 } only %}
                     {% block dropdown_content %}
                         {% include 'layouts/controls/radio-row.html.twig' with {
@@ -373,6 +401,10 @@
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
                     popupMod: '_small-padding',
                     baths: fullSearchBathsRadioOptions,
+                    dataProps: {
+                        patternReplace: '@',
+                        patternSimple: '(@)&#32;Baths'
+                    }
                 } only %}
                     {% block dropdown_content %}
                         {% include 'layouts/controls/radio-row.html.twig' with {

@@ -338,6 +338,12 @@
 			z-index: 5;
 		}
 	}
+	
+	&._dark-gray & {
+		&__text {
+			color: $gray0;
+		}
+	}
 }
 
 .circle-button {

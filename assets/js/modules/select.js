@@ -59,11 +59,16 @@ jQuery(function($) {
                 }
                 
                 if (isSelected) {
-                    if (value && value.length) {
-                        $select.closest(sel.$module).addClass('_selected');
-                        $btn.text(title);
-                    }
+                    $select.closest(sel.$module).addClass('_selected');
+                    $btn.text(title);
                 }
+
+                // if (isSelected) {
+                //     if (value && value.length) {
+                //         $select.closest(sel.$module).addClass('_selected');
+                //         $btn.text(title);
+                //     }
+                // }
             }
     
             sel.$body.trigger('trigger:init-scrollbar', {
