@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminSeoController extends AbstractController
 {
     /**
-     * @Route("/admin/seo", name="admin_seo")
+     * @Route("/admin/seo", priority=10, name="admin_seo")
      */
     public function index()
     {

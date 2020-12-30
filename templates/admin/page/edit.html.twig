@@ -1,0 +1,30 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit Page{% endblock %}
+
+{% block body %}
+
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Responsive Hover Table</h3>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <h1>Edit Page</h1>
+
+                        {{ include('admin/page/_form.html.twig', {'button_label': 'Update'}) }}
+
+                        <a href="{{ path('page_index') }}">back to list</a>
+
+                        {{ include('admin/page/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

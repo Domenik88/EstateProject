@@ -10,6 +10,7 @@
 namespace App\Service\Listing;
 
 use App\Entity\Listing;
+use App\Entity\User;
 use DateTime;
 use Symfony\Component\Security\Core\Security;
 
@@ -26,6 +27,13 @@ class ListingSearchDataService
 
     public function constructSearchListingData(Listing $listing): object
     {
+        $currentUser = $this->security->getUser();
+        if ($currentUser instanceof User) {
+            $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
+        } else {
+            $userFavorite = false;
+        }
+
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
@@ -50,7 +58,7 @@ class ListingSearchDataService
             'processingStatus' => $listing->getProcessingStatus(),
             'selfListing'      => $listing->getSelfListing(),
             'contractDate'     => $listing->getContractDate(),
-            'userFavorite'     => $this->security->getUser() ? $this->security->getUser()->getFavoriteListings()->contains($listing) : false,
+            'userFavorite'     => $userFavorite,
         ];
         return $listingObject;
     }

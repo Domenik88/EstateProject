@@ -147,7 +147,7 @@ class ListingService
     public function setAdminListingSelfListing(string $mlsId)
     {
         $singleListing = $this->listingRepository->findOneBy([
-            'feedListingID' => $mlsId
+            'id' => $mlsId
         ]);
         $selfListingStatus = $singleListing->getSelfListing() ? false : true;
         $singleListing->setSelfListing($selfListingStatus);

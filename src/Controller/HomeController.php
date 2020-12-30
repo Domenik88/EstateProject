@@ -3,20 +3,24 @@
 namespace App\Controller;
 
 use App\Service\Listing\ListingService;
+use App\Service\Page\PageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
     private ListingService $listingService;
+    private PageService $pageService;
 
-    public function __construct(ListingService $listingService)
+    public function __construct(ListingService $listingService, PageService $pageService)
     {
         $this->listingService = $listingService;
+        $this->pageService = $pageService;
     }
 
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="home", priority=10)
      */
     public function index()
     {
@@ -32,4 +36,20 @@ class HomeController extends AbstractController
             'searchFormObject' => $searchFormObject,
         ]);
     }
+
+    /**
+     * @Route ("/{slug}", name="page", requirements={"slug"=".+"})
+     */
+    public function page($slug)
+    {
+        $page = $this->pageService->search([ 'slug' => $slug, 'status' => true ]);
+        if ($page) {
+            return $this->render('page/' . $page->getType() . '-page.html.twig', [
+                'page' => $page,
+            ]);
+        } else {
+            return $this->render('bundles/TwigBundle/Exception/error404.html.twig');
+        }
+    }
+
 }

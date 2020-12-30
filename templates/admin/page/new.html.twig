@@ -1,0 +1,36 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Page{% endblock %}
+
+{% block body %}
+
+    {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
+    {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
+
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Responsive Hover Table</h3>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1>Create new Page</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-9">
+                                {{ include('admin/page/_form.html.twig') }}
+                                <a href="{{ path('page_index') }}">back to list</a>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
