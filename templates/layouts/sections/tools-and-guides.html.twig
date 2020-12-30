@@ -1,0 +1,59 @@
+<section class="tools-and-guides {{ wrapMod ?? 'mb100' }}">
+    {% include 'layouts/common/circles-bg.html.twig' with {
+        mod: 'mtr100'
+    } only %}
+
+    <div class="tools-and-guides__container {{ containerMod ?? 'container' }}">
+        <div class="tools-and-guides__table {{ innerContainerMod ?? 'inner-container' }}" >
+            {% if priceCol|default(false) %}
+                <div class="tools-and-guides__col pt50 pb50">
+                    {% if priceCol.img|default(false) %}
+                        <div class="tools-and-guides__img-wrap">
+                            <img class="tools-and-guides__img js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ priceCol.img }}">
+                        </div>
+                    {% endif %}
+
+                    <div class="tools-and-guides__content">
+                        {% if priceCol.title|default(false) %}
+                            <h3 class="tools-and-guides__title h3 mb20">{{ priceCol.title }}</h3>
+                        {% endif %}
+
+                        {% if priceCol.text|default(false) %}
+                            <p class="tools-and-guides__text small-text2 mb20">{{ priceCol.text }}</p>
+                        {% endif %}
+
+                        {% if priceCol.link|default(false) %}
+                            {% include 'layouts/controls/button.html.twig' with {
+                                'href': priceCol.link,
+                                'text': 'Price your home',
+                                'mod': '_turquoise'
+                            } %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if subscribeCol|default(false) %}
+                <div class="tools-and-guides__col pt50 pb50">
+                    {% if subscribeCol.img|default(false) %}
+                        <div class="tools-and-guides__img-wrap">
+                            <img class="tools-and-guides__img js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ subscribeCol.img }}">
+                        </div>
+                    {% endif %}
+
+                    <div class="tools-and-guides__content">
+                        {% if subscribeCol.title|default(false) %}
+                            <h3 class="tools-and-guides__title h3 mb20">{{ subscribeCol.title }}</h3>
+                        {% endif %}
+
+                        {% if subscribeCol.text|default(false) %}
+                            <p class="tools-and-guides__text small-text2 mb20">{{ subscribeCol.text }}</p>
+                        {% endif %}
+
+                        {% include 'layouts/modules/mini-subscribe-form.html.twig' %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
