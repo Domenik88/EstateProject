@@ -141,12 +141,8 @@ var $_ = {
             }
 
             if (patternTwin) {
-                const { first, last, both } = patternTwin;
-
-                console.log('patternTwin');
-                console.log(values);
-
                 const
+                    { first, last, both } = patternTwin,
                     valueFirst = values[0] && values[0].value,
                     valueSecond = values[1] && values[1].value;
 
@@ -164,9 +160,13 @@ var $_ = {
             if (patternMulti) {
                 const { single, multi } = patternMulti;
 
-                console.log('patternMulti');
-                console.log(values);
+                if (values.length > 1) {
+                    $selectedContainer.html(multi.replace(patternReplace, values.length));
+                } else if (values.length > 0) {
+                    $selectedContainer.html(single.replace(patternReplace, values[0].value));
+                }
 
+                toggleButton($currentButton, !!values.length);
             }
         }
 
@@ -176,8 +176,6 @@ var $_ = {
                 $selectedContainer = $currentButton.find($_.$dropdownSelected),
                 $innerFields = $currentButton.find('input, select'),
                 dataProps = $currentButton.data('props');
-
-            console.log(dataProps);
 
             if (dataProps) {
                 $innerFields.on('change', () => {
