@@ -21,6 +21,30 @@
         wrapMod: 'mb100'
     } only %}
 
+    {% include 'layouts/sections/advantages.html.twig' with {
+        title: 'Why EstateBlock?',
+        list: [
+            {
+                img: asset('build/images/advantages/advantage-1.svg'),
+                title: "Full database search",
+                text: "Use our home search tool to access the largest and fastest database of properties for sale in Vancouver. EstateBlock's MLS® search and New Homes centre come together to offer the most expansive bank of houses for sale in Lower Mainland on the web.",
+                link: "#",
+            },
+            {
+                img: asset('build/images/advantages/advantage-2.svg'),
+                title: "Get the inside scoop",
+                text: "Get the information you need to find the perfect home and neighborhood, and buy with confidence. Check out the most comprehensive, accurate and innovate suite of tools and data to find the perfect match in a new home you’ll love.",
+                link: "#",
+            },
+            {
+                img: asset('build/images/advantages/advantage-3.svg'),
+                title: "Full professional REALTORS® services",
+                text: "Enjoy full service assistance, and have a professional negotiator on your side to get you the very best deal on your new home in Vancouver while saving thousands of dollars.",
+                link: "#",
+            },
+        ]
+    } only %}
+
     {% include 'layouts/sections/slider-section.html.twig' with {
         title: 'Featured Properties',
         titleTag: 'h2',
