@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/admin")
+ * @Route("/admin", priority=10)
  */
 class AdminController extends AbstractController
 {
@@ -72,7 +72,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/listings/listing-{mlsId}", name="admin_listing_ajax", methods={"POST"})
+     * @Route("/listings/listing-{mlsId}", priority=10, name="admin_listing_ajax", methods={"POST"})
      */
     public function setEstateblockListing(string $mlsId)
     {
@@ -81,7 +81,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/listings/search", name="admin_listing_search")
+     * @Route("/listings/search", priority=10, name="admin_listing_search")
      */
     public function searchListing(string $mlsId)
     {

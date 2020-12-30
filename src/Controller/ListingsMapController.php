@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListingsMapController extends AbstractController
 {
     /**
-     * @Route("/map", name="listings_map")
+     * @Route("/map", priority=10, name="listings_map")
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class ListingsMapController extends AbstractController
     }
 
     /**
-     * @Route("/listing/search", name="listings_search")
+     * @Route("/listing/search", priority=10, name="listings_search")
      */
     public function listingSearch(Request $request, ListingService $listingService)
     {
