@@ -23,7 +23,7 @@ class ListingController extends AbstractController
     }
 
     /**
-     * @Route("/listing/{province}/{mlsNum}-{feedName}", name="listing")
+     * @Route("/listing/{province}/{mlsNum}-{feedName}", priority=10, name="listing")
      */
     public function index(string $province, string $mlsNum, string $feedName)
     {

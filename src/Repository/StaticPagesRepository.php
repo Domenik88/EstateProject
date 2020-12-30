@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\StaticPages;
+use App\Entity\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method StaticPages|null find($id, $lockMode = null, $lockVersion = null)
- * @method StaticPages|null findOneBy(array $criteria, array $orderBy = null)
- * @method StaticPages[]    findAll()
- * @method StaticPages[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Page|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Page|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Page[]    findAll()
+ * @method Page[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StaticPagesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, StaticPages::class);
+        parent::__construct($registry, Page::class);
     }
 
     // /**

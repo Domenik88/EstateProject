@@ -37,7 +37,7 @@ class ListingSearchDataService
         } else {
             $userFavorite = false;
         }
-//        die;
+
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[

@@ -1,4 +1,30 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ dump(form) }}
+{{ form_start(form, {'attr':{"role":"form"}}) }}
+    <div class="box-body">
+        <div class="form-group">
+            {{ form_label(form.label, 'label') }}
+            {{ form_widget(form.label, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.content, 'content') }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.slug, 'slug') }}
+            {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.type, 'type') }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="checkbox">
+            <label>
+                {{ form_label(form.status, 'status') }}
+                {{ form_widget(form.status) }}
+            </label>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
 {{ form_end(form) }}

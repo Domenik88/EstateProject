@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\StaticPages;
+use App\Entity\Page;
 use App\Form\StaticPagesType;
 use App\Repository\StaticPagesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/static-pages")
+ * @Route("/admin/static-pages", priority=10)
  */
-class StaticPagesController extends AbstractController
+class AdminStaticPageController extends AbstractController
 {
     /**
      * @Route("/", name="static_pages_index", methods={"GET"})
@@ -30,7 +30,7 @@ class StaticPagesController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $staticPage = new StaticPages();
+        $staticPage = new Page();
         $form = $this->createForm(StaticPagesType::class, $staticPage);
         $form->handleRequest($request);
 
@@ -39,7 +39,7 @@ class StaticPagesController extends AbstractController
             $entityManager->persist($staticPage);
             $entityManager->flush();
 
-            return $this->redirectToRoute('static_pages_index');
+            return $this->redirectToRoute('static_pages_edit',['id' => $staticPage->getId()]);
         }
 
         return $this->render('admin/static_pages/new.html.twig', [
@@ -51,7 +51,7 @@ class StaticPagesController extends AbstractController
     /**
      * @Route("/{id}", name="static_pages_show", methods={"GET"})
      */
-    public function show(StaticPages $staticPage): Response
+    public function show(Page $staticPage): Response
     {
         return $this->render('admin/static_pages/show.html.twig', [
             'static_page' => $staticPage,
@@ -61,7 +61,7 @@ class StaticPagesController extends AbstractController
     /**
      * @Route("/{id}/edit", name="static_pages_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, StaticPages $staticPage): Response
+    public function edit(Request $request, Page $staticPage): Response
     {
         $form = $this->createForm(StaticPagesType::class, $staticPage);
         $form->handleRequest($request);
@@ -69,7 +69,7 @@ class StaticPagesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('static_pages_index');
+            return $this->redirectToRoute('static_pages_edit',['id' => $staticPage->getId()]);
         }
 
         return $this->render('admin/static_pages/edit.html.twig', [
@@ -81,7 +81,7 @@ class StaticPagesController extends AbstractController
     /**
      * @Route("/{id}", name="static_pages_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, StaticPages $staticPage): Response
+    public function delete(Request $request, Page $staticPage): Response
     {
         if ($this->isCsrfTokenValid('delete'.$staticPage->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

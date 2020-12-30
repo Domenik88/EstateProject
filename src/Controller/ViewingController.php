@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewingController extends AbstractController
 {
     /**
-     * @Route("/viewing/new", name="new_viewing", methods={"POST"})
+     * @Route("/viewing/new", priority=10, name="new_viewing", methods={"POST"})
      */
     public function index(Request $request, ViewingService $viewingService): Response
     {

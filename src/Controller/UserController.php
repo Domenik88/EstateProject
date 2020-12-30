@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user")
+ * @Route("/user", priority=10)
  */
 class UserController extends AbstractController
 {
@@ -103,7 +103,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/addToFavorites/{listingId}-{userId}", name="add_to_favorites", methods={"POST"})
+     * @Route("/addToFavorites/{listingId}-{userId}", priority=10, name="add_to_favorites", methods={"POST"})
      */
     public function favorite(Request $request, string $listingId, int $userId): Response
     {

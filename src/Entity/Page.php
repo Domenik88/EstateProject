@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=StaticPagesRepository::class)
  */
-class StaticPages
+class Page
 {
     /**
      * @ORM\Id
@@ -31,6 +31,16 @@ class StaticPages
      * @ORM\Column(type="boolean")
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $type;
 
     public function getId(): ?int
     {
@@ -69,6 +79,30 @@ class StaticPages
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

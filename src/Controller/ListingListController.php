@@ -21,7 +21,7 @@ class ListingListController extends AbstractController
     }
 
     /**
-     * @Route("/listing/list/{page}", name="listing_list", requirements={"page"="\d+"})
+     * @Route("/listing/list/{page}", priority=10, name="listing_list", requirements={"page"="\d+"})
      */
     public function list(int $page = 1)
     {
@@ -35,9 +35,9 @@ class ListingListController extends AbstractController
     }
 
     /**
-     * @Route("/listing/list/coordinates/{page}", name="listing_list_coordinates", requirements={"page"="\d+"})
+     * @Route("/listing/list/coordinates/{page}", priority=10, name="listing_list_coordinates", requirements={"page"="\d+"})
      */
-    public function listCoordinates(int $page = 1)
+    public function listCoordinates(int $page = 1): ?JsonResponse
     {
         $offset = ($page - 1) * self::LIMIT;
         $listingListCoordinates = $this->listingService->getListingListCoordinates('ddf',$page,self::LIMIT,$offset);

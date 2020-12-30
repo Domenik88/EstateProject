@@ -1,3 +1,6 @@
+global.moment = require('moment');
+require('tempusdominus-bootstrap-4');
+
 $('.js-estate-change').on('click', (e) => {
     const
         $currentTarget = $(e.currentTarget),

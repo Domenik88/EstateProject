@@ -6,7 +6,7 @@
 
     {% embed 'admin/layouts/top-panel.html.twig' %}{% endembed %}
     {% embed 'admin/layouts/left-panel.html.twig' %}{% endembed %}
-
+{{ dump(static_pages) }}
     <div class="content-wrapper">
         <div class="row">
             <div class="col-12">
@@ -20,7 +20,8 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Label</th>
-                                    <th>Content</th>
+                                    <th>Slug</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>actions</th>
                                 </tr>
@@ -30,7 +31,8 @@
                                 <tr>
                                     <td>{{ static_page.id }}</td>
                                     <td>{{ static_page.label }}</td>
-                                    <td>{{ static_page.content }}</td>
+                                    <td>{{ static_page.slug }}</td>
+                                    <td>{{ static_page.type }}</td>
                                     <td>{{ static_page.status ? 'Yes' : 'No' }}</td>
                                     <td>
                                         <a href="{{ path('static_pages_show', {'id': static_page.id}) }}">show</a>
