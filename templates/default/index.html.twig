@@ -11,6 +11,7 @@
         wrapMod: '_big mb50'
     } only %}
 
+    {% include 'layouts/sections/quotes-slider.html.twig' %}
 
     {# TODO: replace featuredProperties by selfListings #}
     {% include 'layouts/sections/slider-section.html.twig' with {
@@ -26,6 +27,9 @@
         slides: featuredProperties,
         wrapMod: 'mb100'
     } only %}
+
+
+    {% include 'layouts/sections/mls-note.html.twig' %}
 
 
 

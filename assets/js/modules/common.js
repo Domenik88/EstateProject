@@ -715,7 +715,7 @@ var $_ = {
         $_.$defaultSlider.each(function (key, item) {
             const
                 $currentSlider = $(item),
-                $innerSlider = $currentSlider.find('[data-prevent-parent-swipe]'),
+                $preventChild = $currentSlider.find('[data-prevent-parent-swipe]'),
                 dataLazyInner = $currentSlider.data('lazy-inner'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
@@ -724,7 +724,7 @@ var $_ = {
                 .on('init', function (event, slick) {
                     $_.$body.trigger('update:lazy-load');
                     if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
-                    if ($innerSlider.length) $_._preventParentSliderSwipe($currentSlider, $innerSlider);
+                    if ($preventChild.length) $_._preventParentSliderSwipe($currentSlider, $preventChild);
                     if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
                     if (dataLazyInner) $_._initSliderLazyInner(slick);
                 })

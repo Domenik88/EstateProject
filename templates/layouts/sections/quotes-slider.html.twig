@@ -1,0 +1,69 @@
+{% set tmpQuotesSliderArray = [
+    {
+        text: 'Estateblock.com, a new real estate search engine that maps the Multiple Listing Service listings and uses colour coding to provide data on education, minority group visibility, education level, income levels, crime, violent crime, schools, daycares, transit and climate in neighbourhoods throughout the Lower Mainland.',
+        img: asset('build/images/testimonials-img-1.png'),
+    },
+    {
+        text: 'Estateblock.com, a new real estate search engine that maps the Multiple Listing Service listings and uses colour coding to provide data on education, minority group visibility, education level, income levels, crime, violent crime, schools, daycares, transit and climate in neighbourhoods throughout the Lower Mainland. and uses colour coding to provide data on education, minority group visibility, education level, income levels, crime, violent crime, schools, daycares, transit and climate in neighbourhoods throughout the Lower Mainland.',
+        img: asset('build/images/testimonials-img-1.png'),
+    },
+    {
+        text: 'Estateblock.com, a new real estate search engine that maps the Multiple Listing Service listings and uses colour coding to provide data on education',
+        img: asset('build/images/testimonials-img-1.png'),
+    },
+] %}
+
+{% set quotesSliderTextParams = {
+    arrows: false,
+    infinite: true,
+    fade: true,
+    dots: false,
+    asNavFor: '.js-quotes-slider-logo',
+    adaptiveHeight: true,
+} %}
+
+{% set quotesSliderLogoParams = {
+    arrows: false,
+    infinite: true,
+    fade: true,
+    dots: true,
+    asNavFor: '.js-quotes-slider-text',
+} %}
+
+<section class="quotes-slider {{ wrapMod ?? 'mb100' }}">
+    <div class="slider-section__container js-wrap {{ containerMod ?? 'container' }}">
+        <div class="quotes-slider__table">
+            <div class="quotes-slider__col quotes-slider__col_left">
+                <div class="quotes-slider__text-wrap icon-quotes">
+                    <div
+                            class="quotes-slider-text js-default-slider js-quotes-slider-text"
+                            data-slider-parameters="{{ quotesSliderTextParams|json_encode() }}"
+                    >
+                        {% for item in tmpQuotesSliderArray %}
+                            <div class="quotes-slider-text__item pt50 pb50">
+                                <span class="quotes-slider-text__content body-text animate-in-active-slide">{{ item.text }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="quotes-slider__col quotes-slider__col_right">
+                <div
+                    class="quotes-slider-logo _gray-dots-nav js-default-slider js-quotes-slider-logo"
+                    data-lazy-inner="true"
+                    data-img-selector="src"
+                    data-slider-parameters="{{ quotesSliderLogoParams|json_encode() }}"
+                >
+                    {% for item in tmpQuotesSliderArray %}
+                        <div class="quotes-slider-logo__item pt50 pb50">
+                            <div class="quotes-slider-logo__img-wrap animate-in-active-slide">
+                                <img class="quotes-slider-logo__img" data-src="{{ item.img }}">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
