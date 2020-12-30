@@ -1,9 +1,12 @@
 <div class="breadcrumbs mt20 mb80">
     <div class="breadcrumbs__list container">
-        <a href="#">Home</a>
-        <a href="#">Page 2</a>
-        <a href="#">Page 3</a>
-        <a href="#">Page 4</a>
-        <span>Current page</span>
+        <a href="/">Home</a>
+        {% for crumb in listing.breadCrumbs | cast_to_array %}
+            {% if loop.last %}
+                <span>{{ crumb.crumb }}</span>
+            {% else %}
+                <a href="{{ crumb.uri }}">{{ crumb.crumb }}</a>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
