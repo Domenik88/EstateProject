@@ -1,6 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}StaticPages index{% endblock %}
+{% block title %}Page index{% endblock %}
 
 {% block body %}
 
@@ -18,7 +18,7 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Label</th>
+                                    <th>Title</th>
                                     <th>Slug</th>
                                     <th>Type</th>
                                     <th>Status</th>
@@ -29,13 +29,13 @@
                             {% for static_page in static_pages %}
                                 <tr>
                                     <td>{{ static_page.id }}</td>
-                                    <td>{{ static_page.label }}</td>
+                                    <td>{{ static_page.title }}</td>
                                     <td>{{ static_page.slug }}</td>
                                     <td>{{ static_page.type }}</td>
                                     <td>{{ static_page.status ? 'Yes' : 'No' }}</td>
                                     <td>
-                                        <a href="{{ path('static_pages_show', {'id': static_page.id}) }}">show</a>
-                                        <a href="{{ path('static_pages_edit', {'id': static_page.id}) }}">edit</a>
+                                        <a href="{{ path('page_show', {'id': static_page.id}) }}">show</a>
+                                        <a href="{{ path('page_edit', {'id': static_page.id}) }}">edit</a>
                                     </td>
                                 </tr>
                             {% else %}
@@ -45,7 +45,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <a href="{{ path('static_pages_new') }}">Create new</a>
+                        <a href="{{ path('page_new') }}">Create new</a>
                     </div>
                 </div>
             </div>

@@ -10,14 +10,14 @@
 namespace App\Service\Page;
 
 use App\Entity\Page;
-use App\Repository\StaticPagesRepository;
+use App\Repository\PageRepository;
 
 class PageService
 {
 
-    private StaticPagesRepository $pageRepository;
+    private PageRepository $pageRepository;
 
-    public function __construct(StaticPagesRepository $pageRepository)
+    public function __construct(PageRepository $pageRepository)
     {
         $this->pageRepository = $pageRepository;
     }

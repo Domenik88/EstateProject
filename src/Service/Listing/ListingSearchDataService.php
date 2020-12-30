@@ -10,6 +10,7 @@
 namespace App\Service\Listing;
 
 use App\Entity\Listing;
+use App\Entity\User;
 use DateTime;
 use Symfony\Component\Security\Core\Security;
 
@@ -17,7 +18,6 @@ class ListingSearchDataService
 {
     private ListingMediaService $listingMediaService;
     private Security $security;
-    const ADMIN_ROLE = 'ROLE_ADMIN';
 
     public function __construct(ListingMediaService $listingMediaService, Security $security)
     {
@@ -27,13 +27,9 @@ class ListingSearchDataService
 
     public function constructSearchListingData(Listing $listing): object
     {
-        if ($this->security->getUser()) {
-            $userRoles = $this->security->getUser()->getRoles();
-            if ( !in_array(self::ADMIN_ROLE, $userRoles) ) {
-                $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
-            } else {
-                $userFavorite = false;
-            }
+        $currentUser = $this->security->getUser();
+        if ($currentUser instanceof User) {
+            $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
         } else {
             $userFavorite = false;
         }

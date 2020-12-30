@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\StaticPagesRepository;
+use App\Repository\PageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=StaticPagesRepository::class)
+ * @ORM\Entity(repositoryClass=PageRepository::class)
+ * @ORM\Table(name="page",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="page_slug_idx", columns={"slug"})
+ *     },
+ * )
  */
 class Page
 {
@@ -18,9 +23,9 @@ class Page
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
-    private $label;
+    private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -33,28 +38,33 @@ class Page
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text")
      */
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="text")
      */
     private $type;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLabel(): ?string
+    public function getTitle(): ?string
     {
-        return $this->label;
+        return $this->title;
     }
 
-    public function setLabel(string $label): self
+    public function setTitle(string $title): self
     {
-        $this->label = $label;
+        $this->title = $title;
 
         return $this;
     }
@@ -103,6 +113,18 @@ class Page
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
