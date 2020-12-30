@@ -89,6 +89,10 @@
 		z-index: 10;
 		transition: $default-transition;
 		
+		&:not(._init) {
+			opacity: 0;
+		}
+		
 		&_left {
 			@include absolute(0, auto, auto);
 		}
@@ -127,6 +131,26 @@
 		
 		&::after {
 			background: linear-gradient(270deg, $gray2 50%, rgba(255, 255, 255, 0) 100%);
+		}
+	}
+	
+	&._turquoise {
+		&::before,
+		&::after {
+			display: none;
+		}
+		
+		#{$r}__link {
+			color: $turquoise;
+			
+			&:hover {
+				color: $blue;
+			}
+			
+			&._active {
+				color: $dark1;
+				border-color: $dark1;
+			}
 		}
 	}
 }

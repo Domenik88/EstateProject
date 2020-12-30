@@ -1,0 +1,109 @@
+.full-search {
+	._hide {
+		display: none;
+	}
+	
+	.icon-btn {
+		@include absolute(0,7px,0,auto);
+		width: 47px;
+		height: 47px;
+		border-radius: 15px;
+		
+		&::before {
+			font-size: 18px;
+		}
+	}
+	
+	.check__text {
+		white-space: nowrap;
+	}
+	
+	.select-module {
+		&__scroll {
+			max-height: 185px;
+		}
+		
+		&__option {
+			white-space: nowrap;
+		}
+		
+		&__dropdown {
+			width: auto;
+			left: auto;
+			right: 0;
+		}
+	}
+	
+	&__buttons-wrap {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-end;
+	}
+	
+	&__selects-group {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		width: 50%;
+		height: 100%;
+		
+		& > .dropdown-button,
+		& > .select-module {
+			position: relative;
+			width: 50%;
+			
+			&::before {
+				content: '';
+				@include absolute(0,auto);
+				width: 1px;
+				height: 40px;
+				background: $gray-line;
+			}
+		}
+		
+		& > .dropdown-button {
+			padding: 0 15px 0 20px;
+		}
+		
+		& > .select-module {
+			height: 100%;
+			
+			.select-module__input-container {
+				height: 100%;
+				padding: 0 30px 0 20px;
+			}
+		}
+	}
+	
+	&__selects-container {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		width: 550px;
+		height: 100%;
+		@include absolute(0,70px,auto,auto);
+	}
+	
+	&__fields-container {
+		position: relative;
+		height: 60px;
+		box-shadow: 0 0 0 5px $dark1;
+		border-radius: 20px;
+		background: $white;
+		
+		& > .input-style {
+			width: calc(100% - 620px);
+			height: 100%;
+			
+			.input-style__container {
+				height: 100%;
+			}
+			
+			.input-style__input {
+				height: 100%;
+				border-radius: 20px 0 0 20px;
+				padding-left: 20px;
+			}
+		}
+	}
+}

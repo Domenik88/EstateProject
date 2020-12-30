@@ -8,7 +8,7 @@ var $_ = {
         this.initForms();
         this.initScrollTopButton();
         this.initScrollEvents();
-        this.initSmoothScrollbar();
+        this.initSmoothScroll();
         this.initNavLinks();
         this.initLazyLoad();
         this.initDefaultSlider();
@@ -23,6 +23,8 @@ var $_ = {
         this.initPrintListing();
         this.initContentTabs();
         this.initAddToFavorites();
+        this.initFullSearch();
+        this.initDropdownButton();
     },
     
     initCache() {
@@ -72,11 +74,20 @@ var $_ = {
         this.$slideMenuWrap = $('.js-slide-menu-wrap');
         this.$slideMenuBtnLeft = $('.js-slide-menu-btn-left');
         this.$slideMenuBtnRight = $('.js-slide-menu-btn-right');
+        this.$slideMenuLink = $('.js-slide-menu-link');
 
         this.$printListing = $('.js-print-listing');
         this.$listingPrintPopup = $('.js-listing-print-popup');
         this.$dataContent = $('.js-data-content');
         this.$addToFavorites = $('.js-favorite-listing');
+
+        this.$fullSearch = $('.js-full-search');
+        this.$fullSearchTypeLink = $('.js-full-search-type-link');
+        this.$fullSearchTypeInput = $('.js-full-search-type');
+        this.$fullSearchTab = $('.js-fs-tab');
+
+        this.$dropdownButton = $('.js-dropdown-button');
+        this.$dropdownSelected = $('.js-dropdown-selected');
 
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
@@ -88,7 +99,7 @@ var $_ = {
         };
         
         this.selectors = {
-            smoothScrollbar: '.js-smooth-scrollbar',
+            smoothScroll: '.js-smooth-scroll',
             lazyLoad: '.js-lazy',
         };
         
@@ -106,6 +117,101 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initDropdownButton() {
+        function toggleButton($btn, selected) {
+            $btn[selected ? 'addClass' : 'removeClass']('_selected');
+        }
+
+        function findFieldText($btn, val) {
+            return $btn.find(`[value="${val}"]`).text();
+        }
+
+        function showSelected(data) {
+            const
+                { $currentButton, $selectedContainer, $innerFields, dataProps } = data,
+                { patternSimple, patternTwin, patternMulti, patternReplace } = dataProps,
+                values = $innerFields.serializeArray();
+
+            if (patternSimple) {
+                const value = values[0] && values[0].value;
+                if (value) $selectedContainer.html(patternSimple.replace(patternReplace, value));
+                toggleButton($currentButton, !!value);
+            }
+
+            if (patternTwin) {
+                const
+                    { first, last, both } = patternTwin,
+                    valueFirst = values[0] && values[0].value,
+                    valueSecond = values[1] && values[1].value;
+
+                if (valueFirst && valueSecond) {
+                    $selectedContainer.html(both.replace(patternReplace, valueFirst).replace(patternReplace, valueSecond));
+                } else if (valueFirst) {
+                    $selectedContainer.html(first.replace(patternReplace, valueFirst));
+                } else {
+                    $selectedContainer.html(last.replace(patternReplace, valueSecond));
+                }
+
+                toggleButton($currentButton, !!(valueFirst || valueSecond));
+            }
+
+            if (patternMulti) {
+                const { single, multi } = patternMulti;
+
+                if (values.length > 1) {
+                    $selectedContainer.html(multi.replace(patternReplace, values.length));
+                } else if (values.length > 0) {
+                    $selectedContainer.html(single.replace(patternReplace, values[0].value));
+                }
+
+                toggleButton($currentButton, !!values.length);
+            }
+        }
+
+        $_.$dropdownButton.each((key, item) => {
+            const
+                $currentButton = $(item),
+                $selectedContainer = $currentButton.find($_.$dropdownSelected),
+                $innerFields = $currentButton.find('input, select'),
+                dataProps = $currentButton.data('props');
+
+            if (dataProps) {
+                $innerFields.on('change', () => {
+                    showSelected({
+                        $currentButton,
+                        $selectedContainer,
+                        $innerFields,
+                        dataProps,
+                    });
+                });
+            }
+        });
+    },
+
+    initFullSearch() {
+        $_.$fullSearch.each((key, item) => {
+            const
+                $fullSearch = $(item),
+                $relatedTypeLinks = $fullSearch.find($_.$fullSearchTypeLink),
+                $relatedTypeInput = $fullSearch.find($_.$fullSearchTypeInput),
+                $relatedTabs = $fullSearch.find($_.$fullSearchTab);
+
+            $relatedTypeLinks.on('click', (e) => {
+                const
+                    $currentTarget = $(e.currentTarget),
+                    $dataVal = $currentTarget.data('val'),
+                    $dataToggle = $currentTarget.data('toggle') || 'default',
+                    $matchedTabs = $relatedTabs.filter(`[class*="-${$dataToggle}"]`);
+
+                $relatedTabs.addClass('_hide');
+                $matchedTabs.removeClass('_hide');
+                $relatedTypeInput.attr('value', $dataVal);
+
+                $_.$body.trigger('body:trigger:init:scrollbars');
+            });
+        })
     },
 
     initContentTabs() {
@@ -132,11 +238,7 @@ var $_ = {
                 $currentLink = $(e.currentTarget),
                 dataContentId = $currentLink.data('content-id'),
                 dataInitMap = $currentLink.data('init-map'),
-                $wrap = $currentLink.closest($_.$jsWrap),
-                $siblingNav = $wrap.find($_.$contentTabNav);
-
-            $siblingNav.removeClass('_active');
-            $currentLink.addClass('_active');
+                $wrap = $currentLink.closest($_.$jsWrap);
 
             if (dataInitMap) $_.$body.trigger('trigger:init-map', dataInitMap);
 
@@ -298,8 +400,8 @@ var $_ = {
                         moveMenu({ fixOffset, $currentMenu, $relatedWrap });
                         return false;
                     }
-                })
-            });
+                });
+            }).addClass('_init');
         }
 
         function bindRightButton(params) {
@@ -326,7 +428,7 @@ var $_ = {
                         return false;
                     }
                 });
-            });
+            }).addClass('_init');
         }
 
         $_.$slideMenu.each((key, item) => {
@@ -367,7 +469,17 @@ var $_ = {
                     ui,
                 });
             });
-        })
+        });
+
+        $_.$slideMenuLink.on('click', (e) => {
+            const
+                $currentTarget = $(e.currentTarget),
+                $relatedMenu = $currentTarget.closest($_.$slideMenu),
+                $relatedLinks = $relatedMenu.find($_.$slideMenuLink);
+
+            $relatedLinks.removeClass('_active');
+            $currentTarget.addClass('_active');
+        });
     },
 
     initStickyBlock() {
@@ -567,6 +679,20 @@ var $_ = {
                     
                     if (hasObjectFit) objectFitPolyfill($currentEl);
                 },
+
+                // data-loader="inlineSvg" data-src="path/name.svg"
+                inlineSvg: function(element) {
+                    const
+                        dataTrigger = element.data('trigger'),
+                        dataSrc = element.data('src');
+
+                    element.load(dataSrc, () => {
+                        const reInitCIW = element.find('.js-check-in-window').length;
+
+                        if (reInitCIW) $_.$checkInWindow = $('.js-check-in-window');
+                        if (dataTrigger) setTimeout(() => {$_.$body.trigger(dataTrigger)}, 500);
+                    });
+                },
             });
         }
         
@@ -606,13 +732,13 @@ var $_ = {
         });
     },
 
-    initSmoothScrollbar: function() {
+    initSmoothScroll: function() {
         // setTimeout(() => {
         //     $('.controls-bar .js-call-popup').eq(0).click()
         // }, 500);
 
         function setScrollBars() {
-            const $scrollbar = $($_.selectors.smoothScrollbar);
+            const $scrollbar = $($_.selectors.smoothScroll);
 
             $scrollbar.each(function (key, item) {
                 const
@@ -727,9 +853,9 @@ var $_ = {
                     isBcc = $target.hasClass('js-bcc'),
                     $closestBcc = $target.closest('.js-bcc'),
                     $targetToPrevent = isBcc ? $target : $closestBcc,
-                    dataBccPrevent = $targetToPrevent.data('bcc-prevent'),
-                    dataSelector = '[data-bcc-prevent="'+dataBccPrevent+'"]',
-                    $targetsToClose = $bccItems.not($targetToPrevent).not(dataSelector);
+                    $closestBccSibling = $target.closest('.js-bcc-sibling'),
+                    $relatedBcc = $closestBccSibling.siblings('.js-bcc'),
+                    $targetsToClose = $bccItems.not($targetToPrevent).not($relatedBcc);
                 
                 $targetsToClose.removeClass('_active');
             }
