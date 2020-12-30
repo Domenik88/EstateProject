@@ -41,24 +41,18 @@
             <div class="listing-page-intro__controls-wrap">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     {% set favoritePath = path('add_to_favorites', {listingId: listing.listingId, userId: app.user.id}) %}
-                    {% set loginHref = '#' %}
-                    {% if listing.userFavorite %}
-                        {% set favoriteMod = 'icon-heart-frame js-favorite-listing active' %}
-                    {% else %}
-                        {% set favoriteMod = 'icon-heart-frame js-favorite-listing' %}
-                    {% endif %}
+                    {% set favoriteJsMod = 'js-favorite-listing' %}
                 {% else %}
-                    {% set favoritePath = '' %}
                     {% set loginHref = path('app_login') %}
-                    {% set favoriteMod = 'icon-heart-frame js-favorite-listing' %}
                 {% endif %}
+
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
                             label: 'label',
-                            url: favoritePath,
-                            mod: favoriteMod,
-                            href: loginHref
+                            url: favoritePath|default(false),
+                            mod: 'favorite-toggle' ~ (listing.userFavorite ? '_active' : '' ) ~ favoriteJsMod|default(''),
+                            href: loginHref|default(false)
                         },
                         {
                             label: 'label',

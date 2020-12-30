@@ -29,11 +29,11 @@ $icomoon: 'icomoon';
 
 @font-face {
   font-family: $icomoon;
-  src:  url('../../fonts/icomoon.eot?1zlowb');
-  src:  url('../../fonts/icomoon.eot?1zlowb#iefix') format('embedded-opentype'),
-  url('../../fonts/icomoon.ttf?1zlowb') format('truetype'),
-  url('../../fonts/icomoon.woff?1zlowb') format('woff'),
-  url('../../fonts/icomoon.svg?1zlowb#icomoon') format('svg');
+  src:  url('../../fonts/icomoon.eot?h8g6gb');
+  src:  url('../../fonts/icomoon.eot?h8g6gb#iefix') format('embedded-opentype'),
+  url('../../fonts/icomoon.ttf?h8g6gb') format('truetype'),
+  url('../../fonts/icomoon.woff?h8g6gb') format('woff'),
+  url('../../fonts/icomoon.svg?h8g6gb#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -53,48 +53,6 @@ $icomoon: 'icomoon';
   }
 }
 
-.icon-arts:before {
-  content: "\e92a";
-}
-.icon-bicycles:before {
-  content: "\e92b";
-}
-.icon-cafes:before {
-  content: "\e92c";
-}
-.icon-driving:before {
-  content: "\e92d";
-}
-.icon-education:before {
-  content: "\e92e";
-}
-.icon-fitness:before {
-  content: "\e92f";
-}
-.icon-groceries:before {
-  content: "\e930";
-}
-.icon-marker:before {
-  content: "\e931";
-}
-.icon-nightlife:before {
-  content: "\e932";
-}
-.icon-realestate:before {
-  content: "\e933";
-}
-.icon-restaurants:before {
-  content: "\e934";
-}
-.icon-shopping:before {
-  content: "\e935";
-}
-.icon-transit:before {
-  content: "\e936";
-}
-.icon-walking:before {
-  content: "\e937";
-}
 .icon-angle-down:before {
   content: "\e900";
 }
@@ -220,4 +178,49 @@ $icomoon: 'icomoon';
 }
 .icon-heart-frame-bordered:before {
   content: "\e929";
+}
+.icon-arts:before {
+  content: "\e92a";
+}
+.icon-bicycles:before {
+  content: "\e92b";
+}
+.icon-cafes:before {
+  content: "\e92c";
+}
+.icon-driving:before {
+  content: "\e92d";
+}
+.icon-education:before {
+  content: "\e92e";
+}
+.icon-fitness:before {
+  content: "\e92f";
+}
+.icon-groceries:before {
+  content: "\e930";
+}
+.icon-marker:before {
+  content: "\e931";
+}
+.icon-nightlife:before {
+  content: "\e932";
+}
+.icon-realestate:before {
+  content: "\e933";
+}
+.icon-restaurants:before {
+  content: "\e934";
+}
+.icon-shopping:before {
+  content: "\e935";
+}
+.icon-transit:before {
+  content: "\e936";
+}
+.icon-walking:before {
+  content: "\e937";
+}
+.icon-quotes:before {
+  content: "\e938";
 }

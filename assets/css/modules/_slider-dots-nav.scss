@@ -1,3 +1,18 @@
+._gray-dots-nav {
+	.slider-dots-nav {
+		.slick-dots {
+			li {
+				button {
+					&::before {
+						background: $gray-line;
+					}
+				}
+			}
+		}
+	}
+	
+}
+
 .slider-dots-nav {
 	display: block;
 	position: relative;

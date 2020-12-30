@@ -1,0 +1,24 @@
+.advantages {
+	&__table {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+	
+	&__col {
+		width: calc(100% / 3 - 40px / 3);
+		max-width: 283px;
+	}
+	
+	&__img-wrap {
+		width: 100%;
+		height: 150px;
+	}
+	
+	&__img {
+		display: block;
+		width: auto;
+		max-width: 100%;
+		height: 100%;
+	}
+}

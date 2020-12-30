@@ -11,8 +11,8 @@ var $_ = {
         this.initSmoothScroll();
         this.initNavLinks();
         this.initLazyLoad();
-        this.initDefaultSlider();
         this.initTriggerSlider();
+        this.initDefaultSlider();
         this.initToggleActive();
         this.initEstateGallerySlider();
         this.initStickyBlock();
@@ -310,7 +310,7 @@ var $_ = {
                     dataType: 'json',
                 };
             $.ajax(requestParameters).done(() => {
-                $currentTarget.toggleClass('active');
+                $currentTarget.toggleClass('_active');
             })
         });
     },
@@ -604,12 +604,12 @@ var $_ = {
 
     initEstateGallerySlider() {
         const
-            $currentSlider = $_.$estateGallerySlider,
-            { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
-
+            dataLazyInner = $_.$estateGallerySlider.data('lazy-inner'),
+            { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($_.$estateGallerySlider);
 
         $_.$estateGallerySlider.on('init', function (event, slick) {
             if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+            if (dataLazyInner) $_._initSliderLazyInner(slick);
         })
             .slick({
                 lazyLoad: 'ondemand',
@@ -633,34 +633,42 @@ var $_ = {
     initTriggerSlider() {
         $_.$body.on('trigger:init-slider', (e, obj) => {
             const { $sliders, $slides, sliderParams={} } = obj;
-            
+
             if ($sliders.length) {
                 $sliders.each((key, item) => {
                     const
                         $currentSlider = $(item),
-                        { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
-    
-                    if ($slides && $slides.length && $slides[key]) {
-                        if ($currentSlider.hasClass('slick-initialized')) $currentSlider.slick('unslick');
+                        isInit = $currentSlider.hasClass('slick-initialized'),
+                        hasRelatedSlides = $slides && $slides.length && $slides[key];
+
+                    if (isInit && hasRelatedSlides) {
+                        $currentSlider.slick('unslick');
                         $currentSlider.html($slides[key]);
                     }
-    
-                    $currentSlider
-                        .on('init', function (event, slick) {
-                            $_.$body.trigger('update:lazy-load');
-                            if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
-                        })
-                        .slick({
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                            arrows: true,
-                            prevArrow: $arrowLeft,
-                            nextArrow: $arrowRight,
-                            fade: false,
-                            infinite: false,
-                            dots: false,
-                            ...sliderParams
-                        });
+
+                    if ((!isInit && !hasRelatedSlides) || (isInit && hasRelatedSlides)) {
+                        const
+                            dataLazyInner = $currentSlider.data('lazy-inner'),
+                            { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
+
+                        $currentSlider
+                            .on('init', function (event, slick) {
+                                $_.$body.trigger('update:lazy-load');
+                                if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+                                if (dataLazyInner) $_._initSliderLazyInner(slick);
+                            })
+                            .slick({
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                                arrows: true,
+                                prevArrow: $arrowLeft,
+                                nextArrow: $arrowRight,
+                                fade: false,
+                                infinite: false,
+                                dots: false,
+                                ...sliderParams
+                            });
+                    }
                 });
             }
         });
@@ -707,7 +715,8 @@ var $_ = {
         $_.$defaultSlider.each(function (key, item) {
             const
                 $currentSlider = $(item),
-                $innerSlider = $currentSlider.find($_.$defaultSlider),
+                $preventChild = $currentSlider.find('[data-prevent-parent-swipe]'),
+                dataLazyInner = $currentSlider.data('lazy-inner'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
 
@@ -715,8 +724,9 @@ var $_ = {
                 .on('init', function (event, slick) {
                     $_.$body.trigger('update:lazy-load');
                     if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
-                    if ($innerSlider.length) $_._preventParentSliderSwipe($currentSlider, $innerSlider);
+                    if ($preventChild.length) $_._preventParentSliderSwipe($currentSlider, $preventChild);
                     if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
+                    if (dataLazyInner) $_._initSliderLazyInner(slick);
                 })
                 .slick({
                     slidesToShow: 1,
@@ -732,7 +742,71 @@ var $_ = {
         });
     },
 
-    initSmoothScroll: function() {
+
+    _initSliderLazyInner(slick) {
+        const
+            { $slider, $slides } = slick,
+            innerSliderSelector = $slider.data('inner-slider-selector'),
+            dataImgSelector = $slider.data('img-selector');
+
+        $_._initSliderInner({
+            fromIndex: 0,
+            slick,
+            $slides,
+            props: {
+                dataImgSelector,
+                innerSliderSelector,
+            }
+        });
+
+        $slider.on('beforeChange', (event, slick, currentSlide, nextSlide) => {
+            $_._initSliderInner({
+                fromIndex: nextSlide,
+                slick,
+                $slides,
+                props: {
+                    dataImgSelector,
+                    innerSliderSelector,
+                }
+            });
+        });
+    },
+
+    _initSliderInner(data) {
+        const { slick, fromIndex, $slides, props } = data;
+
+        for (let i = fromIndex; i < (fromIndex + slick.options.slidesToShow * 2); i++) {
+            const $slide = $slides.eq(i);
+
+            if ($slide.length) $_._initSliderInnerContent({
+                $slide,
+                ...props
+            });
+        }
+    },
+
+    _initSliderInnerContent(data) {
+        const { $slide, dataImgSelector, innerSliderSelector } = data;
+
+        if (dataImgSelector) {
+            const $images = $slide.find(`[data-${dataImgSelector}]`);
+
+            $images.each((key, item) => {
+                const $item = $(item);
+                $item.attr('src', $item.data(dataImgSelector));
+            });
+        }
+
+        if (innerSliderSelector) {
+            const $innerSliders = $slide.find(innerSliderSelector);
+
+            $_.$body.trigger('trigger:init-slider', {
+                $sliders: $innerSliders
+            })
+        }
+    },
+
+    initSmoothScroll() {
         // setTimeout(() => {
         //     $('.controls-bar .js-call-popup').eq(0).click()
         // }, 500);
