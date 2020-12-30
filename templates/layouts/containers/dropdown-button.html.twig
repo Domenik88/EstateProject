@@ -1,0 +1,19 @@
+{% set dropdownButtonScrollJsMod = scroll|default(false) ? 'js-smooth-scroll' : '' %}
+{% set dropdownButtonScrollStyleMod = scroll|default(false) ? '_scroll-padding' : '' %}
+{% set dataPropsAttribute = dataProps|default(false) ? "data-props=" ~ dataProps|json_encode() %}
+
+<div class="dropdown-button {{ wrapMod|default('') }} js-dropdown-button" {{ dataPropsAttribute }}>
+    <div class="dropdown-button__text js-toggle-active {{ textWrapMod|default('js-bcc') }}">
+        <span class="dropdown-button__placeholder {{ textMod|default('small-text') }}">{{
+            placeholder|default('')
+        }}</span>
+
+        <span class="dropdown-button__selected {{ textMod|default('small-text') }} js-dropdown-selected"></span>
+    </div>
+
+    <div class="dropdown-button__popup {{ popupMod|default('') }} {{ dropdownButtonScrollStyleMod }} js-bcc-sibling js-dropdown-popup">
+        <div class="dropdown-button__{{ scroll|default(false) ? 'scroll' : 'inner' }} {{ scrollMod|default('') }} {{ dropdownButtonScrollJsMod }}">
+            {% block dropdown_content %}{% endblock %}
+        </div>
+    </div>
+</div>

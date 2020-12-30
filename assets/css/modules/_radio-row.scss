@@ -1,0 +1,64 @@
+.radio-row {
+	$r: &;
+	display: flex;
+	align-items: stretch;
+	justify-content: flex-start;
+	
+	&__item {
+		position: relative;
+		margin-right: 5px;
+		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-width: 40px;
+		min-height: 40px;
+		
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	
+	&__input,
+	&__indicator {
+		border-radius: inherit;
+		@include absolute;
+		width: 100%;
+		height: 100%;
+	}
+	
+	&__input {
+		opacity: 0;
+		cursor: pointer;
+		z-index: 3;
+		
+		&:hover {
+			& ~ #{$r}__indicator {
+				background: $gray3;
+			}
+		}
+		
+		&:checked {
+			& ~ #{$r}__indicator {
+				background: $fuchsia;
+			}
+			
+			& ~ #{$r}__text{
+				color: $white;
+			}
+		}
+	}
+	
+	&__indicator {
+		background: $gray2;
+		z-index: 1;
+	}
+	
+	&__text {
+		position: relative;
+		color: $gray0;
+		z-index: 2;
+		padding: 0 12px;
+	}
+}

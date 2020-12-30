@@ -1,3 +1,25 @@
+.twin-fields {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 260px;
+    
+    &::before {
+        content: '';
+        @include absolute;
+        @extend .small-text2;
+        width: 4px;
+        height: 1px;
+        background: $gray1;
+    }
+    
+    .input-style,
+    .select-module {
+        width: calc(50% - 10px);
+    }
+}
+
 .form-style {
     position: relative;
 

@@ -1,0 +1,14 @@
+<div class="radio-row {{ wrapMod|default('') }}">
+    {% for item in list|default(false) %}
+        <div class="radio-row__item">
+            <input
+                    class="radio-row__input"
+                    type="radio"
+                    name="{{ item.name }}" value="{{ item.value }}"
+                    {{ item.checked|default(false) ? 'checked' : '' }}
+            >
+            <div class="radio-row__indicator"></div>
+            <div class="radio-row__text small-text {{ item.textMod|default('') }}">{{ item.text|default('') }}</div>
+        </div>
+    {% endfor %}
+</div>

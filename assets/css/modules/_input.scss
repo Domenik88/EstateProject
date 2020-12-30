@@ -58,6 +58,30 @@
         color: $gray1;
     }
     
+    &._transparent {
+        background: transparent;
+        border-radius: 0;
+        border: none;
+        color: $dark1;
+    
+        &:hover {
+            background: transparent;
+            color: $gray0;
+        }
+    
+        &:focus {
+            background: transparent;
+            color: $dark1;
+            font-weight: 700;
+        }
+    
+        &.error {
+            background: transparent;
+            color: $pink-pdra;
+            font-weight: 700;
+        }
+    }
+    
     &._fill-white {
         background: $white;
         color: $gray1;
@@ -138,6 +162,14 @@
             color: $dark1;
             font-weight: normal;
         }
+    }
+    
+    &._gray-text {
+        color: $gray1;
+    }
+    
+    &._dark-text {
+        color: $dark1;
     }
     
     @include media_1700 {

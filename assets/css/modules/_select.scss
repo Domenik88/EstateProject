@@ -3,6 +3,7 @@
     position: relative;
     perspective: 1000px;
     z-index: 10;
+    color: $dark1;
     
     &__select {
         //@include error-styles;
@@ -12,7 +13,6 @@
         line-height: 1;
         max-width: 100%;
         overflow: hidden;
-        color: $dark1;
         font-weight: 700;
     }
     
@@ -84,12 +84,6 @@
         &._active {
             font-weight: 700;
             color: $dark1;
-        }
-    }
-    
-    &._gray-text & {
-        &__text-block {
-            color: $gray1;
         }
     }
     
