@@ -64,7 +64,8 @@
 			border-right: none;
 		}
 		
-		&[class*="icon-"] {
+		&[class*="icon-"],
+		&.favorite-toggle {
 			padding: 5px 15px;
 		}
 	}

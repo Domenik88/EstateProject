@@ -3,15 +3,27 @@
     dots: true
 } %}
 
-{% set estateCardFavouriteMod = favourite|default(false) ? 'icon-heart' : 'icon-heart-bordered' %}
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    {% set favoritePath = path('add_to_favorites', {listingId: listingId, userId: app.user.id}) %}
+    {% set favoriteJsMod = 'js-favorite-listing' %}
+{% else %}
+    {% set favoritePath = '' %}
+    {% set loginHref = path('app_login') %}
+{% endif %}
 
 <div class="estate-card">
     <div class="estate-card__slider-wrap js-wrap">
-        <div class="estate-cards-slider js-default-slider" data-slider-parameters="{{ defaultSliderParameters|json_encode }}">
+        <div
+            class="estate-cards-slider js-trigger-slider"
+            data-prevent-parent-swipe="true"
+            data-lazy-inner="true"
+            data-img-selector="ec-src"
+            data-slider-parameters="{{ defaultSliderParameters|json_encode }}"
+        >
             {% if images|length %}
                 {% for img in images %}
                     <div class="estate-cards-slider__item">
-                        <img class="estate-cards-slider__img of" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-lazy="{{ img }}" />
+                        <img class="estate-cards-slider__img of" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-ec-src="{{ img }}" />
                     </div>
                 {% endfor %}
             {% else %}
@@ -31,7 +43,11 @@
                 {% endif %}
             </div>
 
-            <a class="circle-button _ic-fs-12 {{ estateCardFavouriteMod }}" href="#"></a>
+            <a
+                class="circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod|default('') }}"
+                data-url="{{ favoritePath }}"
+                href="{{ loginHref|default('#') }}"
+            ></a>
         </div>
 
         <div class="estate-card__controls-wrap js-slider-nav">

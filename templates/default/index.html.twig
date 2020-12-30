@@ -8,12 +8,24 @@
         fullSearch: true,
         bg: asset('build/images/bg/intro-bg-1.svg'),
         gradient: 'bg-grad-1',
-        wrapMod: '_big'
+        wrapMod: '_big mb50'
     } only %}
 
 
+    {# TODO: replace featuredProperties by selfListings #}
+    {% include 'layouts/sections/slider-section.html.twig' with {
+        title: 'EstateBlock Listings',
+        titleTag: 'h2',
+        slides: featuredProperties,
+        wrapMod: 'mb100'
+    } only %}
 
-
+    {% include 'layouts/sections/slider-section.html.twig' with {
+        title: 'Featured Properties',
+        titleTag: 'h2',
+        slides: featuredProperties,
+        wrapMod: 'mb100'
+    } only %}
 
 
 

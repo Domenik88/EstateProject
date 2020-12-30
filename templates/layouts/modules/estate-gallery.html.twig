@@ -4,7 +4,7 @@
     </div>
 
     <div class="estate-gallery__slider-wrap">
-        <div class="estate-gallery-slider js-estate-gallery-slider">
+        <div class="estate-gallery-slider js-estate-gallery-slider" data-lazy-inner="true" data-img-selector="eg-src">
             {% for i in 0..(images|length / 4)|round(0, 'ceil') %}
                 {% set currentSlideImages = images|slice(loop.index0*4, 4) %}
                 {% set currentSlideImagesCount = currentSlideImages|length %}
@@ -15,7 +15,7 @@
                         <div class="estate-gallery-slider__container {{ imgContainerMod }}">
                             {% for img in currentSlideImages %}
                                 <div class="estate-gallery-slider__img-wrap">
-                                    <img class="estate-gallery-slider__img of" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-lazy="{{ img }}" />
+                                    <img class="estate-gallery-slider__img of" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-eg-src="{{ img }}" />
                                 </div>
                             {% endfor %}
                         </div>

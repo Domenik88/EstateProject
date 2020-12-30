@@ -407,3 +407,25 @@
 		}
 	}
 }
+
+.favorite-toggle {
+	&::before {
+		font-family: $icomoon;
+		font-weight: 100;
+		line-height: 1;
+		letter-spacing: 0;
+		transition: $default-transition;
+	}
+	
+	&:not(._active) {
+		@extend .icon-heart-bordered;
+	}
+	
+	&._active {
+		@extend .icon-heart;
+		
+		&::before {
+			color: $pink-red;
+		}
+	}
+}
