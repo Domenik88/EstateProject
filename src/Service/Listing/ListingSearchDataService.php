@@ -28,12 +28,11 @@ class ListingSearchDataService
     public function constructSearchListingData(Listing $listing): object
     {
         $currentUser = $this->security->getUser();
-        if ($currentUser instanceof User) {
+        if ( $currentUser instanceof User ) {
             $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
         } else {
             $userFavorite = false;
         }
-
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
@@ -59,6 +58,7 @@ class ListingSearchDataService
             'selfListing'      => $listing->getSelfListing(),
             'contractDate'     => $listing->getContractDate(),
             'userFavorite'     => $userFavorite,
+            'breadCrumbs'      => $this->getBreadCrumbs($listing),
         ];
         return $listingObject;
     }
@@ -289,6 +289,18 @@ class ListingSearchDataService
             'agentEmail' => 'vadim@estateblock.com',
             'agentPhoto' => $_ENV[ 'ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE' ] . '/agents/' . 'dan_marusin.jpg',
         ];
+    }
+
+    private function getBreadCrumbs(Listing $listing): ?object
+    {
+        $breadCrumbs[ 'state' ] = new ListingBreadcrumbObject($listing->getStateOrProvince(),'#');
+        $breadCrumbs[ 'city' ] = new ListingBreadcrumbObject($listing->getCity(),'#');
+        if ( !is_null($listing->getSubdivision()) ) {
+            $breadCrumbs[ 'subdivision' ] = new ListingBreadcrumbObject($listing->getSubdivision(),'#');
+        }
+        $breadCrumbs[ 'address' ] = new ListingBreadcrumbObject($listing->getUnparsedAddress(),'#');
+
+        return (object)$breadCrumbs;
     }
 
 }

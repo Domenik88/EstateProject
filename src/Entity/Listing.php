@@ -167,6 +167,11 @@ class Listing
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $subdivision;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
@@ -574,6 +579,18 @@ class Listing
         if ($this->users->removeElement($user)) {
             $user->removeFavoriteListing($this);
         }
+
+        return $this;
+    }
+
+    public function getSubdivision(): ?string
+    {
+        return $this->subdivision;
+    }
+
+    public function setSubdivision(?string $subdivision): self
+    {
+        $this->subdivision = $subdivision;
 
         return $this;
     }
