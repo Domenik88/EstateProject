@@ -1,0 +1,9 @@
+<form class="mini-subscribe-form js-ajax-form">
+    {% include 'layouts/form/input.html.twig' with {
+        'name': 'email',
+        'placeholder': 'Email address',
+        'inputMod': 'required usermail',
+    } only %}
+
+    <button class="icon-btn icon-angle-right"></button>
+</form>

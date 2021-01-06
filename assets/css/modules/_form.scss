@@ -131,3 +131,16 @@
         }
     }
 }
+
+.mini-subscribe-form {
+    position: relative;
+    
+    .input-style {
+        z-index: 1;
+    }
+
+    .icon-btn {
+        @include absolute(0,5px,0,auto);
+        z-index: 2;
+    }
+}

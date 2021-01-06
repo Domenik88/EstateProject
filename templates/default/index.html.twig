@@ -52,6 +52,22 @@
         wrapMod: 'mb100'
     } only %}
 
+    {% include 'layouts/sections/tools-and-guides.html.twig' with {
+        title: 'More real estate tools and guides',
+
+        priceCol: {
+            img: asset('build/images/tools-and-guides/tools-and-guides-1.svg'),
+            title: 'Get up to date value of your home',
+            text: 'Our Appraisal system using only active listings to evaluate your property.',
+            link: '#'
+        },
+
+        subscribeCol: {
+            img: asset('build/images/tools-and-guides/tools-and-guides-2.svg'),
+            title: 'Subscribe to our newsletter',
+            text: 'Stay informed about VIP pre-sale offers, market trends, crazy real estate deals and critical advices',
+        }
+    } only %}
 
     {% include 'layouts/sections/mls-note.html.twig' %}
 
