@@ -51,7 +51,7 @@
                         {
                             label: 'label',
                             url: favoritePath|default(false),
-                            mod: 'favorite-toggle' ~ (listing.userFavorite ? '_active' : '' ) ~ favoriteJsMod|default(''),
+                            mod: 'favorite-toggle ' ~ (listing.userFavorite ? '_active ' : ' ' ) ~ favoriteJsMod|default(''),
                             href: loginHref|default(false)
                         },
                         {
