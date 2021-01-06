@@ -4,9 +4,17 @@
     } only %}
 
     <div class="tools-and-guides__container {{ containerMod ?? 'container' }}">
-        <div class="tools-and-guides__table {{ innerContainerMod ?? 'inner-container' }}" >
+        {% if title|default(false) %}
+            {% include 'layouts/common/title-block.html.twig' with {
+                tag: titleTag|default('h2'),
+                text: title,
+                sliderNav: true,
+            } only %}
+        {% endif %}
+
+        <div class="tools-and-guides__table" >
             {% if priceCol|default(false) %}
-                <div class="tools-and-guides__col pt50 pb50">
+                <div class="tools-and-guides__col tools-and-guides__col_left pt50 pb50">
                     {% if priceCol.img|default(false) %}
                         <div class="tools-and-guides__img-wrap">
                             <img class="tools-and-guides__img js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ priceCol.img }}">
@@ -34,10 +42,10 @@
             {% endif %}
             
             {% if subscribeCol|default(false) %}
-                <div class="tools-and-guides__col pt50 pb50">
+                <div class="tools-and-guides__col tools-and-guides__col_right pt50 pb50">
                     {% if subscribeCol.img|default(false) %}
                         <div class="tools-and-guides__img-wrap">
-                            <img class="tools-and-guides__img js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ subscribeCol.img }}">
+                            <img class="tools-and-guides__img ofcn js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ subscribeCol.img }}">
                         </div>
                     {% endif %}
 
