@@ -1,0 +1,6 @@
+<div class="collapse-list">
+    {% for item in controlsArray %}
+        {% set dataLabel = item.label|default(false) ? "data-label=" ~ item.label : '' %}
+
+    {% endfor %}
+</div>

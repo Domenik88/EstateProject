@@ -25,6 +25,7 @@ var $_ = {
         this.initAddToFavorites();
         this.initFullSearch();
         this.initDropdownButton();
+        this.initSvgMap();
     },
     
     initCache() {
@@ -89,6 +90,9 @@ var $_ = {
         this.$dropdownButton = $('.js-dropdown-button');
         this.$dropdownSelected = $('.js-dropdown-selected');
 
+        this.$svgMap = $('.js-svg-map');
+        this.$svgMapLink = $('.js-svg-map-link');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -117,6 +121,44 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initSvgMap() {
+        function filterByEventItemId($links, event) {
+            return $links.filter(`[data-id="${$(event.currentTarget).data('id')}"]`);
+        }
+
+        $_.$body.on('trigger:init-svg-map', () => {
+            $_.$svgMap.each((key, item) => {
+                const
+                    $currentMap = $(item),
+                    $citiesGroup = $currentMap.find('.js-cities-group'),
+                    $cities = $citiesGroup.find('.js-svg-map-city'),
+                    $links = $_.$svgMap.find($_.$svgMapLink);
+
+                $links.on('mouseenter', (e) => {
+                    $links.removeClass('_active');
+                    filterByEventItemId($cities, e).addClass('_active');
+                });
+
+                $links.on('mouseleave', (e) => {
+                    filterByEventItemId($cities, e).removeClass('_active');
+                });
+
+                $cities.on('mouseenter', (e) => {
+                    $links.removeClass('_active');
+                    filterByEventItemId($links, e).addClass('_active');
+                });
+
+                $cities.on('mouseleave', (e) => {
+                    filterByEventItemId($links, e).removeClass('_active');
+                });
+
+                $cities.on('click', (e) => {
+                    filterByEventItemId($links, e).click();
+                });
+            });
+        });
     },
 
     initDropdownButton() {

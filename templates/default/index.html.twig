@@ -45,6 +45,11 @@
         ]
     } only %}
 
+    {% include 'layouts/sections/svg-map.html.twig' with {
+        title: 'Start home search in Lower Mainland',
+        cities: cityCounters,
+    } only %}
+
     {% include 'layouts/sections/slider-section.html.twig' with {
         title: 'Featured Properties',
         titleTag: 'h2',
