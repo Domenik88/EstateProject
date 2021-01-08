@@ -1,3 +1,10 @@
 .collapse-list {
-
+	&__wrap {
+		display: none;
+	}
+	
+	&__table {
+		column-count: 4;
+		column-gap: 80px;
+	}
 }

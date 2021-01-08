@@ -28,5 +28,10 @@
             data-src="{{ asset('build/images/svg-map.svg') }}"
             data-trigger="trigger:init-svg-map"
         ></div>
+
+        {% include 'layouts/modules/collapse-list.html.twig' with {
+            buttonText: 'Find homes in other areas',
+            list: otherAreas,
+        } only %}
     </div>
 </section>

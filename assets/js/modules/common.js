@@ -26,6 +26,7 @@ var $_ = {
         this.initFullSearch();
         this.initDropdownButton();
         this.initSvgMap();
+        this.initToggleNext();
     },
     
     initCache() {
@@ -93,6 +94,8 @@ var $_ = {
         this.$svgMap = $('.js-svg-map');
         this.$svgMapLink = $('.js-svg-map-link');
 
+        this.$toggleNext = $('.js-toggle-next');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -123,6 +126,30 @@ var $_ = {
         is_touch_device();
     },
 
+    initToggleNext: function() {
+        $_.$toggleNext.on('click', function (e) {
+            const
+                $currentTarget = $(e.currentTarget),
+                $next = $currentTarget.next(),
+                isActive = $currentTarget.hasClass('_active'),
+                nextIsHidden = $next.is(':hidden');
+
+            if (isActive && !nextIsHidden) {
+                $currentTarget.removeClass('_active');
+                $next.stop().slideUp(300);
+            }
+
+            if (!isActive && nextIsHidden) {
+                $currentTarget.addClass('_active');
+                $next.stop().slideDown(300);
+            }
+        });
+
+        $_.$body.on('body:resize:width', function () {
+            $_.$toggleNext.removeClass('_active').next().attr('style', '');
+        });
+    },
+
     initSvgMap() {
         function filterByEventItemId($links, event) {
             return $links.filter(`[data-id="${$(event.currentTarget).data('id')}"]`);
@@ -145,6 +172,10 @@ var $_ = {
                     filterByEventItemId($cities, e).removeClass('_active');
                 });
 
+                $links.on('trigger:click', (e) => {
+                    location.href = e.currentTarget.href;
+                });
+
                 $cities.on('mouseenter', (e) => {
                     $links.removeClass('_active');
                     filterByEventItemId($links, e).addClass('_active');
@@ -155,7 +186,7 @@ var $_ = {
                 });
 
                 $cities.on('click', (e) => {
-                    filterByEventItemId($links, e).click();
+                    filterByEventItemId($links, e).trigger('trigger:click');
                 });
             });
         });
