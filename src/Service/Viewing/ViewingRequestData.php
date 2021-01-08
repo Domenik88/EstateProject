@@ -15,9 +15,9 @@ class ViewingRequestData
     private string $name;
     private string $email;
     private string $phone;
-    private string $listingId;
+    private int $listingId;
 
-    public function __construct(string $name, string $email, string $phone, string $listingId)
+    public function __construct(string $name, string $email, string $phone, int $listingId)
     {
         $this->name = $name;
         $this->email = $email;
@@ -50,9 +50,9 @@ class ViewingRequestData
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getListingId(): string
+    public function getListingId(): int
     {
         return $this->listingId;
     }

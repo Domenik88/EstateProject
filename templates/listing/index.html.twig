@@ -3,7 +3,6 @@
 {% block title %}Hello ListingController!{% endblock %}
 
 {% block body %}
-
     {% include 'layouts/common/breadcrumbs.html.twig' %}
 
     {% include 'layouts/sections/listing-page-intro.html.twig' %}
@@ -45,6 +44,7 @@
                 agentName: listing.agent.agentName,
                 agencyName: listing.agent.agencyName,
                 agentPhone: listing.agent.agentPhone,
+                listingId: listing.listingId,
             } only %}
         {% endblock %}
     {% endembed %}
