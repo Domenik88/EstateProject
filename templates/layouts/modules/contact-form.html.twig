@@ -1,8 +1,7 @@
 {% set mod = twoCol|default(false) ? '_2-col' : '' %}
 {% set collapseMod = confidentialityCollapse|default(false) ? '_collapse' : '' %}
 {% set collapseJsMod = confidentialityCollapse|default(false) ? 'js-conf-collapse-form' : '' %}
-
-<form class="contact-form {{ mod }} {{ collapseMod }} {{ collapseJsMod }} js-ajax-form">
+<form class="contact-form {{ mod }} {{ collapseMod }} {{ collapseJsMod }} js-ajax-form" action="{{ path('new_viewing') }}" method="post" autocomplete="off">
     <div class="contact-form__col">
         <div class="contact-form__list mb20">
             <div class="contact-form__row">
@@ -52,6 +51,13 @@
                         } only %}
                     </div>
                 </div>
+            </div>
+            <div class="contact-form__row">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'listingId',
+                    'value': listingId,
+                    'inputMod': 'pseudo-hidden'
+                } only %}
             </div>
         </div>
 

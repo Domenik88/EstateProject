@@ -69,7 +69,7 @@ jQuery(function($) {
             
             $.ajax({
                 type: settings['type'],
-                url: settings['handler'],
+                url: action || settings['handler'],
                 dataType: settings['dataType'],
                 contentType: settings['contentType'],
                 processData: settings['processData'],
@@ -181,8 +181,8 @@ jQuery(function($) {
                     })
                 }
             }
-            
-            this.form_send(formSendAll, false);
+
+            this.form_send(formSendAll, $(form).attr('action'));
         },
         
         collect_multiple_file: function(data, $input) {

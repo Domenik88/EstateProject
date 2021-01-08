@@ -8,9 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ViewingRepository::class)
  * @ORM\Table(name="viewing",
+ *     indexes={
+ *         @ORM\Index(name="viewing_user_id_idx", columns={"user_id"}),
+ *         @ORM\Index(name="viewing_listing_id_idx", columns={"listing_id"}),
+ *     },
  *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="viewing_user_idx", columns={"user_id"}),
- *          @ORM\UniqueConstraint(name="viewing_listing_idx", columns={"listing_id"})
+ *          @ORM\UniqueConstraint(name="viewing_user_id_listing_id_idx", columns={"user_id","listing_id"}),
  *     },
  * )
  */

@@ -15,6 +15,7 @@ use App\Entity\Viewing;
 use App\Repository\ListingRepository;
 use App\Repository\UserRepository;
 use App\Repository\ViewingRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -50,6 +51,8 @@ class ViewingService
             $this->entityManager->persist($viewing);
             $this->entityManager->flush();
             return new ViewingResponseStatusCode(201, 'Viewing created');
+        } catch (UniqueConstraintViolationException $e) {
+            return new ViewingResponseStatusCode(409, 'Viewing record already exists');
         } catch (\Exception $e) {
             return new ViewingResponseStatusCode(500, $e->getMessage());
         }
@@ -84,7 +87,7 @@ class ViewingService
     private function getListing($listingId): ?Listing
     {
         $listing = $this->listingRepository->findOneBy([
-            'feedListingID' => $listingId
+            'id' => $listingId
         ]);
         if ( !$listing ) {
             return null;

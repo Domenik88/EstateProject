@@ -29,9 +29,9 @@ class ViewingController extends AbstractController
         }
         $formData = json_decode($request->request->get('formData'));
         $responseData = $viewingService->createViewing(new ViewingRequestData(
-            $formData->uname->value,
+            $formData->name->value,
             $formData->email->value,
-            $formData->phone->value,
+            $formData->code->value.$formData->phone->value,
             $formData->listingId->value
         ));
         return $this->json($responseData, $responseData->statusCode);
