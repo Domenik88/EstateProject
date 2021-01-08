@@ -83,7 +83,7 @@
 		font-size: 10px;
 		color: $fuchsia;
 		@include absolute(calc(50% - 5px),0,auto,auto);
-		transition: $default-transition;
+		transition: transform .3s ease;
 		transform-origin: 50% 50%;
 		pointer-events: none;
 	}
@@ -91,6 +91,29 @@
 	&._active {
 		&::after {
 			transform: scaleY(-1);
+		}
+	}
+}
+
+.toggle-next {
+	position: relative;
+	display: inline-block;
+	padding-right: 15px;
+	cursor: pointer;
+	@extend .angle-down-after;
+	
+	&._big {
+		padding-right: 20px;
+		
+		&::after {
+			content: "\e900";
+			font-size: 8px;
+		}
+	}
+	
+	&[class*="link-"] {
+		&::after {
+			color: inherit;
 		}
 	}
 }

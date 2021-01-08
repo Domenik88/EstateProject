@@ -1,0 +1,15 @@
+<div class="collapse-list">
+    <div class="collapse-list__button button1 link-turquoise toggle-next _big js-toggle-next">{{
+        buttonText|default('Find homes in other areas')
+    }}</div>
+
+    <div class="collapse-list__wrap pt20">
+        <div class="collapse-list__table">
+            {% for item in list %}
+                <div class="collapse-list__item">
+                    <a class="collapse-list__link tiny-text link-gray" href="{{ item.href }}">{{ item.text }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
