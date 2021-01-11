@@ -77,4 +77,12 @@ class HomeController extends AbstractController
         return $this->render('how-it-works/index.html.twig');
     }
 
+    /**
+     * @Route ("/selling", name="selling", priority=10)
+     */
+    public function selling()
+    {
+        return $this->render('selling/index.html.twig');
+    }
+
 }
