@@ -13,6 +13,15 @@
             {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
         </div>
         <div class="form-group">
+            <label>text editor</label>
+
+            <div class="editor-container">
+                <div id="editor" class="editor">
+                    {% include 'test-data/text-editor-content.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             {{ form_label(form.slug, 'slug') }}
             {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
         </div>
