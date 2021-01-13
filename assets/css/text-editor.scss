@@ -1,0 +1,41 @@
+@import 'plugins/quill.snow.css';
+@import "plugins/mixin-object-fit";
+@import "common/animations";
+@import "common/breakpoints";
+@import "common/fonts-include";
+@import "common/colors";
+@import "common/mixins";
+@import "common/margins";
+@import "common/fonts-styles";
+@import "modules/text-block";
+
+.editor-container {
+	width: 100%;
+	max-width: 1245px;
+	margin: 0 auto;
+	
+	.ql-toolbar {
+		position: relative;
+		z-index: 20;
+	}
+}
+
+.editor {
+	.ql-editor {
+		display: block;
+		width: 100%;
+		padding: 50px calc(100% / 12 + 10px);
+		overflow-y: scroll;
+		height: 700px;
+		@extend .text-block;
+	}
+}
+
+.ql-formats {
+	[class*='ql-img-'] {
+		width: auto !important;
+		font-size: 14px;
+		margin-right: 5px;
+		background: #f0f3f8 !important;
+	}
+}
