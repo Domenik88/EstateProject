@@ -8,7 +8,9 @@
 
 .text-block {
 	p {
-		@extend .small-text2;
+		&:not([class]) {
+			@extend .table-text;
+		}
 		@extend .mb20;
 		
 		&:last-child {

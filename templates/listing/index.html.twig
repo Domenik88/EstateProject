@@ -57,7 +57,9 @@
         } only %}
     {% endif %}
 
-    {% include 'layouts/sections/book-a-tour.html.twig' %}
+    {% include 'layouts/sections/book-a-tour.html.twig' with {
+        listingId: listing.listingId
+    } only %}
     {% include 'layouts/sections/mls-note.html.twig' %}
 
     {% include 'layouts/popups/popup-overlay.html.twig' %}

@@ -1,12 +1,15 @@
 <div class="breadcrumbs mt20 mb80">
     <div class="breadcrumbs__list container">
         <a href="/">Home</a>
-        {% for crumb in listing.breadCrumbs | cast_to_array %}
-            {% if loop.last %}
-                <span>{{ crumb.crumb }}</span>
-            {% else %}
-                <a href="{{ crumb.uri }}">{{ crumb.crumb }}</a>
-            {% endif %}
-        {% endfor %}
+
+        {% if listing.breadCrumbs|default(false) or array|default(false) %}
+            {% for crumb in listing.breadCrumbs|default(array|default(false)) | cast_to_array %}
+                {% if loop.last %}
+                    <span>{{ crumb.crumb }}</span>
+                {% else %}
+                    <a href="{{ crumb.uri }}">{{ crumb.crumb }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
