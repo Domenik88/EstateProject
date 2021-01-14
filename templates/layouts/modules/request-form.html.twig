@@ -1,0 +1,119 @@
+{% set mod = twoCol|default(false) ? '_2-col' : '' %}
+{% set collapseMod = confidentialityCollapse|default(false) ? '_collapse' : '' %}
+{% set collapseJsMod = confidentialityCollapse|default(false) ? 'js-conf-collapse-form' : '' %}
+
+<form class="request-form {{ mod }} {{ collapseMod }} {{ collapseJsMod }} js-ajax-form" action="{{ path('new_viewing') }}" method="post" autocomplete="off">
+    <div class="request-form__col request-form__col_left">
+        <div class="request-form__list">
+            <div class="request-form__row">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'first_name',
+                    'placeholder': 'First Name',
+                    'inputMod': 'required',
+                } only %}
+            </div>
+
+            <div class="request-form__row">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'last_name',
+                    'placeholder': 'Last Name',
+                    'inputMod': 'required',
+                } only %}
+            </div>
+
+            <div class="request-form__row">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'email',
+                    'placeholder': 'Email',
+                    'inputMod': 'required usermail',
+                } only %}
+            </div>
+
+            <div class="request-form__row">
+                <div class="tel-wrap">
+                    <div class="tel-wrap__code">
+                        {% include 'layouts/form/select.html.twig' with {
+                            'name': 'code',
+                            'inputMod': '',
+                            'wrapMod': '  _gray-text',
+                            'textMod': 'small-text2',
+                            'options': [
+                                {
+                                    'value': '+1268',
+                                    'text': 'CA +1268',
+                                },
+                                {
+                                    'value': '1111',
+                                    'text': 'CA +1111',
+                                },
+                                {
+                                    'value': '2222',
+                                    'text': 'CA +2222',
+                                },
+                            ]
+                        } only %}
+                    </div>
+                    <div class="tel-wrap__phone">
+                        {% include 'layouts/form/input.html.twig' with {
+                            'name': 'phone',
+                            'placeholder': 'Phone number',
+                            'inputMod': 'required',
+                        } only %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="request-form__col request-form__col_center">
+        <div class="request-form__list">
+            <div class="request-form__row">
+                {% include 'layouts/form/select.html.twig' with {
+                    'name': 'contact_method',
+                    'inputMod': '',
+                    'wrapMod': '  _gray-text',
+                    'textMod': 'small-text2',
+                    'options': [
+                        {
+                            'value': '',
+                            'text': 'Choose Contact Method',
+                            'selected': true,
+                        },
+                        {
+                            'value': 'Phone',
+                            'text': 'Phone',
+                        },
+                        {
+                            'value': 'Email',
+                            'text': 'Email',
+                        },
+                    ]
+                } only %}
+            </div>
+
+            <div class="request-form__row">
+                {% include 'layouts/form/textarea.html.twig' with {
+                    'name': 'comment',
+                    'placeholder': 'Comment',
+                } only %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="request-form__col request-form__col_right">
+        {% include 'layouts/modules/agreement-check.html.twig' %}
+
+        <div class="request-form__buttons-wrap mt40">
+            {% include 'layouts/controls/button.html.twig' with {
+                'button': true,
+                'text': btnText|default('Submit'),
+            } only %}
+
+            {% include 'layouts/controls/button.html.twig' with {
+                'text': 'Reset',
+                'mod': '_transparent-white js-form-reset-button',
+            } only %}
+        </div>
+    </div>
+</form>

@@ -60,6 +60,9 @@ Encore
         './node_modules/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
         './node_modules/admin-lte/plugins/daterangepicker/daterangepicker.css',
         './node_modules/admin-lte/plugins/summernote/summernote-bs4.css',
+
+        './assets/css/text-editor.scss',
+        './assets/js/text-editor.js',
     ])
     // .addEntry('app', './assets/css/app.scss')
 

@@ -102,6 +102,16 @@
 			background: $gray4;
 		}
 	}
+
+	&._transparent-white {
+		color: $white;
+		border: 1px solid $gray0;
+		background: transparent;
+		
+		&:hover {
+			background: $gray0;
+		}
+	}
 	
 	&._small {
 		height: 31px;

@@ -1,0 +1,33 @@
+.note {
+	$r: &;
+	
+	&__wrap {
+		background: $gray3;
+		border-radius: 20px;
+	}
+	
+	&__text {
+
+	}
+	
+	&._mls {
+		#{$r}__text {
+			padding-right: 205px;
+			@extend .icon-mls;
+			
+			&::before {
+				font-family: $icomoon;
+				font-size: 60px;
+				color: $gray1;
+				@include absolute(0,0,auto,auto);
+			}
+		}
+	}
+	
+	&._light-gray {
+		#{$r}__wrap {
+			background: $gray2;
+			border-radius: 20px;
+		}
+	}
+}

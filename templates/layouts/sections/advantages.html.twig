@@ -1,38 +1,42 @@
 <section class="advantages {{ wrapMod ?? 'mb100' }}">
     <div class="advantages__container {{ containerMod ?? 'container' }}">
-        {% if title|default(false) %}
-            {% include 'layouts/common/title-block.html.twig' with {
-                text: title,
-                tag: titleTag|default('h2'),
-            } only %}
-        {% endif %}
+        <div class="advantages__wrap">
+            <div class="advantages__inner-container {{ innerContainerMod ?? '' }}">
+                {% if title|default(false) %}
+                    {% include 'layouts/common/title-block.html.twig' with {
+                        text: title,
+                        tag: titleTag|default('h2'),
+                    } only %}
+                {% endif %}
 
-        <div class="advantages__table">
-            {% for item in list %}
-                <div class="advantages__col">
-                    {% if item.img|default(false) %}
-                        <div class="advantages__img-wrap mb30">
-                            <img class="advantages__img js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ item.img }}">
+                <div class="advantages__table">
+                    {% for item in list %}
+                        <div class="advantages__col">
+                            {% if item.img|default(false) %}
+                                <div class="advantages__img-wrap mb30">
+                                    <img class="advantages__img js-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ item.img }}">
+                                </div>
+                            {% endif %}
+
+                            {% if item.title|default(false) %}
+                                <h4 class="advantages__title h4 mb20">{{ item.title }}</h4>
+                            {% endif %}
+
+                            {% if item.text|default(false) %}
+                                <p class="advantages__text table-text mb30">{{ item.text }}</p>
+                            {% endif %}
+
+                            {% if item.link|default(false) %}
+                                {% include 'layouts/controls/button.html.twig' with {
+                                    'href': item.link,
+                                    'text': 'How it Works',
+                                    'mod': '_turquoise'
+                                } %}
+                            {% endif %}
                         </div>
-                    {% endif %}
-
-                    {% if item.title|default(false) %}
-                        <h4 class="advantages__title h4 mb20">{{ item.title }}</h4>
-                    {% endif %}
-
-                    {% if item.text|default(false) %}
-                        <p class="advantages__text table-text mb30">{{ item.text }}</p>
-                    {% endif %}
-
-                    {% if item.link|default(false) %}
-                        {% include 'layouts/controls/button.html.twig' with {
-                            'href': item.link,
-                            'text': 'How it Works',
-                            'mod': '_turquoise'
-                        } %}
-                    {% endif %}
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 </section>

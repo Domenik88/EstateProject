@@ -1,0 +1,40 @@
+.tile {
+	&__list {
+	
+	}
+	
+	&__row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		
+		&:nth-child(odd) {
+			flex-direction: row;
+		}
+		
+		&:nth-child(even) {
+			flex-direction: row-reverse;
+		}
+	}
+	
+	&__col {
+		&_left {
+			width: calc(100% / 10 * 6 - 10px);
+		}
+		
+		&_right {
+			width: calc(100% / 10 * 3);
+		}
+	}
+	
+	&__img-wrap {
+		width: 100%;
+		height: auto;
+	}
+	
+	&__img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+}
