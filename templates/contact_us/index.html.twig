@@ -1,6 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Contact Us</h1>
-    {{ dump(contactsData) }}
+    {% include 'layouts/common/breadcrumbs.html.twig' with {
+        array: [
+            {
+                crumb: 'Contact Us',
+            }
+        ]
+    } %}
+
+    {% include 'layouts/common/title-block.html.twig' with {
+        text: 'Contact Us',
+        tag: 'h1',
+        wrapMod: 'container mb50',
+    } only %}
+
+    {% include 'layouts/common/title-block.html.twig' with {
+        text: 'EstateBlock Team',
+        tag: 'h3',
+        wrapMod: 'container mb40',
+    } only %}
+
+    {% include 'layouts/sections/contacts-map.html.twig' with {
+        address: contactsData.address,
+        phone: contactsData.phone,
+        email: contactsData.email,
+        lat: contactsData.lat,
+        lng: contactsData.lng,
+    } only %}
+
+    {% include 'layouts/sections/request.html.twig' %}
+
+{#    {{ dump(contactsData) }}#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('map') }}
 {% endblock %}
