@@ -4,6 +4,22 @@
 	}
 }
 
+.text-block:not(._custom-text) {
+	p, ul, ol, a {
+		&:not(.subtitle2) {
+			@extend .table-text;
+		}
+	}
+}
+
+.text-block._body-text2 {
+	p, ul, ol, a {
+		&:not(.subtitle2) {
+			@extend .body-text2;
+		}
+	}
+}
+
 .text-block {
 	color: #5F6C75;
 	
@@ -78,12 +94,6 @@
 	h1, h2, h3, h4, h5, h6 {
 		&:first-child {
 			margin-top: 0;
-		}
-	}
-	
-	p, ul, ol, a {
-		&:not(.subtitle2) {
-			@extend .table-text;
 		}
 	}
 	

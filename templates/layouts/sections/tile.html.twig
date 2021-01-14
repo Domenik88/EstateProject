@@ -1,0 +1,20 @@
+<section class="tile {{ wrapMod ?? '' }}">
+    <div class="tile__container {{ containerMod ?? 'container' }}">
+        <div class="tile__list {{ innerContainerMod ?? 'inner-container' }}">
+            {% for item in list %}
+                <div class="tile__row {{ rowMod ?? 'mb100' }}">
+                    <div class="tile__col tile__col_left">
+                        <div class="tile__text text-block _custom-text _body-text2">
+                            {{ item.text|raw }}
+                        </div>
+                    </div>
+                    <div class="tile__col tile__col_right">
+                        <div class="tile__img-wrap">
+                            <img src="{{ item.img }}" class="tile__img" />
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

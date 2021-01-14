@@ -1,0 +1,9 @@
+<section class="note {{ wrapMod ?? '' }}">
+    <div class="note__container {{ containerMod ?? 'container' }}">
+        <div class="note__wrap pt50 pb50">
+            <div class="note__text {{ textMod ?? 'tiny-text' }} {{ innerContainerMod ?? 'inner-container' }}">
+                {{ text|default('') }}
+            </div>
+        </div>
+    </div>
+</section>
