@@ -1,5 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    selling
+    {% include 'layouts/common/breadcrumbs.html.twig' with {
+        array: [
+            {
+                crumb: 'Selling',
+            }
+        ]
+    } %}
+
+    {% include 'layouts/common/title-block.html.twig' with {
+        text: 'Selling',
+        tag: 'h1',
+        wrapMod: 'container mb50',
+    } only %}
+
+    {% include 'layouts/sections/tile.html.twig' with {
+        list: [
+            {
+                img: asset('build/images/selling/selling-img-1.svg'),
+                text: '
+                    <h3>Get Treated Right. Enjoy Full VIP Service</h3>
+                    <p>Enjoy the VIP treatment from one of Vancouver’s top REALTORS®, enjoy full service assistance, from a fast and organized team of professionals.<br>
+                    Experience the fast response times, great presentation of your home and a skilled negotiator here to fight for every penny you deserve.
+                    <br>Find out more about How it Works right now or contact us to start getting offers on your home today...</p>
+                '
+            },
+            {
+                img: asset('build/images/selling/selling-img-2.svg'),
+                text: '
+                    <h3>Innovation Equals Better Service</h3>
+                    <p>Having a dedicated, full time REALTOR® on your side that is leveraging the best in technology means a REALTOR® better equipped to respond to your needs and enquiries faster, is more knowledgeable and wired into the local market, better organized and can ultimately deliver the best service and best price for you home with less stress.</p>
+                '
+            },
+            {
+                img: asset('build/images/selling/selling-img-3.svg'),
+                text: '
+                    <h3>Sell Faster & For More</h3>
+                    <p>Sell your home faster and for top dollar.</p>
+                    <p>Leverage the number 1 real estate platform in Vancouver to get your home in front of more qualified buyers and sell faster.</p>
+                    <p>We’ll handle everything for you from assistance in preparing your home for sale to marketing, arranging showings, negotiating, handling paperwork and we’ll be there every step of the way to ensure a smooth transaction.</p>
+                '
+            },
+            {
+                img: asset('build/images/selling/selling-img-4.svg'),
+                text: '
+                    <h3>Buy & Sell with EstateBlock: Save Even More</h3>
+                    <p>Sell your home and buy your next one with us and we’ll reward you with a rebate!</p>
+                    <p>Let us help you sell your home and we’ll give you a 25%* rebate on the buyer’s commission when you buy your new home through EstateBlock.</p>
+                '
+            },
+        ]
+    } only %}
+
+    {% include 'layouts/sections/note.html.twig' with {
+        wrapMod: '_light-gray',
+        text: "*This example is based on typical buyer's commission is 3.255% on the first $100,000 and 1.1625% on the balance. Please note: there is no standard commission rate, and not all REALTORS® charge the same commission rate.",
+        textMod: 'small-text2',
+    } only %}
 {% endblock %}
