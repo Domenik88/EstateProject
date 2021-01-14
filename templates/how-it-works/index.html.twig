@@ -1,5 +1,78 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    how-it-works
+    {% include 'layouts/common/breadcrumbs.html.twig' with {
+        array: [
+            {
+                crumb: 'How it Works',
+            }
+        ]
+    } %}
+
+    {% include 'layouts/common/title-block.html.twig' with {
+        text: 'How it Works',
+        tag: 'h1',
+        wrapMod: 'container mb50',
+    } only %}
+
+    {% embed 'layouts/containers/text-block.html.twig' with {
+        wrapMod: 'mb50',
+    } only %}
+        {% block textblock_content %}
+            <p class="subtitle2">Estateblock.com – New Real Estate Search Engine that helps homebuyers in their search and with getting the best deal during negotiation</p>
+            <p>User friendly and innovative Real Estate Search Engine with listings' database in the Lower Mainland. Bigger than Realtor.ca (All MLS® listings from all brokerages + New Construction).</p>
+        {% endblock %}
+    {% endembed %}
+
+    {% include 'layouts/sections/advantages.html.twig' with {
+        wrapMod: '_gray-wrap _small-images mb50',
+        innerContainerMod: 'inner-container',
+
+        list: [
+            {
+                img: asset('build/images/advantages/advantage-1.svg'),
+                title: "More Listings",
+                text: "MLS® + All New Homes",
+            },
+            {
+                img: asset('build/images/advantages/advantage-2.svg'),
+                title: "More Information",
+                text: "Crime, Schools, Demographics, Trensit",
+            },
+            {
+                img: asset('build/images/advantages/advantage-3.svg'),
+                title: "Free REALTORS®",
+                text: "Local PRO. Speak any language",
+            },
+        ]
+    } only %}
+
+    {% embed 'layouts/containers/text-block.html.twig' %}
+        {% block textblock_content %}
+            <h4>Know everything about the listing</h4>
+            <p>What really separates us from the rest is the tremendous amount of information visualised on our maps. We include crime and demographic map layers, schools, daycares, transit, climate, ALR layers, floodplain information, noise data, comparable listings, and more.</p>
+
+            <h4>Save search and get new listings before other buyers</h4>
+            <p>All new listings that match your search will be sent to your email at the same time as all the REALTORS® in the Lower Mainland receive them. Realtor.ca, as an example, sends new listings to their users only after 2-3 days, which is deadly for buyers who are looking for hot deals that are usually sold in 1-2 days.</p>
+
+            <h4>Looking for hot deals? </h4>
+            <p>We’ve created a special algorithm that shows listings that are much cheaper than comparable listings in the same neighbourhood. Feel free to use this tool to find listings that are 20-30% cheaper than their value.</p>
+
+            <h4>We speak your language</h4>
+            <p>We are working as a team with the most experienced local Mandarin, Cantonese, French, Punjabi, Tagalog, Urdu, and Russian speaking REALTORS®, as well as many other languages, to ensure that you receive the best experience when buying or selling Real Estate!</p>
+
+            <h4>SCHOOLS</h4>
+            <p>Only on Estateblock can you find 655 Lower Mainland school service (catchment) areas with a rating system similar to the Fraser Institute. You can clearly see which listings are serviced by which schools on the map, and filter listings that are only serviced by the best schools:</p>
+
+            <p class="img-big">
+                <span class="img-wrap">
+                    <img src="{{ asset('build/images/how-it-works.jpg') }}">
+                </span>
+            </p>
+        {% endblock %}
+    {% endembed %}
+
+    {% include 'layouts/sections/book-a-tour.html.twig' with {
+        wrapMod: '',
+    } only %}
 {% endblock %}

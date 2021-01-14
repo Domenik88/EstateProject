@@ -1,4 +1,6 @@
 .advantages {
+	$r: &;
+	
 	&__table {
 		display: flex;
 		align-items: flex-start;
@@ -20,5 +22,26 @@
 		width: auto;
 		max-width: 100%;
 		height: 100%;
+	}
+	
+	&__text {
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	
+	&._gray-wrap {
+		#{$r}__wrap {
+			@extend .pt50;
+			@extend .pb50;
+			background: $gray2;
+			border-radius: 20px;
+		}
+	}
+	
+	&._small-images {
+		#{$r}__img-wrap {
+			height: 120px;
+		}
 	}
 }

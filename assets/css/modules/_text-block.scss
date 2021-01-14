@@ -82,7 +82,9 @@
 	}
 	
 	p, ul, ol, a {
-		@extend .table-text;
+		&:not(.subtitle2) {
+			@extend .table-text;
+		}
 	}
 	
 	p {

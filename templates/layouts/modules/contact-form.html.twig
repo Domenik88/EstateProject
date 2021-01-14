@@ -52,13 +52,14 @@
                     </div>
                 </div>
             </div>
-            <div class="contact-form__row">
+
+            {% if listingId|default(false) %}
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'listingId',
                     'value': listingId,
                     'inputMod': 'pseudo-hidden'
                 } only %}
-            </div>
+            {% endif %}
         </div>
 
         {% if confidentiality|default(false) and not twoCol|default(false) %}
