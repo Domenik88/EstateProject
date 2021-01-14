@@ -39,7 +39,7 @@
 	border-radius: 20px;
 	overflow: hidden;
 	z-index: 3;
-	@include slider-preload(&);
+	@include slider-preload-visible(&);
 	background: $gray2;
 	
 	&__item {

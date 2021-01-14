@@ -68,6 +68,22 @@
 		line-height: 1;
 	}
 	
+	&._btn-style {
+		display: inline-block;
+		width: auto;
+		padding: 0 15px;
+		height: 41px;
+		background: $gray2;
+		border-radius: 10px;
+	}
+	
+	&._popup-stick-to-left {
+		#{$r}__popup {
+			left: 0;
+			right: auto;
+		}
+	}
+	
 	&._fh {
 		height: 100%;
 		display: flex;

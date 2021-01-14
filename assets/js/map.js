@@ -552,25 +552,47 @@ class EstateMap {
             pageCounter = pageSize * (pageNumber-1);
 
         for (let i = 0; i < data.length; i++) {
-            const images = [
-                `https://picsum.photos/300/170??random=${pageCounter+i+1}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+2}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+3}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+4}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+5}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+6}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+7}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+8}`,
-                `https://picsum.photos/300/170??random=${pageCounter+i+9}`,
-            ];
+            const testData = {
+                images: [
+                    `https://picsum.photos/300/170??random=${pageCounter+i+1}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+2}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+3}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+4}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+5}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+6}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+7}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+8}`,
+                    `https://picsum.photos/300/170??random=${pageCounter+i+9}`,
+                ],
+
+                isNew: true,
+                forSaleByOwner: true,
+                favoritePath: '#',
+                loginHref: '#',
+                listingPrice: 849888.88,
+                address: {
+                    country: "Canada",
+                    state: "British Columbia",
+                    city: "Kelowna",
+                    postalCode: "V1X3B1",
+                    streetAddress: "285 Rutland Road, N",
+                },
+                metrics: {
+                    yearBuilt: null,
+                    bedRooms: null,
+                    bathRooms: 2,
+                    stories: 1,
+                    lotSize: null,
+                    lotSizeUnits: "acres",
+                    sqrtFootage: null,
+                    sqrtFootageUnits: "square feet",
+                },
+                mlsNumber: '10202897',
+            };
 
             const
                 { address, mlsNum } = data[i],
-                $card = $(mapTemplates.estateCard({
-                    images: mapTemplates.estateSliderItems(images),
-                    title: `title ${pageCounter+i+1}`,
-                    text: address,
-                }));
+                $card = $(mapTemplates.estateCard(testData));
             
             this._bindCardMouseEvents($card, this.markersObj[mlsNum]);
             cards.push($card);

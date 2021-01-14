@@ -1,3 +1,311 @@
+{% set mapTableMenu = [
+    {
+        text: 'Map',
+        linkMod: 'js-',
+        dataVal: 'map',
+    },
+    {
+        text: 'Schools',
+        linkMod: 'js-',
+        dataVal: 'schools',
+    },
+    {
+        text: 'Crime',
+        linkMod: 'js-',
+        dataVal: 'crime',
+    },
+    {
+        text: 'Commute',
+        linkMod: 'js-',
+        dataVal: 'commute',
+    },
+    {
+        text: 'Shop & Eat',
+        linkMod: 'js-',
+        dataVal: 'yelp',
+    },
+] %}
+
+{% set fullSearchNavList = [
+    {
+        text: 'MLS®',
+        linkMod: 'js-full-search-type-link',
+        dataVal: 'mls',
+        dataToggle: '',
+    },
+    {
+        text: 'New Property',
+        linkMod: 'js-full-search-type-link',
+        dataVal: 'new-property',
+        dataToggle: '',
+    },
+    {
+        text: 'Commercial',
+        linkMod: 'js-full-search-type-link',
+        dataVal: 'commercial',
+        dataToggle: 'commercial',
+    },
+] %}
+
+{% set fullSearchPropertyTypeCheckboxes = [
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Apartment/Condo',
+        text: 'Apartment/Condo',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'House',
+        text: 'House',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Multifamily',
+        text: 'Multifamily',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Townhouse',
+        text: 'Townhouse',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Land Only',
+        text: 'Land Only',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Other',
+        text: 'Other',
+    },
+] %}
+
+{% set fullSearchCommercialTypeCheckboxes = [
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Agri-Business',
+        text: 'Agri-Business',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Business',
+        text: 'Business',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Business with Property',
+        text: 'Business with Property',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Industrial',
+        text: 'Industrial',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Land',
+        text: 'Land',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Multi-Family',
+        text: 'Multi-Family',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Office',
+        text: 'Office',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Retail',
+        text: 'Retail',
+    },
+] %}
+
+{% set fullSearchMinPriceSelect = {
+    name: 'min-price',
+    inputMod: '_bordered-bright',
+    options: [
+        {
+            value: false,
+            text: 'No Min',
+            selected: true,
+        },
+        {
+            value: '100',
+            text: 'CA$100',
+        },
+        {
+            value: '200',
+            text: 'CA$200',
+        },
+    ]
+} %}
+
+{% set fullSearchMaxPriceSelect = {
+    name: 'max-price',
+    inputMod: '_bordered-bright',
+    options: [
+        {
+            value: false,
+            text: 'No Max',
+            selected: true,
+        },
+        {
+            value: '100',
+            text: 'CA$100',
+        },
+        {
+            value: '200',
+            text: 'CA$200',
+        },
+    ]
+} %}
+
+{% set fullSearchBathsRadioOptions = [
+    {
+        name: 'baths',
+        value: 'any',
+        text: 'Any',
+        checked: true,
+    },
+    {
+        name: 'baths',
+        value: '1',
+        text: '1',
+    },
+    {
+        name: 'baths',
+        value: '2',
+        text: '2',
+    },
+    {
+        name: 'baths',
+        value: '3',
+        text: '3',
+    },
+    {
+        name: 'baths',
+        value: '4',
+        text: '4',
+    },
+    {
+        name: 'baths',
+        value: '5+',
+        text: '5+',
+    },
+] %}
+
+{% set fullSearchBedsRadioOptions = [
+    {
+        name: 'beds',
+        value: 'studio+',
+        text: 'Studio+',
+        checked: true,
+    },
+    {
+        name: 'beds',
+        value: '1',
+        text: '1',
+    },
+    {
+        name: 'beds',
+        value: '2',
+        text: '2',
+    },
+    {
+        name: 'beds',
+        value: '3',
+        text: '3',
+    },
+    {
+        name: 'beds',
+        value: '4',
+        text: '4',
+    },
+    {
+        name: 'beds',
+        value: '5',
+        text: '5',
+    },
+    {
+        name: 'beds',
+        value: '6+',
+        text: '6+',
+    },
+] %}
+
+{% set fullSearchBuildingSizeSelect = {
+    name: 'building-size',
+    inputMod: '_transparent',
+    wrapMod: ' js-fs-tab js-fs-tab-commercial _hide',
+    options: [
+        {
+            value: 'any',
+            text: 'Any Builiding Size',
+            selected: true,
+        },
+
+        {
+            value: '100',
+            text: '100+ sqft',
+        },
+
+        {
+            value: '200',
+            text: '200+ sqft',
+        },
+
+        {
+            value: '300',
+            text: '300+ sqft',
+        },
+    ]
+}%}
+
+{% set fullSearchlotSizeSelect = {
+    name: 'lot-size',
+    inputMod: '_transparent',
+    wrapMod: ' js-fs-tab js-fs-tab-commercial _hide',
+    options: [
+        {
+            value: 'any',
+            text: 'Any Lot Size',
+            selected: true,
+        },
+
+        {
+            value: '2000',
+            text: '2000+ sqft',
+        },
+
+        {
+            value: '3000',
+            text: '3000+ sqft',
+        },
+
+        {
+            value: '4000',
+            text: '4000+ sqft',
+        },
+    ]
+}%}
+
 {% extends 'base-clear.html.twig' %}
 
 {% block stylesheets %}
@@ -8,93 +316,264 @@
 {% block title %}Hello MapListingsController!{% endblock %}
 
 {% block body %}
-    <div class="map-table js-map-interface-wrap">
-        <div class="map-table__col map-table__col_left scroll-left js-estate-cards-wrap">
-            {% include 'layouts/common/preloader.html.twig' %}
-            <div class="map-table__scroll-wrap js-cards-scroll-wrap js-smooth-scroll" data-trigger-on-scroll="trigger:check-sliders">
-                <div class="estate-content">
-                    <div class="estate-cards-list js-estate-cards-list"> </div>
-                    <div class="estate-cards-pagination js-estate-cards-pagination"></div>
+    <div class="map-section pt40 js-map-interface-wrap">
+        <div class="map-section__title-wrap mb20">
+            <h4 class="map-section__title h4">1,504 Vancouver, BC Real Estate for Sale</h4>
+        </div>
+
+        <div class="map-section__table">
+            <div class="map-section__col map-section__col_left js-estate-cards-wrap">
+                <div class="map-section__filter-wrap mb20">
+                    {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                        placeholder: 'Price',
+                        wrapMod: '_btn-style _popup-stick-to-left',
+                        popupMod: '_small-padding',
+                        selectMin: fullSearchMinPriceSelect,
+                        selectMax: fullSearchMaxPriceSelect,
+                        dataProps: {
+                            patternReplace: '@',
+                            patternTwin: {
+                                first: '@+',
+                                last: 'CA$0&#32;-&#32;@',
+                                both: '@&#32;-&#32;@',
+                            },
+                        }
+                    } only %}
+                        {% block dropdown_content %}
+                            <div class="twin-fields">
+                                {% include 'layouts/form/select.html.twig' with selectMin only %}
+                                {% include 'layouts/form/select.html.twig' with selectMax only %}
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+
+                    {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                        placeholder: 'Beds',
+                        wrapMod: '_btn-style _popup-stick-to-left',
+                        popupMod: '_small-padding',
+                        beds: fullSearchBedsRadioOptions,
+                        dataProps: {
+                            patternReplace: '@',
+                            patternSimple: "@&#32;Beds"
+                        }
+                    } only %}
+                        {% block dropdown_content %}
+                            {% include 'layouts/controls/radio-row.html.twig' with {
+                                list: beds,
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+
+                    {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                        placeholder: 'All Home Types',
+                        wrapMod: '_btn-style _popup-stick-to-left',
+                        scroll: true,
+                        list: fullSearchPropertyTypeCheckboxes,
+                        dataProps: {
+                            patternReplace: '@',
+                            patternMulti: {
+                                single: '@',
+                                multi: 'Home&#32;Types&#32;(@)',
+                            },
+                        }
+                    } only %}
+                        {% block dropdown_content %}
+                            <div class="list">
+                                {% for item in list %}
+                                    {% include 'layouts/controls/check.html.twig' with {
+                                        type: item.type,
+                                        name: item.name,
+                                        value: item.value,
+                                        text: item.text,
+                                        wrapMod: loop.index is not same as(list|length) ? '_dark-gray mb10' : '_dark-gray'
+                                    } only %}
+                                {% endfor %}
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+
+                    {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                        placeholder: 'More',
+                        wrapMod: '_btn-style _popup-stick-to-left',
+                        scroll: true,
+                        dataProps: {
+                            patternReplace: '@',
+                            patternMulti: {
+                                single: '@',
+                                multi: 'Home&#32;Types&#32;(@)',
+                            },
+                        }
+                    } only %}
+                        {% block dropdown_content %}
+                            <div class="list">
+
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+
+                    {% include 'layouts/controls/button.html.twig' with {
+                        'text': 'Save Search',
+                        'mod': '_bordered-gray js-save-map-filter',
+                    } only %}
                 </div>
+
+                <div class="map-section__sort-wrap mb20">
+                    <div class="homes-available small-text2">
+                        <span class="homes-available__val"></span>
+                        <span class="homes-available__suffix">homes available</span>
+                    </div>
+
+                    <div class="sort">
+                        <span class="sort__label small-text2">Sort:</span>
+                        {% include 'layouts/form/select.html.twig' with {
+                            'name': 'map-sort',
+                            'wrapMod': '_thin-text',
+                            'inputMod': '_inline',
+                            'textMod': 'small-text2',
+                            'options': [
+                                {
+                                    'value': 'new',
+                                    'text': 'New Listings',
+                                },
+                                {
+                                    'value': 'prop2',
+                                    'text': 'prop2',
+                                },
+                                {
+                                    'value': 'prop3',
+                                    'text': 'prop3',
+                                },
+                            ]
+                        } only %}
+                    </div>
+                </div>
+
+                <div class="map-section__cards-container">
+                    <div class="map-section__cards-wrap">
+                        <div class="map-section__cards-scroll-wrap js-cards-scroll-wrap js-smooth-scroll" data-trigger-on-scroll="trigger:check-sliders">
+                            <div class="estate-content">
+                                <div class="estate-cards-list js-estate-cards-list"> </div>
+                                <div class="estate-cards-pagination js-estate-cards-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {#            {% include 'layouts/common/preloader.html.twig' %}#}
+                {#            <div class="map-section__scroll-wrap js-cards-scroll-wrap js-smooth-scroll" data-trigger-on-scroll="trigger:check-sliders">#}
+                {#                <div class="estate-content">#}
+                {#                    <div class="estate-cards-list js-estate-cards-list"> </div>#}
+                {#                    <div class="estate-cards-pagination js-estate-cards-pagination"></div>#}
+                {#                </div>#}
+                {#            </div>#}
+
+
+            </div>
+            <div class="map-section__col map-section__col_right pb30">
+
+                <div class="map-section__nav-wrap mb20">
+                    {% include 'layouts/modules/slide-menu.html.twig' with {
+                        list: mapTableMenu
+                    } only %}
+                </div>
+
+
+                <div class="map-section__map-container">
+                    <div class="map-section__map-wrap">
+                        <div class="map-container js-map-container">
+                            <div class="map" id="estate-map" data-params='{
+                            "path":"/listing/search",
+                            "center":[49.20984,-122.87793],
+                            "zoom":13,
+                            "minZoom":10,
+                            "refreshMarkers":true,
+                            "refreshYelp":true,
+                            "yelpPreloader":true,
+                            "cardsPreloader":true,
+                            "cardsPerPage":48,
+                            "maxMarkersCount":480
+                        }'></div>
+                        </div>
+                    </div>
+                </div>
+
+{#                            <div class="map-container js-map-container">#}
+{#                                {% include 'layouts/common/preloader.html.twig' %}#}
+
+{#                                <div class="map-controls">#}
+{#                                    <div class="map-draw-bar">#}
+{#                                        <div class="map-draw-bar__label">Draw a shape around the region(s) you would like to live in</div>#}
+{#                                        <div class="map-draw-bar__btn js-draw-cancel">Cancel</div>#}
+{#                                        <div class="map-draw-bar__btn js-draw-apply">Apply</div>#}
+{#                                    </div>#}
+{#                                    <div class="map-buttons-bar">#}
+{#                                        {% include 'layouts/controls/button.html.twig' with {#}
+{#                                            'dataPopup' : {'target': 'map'},#}
+{#                                            'mod': 'js-call-popup',#}
+{#                                            'text': 'show-popup-map',#}
+{#                                        } %}#}
+
+{#                                        <div class="select-module js-select-module js-bcc">#}
+{#                                             <select class="select-module__select js-yelp-select pseudo-hidden js-select-module-select"#}
+{#                                                    name="yelp" data-title="Yelp">#}
+{#                                                <option disabled="disabled" selected="selected" value=""></option>#}
+{#                                                <option value="banks">Banks</option>#}
+{#                                                <option value="coffee">Coffee &amp; Tea</option>#}
+{#                                                <option value="servicestations">Gas Stations</option>#}
+{#                                                <option value="grocery">Grocery Stores</option>#}
+{#                                                <option value="hospitals">Hospitals</option>#}
+{#                                                <option value="parks">Parks</option>#}
+{#                                                <option value="restaurants">Restaurants and Bars</option>#}
+{#                                                <option value="shopping">Shopping</option>#}
+{#                                            </select>#}
+{#                                            <div class="select-module__input-container js-select-module-container">#}
+{#                                                <span class="select-module__text-block js-select-module-text-block"></span>#}
+{#                                            </div>#}
+{#                                            <div class="select-module__dropdown">#}
+{#                                                <div class="select-module__scroll js-select-module-scrollbar js-select-module-options">#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <span class="select-module__label p5">Yelp</span>#}
+{#                                        </div>#}
+{#                                        <div class="btn-style schools-button js-map-show-schools">#}
+{#                                                <span class="btn-style__wrapper">#}
+{#                                                    <span class="btn-style__label b2">schools</span>#}
+{#                                                </span>#}
+{#                                        </div>#}
+{#                                        <div class="btn-style draw-button js-map-draw">#}
+{#                                                <span class="btn-style__wrapper">#}
+{#                                                    <span class="btn-style__label b2">draw</span>#}
+{#                                                </span>#}
+{#                                        </div>#}
+{#                                        <div class="btn-style edit-boundary-button js-draw-edit">#}
+{#                                                <span class="btn-style__wrapper">#}
+{#                                                    <span class="btn-style__label b2">Edit Boundary</span>#}
+{#                                                </span>#}
+{#                                        </div>#}
+{#                                        <div class="btn-style remove-boundary-button js-draw-cancel">#}
+{#                                                <span class="btn-style__wrapper">#}
+{#                                                    <span class="btn-style__label b2">Remove Boundary</span>#}
+{#                                                </span>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+
+{#                                <div class="map" id="estate-map" data-params='{#}
+{#                                    "path":"/listing/search",#}
+{#                                    "center":[49.20984,-122.87793],#}
+{#                                    "zoom":13,#}
+{#                                    "minZoom":10,#}
+{#                                    "refreshMarkers":true,#}
+{#                                    "refreshYelp":true,#}
+{#                                    "yelpPreloader":true,#}
+{#                                    "cardsPreloader":true,#}
+{#                                    "cardsPerPage":48,#}
+{#                                    "maxMarkersCount":480#}
+{#                                }'></div>#}
+{#                            </div>#}
             </div>
         </div>
-        <div class="map-table__col map-table__col_right">
-            <div class="map-container js-map-container">
-                {% include 'layouts/common/preloader.html.twig' %}
-
-                <div class="map-controls">
-                    <div class="map-draw-bar">
-                        <div class="map-draw-bar__label">Draw a shape around the region(s) you would like to live in</div>
-                        <div class="map-draw-bar__btn js-draw-cancel">Cancel</div>
-                        <div class="map-draw-bar__btn js-draw-apply">Apply</div>
-                    </div>
-                    <div class="map-buttons-bar">
-                        {% include 'layouts/controls/button.html.twig' with {
-                            'dataPopup' : {'target': 'map'},
-                            'mod': 'js-call-popup',
-                            'text': 'show-popup-map',
-                        } %}
-
-                        <div class="select-module js-select-module js-bcc">
-                             <select class="select-module__select js-yelp-select pseudo-hidden js-select-module-select"
-                                    name="yelp" data-title="Yelp">
-                                <option disabled="disabled" selected="selected" value=""></option>
-                                <option value="banks">Banks</option>
-                                <option value="coffee">Coffee &amp; Tea</option>
-                                <option value="servicestations">Gas Stations</option>
-                                <option value="grocery">Grocery Stores</option>
-                                <option value="hospitals">Hospitals</option>
-                                <option value="parks">Parks</option>
-                                <option value="restaurants">Restaurants and Bars</option>
-                                <option value="shopping">Shopping</option>
-                            </select>
-                            <div class="select-module__input-container js-select-module-container">
-                                <span class="select-module__text-block js-select-module-text-block"></span>
-                            </div>
-                            <div class="select-module__dropdown">
-                                <div class="select-module__scroll js-select-module-scrollbar js-select-module-options">
-                                </div>
-                            </div>
-                            <span class="select-module__label p5">Yelp</span>
-                        </div>
-                        <div class="btn-style schools-button js-map-show-schools">
-                                <span class="btn-style__wrapper">
-                                    <span class="btn-style__label b2">schools</span>
-                                </span>
-                        </div>
-                        <div class="btn-style draw-button js-map-draw">
-                                <span class="btn-style__wrapper">
-                                    <span class="btn-style__label b2">draw</span>
-                                </span>
-                        </div>
-                        <div class="btn-style edit-boundary-button js-draw-edit">
-                                <span class="btn-style__wrapper">
-                                    <span class="btn-style__label b2">Edit Boundary</span>
-                                </span>
-                        </div>
-                        <div class="btn-style remove-boundary-button js-draw-cancel">
-                                <span class="btn-style__wrapper">
-                                    <span class="btn-style__label b2">Remove Boundary</span>
-                                </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="map" id="estate-map" data-params='{
-                    "path":"/listing/search",
-                    "center":[49.20984,-122.87793],
-                    "zoom":13,
-                    "minZoom":10,
-                    "refreshMarkers":true,
-                    "refreshYelp":true,
-                    "yelpPreloader":true,
-                    "cardsPreloader":true,
-                    "cardsPerPage":48,
-                    "maxMarkersCount":480
-                }'></div>
-            </div>
         </div>
-    </div>
 
     {% include 'layouts/popups/popup-overlay.html.twig' %}
     {% include 'layouts/popups/map-popup.html.twig' %}

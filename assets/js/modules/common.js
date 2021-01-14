@@ -711,6 +711,7 @@ var $_ = {
                 $sliders.each((key, item) => {
                     const
                         $currentSlider = $(item),
+                        dataSliderParams = $currentSlider.data('slider-parameters'),
                         isInit = $currentSlider.hasClass('slick-initialized'),
                         hasRelatedSlides = $slides && $slides.length && $slides[key];
 
@@ -724,10 +725,13 @@ var $_ = {
                             dataLazyInner = $currentSlider.data('lazy-inner'),
                             { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
 
+                        console.log(dataSliderParams);
+
                         $currentSlider
                             .on('init', function (event, slick) {
                                 $_.$body.trigger('update:lazy-load');
                                 if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+                                if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
                                 if (dataLazyInner) $_._initSliderLazyInner(slick);
                             })
                             .slick({
@@ -739,7 +743,8 @@ var $_ = {
                                 fade: false,
                                 infinite: false,
                                 dots: false,
-                                ...sliderParams
+                                ...sliderParams,
+                                ...dataSliderParams
                             });
                     }
                 });
@@ -889,14 +894,18 @@ var $_ = {
 
             $scrollbar.each(function (key, item) {
                 const
-                    $breakpointDetect = $(item).find('.js-bp-detect'),
+                    $item = $(item),
+                    $breakpointDetect = $item.find('.js-bp-detect'),
                     isInit = Scrollbar.has(item);
 
                 if ($breakpointDetect.length) {
                     if ($breakpointDetect.eq(0).is(':hidden')) {
                         init(item, isInit);
                     } else {
-                        if (isInit) Scrollbar.destroy(item);
+                        if (isInit) {
+                            $item.off('trigger:scroll-top');
+                            Scrollbar.destroy(item);
+                        }
                     }
                 } else {
                     init(item, isInit);
@@ -905,18 +914,32 @@ var $_ = {
         }
 
         function init(item, update) {
+            const $item = $(item);
+
             if (update) {
                 Scrollbar.get(item).update();
 
             } else {
-                const dataScrollOptions = $(item).data('scroll-options') || {};
+                const
+                    dataScrollOptions = $item.data('scroll-options') || {},
+                    dataTriggerOnScroll = $item.data('trigger-on-scroll');
 
-                Scrollbar.init(item, {
+                const scrollbar = Scrollbar.init(item, {
                     damping: 0.1,
                     thumbMinSize: 50,
                     alwaysShowTracks: true,
                     continuousScrolling: false,
                     ...dataScrollOptions
+                });
+
+                if (dataTriggerOnScroll) {
+                    scrollbar.addListener((status) => {
+                        $item.trigger(dataTriggerOnScroll);
+                    });
+                }
+
+                $item.on('trigger:scroll-top', () => {
+                    scrollbar.scrollTop = 0;
                 });
             }
         }
