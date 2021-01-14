@@ -1,0 +1,11 @@
+<div class="input-style {{ wrapMod|default('') }}">
+    <div class="input-style__container">
+        <textarea
+            class="input-style__input _textarea {{ inputMod|default('') }}"
+            name="{{ name }}"
+            placeholder="{{ placeholder|default('') }}"
+        >{{
+            value|default('')
+        }}</textarea>
+    </div>
+</div>

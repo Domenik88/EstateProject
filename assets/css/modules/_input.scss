@@ -16,8 +16,7 @@
     padding: 5px 15px;
     box-sizing: border-box;
     display: block;
-    border-radius: 10px;
-    
+    border-radius: 5px;
     background: transparent;
     border: 1px solid $gray0;
     color: $gray1;
@@ -227,6 +226,12 @@
     
     &__input {
         @include input-style;
+        
+        &._textarea {
+            height: 143px;
+            padding-top: 11px;
+            border-radius: 10px;
+        }
     }
     
     &__container {
@@ -239,15 +244,6 @@
     
     &__label {
         color: red;
-    }
-    
-    &_textarea & {
-        &__input {
-            height: 150px;
-            transition: none;
-            padding-top: 15px;
-            overflow: hidden;
-        }
     }
     
     @include media_1700 {

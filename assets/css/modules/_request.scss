@@ -1,0 +1,14 @@
+.request {
+	position: relative;
+	
+	&__wrap {
+		width: 100%;
+		background: $dark1;
+		border-radius: 20px;
+		color: $white;
+	}
+	
+	&__title {
+		color: $white;
+	}
+}

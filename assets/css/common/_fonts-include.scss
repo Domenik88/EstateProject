@@ -29,11 +29,11 @@ $icomoon: 'icomoon';
 
 @font-face {
   font-family: $icomoon;
-  src:  url('../../fonts/icomoon.eot?h8g6gb');
-  src:  url('../../fonts/icomoon.eot?h8g6gb#iefix') format('embedded-opentype'),
-  url('../../fonts/icomoon.ttf?h8g6gb') format('truetype'),
-  url('../../fonts/icomoon.woff?h8g6gb') format('woff'),
-  url('../../fonts/icomoon.svg?h8g6gb#icomoon') format('svg');
+  src:  url('../../fonts/icomoon.eot?qs67ok');
+  src:  url('../../fonts/icomoon.eot?qs67ok#iefix') format('embedded-opentype'),
+  url('../../fonts/icomoon.ttf?qs67ok') format('truetype'),
+  url('../../fonts/icomoon.woff?qs67ok') format('woff'),
+  url('../../fonts/icomoon.svg?qs67ok#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -223,4 +223,13 @@ $icomoon: 'icomoon';
 }
 .icon-quotes:before {
   content: "\e938";
+}
+.icon-email:before {
+  content: "\e939";
+}
+.icon-phone:before {
+  content: "\e93a";
+}
+.icon-point:before {
+  content: "\e93b";
 }

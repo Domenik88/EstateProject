@@ -1,0 +1,48 @@
+{% set contactsMapParameters = {
+    center: {
+        lat: lat|default(0),
+        lng: lng|default(0),
+    },
+    zoom: 13,
+    minZoom: 5,
+    initialMarker: true,
+    refreshYelp: false,
+    yelpPreloader: false,
+    refreshMarkers: false,
+} %}
+
+<section class="contacts-map {{ wrapMod ?? 'mb50' }}">
+    <div class="contacts-map__container {{ containerMod ?? 'container' }}">
+        <div class="contacts-map__wrap">
+            <div class="contacts-map__header inner-container pt40 pb40">
+                <div class="contacts-map__table mtr30">
+                    {% if address %}
+                        <div class="contacts-map__col mt30 icon-point">
+                            <span class="contacts-map__text small-text2">{{ address }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if phone %}
+                        <div class="contacts-map__col mt30 icon-phone">
+                            <a href="tel:{{ phone }}" class="link-fuchsia body-text">{{ phone }}</a>
+                        </div>
+                    {% endif %}
+
+                    {% if email %}
+                        <div class="contacts-map__col mt30 icon-email">
+                            <a href="mailto:{{ email }}" class="link-fuchsia small-text2">{{ email }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="contacts-map__map-container">
+                <div class="map-container">
+                    <div class="map" id="estate-map" data-params='{{
+                        contactsMapParameters|json_encode
+                    }}'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

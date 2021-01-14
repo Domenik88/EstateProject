@@ -5,7 +5,8 @@ jQuery(function($) {
             this.options = options;
             this.init_cache();
             this.init_validation();
-            
+            this.init_reset_button();
+
             if (this.options['file']) {
                 this.check_file();
                 this.input_file_reset();
@@ -34,7 +35,23 @@ jQuery(function($) {
             this.options = this.init_options();
             this.$input_phone = $('.userphone');
             this.$form = $('.js-ajax-form');
+            this.$resetButton = $('.js-form-reset-button');
             this.$file_input = $('.js-file-input');
+        },
+
+        init_reset_button: function () {
+            form_adjuster.$resetButton.on('click', (e) => {
+                const
+                    $currentTarget = $(e.currentTarget),
+                    $relatedForm = $currentTarget.closest('form'),
+                    $relatedSelectModules = $relatedForm.find('.js-select-module');
+
+                $relatedSelectModules.each((key, item) => {
+                    $(item).find('.js-select-module-option').eq(0).click();
+                });
+
+                $relatedForm.trigger('reset');
+            });
         },
         
         init_validation: function() {
