@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\School;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,37 +16,17 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SchoolRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         parent::__construct($registry, School::class);
     }
 
-    // /**
-    //  * @return School[] Returns an array of School objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function truncateSchoolTable()
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $rsm = new ResultSetMapping();
+        $this->entityManager->createNativeQuery('TRUNCATE TABLE school RESTART IDENTITY',$rsm)->execute();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?School
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

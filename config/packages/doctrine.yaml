@@ -4,8 +4,10 @@ doctrine:
         server_version: '10.14'
         types:
             point: App\Service\Geo\PointType
+            polygon: App\Service\Geo\PolygonType
         mapping_types:
             point: point
+            polygon: polygon
 
         url: '%env(resolve:DATABASE_URL)%'
 

@@ -72,6 +72,11 @@ class School
      */
     private $coordinates;
 
+    /**
+     * @ORM\Column(type="polygon", nullable=true)
+     */
+    private $areas;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -205,6 +210,18 @@ class School
     public function setCoordinates($coordinates): self
     {
         $this->coordinates = $coordinates;
+
+        return $this;
+    }
+
+    public function getAreas()
+    {
+        return $this->areas;
+    }
+
+    public function setAreas($areas): self
+    {
+        $this->areas = $areas;
 
         return $this;
     }

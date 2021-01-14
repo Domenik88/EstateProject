@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Service\Geo\Point;
+use App\Service\Geo\Polygon;
 use App\Service\School\SchoolService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
