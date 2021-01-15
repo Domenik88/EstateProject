@@ -51,7 +51,7 @@ export const mapTemplates = {
                     class="estate-cards-slider js-estate-card-slider"
                     data-lazy-inner="true"
                     data-img-selector="ec-src"
-                    data-slider-parameters="{ lazyLoad: 'ondemand', dots: true }"
+                    data-slider-parameters=${JSON.stringify({ lazyLoad: 'ondemand', dots: true })}
                 >
                     ${mapTemplates.estateSliderItems(images)}
                 </div>
@@ -76,7 +76,7 @@ export const mapTemplates = {
             </div>
             
             <div class="estate-card__description pt30 pb30">
-                ${listingPrice && `<span class="estate-card__title subtitle mb10">${listingPrice}</span>`}
+                ${listingPrice && `<span class="estate-card__title subtitle mb10">${window._formatCurrencyCa(listingPrice)}</span>`}
               
                 ${address && address.streetAddress && address.city && `<h5 class="estate-card__location h5 mb10">${address.streetAddress + ', ' + address.city}</h5>`}
                 
@@ -95,7 +95,6 @@ export const mapTemplates = {
         if (imagesArray && imagesArray.length) {
             return imagesArray.map(img => `
                 <div class="estate-cards-slider__item">
-<!--                    <img class="estate-cards-slider__img of" data-lazy=${img} src='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' alt="#" />-->
                     <img class="estate-cards-slider__img of" data-ec-src=${img} src='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' alt="#" />
                 </div>
             `).join('')

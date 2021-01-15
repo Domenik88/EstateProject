@@ -33,7 +33,6 @@ var $_ = {
         this.$page = $('html, body');
         this.$window = $(window);
         this.$body = $('body');
-        this.$jsWrap = $('.js-wrap');
         
         this.$overlay = $('.js-overlay');
         this.$menuBtn = $('.js-menu-btn');
@@ -41,12 +40,6 @@ var $_ = {
         this.$scrollTop = $('.js-scroll-top');
         this.$navLink = $('.js-nav-link');
         this.$checkInWindow = $('.js-check-in-window');
-
-        this.$sliderNav = $('.js-slider-nav');
-        this.$arrowLeft = $('.js-arrow-left');
-        this.$arrowRight = $('.js-arrow-right');
-        this.$current = $('.js-current');
-        this.$total = $('.js-total');
 
         this.$toggleActive = $('.js-toggle-active');
 
@@ -108,6 +101,12 @@ var $_ = {
         this.selectors = {
             smoothScroll: '.js-smooth-scroll',
             lazyLoad: '.js-lazy',
+            jsWrap: '.js-wrap',
+            sliderNav: '.js-slider-nav',
+            arrowLeft: '.js-arrow-left',
+            arrowRight: '.js-arrow-right',
+            current: '.js-current',
+            total: '.js-total',
         };
         
         this.animationEvents = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
@@ -311,7 +310,7 @@ var $_ = {
                 $currentLink = $(e.currentTarget),
                 dataContentId = $currentLink.data('content-id'),
                 dataInitMap = $currentLink.data('init-map'),
-                $wrap = $currentLink.closest($_.$jsWrap);
+                $wrap = $currentLink.closest($_.selectors.jsWrap);
 
             if (dataInitMap) $_.$body.trigger('trigger:init-map', dataInitMap);
 
@@ -632,7 +631,7 @@ var $_ = {
         $_.$showMoreButton.on('click', (e) => {
             const
                 $btn = $(e.currentTarget),
-                $wrap = $btn.closest($_.$jsWrap),
+                $wrap = $btn.closest($_.selectors.jsWrap),
                 $stickyBlocks = $wrap.find($_.$stickyBlock),
                 $hiddenElements = $btn.prevAll(':hidden'),
                 show = $hiddenElements.length,
@@ -676,6 +675,8 @@ var $_ = {
     },
 
     initEstateGallerySlider() {
+        if (!$_.$estateGallerySlider.length) return false;
+
         const
             dataLazyInner = $_.$estateGallerySlider.data('lazy-inner'),
             { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($_.$estateGallerySlider);
@@ -724,8 +725,6 @@ var $_ = {
                         const
                             dataLazyInner = $currentSlider.data('lazy-inner'),
                             { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
-
-                        console.log(dataSliderParams);
 
                         $currentSlider
                             .on('init', function (event, slick) {
@@ -1247,15 +1246,15 @@ var $_ = {
     
     _getRelatedSliderNav($slider) {
         const
-            $wrap = $slider.closest($_.$jsWrap),
-            $sliderNav = $wrap.find($_.$sliderNav);
-        
+            $wrap = $slider.closest($_.selectors.jsWrap),
+            $sliderNav = $wrap.find($_.selectors.sliderNav);
+
         return {
             $sliderNav,
-            $arrowLeft: $sliderNav.find($_.$arrowLeft),
-            $arrowRight: $sliderNav.find($_.$arrowRight),
-            $current: $sliderNav.find($_.$current),
-            $total: $sliderNav.find($_.$total),
+            $arrowLeft: $sliderNav.find($_.selectors.arrowLeft),
+            $arrowRight: $sliderNav.find($_.selectors.arrowRight),
+            $current: $sliderNav.find($_.selectors.current),
+            $total: $sliderNav.find($_.selectors.total),
         }
     },
     

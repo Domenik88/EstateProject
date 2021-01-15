@@ -18,6 +18,10 @@
     justify-content: flex-start;
     padding-right: 40px;
     color: $gray1;
+    
+    &__val {
+        margin-right: .3em;
+    }
 }
 
 .sort {
@@ -483,13 +487,6 @@
                 color: $dark1;
             }
         }
-    }
-}
-
-
-.estate-cards-pagination {
-    & > div {
-        padding-top: 40px;
     }
 }
 

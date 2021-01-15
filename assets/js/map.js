@@ -38,6 +38,8 @@ class EstateMap {
         this.$yelpCardsSlider = this.$iw.find('.js-yelp-cards-slider');
         this.$yelpCardsMenu = this.$iw.find('.js-yelp-cards-menu');
 
+        this.$homesAvailable = this.$iw.find('.js-homes-available');
+
         this.dataParams = this.$map.data('params');
 
         this.map = null;
@@ -520,9 +522,14 @@ class EstateMap {
     }
 
     _parseMarkersData(data) {
+        this._setAvailableHomes(data.length);
         this._setMarkersObj(data);
         this._addMarkers();
         if (this.$estateCardsPagination.length) this._initPagination(data);
+    }
+
+    _setAvailableHomes(count) {
+        this.$homesAvailable.html(window._formatCurrency(count));
     }
 
     _addMarkers(data) {
