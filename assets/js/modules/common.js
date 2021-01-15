@@ -28,6 +28,8 @@ var $_ = {
         this.initDropdownButton();
         this.initSvgMap();
         this.initToggleNext();
+        this.initKeywordsInput();
+        this.initKeywordsInput();
     },
     
     initCache() {
@@ -90,6 +92,12 @@ var $_ = {
 
         this.$toggleNext = $('.js-toggle-next');
 
+        this.$keywords = $('.js-keywords');
+        this.$keywordsArray = $('.js-keywords-array');
+        this.$keywordsInsert = $('.js-keywords-insert');
+        this.$addKeyword = $('.js-add-keyword');
+        this.$keywordsList = $('.js-keywords-list');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -127,6 +135,54 @@ var $_ = {
         is_touch_device();
     },
 
+    initKeywordsInput() {
+        function pasteKeywords(obj) {
+            const { keywords, $keywordsList } = obj;
+
+            $keywordsList.html('');
+
+            keywords.forEach(item => {
+                $keywordsList.append($(`<div class="keyword">${item}<span class="remove"></span></div>`));
+            });
+        }
+
+        $_.$keywords.each((key, item) => {
+            const
+                $currentModule = $(item),
+                $keywordsArray = $currentModule.find($_.$keywordsArray),
+                $keywordsInsert = $currentModule.find($_.$keywordsInsert),
+                $addKeyword = $currentModule.find($_.$addKeyword),
+                $keywordsList = $currentModule.find($_.$keywordsList);
+
+            let keywords = [];
+
+            $currentModule.on('click', '.remove', (e) => {
+                const
+                    $currentTarget = $(e.currentTarget),
+                    $relatedKeyword = $currentTarget.closest('.keyword'),
+                    text = $relatedKeyword.text(),
+                    index = keywords.indexOf(text);
+
+                if (index !== -1) {
+                    keywords.splice(index, 1);
+                    $relatedKeyword.remove();
+                    $keywordsArray.attr('value', JSON.stringify(keywords));
+                }
+            });
+
+            $addKeyword.on('click', () => {
+                const val = $keywordsInsert.val().trim();
+
+                if (val.length && (keywords.indexOf(val) === -1)) {
+                    keywords.push(val);
+                    $keywordsArray.attr('value', JSON.stringify(keywords));
+                    pasteKeywords({$keywordsList, keywords});
+                }
+                $keywordsInsert.val('');
+            });
+        });
+    },
+
     initSimpleScroll() {
         function initScroll(el) {
             const
@@ -154,12 +210,6 @@ var $_ = {
         }
 
         $($_.selectors.simpleScroll).each((key, el) => {
-            initScroll(el);
-        });
-
-        $_.$body.on('trigger:init-scrollbar', (e, data) => {
-            const { el } = data;
-
             initScroll(el);
         });
     },
@@ -281,12 +331,26 @@ var $_ = {
             }
         }
 
+        function setMaxHeight($item) {
+            const { top } = $item[0].getBoundingClientRect();
+            $item.css('max-height', `${$_.windowHeight - top - 100}px`);
+        }
+
         $_.$dropdownButton.each((key, item) => {
             const
                 $currentButton = $(item),
+                $maxScroll = $currentButton.find('.js-max-height'),
                 $selectedContainer = $currentButton.find($_.$dropdownSelected),
                 $innerFields = $currentButton.find('input, select'),
                 dataProps = $currentButton.data('props');
+
+            if ($maxScroll.length) {
+                setMaxHeight($maxScroll);
+
+                $_.$body.on('body:resize', () => {
+                    setMaxHeight($maxScroll);
+                });
+            }
 
             if (dataProps) {
                 $innerFields.on('change', () => {
@@ -1064,7 +1128,11 @@ var $_ = {
                     $closestBccSibling = $target.closest('.js-bcc-sibling'),
                     $relatedBcc = $closestBccSibling.siblings('.js-bcc'),
                     $targetsToClose = $bccItems.not($targetToPrevent).not($relatedBcc);
-                
+
+                console.log('$target: ', $target);
+                console.log('$closestBcc: ', $closestBcc);
+                console.log('$closestBccSibling: ', $closestBccSibling);
+
                 $targetsToClose.removeClass('_active');
             }
         });
