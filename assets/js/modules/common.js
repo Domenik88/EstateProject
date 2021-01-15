@@ -9,6 +9,7 @@ var $_ = {
         this.initScrollTopButton();
         this.initScrollEvents();
         this.initSmoothScroll();
+        this.initSimpleScroll();
         this.initNavLinks();
         this.initLazyLoad();
         this.initTriggerSlider();
@@ -100,6 +101,7 @@ var $_ = {
         
         this.selectors = {
             smoothScroll: '.js-smooth-scroll',
+            simpleScroll: '.js-simple-scroll',
             lazyLoad: '.js-lazy',
             jsWrap: '.js-wrap',
             sliderNav: '.js-slider-nav',
@@ -123,6 +125,43 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initSimpleScroll() {
+        function initScroll(el) {
+            const
+                $currentTarget = $(el),
+                dataTriggerOnScroll = $currentTarget.data('trigger-on-scroll');
+
+            const scroll = new SimpleBar(el, {
+                autoHide: false,
+                scrollbarMinSize: 100,
+            });
+
+            if (scroll && scroll.getScrollElement) {
+                const scrollElement = scroll.getScrollElement();
+
+                $currentTarget.on('trigger:scroll-top', () => {
+                    scrollElement.scrollTop = 0;
+                });
+
+                if (dataTriggerOnScroll) {
+                    scrollElement.addEventListener('scroll', () => {
+                        $currentTarget.trigger(dataTriggerOnScroll);
+                    });
+                }
+            }
+        }
+
+        $($_.selectors.simpleScroll).each((key, el) => {
+            initScroll(el);
+        });
+
+        $_.$body.on('trigger:init-scrollbar', (e, data) => {
+            const { el } = data;
+
+            initScroll(el);
+        });
     },
 
     initToggleNext: function() {

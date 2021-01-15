@@ -157,21 +157,22 @@
 	&__title,
 	&__location {
 		color: $dark1;
+		display: inline-block;
 	}
+}
+
+.gray-mls-after {
+	color: $gray1;
 	
-	&__text {
-		color: $gray1;
+	&.icon-mls-min {
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		flex-direction: row-reverse;
 		
-		&.icon-mls-min {
-			display: inline-flex;
-			align-items: center;
-			justify-content: flex-start;
-			flex-direction: row-reverse;
-			
-			&::before {
-				font-size: 18px;
-				margin-left: 5px;
-			}
+		&::before {
+			font-size: 18px;
+			margin-left: 5px;
 		}
 	}
 }

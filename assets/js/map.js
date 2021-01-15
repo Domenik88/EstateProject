@@ -4,7 +4,7 @@ require('leaflet-freedraw');
 require('leaflet-kml');
 const carto = require('@carto/carto.js');
 require('paginationjs');
-import { mapTemplates } from './templates/map-templates'
+import { mapTemplates } from './templates/map-templates';
 
 class EstateMap {
     constructor(id) {
@@ -57,7 +57,7 @@ class EstateMap {
         this.resizeTimer = null;
         this.resizeTimerDelay = 300;
 
-        this.markerPopupWidth = 270;
+        this.markerPopupWidth = 400;
         this.yelpMarkerPopupWidth = 290;
 
         this.markers = null;
@@ -470,6 +470,29 @@ class EstateMap {
     _constructMarkerPopup(data, counter) {
         const { address, lat, lng, mlsNum } = data;
 
+        const testData = {
+            img: `https://picsum.photos/300/170??random=${counter+1}`,
+            listingPrice: 849888.88,
+            address: {
+                country: "Canada",
+                state: "British Columbia",
+                city: "Kelowna",
+                postalCode: "V1X3B1",
+                streetAddress: "285 Rutland Road, N",
+            },
+            metrics: {
+                yearBuilt: null,
+                bedRooms: null,
+                bathRooms: 2,
+                stories: 1,
+                lotSize: null,
+                lotSizeUnits: "acres",
+                sqrtFootage: null,
+                sqrtFootageUnits: "square feet",
+            },
+            mls: 'Whistler Real Estate Company Limited'
+        };
+
         return L.responsivePopup({
             maxWidth: this.markerPopupWidth,
             closeButton: false,
@@ -480,11 +503,7 @@ class EstateMap {
             offset: [0, -15],
         })
             .setLatLng(L.latLng(lat,lng))
-            .setContent(mapTemplates.markerPopup({
-                img: `https://picsum.photos/300/170??random=${counter+1}`,
-                title: `title ${counter+1}`,
-                text: address,
-            }))
+            .setContent(mapTemplates.markerPopup(testData))
     }
 
     _setMarkersObj(data, from=0) {
@@ -529,7 +548,7 @@ class EstateMap {
     }
 
     _setAvailableHomes(count) {
-        this.$homesAvailable.html(window._formatCurrency(count));
+        this.$homesAvailable.html(_formatCurrency(count));
     }
 
     _addMarkers(data) {
