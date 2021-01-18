@@ -29,7 +29,6 @@ var $_ = {
         this.initSvgMap();
         this.initToggleNext();
         this.initKeywordsInput();
-        this.initKeywordsInput();
     },
     
     initCache() {
@@ -142,8 +141,16 @@ var $_ = {
             $keywordsList.html('');
 
             keywords.forEach(item => {
-                $keywordsList.append($(`<div class="keyword">${item}<span class="remove"></span></div>`));
+                $keywordsList.append($(`<div class="keyword"><span class="text">${item}</span> <span class="remove"></span></div>`));
             });
+        }
+
+        function setValue(obj) {
+            const
+                { $input, keywords } = obj,
+                val = keywords.length ? JSON.stringify(keywords) : '';
+
+            $input.attr('value', val).trigger('change');
         }
 
         $_.$keywords.each((key, item) => {
@@ -160,13 +167,15 @@ var $_ = {
                 const
                     $currentTarget = $(e.currentTarget),
                     $relatedKeyword = $currentTarget.closest('.keyword'),
-                    text = $relatedKeyword.text(),
+                    text = $relatedKeyword.find('.text').text(),
                     index = keywords.indexOf(text);
 
                 if (index !== -1) {
                     keywords.splice(index, 1);
-                    $relatedKeyword.remove();
-                    $keywordsArray.attr('value', JSON.stringify(keywords));
+                    setValue({$input: $keywordsArray, keywords,});
+                    $relatedKeyword.fadeOut(300, () => {
+                        $relatedKeyword.remove();
+                    });
                 }
             });
 
@@ -175,7 +184,7 @@ var $_ = {
 
                 if (val.length && (keywords.indexOf(val) === -1)) {
                     keywords.push(val);
-                    $keywordsArray.attr('value', JSON.stringify(keywords));
+                    setValue({$input: $keywordsArray, keywords,});
                     pasteKeywords({$keywordsList, keywords});
                 }
                 $keywordsInsert.val('');
@@ -292,8 +301,14 @@ var $_ = {
         function showSelected(data) {
             const
                 { $currentButton, $selectedContainer, $innerFields, dataProps } = data,
-                { patternSimple, patternTwin, patternMulti, patternReplace } = dataProps,
+                { patternSimple, patternTwin, patternMulti, patternReplace, patternFixed } = dataProps,
                 values = $innerFields.serializeArray();
+
+            if (patternFixed) {
+                const hasValues = values.map(item => !!item.value.length).indexOf(true) !== -1;
+                $selectedContainer.html(patternFixed);
+                toggleButton($currentButton, hasValues);
+            }
 
             if (patternSimple) {
                 const value = values[0] && values[0].value;
@@ -1128,10 +1143,6 @@ var $_ = {
                     $closestBccSibling = $target.closest('.js-bcc-sibling'),
                     $relatedBcc = $closestBccSibling.siblings('.js-bcc'),
                     $targetsToClose = $bccItems.not($targetToPrevent).not($relatedBcc);
-
-                console.log('$target: ', $target);
-                console.log('$closestBcc: ', $closestBcc);
-                console.log('$closestBccSibling: ', $closestBccSibling);
 
                 $targetsToClose.removeClass('_active');
             }

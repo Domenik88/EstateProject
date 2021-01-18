@@ -65,6 +65,9 @@
                         wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
                         scrollMod: 'js-max-height',
                         scroll: true,
+                        dataProps: {
+                            patternFixed: 'More',
+                        }
                     } only %}
                         {% block dropdown_content %}
                             {% include 'layouts/form/filter-more.html.twig' %}

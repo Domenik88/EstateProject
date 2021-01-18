@@ -104,6 +104,23 @@
 		}
 	}
 	
+	&._selected-highlight & {
+		&__selected {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			
+			&::before {
+				content: '';
+				width: 9px;
+				height: 9px;
+				border-radius: 50%;
+				background: $turquoise;
+				margin-right: 10px;
+			}
+		}
+	}
+	
 	&:not(._selected) & {
 		&__selected {
 			display: none;
