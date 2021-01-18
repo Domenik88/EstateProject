@@ -1,0 +1,20 @@
+<div class="keywords js-keywords">
+    <div class="keywords__input-wrap">
+        <input type="text" name="keywords-array" class="pseudo-hidden js-keywords-array" value="">
+
+        {% include 'layouts/form/input.html.twig' with {
+            'name': 'keywords-insert',
+            'placeholder': 'Pool, Parking, ...',
+            'inputMod': '_bordered-bright js-keywords-insert',
+        } only %}
+
+        {% include 'layouts/controls/button.html.twig' with {
+            'mod': '_bordered js-add-keyword',
+            'text': 'Add',
+        } %}
+    </div>
+
+    <div class="keywords__list js-keywords-list">
+
+    </div>
+</div>

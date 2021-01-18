@@ -68,6 +68,29 @@
 		line-height: 1;
 	}
 	
+	&._btn-style {
+		display: inline-block;
+		width: auto;
+		height: 41px;
+		background: $gray2;
+		border-radius: 10px;
+		
+		#{$r}__text {
+			padding: 0 30px 0 15px;
+			
+			&::after {
+				right: 15px;
+			}
+		}
+	}
+	
+	&._popup-stick-to-left {
+		#{$r}__popup {
+			left: 0;
+			right: auto;
+		}
+	}
+	
 	&._fh {
 		height: 100%;
 		display: flex;
@@ -78,6 +101,23 @@
 	&._selected & {
 		&__placeholder {
 			display: none;
+		}
+	}
+	
+	&._selected-highlight & {
+		&__selected {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			
+			&::before {
+				content: '';
+				width: 9px;
+				height: 9px;
+				border-radius: 50%;
+				background: $turquoise;
+				margin-right: 10px;
+			}
 		}
 	}
 	

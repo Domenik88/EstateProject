@@ -16,6 +16,14 @@
 	}
 }
 
+@mixin slider-preload-visible($root, $item-name: 'item') {
+	&:not(.slick-initialized) {
+		#{$root}__#{$item-name}:not(:first-child) {
+			display: none;
+		}
+	}
+}
+
 @mixin absolute($top: 0, $right: 0, $bottom: 0, $left: 0) {
 	position: absolute;
 	top: $top;

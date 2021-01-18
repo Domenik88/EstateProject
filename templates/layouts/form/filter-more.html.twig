@@ -1,0 +1,217 @@
+{% set checkboxArray1 = [
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'For Sale By Agent',
+        text: 'For Sale By Agent',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'For Sale By Owner',
+        text: 'For Sale By Owner',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'New Construction',
+        text: 'New Construction',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Foreclosures',
+        text: 'Foreclosures',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Coming Soon',
+        text: 'Coming Soon',
+        wrapMod: '_dark-gray',
+    },
+] %}
+
+{% set checkboxArray2 = [
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'New Listings (Past Week)',
+        text: 'New Listings (Past Week)',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Open Houses',
+        text: 'Open Houses',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Price Reduced (Past Week)',
+        text: 'Price Reduced (Past Week)',
+        wrapMod: '_dark-gray',
+    },
+] %}
+
+{% set checkboxArray3 = [
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Include Accepting Backup Offers',
+        text: 'Include Accepting Backup Offers',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Include Pending & Under Contract',
+        text: 'Include Pending & Under Contract',
+        wrapMod: '_dark-gray',
+    },
+    {
+        type: 'checkbox',
+        name: 'property-type',
+        value: 'Price Reduced (Past Week)',
+        text: 'Price Reduced (Past Week)',
+        wrapMod: '_dark-gray',
+    },
+] %}
+
+{% set selectLotSize = {
+    name: 'lot-size',
+    inputMod: '_bordered-bright',
+    wrapMod: '',
+    options: [
+        {
+            value: '',
+            text: 'No Min',
+            selected: true,
+        },
+
+        {
+            value: '100',
+            text: '100+ sqft',
+        },
+
+        {
+            value: '200',
+            text: '200+ sqft',
+        },
+
+        {
+            value: '300',
+            text: '300+ sqft',
+        },
+    ]
+} %}
+
+<div class="filter-more">
+    <div class="filter-more__row mb20">
+        <span class="filter-more__label small-text2 mb10">Type of Listing</span>
+
+        <div class="filter-more__fields-wrap">
+            <div class="list">
+                {% for item in checkboxArray1 %}
+                    {% include 'layouts/controls/check.html.twig' with item only %}
+                {% endfor %}
+            </div>
+            <div class="list">
+                {% for item in checkboxArray2 %}
+                    {% include 'layouts/controls/check.html.twig' with item only %}
+                {% endfor %}
+            </div>
+            <div class="list">
+                {% for item in checkboxArray3 %}
+                    {% include 'layouts/controls/check.html.twig' with item only %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-more__row mb20">
+        <span class="filter-more__label small-text2 mb5">Keywords</span>
+
+        <div class="filter-more__fields-wrap">
+            {% include 'layouts/form/keywords.html.twig' %}
+        </div>
+    </div>
+
+    <div class="filter-more__row mb20">
+        <span class="filter-more__label small-text2 mb5">Bathrooms</span>
+
+        <div class="filter-more__fields-wrap">
+            {% include 'layouts/controls/radio-row.html.twig' with {
+                defaultList: 'baths'
+            } only %}
+        </div>
+    </div>
+
+    <div class="filter-more__row mb20">
+        <span class="filter-more__label small-text2 mb5">Square Feet</span>
+
+        <div class="filter-more__fields-wrap">
+            <div class="twin-fields">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'square-feet-min',
+                    'placeholder': 'No Min',
+                    'inputMod': '_bordered-bright',
+                } only %}
+
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'square-feet-max',
+                    'placeholder': 'No Max',
+                    'inputMod': '_bordered-bright',
+                } only %}
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-more__row mb20">
+        <span class="filter-more__label small-text2 mb5">Lot Size</span>
+
+        <div class="filter-more__fields-wrap">
+            {% include 'layouts/form/select.html.twig' with selectLotSize only %}
+        </div>
+    </div>
+
+    <div class="filter-more__row mb40">
+        <span class="filter-more__label small-text2 mb5">Year Built</span>
+
+        <div class="filter-more__fields-wrap">
+            <div class="twin-fields">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'year-built-min',
+                    'placeholder': 'No Min',
+                    'inputMod': '_bordered-bright',
+                } only %}
+
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'year-built-max',
+                    'placeholder': 'No Max',
+                    'inputMod': '_bordered-bright',
+                } only %}
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-more__row">
+        <div class="filter-more__buttons-wrap">
+            {% include 'layouts/controls/button.html.twig' with {
+                'text': 'Save Search',
+                'mod': '_bordered-gray js-',
+            } only %}
+
+            {% include 'layouts/controls/button.html.twig' with {
+                'text': 'View Homes',
+                'mod': 'js-',
+            } only %}
+        </div>
+    </div>
+</div>

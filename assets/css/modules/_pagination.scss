@@ -45,7 +45,6 @@
 	}
 }
 
-
 .paginationjs {
 	.paginationjs-pages {
 		ul {
@@ -53,30 +52,129 @@
 			align-items: center;
 			justify-content: center;
 			
-			li {
-				margin-right: 10px;
-				transition: $default-transition;
-				background: #eee;
+			.paginationjs-page,
+			.paginationjs-ellipsis {
+				a {
+					@extend .button1;
+					color: $gray1;
+					padding: 0 10px;
+					transition: $default-transition;
+				}
+			}
+			
+			
+			.paginationjs-page {
+				a:hover {
+					color: $dark1;
+				}
 				
-				&.disabled {
+				&.active {
 					pointer-events: none;
+					margin: 0 10px;
+					
+					a {
+						padding: 0;
+						width: 33px;
+						height: 33px;
+						border-radius: 50%;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						background: $gray4;
+						color: $dark1;
+					}
 				}
+			}
+			
+			.paginationjs-ellipsis {
+			
+			}
+			
+			.paginationjs-prev,
+			.paginationjs-next {
+				width: 33px;
+				height: 33px;
+				border-radius: 50%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				background: $white;
+				color: $dark1;
+				border: 1px solid $gray-line;
+				box-sizing: border-box;
+				transition: $default-transition;
+				cursor: pointer;
 				
-				&.active,
 				&:hover {
-					background: green;
+					background: $gray4;
 				}
 				
-				&:last-child {
-					margin-right: 0;
+				&::before {
+					font-family: $icomoon;
+					font-size: 9px;
+					line-height: 1;
+					display: block;
 				}
 				
 				a {
-					display: block;
-					padding: 10px;
-					
+					display: none;
 				}
+				
+				&.disabled {
+					pointer-events: none;
+					
+					&::before {
+						opacity: .3;
+					}
+				}
+			}
+			
+			.paginationjs-prev {
+				margin-right: 10px;
+				@extend .icon-angle-left;
+			}
+			
+			.paginationjs-next {
+				margin-left: 10px;
+				@extend .icon-angle-right;
 			}
 		}
 	}
 }
+
+//.paginationjs {
+//	.paginationjs-pages {
+//		ul {
+//			display: flex;
+//			align-items: center;
+//			justify-content: center;
+//
+//			li {
+//				margin-right: 10px;
+//				transition: $default-transition;
+//				background: #eee;
+//
+//				&.disabled {
+//					pointer-events: none;
+//				}
+//
+//				&.active,
+//				&:hover {
+//					background: green;
+//				}
+//
+//				&:last-child {
+//					margin-right: 0;
+//				}
+//
+//				a {
+//					display: block;
+//					padding: 10px;
+//
+//				}
+//			}
+//		}
+//	}
+//}

@@ -1,5 +1,82 @@
+{% set defaultLists = {
+    baths: [
+        {
+            name: 'baths',
+            value: '',
+            text: 'Any',
+            checked: true,
+        },
+        {
+            name: 'baths',
+            value: '1',
+            text: '1',
+        },
+        {
+            name: 'baths',
+            value: '2',
+            text: '2',
+        },
+        {
+            name: 'baths',
+            value: '3',
+            text: '3',
+        },
+        {
+            name: 'baths',
+            value: '4',
+            text: '4',
+        },
+        {
+            name: 'baths',
+            value: '5+',
+            text: '5+',
+        },
+    ],
+
+    beds: [
+        {
+            name: 'beds',
+            value: '',
+            text: 'Studio+',
+            checked: true,
+        },
+        {
+            name: 'beds',
+            value: '1',
+            text: '1',
+        },
+        {
+            name: 'beds',
+            value: '2',
+            text: '2',
+        },
+        {
+            name: 'beds',
+            value: '3',
+            text: '3',
+        },
+        {
+            name: 'beds',
+            value: '4',
+            text: '4',
+        },
+        {
+            name: 'beds',
+            value: '5',
+            text: '5',
+        },
+        {
+            name: 'beds',
+            value: '6+',
+            text: '6+',
+        },
+    ]
+} %}
+
+{% set useList = list|default(false) ? list : (defaultList ? defaultLists[defaultList] : []) %}
+
 <div class="radio-row {{ wrapMod|default('') }}">
-    {% for item in list|default(false) %}
+    {% for item in useList %}
         <div class="radio-row__item">
             <input
                     class="radio-row__input"

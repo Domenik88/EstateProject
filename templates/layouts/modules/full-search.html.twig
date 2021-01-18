@@ -19,209 +19,6 @@
     },
 ] %}
 
-{% set fullSearchPropertyTypeCheckboxes = [
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Apartment/Condo',
-        text: 'Apartment/Condo',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'House',
-        text: 'House',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Multifamily',
-        text: 'Multifamily',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Townhouse',
-        text: 'Townhouse',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Land Only',
-        text: 'Land Only',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Other',
-        text: 'Other',
-    },
-] %}
-
-{% set fullSearchCommercialTypeCheckboxes = [
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Agri-Business',
-        text: 'Agri-Business',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Business',
-        text: 'Business',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Business with Property',
-        text: 'Business with Property',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Industrial',
-        text: 'Industrial',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Land',
-        text: 'Land',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Multi-Family',
-        text: 'Multi-Family',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Office',
-        text: 'Office',
-    },
-    {
-        type: 'checkbox',
-        name: 'property-type',
-        value: 'Retail',
-        text: 'Retail',
-    },
-] %}
-
-{% set fullSearchMinPriceSelect = {
-    name: 'min-price',
-    inputMod: '_bordered-bright',
-    options: [
-        {
-            value: false,
-            text: 'No Min',
-            selected: true,
-        },
-        {
-            value: '100',
-            text: 'CA$100',
-        },
-        {
-            value: '200',
-            text: 'CA$200',
-        },
-    ]
-} %}
-
-{% set fullSearchMaxPriceSelect = {
-    name: 'max-price',
-    inputMod: '_bordered-bright',
-    options: [
-        {
-            value: false,
-            text: 'No Max',
-            selected: true,
-        },
-        {
-            value: '100',
-            text: 'CA$100',
-        },
-        {
-            value: '200',
-            text: 'CA$200',
-        },
-    ]
-} %}
-
-{% set fullSearchBathsRadioOptions = [
-    {
-        name: 'baths',
-        value: 'any',
-        text: 'Any',
-        checked: true,
-    },
-    {
-        name: 'baths',
-        value: '1',
-        text: '1',
-    },
-    {
-        name: 'baths',
-        value: '2',
-        text: '2',
-    },
-    {
-        name: 'baths',
-        value: '3',
-        text: '3',
-    },
-    {
-        name: 'baths',
-        value: '4',
-        text: '4',
-    },
-    {
-        name: 'baths',
-        value: '5+',
-        text: '5+',
-    },
-] %}
-
-{% set fullSearchBedsRadioOptions = [
-    {
-        name: 'beds',
-        value: 'studio+',
-        text: 'Studio+',
-        checked: true,
-    },
-    {
-        name: 'beds',
-        value: '1',
-        text: '1',
-    },
-    {
-        name: 'beds',
-        value: '2',
-        text: '2',
-    },
-    {
-        name: 'beds',
-        value: '3',
-        text: '3',
-    },
-    {
-        name: 'beds',
-        value: '4',
-        text: '4',
-    },
-    {
-        name: 'beds',
-        value: '5',
-        text: '5',
-    },
-    {
-        name: 'beds',
-        value: '6+',
-        text: '6+',
-    },
-] %}
-
 {% set fullSearchBuildingSizeSelect = {
     name: 'building-size',
     inputMod: '_transparent',
@@ -298,120 +95,35 @@
 
         <div class="full-search__selects-container">
             <div class="full-search__selects-group">
-                {% embed 'layouts/containers/dropdown-button.html.twig' with {
-                    placeholder: 'Any',
+                {% include 'layouts/form/checkbox-list-select.html.twig' with {
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
-                    scroll: true,
-                    list: fullSearchPropertyTypeCheckboxes,
-                    dataProps: {
-                        patternReplace: '@',
-                        patternMulti: {
-                            single: '@',
-                            multi: 'Home&#32;Types&#32;(@)',
-                        },
-                    }
-                } only %}
-                    {% block dropdown_content %}
-                        <div class="list">
-                            {% for item in list %}
-                                {% include 'layouts/controls/check.html.twig' with {
-                                    type: item.type,
-                                    name: item.name,
-                                    value: item.value,
-                                    text: item.text,
-                                    wrapMod: loop.index is not same as(list|length) ? '_dark-gray mb10' : '_dark-gray'
-                                } only %}
-                            {% endfor %}
-                        </div>
-                    {% endblock %}
-                {% endembed %}
-
-                {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                    defaultList: 'common',
                     placeholder: 'Any',
-                    wrapMod: '_fh  js-fs-tab js-fs-tab-commercial _hide',
-                    scroll: true,
-                    list: fullSearchCommercialTypeCheckboxes,
-                    dataProps: {
-                        patternReplace: '@',
-                        patternMulti: {
-                            single: '@',
-                            multi: 'Home&#32;Types&#32;(@)',
-                        },
-                    }
-                } only %}
-                    {% block dropdown_content %}
-                        <div class="list">
-                            {% for item in list %}
-                                {% include 'layouts/controls/check.html.twig' with {
-                                    type: item.type,
-                                    name: item.name,
-                                    value: item.value,
-                                    text: item.text,
-                                    wrapMod: loop.index is not same as(list|length) ? 'mb10' : ''
-                                } only %}
-                            {% endfor %}
-                        </div>
-                    {% endblock %}
-                {% endembed %}
+                } %}
 
-                {% embed 'layouts/containers/dropdown-button.html.twig' with {
-                    placeholder: 'Price',
+                {% include 'layouts/form/checkbox-list-select.html.twig' with {
+                    wrapMod: '_fh js-fs-tab js-fs-tab-commercial _hide',
+                    defaultList: 'commercial',
+                    placeholder: 'Any',
+                } %}
+
+                {% include 'layouts/form/price-select.html.twig' with {
                     wrapMod: '_fh',
-                    popupMod: '_small-padding',
-                    selectMin: fullSearchMinPriceSelect,
-                    selectMax: fullSearchMaxPriceSelect,
-                    dataProps: {
-                        patternReplace: '@',
-                        patternTwin: {
-                            first: '@+',
-                            last: 'CA$0&#32;-&#32;@',
-                            both: '@&#32;-&#32;@',
-                        },
-                    }
-                } only %}
-                    {% block dropdown_content %}
-                        <div class="twin-fields">
-                            {% include 'layouts/form/select.html.twig' with selectMin only %}
-                            {% include 'layouts/form/select.html.twig' with selectMax only %}
-                        </div>
-                    {% endblock %}
-                {% endembed %}
+                } %}
             </div>
 
             <div class="full-search__selects-group">
-                {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                {% include 'layouts/form/radio-row-select.html.twig' with {
+                    wrapMod: '_fh js-fs-tab js-fs-tab-default',
+                    defaultList: 'beds',
                     placeholder: 'Beds',
-                    wrapMod: '_fh js-fs-tab js-fs-tab-default',
-                    popupMod: '_small-padding',
-                    beds: fullSearchBedsRadioOptions,
-                    dataProps: {
-                        patternReplace: '@',
-                        patternSimple: "@&#32;Beds"
-                    }
-                } only %}
-                    {% block dropdown_content %}
-                        {% include 'layouts/controls/radio-row.html.twig' with {
-                            list: beds,
-                        } only %}
-                    {% endblock %}
-                {% endembed %}
+                } %}
 
-                {% embed 'layouts/containers/dropdown-button.html.twig' with {
-                    placeholder: 'Baths',
+                {% include 'layouts/form/radio-row-select.html.twig' with {
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
-                    popupMod: '_small-padding',
-                    baths: fullSearchBathsRadioOptions,
-                    dataProps: {
-                        patternReplace: '@',
-                        patternSimple: '(@)&#32;Baths'
-                    }
-                } only %}
-                    {% block dropdown_content %}
-                        {% include 'layouts/controls/radio-row.html.twig' with {
-                            list: baths,
-                        } only %}
-                    {% endblock %}
-                {% endembed %}
+                    defaultList: 'baths',
+                    placeholder: 'Baths',
+                } %}
 
                 {% include 'layouts/form/select.html.twig' with fullSearchBuildingSizeSelect only %}
                 {% include 'layouts/form/select.html.twig' with fullSearchlotSizeSelect only %}
@@ -438,17 +150,4 @@
             } %}
         </div>
     </div>
-
-
-
-
-
-
-
-
-
 </form>
-
-
-
-{#                {% include 'layouts/form/select.html.twig' with fullSearchPropertyTypeSelect only %}#}
