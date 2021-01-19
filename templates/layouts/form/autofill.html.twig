@@ -1,0 +1,17 @@
+<div
+    class="autofill {{ wrapMod|default('') }} js-autofill js-bcc"
+    data-request-options="{{ {
+        action: "",
+        type: "POST",
+    }|json_encode() }}"
+>
+    {% include 'layouts/form/input.html.twig' with {
+        name: inputName|default('search-input'),
+        placeholder: inputPlaceholder|default('Enter Neighbourhood, City, MLS®'),
+        inputMod: inputMod|default('_transparent') ~ ' js-autofill-input',
+    } only %}
+
+    <div class="autofill__dropdown">
+        <div class="autofill__options js-autofill-options-container js-smooth-scroll"></div>
+    </div>
+</div>
