@@ -797,11 +797,13 @@ var $_ = {
 
         const
             dataLazyInner = $_.$estateGallerySlider.data('lazy-inner'),
+            initPhotoBox = $_.$estateGallerySlider.data('init-pb'),
             { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($_.$estateGallerySlider);
 
         $_.$estateGallerySlider.on('init', function (event, slick) {
             if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
             if (dataLazyInner) $_._initSliderLazyInner(slick);
+            if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
         })
             .slick({
                 lazyLoad: 'ondemand',
@@ -912,6 +914,7 @@ var $_ = {
                 $currentSlider = $(item),
                 $preventChild = $currentSlider.find('[data-prevent-parent-swipe]'),
                 dataLazyInner = $currentSlider.data('lazy-inner'),
+                initPhotoBox = $currentSlider.data('init-pb'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
 
@@ -922,6 +925,7 @@ var $_ = {
                     if ($preventChild.length) $_._preventParentSliderSwipe($currentSlider, $preventChild);
                     if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
                     if (dataLazyInner) $_._initSliderLazyInner(slick);
+                    if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
                 })
                 .slick({
                     slidesToShow: 1,
@@ -1382,6 +1386,13 @@ var $_ = {
         
         slick.$slider.on('beforeChange', function(event, slick, currentSlide, nextSlide){
             $current.html(_addZero(nextSlide + 1))
+        });
+    },
+
+    _initSliderPhotobox: function($container) {
+        $container.photobox('.slick-slide:not(.slick-cloned) a', {
+            time: 0,
+            thumbAttr: 'data-thumb',
         });
     },
 };
