@@ -6,6 +6,9 @@ window.Chartist = Chartist;
 import Scrollbar from 'smooth-scrollbar';
 window.Scrollbar = Scrollbar;
 
+import SimpleBar from 'simplebar';
+window.SimpleBar = SimpleBar;
+
 require('jquery');
 require('./modules/global.js');
 require('./plugin/jquery-ui.min.js');

@@ -181,3 +181,37 @@
         z-index: 2;
     }
 }
+
+.filter-more {
+    width: 305px;
+    overflow: hidden;
+    
+    &__row {
+        position: relative;
+        width: 100%;
+        
+        .list + .list {
+            @extend .mt10;
+            @extend .pt10;
+            border-top: 1px solid $gray-line;
+        }
+    
+        .twin-fields {
+            width: 100%;
+        }
+    }
+    
+    &__label {
+        display: block;
+    }
+    
+    &__buttons-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        .btn-style {
+            width: calc(50% - 5px);
+        }
+    }
+}
