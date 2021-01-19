@@ -26,28 +26,29 @@ class PolygonType extends Type
         return 'POLYGON';
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?array
     {
-        $polygonPoints = explode(',', trim($value,'()'));
+        if ( is_null($value) ) {
+            return null;
+        }
+        $polygonPoints = explode('),(', trim($value, '()'));
         $points = [];
         foreach ( $polygonPoints as $point ) {
-            [$latitude, $longitude] = sscanf($value, '(%f,%f)');
+            [ $latitude, $longitude ] = sscanf('(' . $point . ')', '(%f,%f)');
             $points[] = new Point($latitude, $longitude);
         }
-
         return $points;
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value instanceof Polygon) {
+        if ( $value instanceof Polygon ) {
             $polygonPoints = [];
             foreach ( $value->getPoints() as $point ) {
                 $polygonPoints[] = sprintf('(%F,%F)', $point->getLatitude(), $point->getLongitude());
             }
-            return '(' . implode(',', $polygonPoints) . ')';
+            return '(' . implode(', ', $polygonPoints) . ')';
         }
-
         return $value;
     }
 }

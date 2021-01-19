@@ -9,6 +9,7 @@
         "ext-http": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-simplexml": "*",
         "ext-xmlwriter": "*",
         "aws/aws-sdk-php-symfony": "^2.2",
         "composer/package-versions-deprecated": "^1.11",
@@ -20,6 +21,7 @@
         "geocoder-php/chain-provider": "^4.2",
         "geocoder-php/google-maps-provider": "^4.5",
         "geocoder-php/here-provider": "^0.4.0",
+        "guzzlehttp/guzzle": "^7.2",
         "imagine/imagine": "^1.2",
         "php-http/guzzle7-adapter": "^0.1.0",
         "php-http/message": "^1.9",
@@ -54,8 +56,7 @@
         "troydavisson/phrets": "^2.6",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.1",
-        "twig/twig": "^2.12|^3.0",
-        "ext-simplexml": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "symfony/browser-kit": "^5.1",
