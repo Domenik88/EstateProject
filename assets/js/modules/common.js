@@ -47,6 +47,7 @@ var $_ = {
         this.$toggleActive = $('.js-toggle-active');
 
         this.$estateGallerySlider = $('.js-estate-gallery-slider');
+        this.$estateGallerySliderImg = $('.js-estate-gallery-slider-img');
 
         this.$stickyContainer = $('.js-sticky-container');
         this.$stickyBlock = $('.js-sticky-block');
@@ -102,13 +103,18 @@ var $_ = {
         this.$autofillInput = $('.js-autofill-input');
         this.$autofillOptionsContainer = $('.js-autofill-options-container');
 
-        this.windowWidth = $_.$window.width();
+        this.windowWidth = window.outerWidth;
         this.windowHeight = $_.$window.height();
         
         this.breakpoints = {
-            tablet: 1000,
-            preMobile: 900,
-            mobile: 700
+            b1700: 1700,
+            b1500: 1500,
+            b1300: 1300,
+            b1200: 1200,
+            b1000: 1000,
+            b900: 900,
+            b700: 700,
+            b500: 500,
         };
         
         this.selectors = {
@@ -890,29 +896,97 @@ var $_ = {
     },
 
     initEstateGallerySlider() {
-        if (!$_.$estateGallerySlider.length) return false;
+        function initSlider($slider) {
+            const
+                dataLazyInner = $slider.data('lazy-inner'),
+                initPhotoBox = $slider.data('init-pb'),
+                { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($slider),
+                dots = $_.windowWidth <= $_.breakpoints.b900;
 
-        const
-            dataLazyInner = $_.$estateGallerySlider.data('lazy-inner'),
-            initPhotoBox = $_.$estateGallerySlider.data('init-pb'),
-            { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($_.$estateGallerySlider);
+            $slider.on('init', function (event, slick) {
+                if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+                if (dataLazyInner) $_._initSliderLazyInner(slick);
+                if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
+                if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
+            })
+                .slick({
+                    lazyLoad: 'ondemand',
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: !dots,
+                    prevArrow: $arrowLeft,
+                    nextArrow: $arrowRight,
+                    fade: false,
+                    infinite: false,
+                    dots: dots,
+                });
+        }
 
-        $_.$estateGallerySlider.on('init', function (event, slick) {
-            if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
-            if (dataLazyInner) $_._initSliderLazyInner(slick);
-            if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
-        })
-            .slick({
-                lazyLoad: 'ondemand',
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: true,
-                prevArrow: $arrowLeft,
-                nextArrow: $arrowRight,
-                fade: false,
-                infinite: false,
-                dots: false
+        function constructSlider(obj) {
+            const
+                { $currentSlider, $imagesCache } = obj,
+                isInit = $currentSlider.hasClass('slick-initialized'),
+                dataImgCount = $currentSlider.data('img-count'),
+                imgCount = getNumberOfSlideInnerImages();
+
+            if (!isInit) {
+                $currentSlider.data('img-count', imgCount);
+                addImgWrappers({ $currentSlider, $imagesCache, imgCount });
+                initSlider($currentSlider);
+            } else {
+                if (dataImgCount !== imgCount) {
+                    $currentSlider.data('img-count', imgCount);
+                    resetSlider($currentSlider);
+                    addImgWrappers({ $currentSlider, $imagesCache, imgCount });
+                    initSlider($currentSlider);
+                }
+            }
+        }
+
+        function addImgWrappers(obj) {
+            const
+                { $currentSlider, $imagesCache, imgCount } = obj,
+                baseClass = $currentSlider[0].classList[0],
+                slides = [];
+
+            for (let i = 0; i < Math.ceil($imagesCache.length/imgCount); i++) {
+                slides.push(`
+                    <div class="${baseClass}__item">
+                        <div class="${baseClass}__container">
+                            ${$imagesCache.slice(i*imgCount, i*imgCount + imgCount).toArray().map(
+                                item => item.outerHTML
+                            ).join('')}
+                        </div>
+                    </div>
+                `)
+            }
+
+            $currentSlider.html(slides);
+        }
+
+        function resetSlider($slider) {
+            $slider.photobox('destroy');
+            $slider.slick('unslick');
+            $slider.off('init');
+            $slider.off('beforeChange');
+            $slider.html('');
+        }
+
+        function getNumberOfSlideInnerImages() {
+            return $_.windowWidth <= $_.breakpoints.b900 ? 1 : ($_.windowWidth <= $_.breakpoints.b1300 ? 3 : 5);
+        }
+
+        $_.$estateGallerySlider.each((key, item) => {
+            const
+                $currentSlider = $(item),
+                $imagesCache = $currentSlider.find($_.$estateGallerySliderImg).clone();
+
+            constructSlider({ $currentSlider, $imagesCache });
+
+            $_.$body.on('body:resize:width', () => {
+                constructSlider({ $currentSlider, $imagesCache });
             });
+        });
     },
 
     initToggleActive() {
@@ -1253,13 +1327,13 @@ var $_ = {
     initResizeTrigger () {
         var resizeTimer = null,
             resizeDelay = 300,
-            windowWidth = $_.$window.width(),
+            windowWidth = window.outerWidth,
             windowHeight = $_.$window.height();
         
         $_.$window.resize(function () {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function () {
-                var currentWidth = $_.$window.width(),
+                var currentWidth = window.outerWidth,
                     currentHeight = $_.$window.height(),
                     resizeWidth = windowWidth !== currentWidth,
                     resizeHeight = windowHeight !== currentHeight;
@@ -1486,7 +1560,7 @@ var $_ = {
         });
     },
 
-    _initSliderPhotobox: function($container) {
+    _initSliderPhotobox($container) {
         $container.photobox('.slick-slide:not(.slick-cloned) a', {
             time: 0,
             thumbAttr: 'data-thumb',
