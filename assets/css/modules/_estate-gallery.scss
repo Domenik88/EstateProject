@@ -31,6 +31,10 @@
 	left: -10px;
 	@include slider-preload(&);
 	
+	&:not(.slick-initialized) {
+		height: 400px;
+	}
+	
 	&__item {
 		width: 100%;
 		padding: 0 10px;
@@ -94,6 +98,59 @@
 		backface-visibility: hidden;
 		transform-origin: 50% 50%;
 		transition: $default-transition;
+	}
+	
+	@include media_1300 {
+		&:not(.slick-initialized) {
+			height: 368px;
+		}
+		
+		&__container {
+			height: 368px;
+		}
+		
+		&__img-wrap {
+			width: calc(100% / 12 * 4 - 10px);
+			
+			&:nth-child(1) {
+				width: calc(100% / 12 * 8 - 10px);
+			}
+			
+			&:nth-child(2) {
+				border-top-right-radius: 20px;
+			}
+			
+			&:nth-child(3) {
+				border-bottom-right-radius: 20px;
+			}
+		}
+	}
+	
+	@include media_900 {
+		&:not(.slick-initialized) {
+			height: 400px;
+		}
+		
+		&__container {
+			height: 400px;
+		}
+		
+		&__img-wrap {
+			&:nth-child(1) {
+				width: calc(100% - 10px);
+				border-radius: 20px;
+			}
+		}
+	}
+	
+	@include media_500 {
+		&:not(.slick-initialized) {
+			height: 240px;
+		}
+		
+		&__container {
+			height: 240px;
+		}
 	}
 }
 
