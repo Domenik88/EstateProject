@@ -8,7 +8,7 @@
     &::before {
         content: '';
         @include absolute;
-        @extend .small-text2;
+        @extend .small-text;
         width: 4px;
         height: 1px;
         background: $gray1;

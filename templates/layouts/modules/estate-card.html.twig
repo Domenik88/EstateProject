@@ -58,7 +58,7 @@
 
     <div class="estate-card__description pt30 pb30">
         {% if financials.listingPrice|default(false) %}
-            <span class="estate-card__title subtitle mb10">{{ financials.listingPrice|format_currency('CAD', {fraction_digit: 0}) }}</span>
+            <span class="estate-card__title subtitle_bold mb10">{{ financials.listingPrice|format_currency('CAD', {fraction_digit: 0}) }}</span>
         {% endif %}
 
         {% if address.streetAddress|default(false) and address.city|default(false) %}
@@ -81,7 +81,7 @@
         {% endif %}
 
         {% if mlsNumber|default(false) %}
-            <span class="estate-card__text icon-mls-min tiny-text">{{ 'MLS® ' ~ mlsNumber }}</span>
+            <span class="gray-mls-after icon-mls-min tiny-text">{{ 'MLS® ' ~ mlsNumber }}</span>
         {% endif %}
     </div>
 </div>
