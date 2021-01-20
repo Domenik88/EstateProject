@@ -59,7 +59,6 @@ class ProcessingSingleListingCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        dump($this->hereRouteService->getRoute(new Point(0,0), new Point(1,1)));die;
         $io = new SymfonyStyle($input, $output);
         if ( $input->getArgument('bsize') ) {
             $batchSize = (int)$input->getArgument('bsize');

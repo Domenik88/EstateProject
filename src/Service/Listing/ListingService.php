@@ -11,14 +11,17 @@ namespace App\Service\Listing;
 
 
 use App\Entity\Listing;
+use App\Entity\School;
 use App\Repository\ListingRepository;
 use App\Repository\SchoolRepository;
+use App\Service\Geo\HereRouteService;
 use App\Service\Geo\Point;
 use App\Service\School\SchoolData;
 use DateTime;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use function MongoDB\Driver\Monitoring\removeSubscriber;
 
 class ListingService
 {
@@ -29,8 +32,9 @@ class ListingService
     private LoggerInterface $logger;
     private ListingSearchDataService $listingSearchDataService;
     private SchoolRepository $schoolRepository;
+    private HereRouteService $hereRouteService;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger, ListingSearchDataService $listingSearchDataService, SchoolRepository $schoolRepository)
+    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger, ListingSearchDataService $listingSearchDataService, SchoolRepository $schoolRepository, HereRouteService $hereRouteService)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
@@ -39,6 +43,7 @@ class ListingService
         $this->logger = $logger;
         $this->listingSearchDataService = $listingSearchDataService;
         $this->schoolRepository = $schoolRepository;
+        $this->hereRouteService = $hereRouteService;
     }
 
     public function createFromDdfResult(array $result): Listing
@@ -352,17 +357,31 @@ class ListingService
         $publicSchools = $this->schoolRepository->getPublicSchools($coordinates);
         $schoolObject = [];
         foreach ( $publicSchools as $publicSchool ) {
-            $schoolObject['public'][] = new SchoolData($publicSchool);
+            $distance = $this->getSchoolDistance($listing,$publicSchool);
+            $schoolObject['public'][] = new SchoolData($publicSchool, $distance);
         }
         $privateSchools = $this->schoolRepository->getPrivateSchools($coordinates);
         foreach ( $privateSchools['elementary'] as $privateSchoolElementary ) {
-            $schoolObject['private']['elementary'] = new SchoolData($privateSchoolElementary);
+            $distance = $this->getSchoolDistance($listing,$privateSchoolElementary);
+            $schoolObject['private']['elementary'] = new SchoolData($privateSchoolElementary, $distance);
         }
         foreach ( $privateSchools['secondary'] as $privateSchoolSecondary ) {
-            $schoolObject['private']['secondary'] = new SchoolData($privateSchoolSecondary);
+            $distance = $this->getSchoolDistance($listing,$privateSchoolSecondary);
+            $schoolObject['private']['secondary'] = new SchoolData($privateSchoolSecondary, $distance);
         }
 
         return $listing->setSchoolsData($schoolObject);
+    }
+
+    public function getSchoolDistance(Listing $listing, School $school): ?string
+    {
+        try {
+            $route = $this->hereRouteService->getRoute($listing->getCoordinates(), $school->getCoordinates());
+            $distance = json_decode($route->getBody()->getContents())->response->route[ 0 ]->summary->distance;
+            return round($distance / 1000, 2) . ' km';
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     private function getPropertyTypes(): ?object

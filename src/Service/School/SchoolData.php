@@ -27,8 +27,9 @@ class SchoolData
     public string $uri;
     public Point $coordinates;
     public ?array $areas;
+    public ?string $distance;
 
-    public function __construct(School $school)
+    public function __construct(School $school, ?string $distance)
     {
         $this->name = (string)$school->getSchoolName();
         $this->street = (string)$school->getStreet();
@@ -42,6 +43,7 @@ class SchoolData
         $this->uri = (string)$school->getWebUrl();
         $this->coordinates = $school->getCoordinates();
         $this->areas = $school->getAreas();
+        $this->distance = $distance;
 
         return $this;
     }

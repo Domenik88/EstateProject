@@ -21,8 +21,8 @@ class HereRouteService
             RequestOptions::QUERY => [
                 'app_id' => 'eoQm7snFfZ4TZOd2gnPT',
                 'app_code' => 'vJcc4TntD70lhe31n-HMpQ',
-                'waypoint0' => 'geo!52.5,13.4',
-                'waypoint1' => 'geo!52.5,13.45',
+                'waypoint0' => 'geo!' . $origin->getLatitude() . ',' . $origin->getLongitude(),
+                'waypoint1' => 'geo!' . $destination->getLatitude() . ',' . $destination->getLongitude(),
                 'mode' => 'fastest;car;traffic:disabled',
             ],
         ]);
