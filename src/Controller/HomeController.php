@@ -93,4 +93,28 @@ class HomeController extends AbstractController
         return $this->render('buying/index.html.twig');
     }
 
+    /**
+     * @Route ("/sitemap", name="sitemap", priority=10)
+     */
+    public function sitemap()
+    {
+        return $this->render('sitemap/index.html.twig');
+    }
+
+    /**
+     * @Route ("/browse-by-street", name="browse-by-street", priority=10)
+     */
+    public function browseByStreet()
+    {
+        return $this->render('browse_by_street/index.html.twig');
+    }
+
+    /**
+     * @Route ("/assessment", name="assessment", priority=10)
+     */
+    public function assessment()
+    {
+        return $this->render('assessment/index.html.twig');
+    }
+
 }
