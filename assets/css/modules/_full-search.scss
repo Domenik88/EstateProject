@@ -91,18 +91,22 @@
 		border-radius: 20px;
 		background: $white;
 		
-		& > .input-style {
+		& > .autofill {
 			width: calc(100% - 620px);
 			height: 100%;
 			
-			.input-style__container {
+			.input-style {
 				height: 100%;
-			}
-			
-			.input-style__input {
-				height: 100%;
-				border-radius: 20px 0 0 20px;
-				padding-left: 20px;
+				
+				.input-style__container {
+					height: 100%;
+				}
+				
+				.input-style__input {
+					height: 100%;
+					border-radius: 20px 0 0 20px;
+					padding-left: 20px;
+				}
 			}
 		}
 	}

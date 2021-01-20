@@ -9,6 +9,7 @@ var $_ = {
         this.initScrollTopButton();
         this.initScrollEvents();
         this.initSmoothScroll();
+        this.initSimpleScroll();
         this.initNavLinks();
         this.initLazyLoad();
         this.initTriggerSlider();
@@ -27,13 +28,14 @@ var $_ = {
         this.initDropdownButton();
         this.initSvgMap();
         this.initToggleNext();
+        this.initKeywordsInput();
+        this.initAutofill();
     },
     
     initCache() {
         this.$page = $('html, body');
         this.$window = $(window);
         this.$body = $('body');
-        this.$jsWrap = $('.js-wrap');
         
         this.$overlay = $('.js-overlay');
         this.$menuBtn = $('.js-menu-btn');
@@ -42,15 +44,10 @@ var $_ = {
         this.$navLink = $('.js-nav-link');
         this.$checkInWindow = $('.js-check-in-window');
 
-        this.$sliderNav = $('.js-slider-nav');
-        this.$arrowLeft = $('.js-arrow-left');
-        this.$arrowRight = $('.js-arrow-right');
-        this.$current = $('.js-current');
-        this.$total = $('.js-total');
-
         this.$toggleActive = $('.js-toggle-active');
 
         this.$estateGallerySlider = $('.js-estate-gallery-slider');
+        this.$estateGallerySliderImg = $('.js-estate-gallery-slider-img');
 
         this.$stickyContainer = $('.js-sticky-container');
         this.$stickyBlock = $('.js-sticky-block');
@@ -96,18 +93,40 @@ var $_ = {
 
         this.$toggleNext = $('.js-toggle-next');
 
-        this.windowWidth = $_.$window.width();
+        this.$keywords = $('.js-keywords');
+        this.$keywordsArray = $('.js-keywords-array');
+        this.$keywordsInsert = $('.js-keywords-insert');
+        this.$addKeyword = $('.js-add-keyword');
+        this.$keywordsList = $('.js-keywords-list');
+
+        this.$autofill = $('.js-autofill');
+        this.$autofillInput = $('.js-autofill-input');
+        this.$autofillOptionsContainer = $('.js-autofill-options-container');
+
+        this.windowWidth = window.outerWidth;
         this.windowHeight = $_.$window.height();
         
         this.breakpoints = {
-            tablet: 1000,
-            preMobile: 900,
-            mobile: 700
+            b1700: 1700,
+            b1500: 1500,
+            b1300: 1300,
+            b1200: 1200,
+            b1000: 1000,
+            b900: 900,
+            b700: 700,
+            b500: 500,
         };
         
         this.selectors = {
             smoothScroll: '.js-smooth-scroll',
+            simpleScroll: '.js-simple-scroll',
             lazyLoad: '.js-lazy',
+            jsWrap: '.js-wrap',
+            sliderNav: '.js-slider-nav',
+            arrowLeft: '.js-arrow-left',
+            arrowRight: '.js-arrow-right',
+            current: '.js-current',
+            total: '.js-total',
         };
         
         this.animationEvents = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
@@ -124,6 +143,187 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initAutofill() {
+        function search(obj) {
+            const
+                { $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions } = obj,
+                { action, type } = dataRequestOptions;
+
+            $.ajax({
+                url: action,
+                type: type,
+                data: {
+                    text: inputVal
+                },
+            })
+            .done((data) => {
+                //TODO: replace testData by data
+                const testData = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8'];
+
+                addOptions({
+                    data: testData,
+                    $currentAutofill,
+                    $relatedOptionsContainer,
+                });
+            })
+            .fail((err) => {
+                console.log(err);
+            });
+        }
+
+        function addOptions(obj) {
+            const { data, $currentAutofill, $relatedOptionsContainer } = obj;
+
+            if (data.length) {
+                $relatedOptionsContainer.html(data.map(item => `
+                    <span class="autofill-option">${item}</span>
+                `).join(''));
+
+                $currentAutofill.addClass('_show-options');
+            } else {
+                clear({ $currentAutofill, $relatedOptionsContainer });
+            }
+        }
+        
+        function clear(obj) {
+            const { $currentAutofill, $relatedOptionsContainer } = obj;
+
+            $currentAutofill.removeClass('_show-options');
+            $relatedOptionsContainer.html('');
+        }
+        
+        $_.$autofill.each((key, item) => {
+            const
+                $currentAutofill = $(item),
+                $relatedInput = $currentAutofill.find($_.$autofillInput),
+                $relatedOptionsContainer = $currentAutofill.find($_.$autofillOptionsContainer),
+                dataRequestOptions = $currentAutofill.data('request-options');
+
+            let timer = null,
+                lastVal = null;
+
+            $relatedInput.on('focus click', () => {
+                $currentAutofill.addClass('_active');
+            });
+
+            $relatedOptionsContainer.on('click', '.autofill-option', (e) => {
+                $relatedInput.val($(e.currentTarget).text());
+                $currentAutofill.removeClass('_active');
+            });
+
+            $relatedInput.on('keyup', () => {
+                clearTimeout(timer);
+                
+                timer = setTimeout(() => {
+                    const inputVal = $relatedInput.val();
+                    
+                    if (inputVal.length) {
+                        if (lastVal) {
+                            if (lastVal !== inputVal) {
+                                search({ $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions });
+                            }
+                        } else {
+                            search({ $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions });
+                        }
+                    } else {
+                        clear({ $currentAutofill, $relatedOptionsContainer });
+                    }
+                    
+                    lastVal = inputVal;
+                }, 1000);
+            });
+        });
+    },
+
+    initKeywordsInput() {
+        function pasteKeywords(obj) {
+            const { keywords, $keywordsList } = obj;
+
+            $keywordsList.html('');
+
+            keywords.forEach(item => {
+                $keywordsList.append($(`<div class="keyword"><span class="text">${item}</span> <span class="remove"></span></div>`));
+            });
+        }
+
+        function setValue(obj) {
+            const
+                { $input, keywords } = obj,
+                val = keywords.length ? JSON.stringify(keywords) : '';
+
+            $input.attr('value', val).trigger('change');
+        }
+
+        $_.$keywords.each((key, item) => {
+            const
+                $currentModule = $(item),
+                $keywordsArray = $currentModule.find($_.$keywordsArray),
+                $keywordsInsert = $currentModule.find($_.$keywordsInsert),
+                $addKeyword = $currentModule.find($_.$addKeyword),
+                $keywordsList = $currentModule.find($_.$keywordsList);
+
+            let keywords = [];
+
+            $currentModule.on('click', '.remove', (e) => {
+                const
+                    $currentTarget = $(e.currentTarget),
+                    $relatedKeyword = $currentTarget.closest('.keyword'),
+                    text = $relatedKeyword.find('.text').text(),
+                    index = keywords.indexOf(text);
+
+                if (index !== -1) {
+                    keywords.splice(index, 1);
+                    setValue({$input: $keywordsArray, keywords,});
+                    $relatedKeyword.fadeOut(300, () => {
+                        $relatedKeyword.remove();
+                    });
+                }
+            });
+
+            $addKeyword.on('click', () => {
+                const val = $keywordsInsert.val().trim();
+
+                if (val.length && (keywords.indexOf(val) === -1)) {
+                    keywords.push(val);
+                    setValue({$input: $keywordsArray, keywords,});
+                    pasteKeywords({$keywordsList, keywords});
+                }
+                $keywordsInsert.val('');
+            });
+        });
+    },
+
+    initSimpleScroll() {
+        function initScroll(el) {
+            const
+                $currentTarget = $(el),
+                dataTriggerOnScroll = $currentTarget.data('trigger-on-scroll');
+
+            const scroll = new SimpleBar(el, {
+                autoHide: false,
+                scrollbarMinSize: 100,
+            });
+
+            if (scroll && scroll.getScrollElement) {
+                const scrollElement = scroll.getScrollElement();
+
+                $currentTarget.on('trigger:scroll-top', () => {
+                    scrollElement.scrollTop = 0;
+                });
+
+                if (dataTriggerOnScroll) {
+                    scrollElement.addEventListener('scroll', () => {
+                        $currentTarget.trigger(dataTriggerOnScroll);
+                    });
+                }
+            }
+        }
+
+        $($_.selectors.simpleScroll).each((key, el) => {
+            initScroll(el);
+        });
     },
 
     initToggleNext: function() {
@@ -204,8 +404,14 @@ var $_ = {
         function showSelected(data) {
             const
                 { $currentButton, $selectedContainer, $innerFields, dataProps } = data,
-                { patternSimple, patternTwin, patternMulti, patternReplace } = dataProps,
+                { patternSimple, patternTwin, patternMulti, patternReplace, patternFixed } = dataProps,
                 values = $innerFields.serializeArray();
+
+            if (patternFixed) {
+                const hasValues = values.map(item => !!item.value.length).indexOf(true) !== -1;
+                $selectedContainer.html(patternFixed);
+                toggleButton($currentButton, hasValues);
+            }
 
             if (patternSimple) {
                 const value = values[0] && values[0].value;
@@ -243,12 +449,26 @@ var $_ = {
             }
         }
 
+        function setMaxHeight($item) {
+            const { top } = $item[0].getBoundingClientRect();
+            $item.css('max-height', `${$_.windowHeight - top - 100}px`);
+        }
+
         $_.$dropdownButton.each((key, item) => {
             const
                 $currentButton = $(item),
+                $maxScroll = $currentButton.find('.js-max-height'),
                 $selectedContainer = $currentButton.find($_.$dropdownSelected),
                 $innerFields = $currentButton.find('input, select'),
                 dataProps = $currentButton.data('props');
+
+            if ($maxScroll.length) {
+                setMaxHeight($maxScroll);
+
+                $_.$body.on('body:resize', () => {
+                    setMaxHeight($maxScroll);
+                });
+            }
 
             if (dataProps) {
                 $innerFields.on('change', () => {
@@ -311,7 +531,7 @@ var $_ = {
                 $currentLink = $(e.currentTarget),
                 dataContentId = $currentLink.data('content-id'),
                 dataInitMap = $currentLink.data('init-map'),
-                $wrap = $currentLink.closest($_.$jsWrap);
+                $wrap = $currentLink.closest($_.selectors.jsWrap);
 
             if (dataInitMap) $_.$body.trigger('trigger:init-map', dataInitMap);
 
@@ -632,7 +852,7 @@ var $_ = {
         $_.$showMoreButton.on('click', (e) => {
             const
                 $btn = $(e.currentTarget),
-                $wrap = $btn.closest($_.$jsWrap),
+                $wrap = $btn.closest($_.selectors.jsWrap),
                 $stickyBlocks = $wrap.find($_.$stickyBlock),
                 $hiddenElements = $btn.prevAll(':hidden'),
                 show = $hiddenElements.length,
@@ -676,25 +896,97 @@ var $_ = {
     },
 
     initEstateGallerySlider() {
-        const
-            dataLazyInner = $_.$estateGallerySlider.data('lazy-inner'),
-            { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($_.$estateGallerySlider);
+        function initSlider($slider) {
+            const
+                dataLazyInner = $slider.data('lazy-inner'),
+                initPhotoBox = $slider.data('init-pb'),
+                { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($slider),
+                dots = $_.windowWidth <= $_.breakpoints.b900;
 
-        $_.$estateGallerySlider.on('init', function (event, slick) {
-            if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
-            if (dataLazyInner) $_._initSliderLazyInner(slick);
-        })
-            .slick({
-                lazyLoad: 'ondemand',
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: true,
-                prevArrow: $arrowLeft,
-                nextArrow: $arrowRight,
-                fade: false,
-                infinite: false,
-                dots: false
+            $slider.on('init', function (event, slick) {
+                if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+                if (dataLazyInner) $_._initSliderLazyInner(slick);
+                if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
+                if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
+            })
+                .slick({
+                    lazyLoad: 'ondemand',
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: !dots,
+                    prevArrow: $arrowLeft,
+                    nextArrow: $arrowRight,
+                    fade: false,
+                    infinite: false,
+                    dots: dots,
+                });
+        }
+
+        function constructSlider(obj) {
+            const
+                { $currentSlider, $imagesCache } = obj,
+                isInit = $currentSlider.hasClass('slick-initialized'),
+                dataImgCount = $currentSlider.data('img-count'),
+                imgCount = getNumberOfSlideInnerImages();
+
+            if (!isInit) {
+                $currentSlider.data('img-count', imgCount);
+                addImgWrappers({ $currentSlider, $imagesCache, imgCount });
+                initSlider($currentSlider);
+            } else {
+                if (dataImgCount !== imgCount) {
+                    $currentSlider.data('img-count', imgCount);
+                    resetSlider($currentSlider);
+                    addImgWrappers({ $currentSlider, $imagesCache, imgCount });
+                    initSlider($currentSlider);
+                }
+            }
+        }
+
+        function addImgWrappers(obj) {
+            const
+                { $currentSlider, $imagesCache, imgCount } = obj,
+                baseClass = $currentSlider[0].classList[0],
+                slides = [];
+
+            for (let i = 0; i < Math.ceil($imagesCache.length/imgCount); i++) {
+                slides.push(`
+                    <div class="${baseClass}__item">
+                        <div class="${baseClass}__container">
+                            ${$imagesCache.slice(i*imgCount, i*imgCount + imgCount).toArray().map(
+                                item => item.outerHTML
+                            ).join('')}
+                        </div>
+                    </div>
+                `)
+            }
+
+            $currentSlider.html(slides);
+        }
+
+        function resetSlider($slider) {
+            $slider.photobox('destroy');
+            $slider.slick('unslick');
+            $slider.off('init');
+            $slider.off('beforeChange');
+            $slider.html('');
+        }
+
+        function getNumberOfSlideInnerImages() {
+            return $_.windowWidth <= $_.breakpoints.b900 ? 1 : ($_.windowWidth <= $_.breakpoints.b1300 ? 3 : 5);
+        }
+
+        $_.$estateGallerySlider.each((key, item) => {
+            const
+                $currentSlider = $(item),
+                $imagesCache = $currentSlider.find($_.$estateGallerySliderImg).clone();
+
+            constructSlider({ $currentSlider, $imagesCache });
+
+            $_.$body.on('body:resize:width', () => {
+                constructSlider({ $currentSlider, $imagesCache });
             });
+        });
     },
 
     initToggleActive() {
@@ -711,6 +1003,7 @@ var $_ = {
                 $sliders.each((key, item) => {
                     const
                         $currentSlider = $(item),
+                        dataSliderParams = $currentSlider.data('slider-parameters'),
                         isInit = $currentSlider.hasClass('slick-initialized'),
                         hasRelatedSlides = $slides && $slides.length && $slides[key];
 
@@ -728,6 +1021,7 @@ var $_ = {
                             .on('init', function (event, slick) {
                                 $_.$body.trigger('update:lazy-load');
                                 if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
+                                if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
                                 if (dataLazyInner) $_._initSliderLazyInner(slick);
                             })
                             .slick({
@@ -739,7 +1033,8 @@ var $_ = {
                                 fade: false,
                                 infinite: false,
                                 dots: false,
-                                ...sliderParams
+                                ...sliderParams,
+                                ...dataSliderParams
                             });
                     }
                 });
@@ -790,6 +1085,7 @@ var $_ = {
                 $currentSlider = $(item),
                 $preventChild = $currentSlider.find('[data-prevent-parent-swipe]'),
                 dataLazyInner = $currentSlider.data('lazy-inner'),
+                initPhotoBox = $currentSlider.data('init-pb'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
 
@@ -800,6 +1096,7 @@ var $_ = {
                     if ($preventChild.length) $_._preventParentSliderSwipe($currentSlider, $preventChild);
                     if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
                     if (dataLazyInner) $_._initSliderLazyInner(slick);
+                    if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
                 })
                 .slick({
                     slidesToShow: 1,
@@ -889,14 +1186,18 @@ var $_ = {
 
             $scrollbar.each(function (key, item) {
                 const
-                    $breakpointDetect = $(item).find('.js-bp-detect'),
+                    $item = $(item),
+                    $breakpointDetect = $item.find('.js-bp-detect'),
                     isInit = Scrollbar.has(item);
 
                 if ($breakpointDetect.length) {
                     if ($breakpointDetect.eq(0).is(':hidden')) {
                         init(item, isInit);
                     } else {
-                        if (isInit) Scrollbar.destroy(item);
+                        if (isInit) {
+                            $item.off('trigger:scroll-top');
+                            Scrollbar.destroy(item);
+                        }
                     }
                 } else {
                     init(item, isInit);
@@ -905,18 +1206,32 @@ var $_ = {
         }
 
         function init(item, update) {
+            const $item = $(item);
+
             if (update) {
                 Scrollbar.get(item).update();
 
             } else {
-                const dataScrollOptions = $(item).data('scroll-options') || {};
+                const
+                    dataScrollOptions = $item.data('scroll-options') || {},
+                    dataTriggerOnScroll = $item.data('trigger-on-scroll');
 
-                Scrollbar.init(item, {
+                const scrollbar = Scrollbar.init(item, {
                     damping: 0.1,
                     thumbMinSize: 50,
                     alwaysShowTracks: true,
                     continuousScrolling: false,
                     ...dataScrollOptions
+                });
+
+                if (dataTriggerOnScroll) {
+                    scrollbar.addListener((status) => {
+                        $item.trigger(dataTriggerOnScroll);
+                    });
+                }
+
+                $item.on('trigger:scroll-top', () => {
+                    scrollbar.scrollTop = 0;
                 });
             }
         }
@@ -1003,7 +1318,7 @@ var $_ = {
                     $closestBccSibling = $target.closest('.js-bcc-sibling'),
                     $relatedBcc = $closestBccSibling.siblings('.js-bcc'),
                     $targetsToClose = $bccItems.not($targetToPrevent).not($relatedBcc);
-                
+
                 $targetsToClose.removeClass('_active');
             }
         });
@@ -1012,13 +1327,13 @@ var $_ = {
     initResizeTrigger () {
         var resizeTimer = null,
             resizeDelay = 300,
-            windowWidth = $_.$window.width(),
+            windowWidth = window.outerWidth,
             windowHeight = $_.$window.height();
         
         $_.$window.resize(function () {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function () {
-                var currentWidth = $_.$window.width(),
+                var currentWidth = window.outerWidth,
                     currentHeight = $_.$window.height(),
                     resizeWidth = windowWidth !== currentWidth,
                     resizeHeight = windowHeight !== currentHeight;
@@ -1224,15 +1539,15 @@ var $_ = {
     
     _getRelatedSliderNav($slider) {
         const
-            $wrap = $slider.closest($_.$jsWrap),
-            $sliderNav = $wrap.find($_.$sliderNav);
-        
+            $wrap = $slider.closest($_.selectors.jsWrap),
+            $sliderNav = $wrap.find($_.selectors.sliderNav);
+
         return {
             $sliderNav,
-            $arrowLeft: $sliderNav.find($_.$arrowLeft),
-            $arrowRight: $sliderNav.find($_.$arrowRight),
-            $current: $sliderNav.find($_.$current),
-            $total: $sliderNav.find($_.$total),
+            $arrowLeft: $sliderNav.find($_.selectors.arrowLeft),
+            $arrowRight: $sliderNav.find($_.selectors.arrowRight),
+            $current: $sliderNav.find($_.selectors.current),
+            $total: $sliderNav.find($_.selectors.total),
         }
     },
     
@@ -1242,6 +1557,13 @@ var $_ = {
         
         slick.$slider.on('beforeChange', function(event, slick, currentSlide, nextSlide){
             $current.html(_addZero(nextSlide + 1))
+        });
+    },
+
+    _initSliderPhotobox($container) {
+        $container.photobox('.slick-slide:not(.slick-cloned) a', {
+            time: 0,
+            thumbAttr: 'data-thumb',
         });
     },
 };

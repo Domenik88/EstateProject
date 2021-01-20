@@ -1,8 +1,4 @@
-{% set mod = twoCol|default(false) ? '_2-col' : '' %}
-{% set collapseMod = confidentialityCollapse|default(false) ? '_collapse' : '' %}
-{% set collapseJsMod = confidentialityCollapse|default(false) ? 'js-conf-collapse-form' : '' %}
-
-<form class="request-form {{ mod }} {{ collapseMod }} {{ collapseJsMod }} js-ajax-form" action="{{ path('new_viewing') }}" method="post" autocomplete="off">
+<form class="request-form js-ajax-form" action="{{ path('new_viewing') }}" method="post" autocomplete="off">
     <div class="request-form__col request-form__col_left">
         <div class="request-form__list">
             <div class="request-form__row">

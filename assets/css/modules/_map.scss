@@ -12,11 +12,52 @@
     }
 }
 
-.map-table {
+.homes-available {
     display: flex;
-    align-items: stretch;
-    justify-content: space-between;
+    align-items: baseline;
+    justify-content: flex-start;
+    padding-right: 40px;
+    color: $gray1;
+    
+    &__val {
+        margin-right: .3em;
+    }
+}
+
+.sort {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    &__label {
+        color: $gray1;
+        margin-right: .3em;
+    }
+}
+
+.map-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     height: calc(100% - 100px);
+    width: calc(100% - 200px);
+    max-width: 1720px;
+    margin: 0 auto;
+    
+    &__title-wrap {
+        width: 100%;
+    }
+    
+    &__table {
+        display: flex;
+        align-items: stretch;
+        align-content: flex-start;
+        justify-content: space-between;
+        width: 100%;
+        flex: 1 0 0;
+    }
     
     &__scroll-wrap {
         position: relative;
@@ -26,9 +67,13 @@
     
     &__col {
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
         
         &_left {
-            width: calc(50% - 80px);
+            width: calc(100% / 12 * 5.5 - 40px);
             
             .estate-content {
             
@@ -40,7 +85,73 @@
         }
         
         &_right {
-            width: calc(50% + 30px);
+            width: calc(100% / 12 * 6.5 - 40px);
+        }
+    }
+    
+    &__nav-wrap {
+        width: 100%;
+        padding-top: 10px;
+    }
+    
+    &__filter-wrap {
+        position: relative;
+        width: 100%;
+        z-index: 2;
+        
+        .dropdown-button {
+            margin-right: 5px;
+        }
+    }
+    
+    &__sort-wrap {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        z-index: 1;
+    }
+    
+    &__cards-container {
+        position: relative;
+        width: 100%;
+        flex: 1 0 0;
+    }
+    
+    &__map-container {
+        position: relative;
+        width: 100%;
+        flex: 1 0 0;
+    }
+    
+    &__cards-wrap {
+        @include absolute(0,auto,auto);
+        width: calc(100% + 20px);
+        height: 100%;
+    }
+    
+    &__map-wrap {
+        @include absolute(0,auto,auto);
+        width: 100%;
+        height: 100%;
+    }
+    
+    &__cards-scroll-wrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        
+        &:not([data-scrollbar]) {
+            padding-right: 20px;
+        }
+    
+        .scroll-content {
+            padding-right: 20px;
+        }
+        
+        .scrollbar-track-y .scrollbar-thumb {
+            background: $gray1;
         }
     }
 }
@@ -66,7 +177,6 @@
             height: 6px;
             border-radius: 50%;
             @include absolute;
-            background: red;
             opacity: 0;
             transition: $default-transition;
         }
@@ -174,23 +284,44 @@
 
 .marker-popup-inner {
     position: relative;
-    width: 100%;
+    width: 400px;
+    padding: 10px 10px 5px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    
+    &__left-col {
+        width: 107px;
+    }
+    
+    &__right-col {
+        width: calc(100% - 107px);
+        padding-left: 10px;
+    }
     
     &__img-wrap {
         position: relative;
         width: 100%;
-        height: 170px;
+        @include rh(66/107);
+        border-radius: 10px;
+        overflow: hidden;
+        background: $gray2;
+        z-index: 3;
     }
     
-    &__description {
-        padding: 20px;
+    &__img {
+        z-index: 1;
+    }
+    
+    &__title {
+        display: inline-block;
     }
 }
 
 .estate-content {
     position: relative;
     width: 100%;
-    padding: 0 20px 100px;
+    padding: 0 0 40px;
     overflow: hidden;
 }
 
@@ -377,13 +508,6 @@
                 color: $dark1;
             }
         }
-    }
-}
-
-
-.estate-cards-pagination {
-    & > div {
-        padding-top: 40px;
     }
 }
 

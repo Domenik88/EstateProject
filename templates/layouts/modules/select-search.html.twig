@@ -18,10 +18,9 @@
         ]
     } only %}
 
-    {% include 'layouts/form/input.html.twig' with {
-        'name': 'header-search-input',
-        'placeholder': 'Enter Neighbourhood, City, MLS®',
-        'inputMod': '_bordered',
+    {% include 'layouts/form/autofill.html.twig' with {
+        inputPlaceholder: 'Enter Neighbourhood, City, MLS®',
+        inputMod: '_bordered',
     } only %}
 
     <button class="icon-btn icon-search"></button>

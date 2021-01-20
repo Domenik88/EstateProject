@@ -167,6 +167,32 @@
         color: $gray1;
     }
     
+    &._inline {
+        color: $dark1;
+        border: none;
+        padding: 0 13px 0 0;
+        height: auto;
+    
+        &::after {
+            right: 0;
+            top: calc(50% - 6px);
+        }
+        
+        &:hover {
+            background: transparent;
+            color: $gray0;
+        }
+    
+        &:focus {
+            background: transparent;
+            color: $gray0;
+        }
+    
+        &.error {
+            color: $pink-pdra;
+        }
+    }
+    
     &._dark-text {
         color: $dark1;
     }

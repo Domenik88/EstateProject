@@ -1,0 +1,22 @@
+.autofill {
+	$r: &;
+	position: relative;
+	
+	&__dropdown {
+		@extend .select-dropdown;
+	}
+	
+	&__options {
+		@extend .select-scroll;
+		
+		.autofill-option {
+			@extend .select-option;
+		}
+	}
+	
+	&._show-options._active {
+		#{$r}__dropdown {
+			@extend .select-dropdown-active;
+		}
+	}
+}
