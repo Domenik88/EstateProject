@@ -87,11 +87,7 @@
     </div>
 
     <div class="full-search__fields-container mb20">
-        {% include 'layouts/form/input.html.twig' with {
-            name: 'search-input',
-            placeholder: 'Enter Neighbourhood, City, MLS®',
-            inputMod: '_transparent',
-        } only %}
+        {% include 'layouts/form/autofill.html.twig' only %}
 
         <div class="full-search__selects-container">
             <div class="full-search__selects-group">

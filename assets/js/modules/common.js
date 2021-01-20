@@ -29,6 +29,7 @@ var $_ = {
         this.initSvgMap();
         this.initToggleNext();
         this.initKeywordsInput();
+        this.initAutofill();
     },
     
     initCache() {
@@ -97,6 +98,10 @@ var $_ = {
         this.$addKeyword = $('.js-add-keyword');
         this.$keywordsList = $('.js-keywords-list');
 
+        this.$autofill = $('.js-autofill');
+        this.$autofillInput = $('.js-autofill-input');
+        this.$autofillOptionsContainer = $('.js-autofill-options-container');
+
         this.windowWidth = $_.$window.width();
         this.windowHeight = $_.$window.height();
         
@@ -132,6 +137,98 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initAutofill() {
+        function search(obj) {
+            const
+                { $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions } = obj,
+                { action, type } = dataRequestOptions;
+
+            $.ajax({
+                url: action,
+                type: type,
+                data: {
+                    text: inputVal
+                },
+            })
+            .done((data) => {
+                //TODO: replace testData by data
+                const testData = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8'];
+
+                addOptions({
+                    data: testData,
+                    $currentAutofill,
+                    $relatedOptionsContainer,
+                });
+            })
+            .fail((err) => {
+                console.log(err);
+            });
+        }
+
+        function addOptions(obj) {
+            const { data, $currentAutofill, $relatedOptionsContainer } = obj;
+
+            if (data.length) {
+                $relatedOptionsContainer.html(data.map(item => `
+                    <span class="autofill-option">${item}</span>
+                `).join(''));
+
+                $currentAutofill.addClass('_show-options');
+            } else {
+                clear({ $currentAutofill, $relatedOptionsContainer });
+            }
+        }
+        
+        function clear(obj) {
+            const { $currentAutofill, $relatedOptionsContainer } = obj;
+
+            $currentAutofill.removeClass('_show-options');
+            $relatedOptionsContainer.html('');
+        }
+        
+        $_.$autofill.each((key, item) => {
+            const
+                $currentAutofill = $(item),
+                $relatedInput = $currentAutofill.find($_.$autofillInput),
+                $relatedOptionsContainer = $currentAutofill.find($_.$autofillOptionsContainer),
+                dataRequestOptions = $currentAutofill.data('request-options');
+
+            let timer = null,
+                lastVal = null;
+
+            $relatedInput.on('focus click', () => {
+                $currentAutofill.addClass('_active');
+            });
+
+            $relatedOptionsContainer.on('click', '.autofill-option', (e) => {
+                $relatedInput.val($(e.currentTarget).text());
+                $currentAutofill.removeClass('_active');
+            });
+
+            $relatedInput.on('keyup', () => {
+                clearTimeout(timer);
+                
+                timer = setTimeout(() => {
+                    const inputVal = $relatedInput.val();
+                    
+                    if (inputVal.length) {
+                        if (lastVal) {
+                            if (lastVal !== inputVal) {
+                                search({ $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions });
+                            }
+                        } else {
+                            search({ $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions });
+                        }
+                    } else {
+                        clear({ $currentAutofill, $relatedOptionsContainer });
+                    }
+                    
+                    lastVal = inputVal;
+                }, 1000);
+            });
+        });
     },
 
     initKeywordsInput() {
