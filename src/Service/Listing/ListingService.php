@@ -376,9 +376,13 @@ class ListingService
     public function getSchoolDistance(Listing $listing, School $school): ?string
     {
         try {
-            $route = $this->hereRouteService->getRoute($listing->getCoordinates(), $school->getCoordinates());
-            $distance = json_decode($route->getBody()->getContents())->response->route[ 0 ]->summary->distance;
-            return round($distance / 1000, 2) . ' km';
+            $request = $this->hereRouteService->getRoute($listing->getCoordinates(), $school->getCoordinates());
+            $routes = json_decode($request->getBody()->getContents())->response->route;
+            $distance = [];
+            foreach ($routes as $route) {
+                $distance[] = $route->summary->distance;
+            }
+            return round(min($distance) / 1000, 2) . ' km';
         } catch (\Exception $e) {
             return null;
         }
