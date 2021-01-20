@@ -3,6 +3,21 @@
     font-size: 64px;
     line-height: 78px;
     color: $dark1;
+    
+    @include media_1300 {
+        font-size: 48px;
+        line-height: 59px;
+    }
+    
+    @include media_1000 {
+        font-size: 40px;
+        line-height: 49px;
+    }
+    
+    @include media_700 {
+        font-size: 26px;
+        line-height: 32px;
+    }
 }
 
 .h2 {
@@ -10,6 +25,21 @@
     font-size: 45px;
     line-height: 55px;
     color: $dark1;
+    
+    @include media_1300 {
+        font-size: 42px;
+        line-height: 51px;
+    }
+    
+    @include media_1000 {
+        font-size: 36px;
+        line-height: 44px;
+    }
+    
+    @include media_700 {
+        font-size: 24px;
+        line-height: 29px;
+    }
 }
 
 .h3 {
@@ -17,6 +47,21 @@
     font-size: 28px;
     line-height: 34px;
     color: $dark1;
+    
+    @include media_1300 {
+        font-size: 28px;
+        line-height: 34px;
+    }
+    
+    @include media_1000 {
+        font-size: 24px;
+        line-height: 29px;
+    }
+    
+    @include media_700 {
+        font-size: 20px;
+        line-height: 24px;
+    }
 }
 
 .h4 {
@@ -24,6 +69,11 @@
     font-size: 18px;
     line-height: 22px;
     color: $dark1;
+    
+    @include media_700 {
+        font-size: 14px;
+        line-height: 17px;
+    }
 }
 
 .h5 {
@@ -31,6 +81,11 @@
     font-size: 16px;
     line-height: 20px;
     color: $dark1;
+    
+    @include media_700 {
+        font-size: 14px;
+        line-height: 17px;
+    }
 }
 
 .h6 {
@@ -45,6 +100,16 @@
     font-size: 24px;
     line-height: 36px;
     color: $dark1;
+   
+    @include media_1000 {
+        font-size: 22px;
+        line-height: 36px;
+    }
+    
+    @include media_700 {
+        font-size: 16px;
+        line-height: 30px;
+    }
 }
 
 .subtitle2 {
@@ -52,36 +117,102 @@
     font-size: 24px;
     line-height: 36px;
     color: $dark1;
+    
+    @include media_1000 {
+        font-size: 22px;
+        line-height: 36px;
+    }
+    
+    @include media_700 {
+        font-size: 16px;
+        line-height: 30px;
+    }
 }
 
 .body-text {
     font-weight: 700;
     font-size: 18px;
     line-height: 27px;
+    
+    @include media_1000 {
+        font-size: 17px;
+        line-height: 27px;
+    }
+    
+    @include media_700 {
+        font-size: 14px;
+        line-height: 20px;
+    }
 }
 
 .body-text2 {
     font-weight: 500;
     font-size: 18px;
     line-height: 27px;
+    
+    @include media_1000 {
+        font-size: 17px;
+        line-height: 27px;
+    }
+    
+    @include media_700 {
+        font-size: 14px;
+        line-height: 20px;
+    }
 }
 
 .table-text {
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
+    
+    @include media_1000 {
+        font-size: 15px;
+        line-height: 24px;
+    }
+    
+    @include media_700 {
+        font-size: 12px;
+        line-height: 20px;
+    }
+}
+
+.table-text_bold {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    
+    @include media_1000 {
+        font-size: 15px;
+        line-height: 24px;
+    }
+    
+    @include media_700 {
+        font-size: 12px;
+        line-height: 20px;
+    }
 }
 
 .small-text {
     font-weight: 700;
     font-size: 14px;
     line-height: 21px;
+    
+    @include media_700 {
+        font-size: 12px;
+        line-height: 20px;
+    }
 }
 
 @mixin small-text2 {
     font-weight: 500;
     font-size: 14px;
-    line-height: 21px;
+    line-height: 20px;
+    
+    @include media_700 {
+        font-size: 12px;
+        line-height: 20px;
+    }
 }
 .small-text2 {
     @include small-text2;
@@ -91,12 +222,22 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;
+
+    @include media_700 {
+        font-size: 10px;
+        line-height: 14px;
+    }
 }
 
 .tiny-text_bold {
     font-weight: 700;
     font-size: 12px;
     line-height: 18px;
+    
+    @include media_700 {
+        font-size: 10px;
+        line-height: 18px;
+    }
 }
 
 .very-tiny {
@@ -113,6 +254,17 @@
     font-weight: 500;
     font-size: 9px;
     line-height: 14px;
+}
+
+.button0 {
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 27px;
+
+    @include media_700 {
+        font-size: 18px;
+        line-height: 22px;
+    }
 }
 
 .button1 {
@@ -133,6 +285,10 @@
     line-height: 21px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
+
+    @include media_700 {
+        font-size: 7px;
+    }
 }
 
 .link-dark {
