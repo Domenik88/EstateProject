@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'layouts/sections/intro.html.twig' with {
+    {% embed 'layouts/sections/intro.html.twig' with {
         title: "What's my Surrey home worth?",
         subtitle: 'Find out in 3 easy steps',
         simpleSearch: true,
-        bg: asset('build/images/bg/intro-bg-3.svg'),
         gradient: 'bg-grad-3',
     } only %}
+        {% block intro_bg_wrap %}
+            {% include 'layouts/svg/intro-bg-3.html.twig' %}
+        {% endblock %}
+    {% endembed %}
 
     {% include 'layouts/common/breadcrumbs.html.twig' with {
         array: [

@@ -1,9 +1,9 @@
-<form class="simple-search js-no-ajax">
+<form class="simple-search js-no-ajax {{ wrapMod|default('') }}">
     {% include 'layouts/form/input.html.twig' with {
         'name': 'search-input',
         'placeholder': 'Enter Your Adderss',
         'inputMod': '_bordered',
     } only %}
 
-    <button class="icon-btn icon-search _big"></button>
+    <button class="icon-btn icon-search {{ buttonMod|default('') }}"></button>
 </form>

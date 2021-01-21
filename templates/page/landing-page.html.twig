@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    {% include 'layouts/sections/intro.html.twig' with {
+    {% embed 'layouts/sections/intro.html.twig' with {
         title: 'Vancouver Real Estate - MLS Vancouver BC',
         link: {
             href: '#',
             text: 'See All 3940 Vancouver Real Estate',
         },
-        bg: asset('build/images/bg/intro-bg-2.svg'),
         gradient: 'bg-grad-1',
     } only %}
+        {% block intro_bg_wrap %}
+            {% include 'layouts/svg/intro-bg-2.html.twig' %}
+        {% endblock %}
+    {% endembed %}
 
     {% include 'layouts/common/breadcrumbs.html.twig' with {
         array: [
