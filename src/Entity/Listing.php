@@ -172,6 +172,11 @@ class Listing
      */
     private $subdivision;
 
+    /**
+     * @ORM\Column(type="json_array", nullable=true, options={"jsonb":true})
+     */
+    private $schoolsData = [];
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
@@ -594,4 +599,17 @@ class Listing
 
         return $this;
     }
+
+    public function getSchoolsData(): ?array
+    {
+        return $this->schoolsData;
+    }
+
+    public function setSchoolsData(?array $schoolsData): self
+    {
+        $this->schoolsData = $schoolsData;
+
+        return $this;
+    }
+
 }

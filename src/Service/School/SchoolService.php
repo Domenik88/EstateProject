@@ -34,8 +34,12 @@ class SchoolService
     {
         if ( ( $handle = fopen($filePath, "r") ) !== false ) {
             $this->schoolRepository->truncateSchoolTable();
+            $rowCount = 0;
             while ( ( $data = fgetcsv($handle) ) !== false ) {
-                $this->createSchoolData($data);
+                if ($rowCount > 0) {
+                    $this->createSchoolData($data);
+                }
+                $rowCount++;
             }
             fclose($handle);
         }
