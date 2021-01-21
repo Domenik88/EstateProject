@@ -3,9 +3,11 @@
         <div class="intro__gradient {{ gradient }}"></div>
     {% endif %}
 
-    {% if bg|default(false) %}
-        <div class="intro__bg-wrap js-lazy" data-loader="inlineSvg" data-src="{{ bg }}"></div>
-    {% endif %}
+    <div class="intro__bg-wrap">
+        <div class="intro__svg-wrap">
+            {% block intro_bg_wrap %}{% endblock %}
+        </div>
+    </div>
 
     <div class="intro__container {{ containerMod ?? 'container' }}">
         <div class="intro__content {{ contentMod ?? 'inner-container' }}">
