@@ -39,7 +39,7 @@
     color: $gray0;
     transition: $default-transition;
     margin-bottom: 10px;
-    @extend .small-text2;
+    @extend .small-text;
     
     &:last-child {
         margin-bottom: 0;

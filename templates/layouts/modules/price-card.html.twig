@@ -2,7 +2,7 @@
 {% set priceAreDown = originalListingPrice ? listingPrice < originalListingPrice : false %}
 
 <div class="price-card">
-    <div class="price-card__current subtitle">
+    <div class="price-card__current subtitle_bold">
         {{ listingPrice|format_currency('CAD', {fraction_digit: 0}) }}
 
         {% if priceAreUp %}
@@ -15,7 +15,7 @@
     </div>
 
     {% if priceAreUp or priceAreDown %}
-        <div class="price-card__original body-text2">
+        <div class="price-card__original body-text">
             <div class="price-card__line-through">
                 {{ originalListingPrice|format_currency('CAD', {fraction_digit: 0}) }}
             </div>
@@ -24,7 +24,7 @@
         </div>
     {% endif %}
 
-    <div class="price-card__mortgage small-text2 mt10">
+    <div class="price-card__mortgage small-text mt10">
         Esr. Mortgage <span class="js-calc-total"></span>/mo
     </div>
 </div>

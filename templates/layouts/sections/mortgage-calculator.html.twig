@@ -136,7 +136,7 @@
                     {% for item in mortgageCalculatorForm %}
                         <div class="mortgage-calc-form__row mb50">
                             <div class="mortgage-calc-form__flex-wrap mb20">
-                                <span class="mortgage-calc-form__label small-text">{{ item.label }}</span>
+                                <span class="mortgage-calc-form__label small-text_bold">{{ item.label }}</span>
 
                                 <div class="mortgage-calc-form__input-wrap {{
                                     item.inputs|default(false)|length > 1 ? 'merge-inputs'
@@ -163,7 +163,7 @@
                                             'name': item.select.name,
                                             'inputMod': '_bordered',
                                             'wrapMod': '',
-                                            'textMod': 'small-text2',
+                                            'textMod': 'small-text',
                                             'options': item.select.options
                                         } only %}
                                     {% endif %}
@@ -195,7 +195,7 @@
                         <div class="mortgage-calc-result__total-container">
                             <div class="mortgage-calc-result__total-wrap">
                                 <span class="mortgage-calc-result__total h3 js-calc-total"></span>
-                                <span class="mortgage-calc-result__period small-text2">/month</span>
+                                <span class="mortgage-calc-result__period small-text">/month</span>
                             </div>
                         </div>
                     </div>
@@ -203,8 +203,8 @@
                     <div class="mortgage-calc-result__list">
                         {% for item in mortgageCalculatorResult %}
                             <div class="mortgage-calc-result__row mb15 {{ item.mod }}">
-                                <span class="mortgage-calc-result__label small-text2">{{ item.label }}</span>
-                                <span class="mortgage-calc-result__val small-text {{ item.valMod|default('') }}">{{ item.val }}</span>
+                                <span class="mortgage-calc-result__label small-text">{{ item.label }}</span>
+                                <span class="mortgage-calc-result__val small-text_bold {{ item.valMod|default('') }}">{{ item.val }}</span>
                             </div>
                         {% endfor %}
                     </div>

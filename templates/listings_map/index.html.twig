@@ -81,18 +81,18 @@
                 </div>
 
                 <div class="map-section__sort-wrap mb20">
-                    <div class="homes-available small-text2">
+                    <div class="homes-available small-text">
                         <span class="homes-available__val js-homes-available">-</span>
                         <span class="homes-available__suffix">homes available</span>
                     </div>
 
                     <div class="sort">
-                        <span class="sort__label small-text2">Sort:</span>
+                        <span class="sort__label small-text">Sort:</span>
                         {% include 'layouts/form/select.html.twig' with {
                             'name': 'map-sort',
                             'wrapMod': '_thin-text',
                             'inputMod': '_inline',
-                            'textMod': 'small-text2',
+                            'textMod': 'small-text',
                             'options': [
                                 {
                                     'value': 'new',

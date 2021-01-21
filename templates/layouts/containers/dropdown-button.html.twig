@@ -4,11 +4,11 @@
 
 <div class="dropdown-button {{ wrapMod|default('') }} js-dropdown-button" {{ dataPropsAttribute }}>
     <div class="dropdown-button__text js-toggle-active {{ textWrapMod|default('js-bcc') }}">
-        <span class="dropdown-button__placeholder {{ textMod|default('small-text') }}">{{
+        <span class="dropdown-button__placeholder {{ textMod|default('small-text_bold') }}">{{
             placeholder|default('')
         }}</span>
 
-        <span class="dropdown-button__selected {{ textMod|default('small-text') }} js-dropdown-selected"></span>
+        <span class="dropdown-button__selected {{ textMod|default('small-text_bold') }} js-dropdown-selected"></span>
     </div>
 
     <div class="dropdown-button__popup {{ popupMod|default('') }} {{ dropdownButtonScrollStyleMod }} js-bcc-sibling js-dropdown-popup">

@@ -25,12 +25,13 @@
                 </div>
             {% endif %}
 
-            {% if button|default(false) %}
+            {% if link|default(false) %}
                 <div class="intro__button-wrap mt20">
                     {% include 'layouts/controls/button.html.twig' with {
-                        'href': '#',
-                        'text': 'See All 3940 Vancouver Real Estate',
-                        'mod': '_turquoise'
+                        'href': link.href|default(''),
+                        'text': link.text|default(''),
+                        'textMod': 'button0',
+                        'mod': '_big _turquoise',
                     } %}
                 </div>
             {% endif %}

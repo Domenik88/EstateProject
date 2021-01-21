@@ -27,15 +27,15 @@
         {% if attribute(metrics, prop)|default('')|length %}
             <div class="metrics__item {{ itemMod ?? 'mt10' }}">
                 {% if metricsLabels[prop] and metricsLabels[prop].prefix|default(false) %}
-                    <span class="metrics__label {{ labelMod ?? 'small-text2' }}">{{
+                    <span class="metrics__label {{ labelMod ?? 'small-text' }}">{{
                         metricsLabels[prop].prefix
                     }}</span>
                 {% endif %}
 
-                <span class="metrics__val {{ valMod ?? 'small-text' }}">{{ attribute(metrics, prop) }}</span>
+                <span class="metrics__val {{ valMod ?? 'small-text_bold' }}">{{ attribute(metrics, prop) }}</span>
 
                 {% if metricsLabels[prop] and metricsLabels[prop].suffix|default(false) %}
-                    <span class="metrics__label {{ labelMod ?? 'small-text2' }}">{{
+                    <span class="metrics__label {{ labelMod ?? 'small-text' }}">{{
                         metricsLabels[prop].suffix
                     }}</span>
                 {% endif %}

@@ -85,7 +85,7 @@
                     {{ item.checked|default(false) ? 'checked' : '' }}
             >
             <div class="radio-row__indicator"></div>
-            <div class="radio-row__text small-text {{ item.textMod|default('') }}">{{ item.text|default('') }}</div>
+            <div class="radio-row__text small-text_bold {{ item.textMod|default('') }}">{{ item.text|default('') }}</div>
         </div>
     {% endfor %}
 </div>

@@ -9,13 +9,13 @@
                 <div class="info-card__row pb20 mb20">
 
                     {% if item.subtitle ?? false %}
-                        <div class="info-card__subtitle body-text2">
+                        <div class="info-card__subtitle body-text">
                             {{ item.subtitle }}
                         </div>
                     {% endif %}
 
                     {% if item.label ?? false %}
-                        <div class="info-card__label small-text2">
+                        <div class="info-card__label small-text">
                             {{ item.label }}
                         </div>
                     {% endif %}
@@ -23,13 +23,13 @@
                     <div class="info-card__table">
                         <div class="info-card__col info-card__col_left">
                             {% if item.status ?? false %}
-                                <div class="info-card__status small-text {{ item.status.mod }}">
+                                <div class="info-card__status small-text_bold {{ item.status.mod }}">
                                     {{ item.status.text }}
                                 </div>
                             {% endif %}
 
                             {% if item.val ?? false %}
-                                <div class="info-card__val small-text2">
+                                <div class="info-card__val small-text">
                                     {{ item.val }}
                                 </div>
                             {% endif %}
@@ -37,7 +37,7 @@
 
                         <div class="info-card__col info-card__col_right">
                             {% if item.rating ?? false %}
-                                <div class="info-card__rating small-text2">
+                                <div class="info-card__rating small-text">
                                     {{ item.rating }}
                                 </div>
                             {% endif %}

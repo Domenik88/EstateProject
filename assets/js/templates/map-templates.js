@@ -83,7 +83,7 @@ export const mapTemplates = {
             
             <div class="estate-card__description pt30 pb30">
                 ${listingPrice ? 
-                    `<span class="estate-card__title subtitle mb10">${_formatCurrencyCa(listingPrice)}</span>`
+                    `<span class="estate-card__title subtitle_bold mb10">${_formatCurrencyCa(listingPrice)}</span>`
                 : ''}
               
                 ${(address && address.streetAddress && address.city) ? 
@@ -153,9 +153,9 @@ export const mapTemplates = {
 
                 metricsItems.push(`
                     <div class="metrics__item">
-                        ${prefix ? `<span class="metrics__label small-text2">${prefix}</span>` : ''}
-                        <span class="metrics__val small-text">${val}</span>
-                        ${suffix ? `<span class="metrics__label small-text2">${suffix}</span>` : ''}
+                        ${prefix ? `<span class="metrics__label small-text">${prefix}</span>` : ''}
+                        <span class="metrics__val small-text_bold">${val}</span>
+                        ${suffix ? `<span class="metrics__label small-text">${suffix}</span>` : ''}
                     </div>
                 `);
             }
