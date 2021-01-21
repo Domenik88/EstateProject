@@ -197,14 +197,14 @@
     },
 ] %}
 
-<div class="nav-table mtr40">
+<div class="collapse-nav-list mtr40">
     {% for col in navTableArray %}
-        <div class="nav-table__col mt40">
-            <span class="nav-table__title small-text_bold mb20">{{ col.title }}</span>
+        <div class="collapse-nav-list__col mt40">
+            <span class="collapse-nav-list__title small-text_bold mb20">{{ col.title }}</span>
 
-            <div class="nav-table__list">
+            <div class="collapse-nav-list__list">
                 {% for link in col.list %}
-                    <a class="nav-table__link link-light-gray small-text" href="{{ link.href }}">{{ link.text }}</a>
+                    <a class="collapse-nav-list__link link-light-gray small-text" href="{{ link.href }}">{{ link.text }}</a>
                 {% endfor %}
             </div>
         </div>

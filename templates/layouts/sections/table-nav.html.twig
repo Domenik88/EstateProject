@@ -1,0 +1,19 @@
+<section class="table-nav {{ wrapMod ?? 'container' }}">
+    {% if title|default(false) %}
+        <h3 class="table-nav__title h3 mb40">{{ title }}</h3>
+    {% endif %}
+
+    <div class="table-nav__table mtr30">
+        {% for item in array %}
+            <div class="table-nav__col mt30">
+                <div class="table-nav__content">
+                    <h5 class="table-nav__subtitle h5 mb10">{{ item.title }}</h5>
+
+                    {% for link in item.list %}
+                        <a class="link-gray small-text" href="{{ link.href }}">{{ link.text }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
