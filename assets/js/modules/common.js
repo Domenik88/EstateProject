@@ -61,6 +61,7 @@ var $_ = {
         this.mapIsInit = false;
         
         this.$defaultSlider = $('.js-default-slider');
+        this.$estateCard = $('.js-estate-card');
 
         this.$formatInput = $('.js-format-input');
 
@@ -1083,11 +1084,21 @@ var $_ = {
         $_.$defaultSlider.each(function (key, item) {
             const
                 $currentSlider = $(item),
+                $estateCard = $currentSlider.find($_.$estateCard),
                 $preventChild = $currentSlider.find('[data-prevent-parent-swipe]'),
                 dataLazyInner = $currentSlider.data('lazy-inner'),
                 initPhotoBox = $currentSlider.data('init-pb'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
+
+            $estateCard.on('click', (e) => {
+                const
+                    $target = $(e.target),
+                    targetIsPrevent = $target.hasClass('js-prevent'),
+                    closestPrevent = $target.closest('.js-prevent');
+
+                if (targetIsPrevent || closestPrevent.length) e.preventDefault();
+            })
 
             $currentSlider
                 .on('init', function (event, slick) {
@@ -1438,7 +1449,7 @@ var $_ = {
             dotsMid = (dotsCount - 1) / 2;
 
         if (!slick.$dots.data('isInit')) {
-            slick.$dots.data('isInit', true).wrap('<div class="slider-dots-nav"></div>');
+            slick.$dots.data('isInit', true).wrap('<div class="slider-dots-nav js-prevent"></div>');
 
             const
                 $wrap = slick.$dots.parent(),

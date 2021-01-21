@@ -38,7 +38,7 @@
 		}
 		
 		&.slick-disabled {
-			pointer-events: none;
+			cursor: default;
 			
 			&::before {
 				opacity: 0.3;

@@ -58,6 +58,7 @@
 
 .estate-card {
 	$r: &;
+	display: block;
 	position: relative;
 	border-radius: 20px;
 	overflow: hidden;
@@ -70,6 +71,10 @@
 	&:hover {
 		.circle-button {
 			opacity: 1;
+		}
+		
+		#{$r}__location {
+			color: $turquoise;
 		}
 	}
 	
@@ -158,6 +163,10 @@
 	&__location {
 		color: $dark1;
 		display: inline-block;
+	}
+	
+	&__location {
+		transition: $default-transition;
 	}
 }
 
