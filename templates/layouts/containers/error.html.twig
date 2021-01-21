@@ -1,0 +1,13 @@
+<section class="error {{ wrapMod ?? 'pt100 pb100' }}">
+    <div class="error__container {{ containerMod ?? 'container-wide' }}">
+        <div
+            class="error__col error__col_left js-lazy"
+            data-loader="inlineSvg"
+            data-src="{{ img|default('') }}"
+        ></div>
+
+        <div class="error__col error__col_right">
+            {% block error_content123 %}{% endblock %}
+        </div>
+    </div>
+</section>

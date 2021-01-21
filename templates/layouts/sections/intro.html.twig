@@ -25,7 +25,10 @@
 
             {% if simpleSearch|default(false) %}
                 <div class="intro__simple-search-wrap mt20">
-                    {% include 'layouts/modules/simple-search.html.twig' %}
+                    {% include 'layouts/modules/simple-search.html.twig' with {
+                        wrapMod: '_big _bordered',
+                        buttonMod: '_big',
+                    } only %}
                 </div>
             {% endif %}
 

@@ -1,10 +1,9 @@
 .simple-search {
 	position: relative;
 	width: 100%;
-	height: 60px;
+	height: 44px;
 	background: $white;
-	border-radius: 20px;
-	box-shadow: 0 0 0 5px $dark1;
+	border-radius: 5px;
 	
 	.input-style {
 		height: 100%;
@@ -19,7 +18,7 @@
 		
 		&__input {
 			height: 100%;
-			padding-right: 70px;
+			padding-right: 50px;
 			border-radius: inherit;
 		}
 	}
@@ -27,5 +26,24 @@
 	.icon-btn {
 		@include absolute(0,7px,0,auto);
 		z-index: 2;
+	}
+	
+	&._big {
+		height: 60px;
+		border-radius: 20px;
+		
+		.input-style {
+			&__input {
+				padding-right: 70px;
+			}
+		}
+	}
+	
+	&._bordered {
+		box-shadow: 0 0 0 5px $dark1;
+	}
+	
+	&._max-w {
+		max-width: 600px;
 	}
 }

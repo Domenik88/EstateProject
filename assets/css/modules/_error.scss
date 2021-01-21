@@ -1,0 +1,23 @@
+.error {
+	&__container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	
+	&__col {
+		&_left {
+			width: calc(100% / 12 * 5 - 10px);
+			
+			svg {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+		}
+		
+		&_right {
+			width: calc(100% / 12 * 7 - 10px);
+		}
+	}
+}
