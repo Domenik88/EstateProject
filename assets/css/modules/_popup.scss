@@ -1,70 +1,44 @@
-$baseAnimationDuration: .7s;
+$baseAnimationDuration: .3s;
 
 .overlay {
-	@include fixed;
+	@include fixed(0,auto,auto,-110vw);
 	height: 100vh;
 	width: 100vw;
 	z-index: 950;
 	overflow: hidden;
-	transition-property: background, transform;
-	transition-duration: $baseAnimationDuration/2, 0s;
-	transition-delay: $baseAnimationDuration/2, $baseAnimationDuration;
+	transition-property: opacity, left;
+	transition-duration: $baseAnimationDuration, 0s;
+	transition-delay: 0s, $baseAnimationDuration;
 	transition-timing-function: ease-in-out, linear;
-	background: rgba(0,0,0,0);
-	transform: translateY(-200%);
-	
-	&::before {
-		content: '';
-		@include absolute(0,auto,auto);
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-		transition: transform $baseAnimationDuration ease-in-out, background $baseAnimationDuration*0.3 linear;
-		transform: translateY(101%);
-		background: rgba(0,0,0,0.3);
-	}
+	background: rgba(0,0,0,0.3);
+	opacity: 0;
 	
 	&._active {
 		transition-delay: 0s, 0s;
-		transform: translateY(0);
-		background: rgba(0,0,0,0.3);
-		
-		&::before {
-			transform: translateY(0);
-		}
+		left: 0;
+		opacity: 1;
 	}
 }
 
 
 .popup-style {
 	$r: &;
+	@include fixed(0,auto,auto,-110vw);
 	background-color: transparent;
-	transform: translateX(-105%);
 	display: flex;
 	justify-content: flex-start;
-	//pointer-events: none;
 	align-items: center;
 	flex-direction: column;
 	box-sizing: border-box;
 	padding: 50px 0;
 	height: 100vh;
-	position: fixed;
-	left: 0;
-	top: 0;
-	transition: 0s ease;
 	width: 100%;
 	z-index: 960;
-	transition-delay: 1s;
-	perspective: 1000px;
-	
-	&._active {
-		transform: translateX(0);
-		transition-delay: 0s;
-	}
+	transition: left 0s linear;
+	transition-delay: $baseAnimationDuration;
 	
 	&__container {
 		position: relative;
-		//pointer-events: auto;
 		box-sizing: border-box;
 		max-height: 100%;
 		padding: 60px 0 50px;
@@ -75,8 +49,7 @@ $baseAnimationDuration: .7s;
 		margin: auto;
 		flex: 0 0 auto;
 		opacity: 0;
-		transform: translateY(25vh);
-		transition: transform $baseAnimationDuration*1.25 ease, opacity $baseAnimationDuration*0.4 ease;
+		transition: opacity $baseAnimationDuration ease;
 		transition-delay: 0s;
 	}
 	
@@ -100,18 +73,18 @@ $baseAnimationDuration: .7s;
 		margin: auto;
 	}
 	
-	&._active & {
-		&__container {
-			transition: transform $baseAnimationDuration*1.25 ease, opacity $baseAnimationDuration*0.7 ease;
-			transition-delay: $baseAnimationDuration/2, $baseAnimationDuration*0.7;
+	&._active {
+		left: 0;
+		transition-delay: 0s;
+		
+		#{$r}__container {
 			opacity: 1;
-			transform: translateY(0);
 		}
 	}
-
-	&_map {
+	
+	&_fh {
 		padding: 0;
-
+		
 		#{$r}__container {
 			@extend .pt70;
 			@extend .pb100;
@@ -120,50 +93,49 @@ $baseAnimationDuration: .7s;
 			height: 100%;
 			width: 100%;
 			max-width: 1920px;
-
+			
 			& > .cross-btn {
 				top: 0;
 				right: 0;
 			}
 		}
-
+		
 		#{$r}__scroll-wrap {
 			height: 100%;
 			max-height: none;
 			padding: 0;
-
+			
 			.simplebar-content {
 				height: 100%;
 			}
-
+			
 			.estate-popup-content {
 				height: 100%;
 				width: 100%;
 			}
-
+			
 			.map-buttons-bar {
 				margin-top: 0;
 			}
-
+			
 			.map {
 				width: 100%;
 				height: 100%;
 				z-index: 1;
 			}
 		}
-
+		
 		#{$r}__content {
 			height: 100%;
 		}
-
+		
 		#{$r}__map-controls {
 			height: 100px;
 			position: relative;
 			z-index: 2;
 		}
-
+		
 		#{$r}__map-container {
-			background: yellow;
 			height: calc(100% - 100px);
 			width: 100%;
 			position: relative;
@@ -273,5 +245,54 @@ $baseAnimationDuration: .7s;
 		height: 100%;
 		overflow: hidden;
 		
+	}
+}
+
+.popup-slider-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	
+	&__header {
+		width: 100%;
+		
+		.cross-btn {
+			position: relative;
+			margin-left: auto;
+			margin-right: 0;
+		}
+	}
+	
+	&__table {
+		width: calc(100% / 12 * 10);
+		padding-left: calc(100% / 12);
+		margin-left: auto;
+		margin-right: auto;
+		height: auto;
+		flex: 1 0 0;
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+	}
+	
+	&__col {
+		&_left {
+			width: calc(100% / 9 * 8);
+			overflow: hidden;
+		}
+		
+		&_right {
+			width: calc(100% / 9);
+			padding-left: 10px;
+			padding-right: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
 	}
 }

@@ -14,14 +14,10 @@ jQuery(function($){
     
             this.templates = {
                 estateSliderItem: (img) => `
-                    <div class="estate-slider-item">
-                        <img src=${img} alt="#" class="of"/>
-                    </div>
-                `,
-                estateSliderDescription: ({title, text}) => `
-                    <div class="estate-slider-description">
-                        <h1>${title}</h1>
-                        <p>${text}</p>
+                    <div class="fs-slider-item">
+                        <div class="round-img-wrap">
+                            <img src=${img} alt="#" class="of"/>
+                        </div>
                     </div>
                 `,
             }
@@ -45,8 +41,8 @@ jQuery(function($){
                 popup._showTyPopup(data, delay);
             });
             
-            popup.$body.on('trigger:show-estate-popup', (e, data) => {
-                popup._showEstatePopup(data);
+            popup.$body.on('trigger:init-popup-slider', (e, data) => {
+                popup._initPopupSlider(data);
             });
         },
         
@@ -54,23 +50,26 @@ jQuery(function($){
             popup.$overlay.removeClass(popup.overlayMods.join(' '));
         },
     
-        _showEstatePopup(data) {
+        _initPopupSlider(data) {
             const
-                { images } = data,
-                $popup = $('.js-popup-estate'),
-                $popupSlider = $popup.find('.js-estate-popup-slider'),
-                $popupDescription = $popup.find('.js-estate-popup-description');
-    
-            $popupDescription.html(popup.templates.estateSliderDescription(data));
-    
+                { images, index } = data,
+                $popup = $('.js-slider-popup'),
+                $popupSlider = $popup.find('.js-slider'),
+                slides = images.map(item => popup.templates.estateSliderItem(item)).join('');
+
             popup.$body.trigger('trigger:init-slider', {
                 $sliders: $popupSlider,
-                $slides: [images.map((item) => popup.templates.estateSliderItem(item)).join('')],
+                $slides: [slides],
+                sliderParams: {
+                    initialSlide: index,
+                    infinite: true,
+                    speed: 150,
+                }
             });
-            
+
             popup.$popups.removeClass('_active');
             popup._clearOverlay();
-            $popup.add(popup.$overlay).addClass('_active');
+            $popup.addClass('_active');
         },
     
         _showTyPopup(data, delay) {
@@ -103,7 +102,7 @@ jQuery(function($){
         _clickHandler(e) {
             const
                 $btn = $(e.currentTarget),
-                { target, fire_click_selector, overlay_mod } = $btn.data('popup'),
+                { target, fire_click_selector, show_overlay } = $btn.data('popup'),
                 $popup = $('.js-popup-' + target),
                 $recaptcha = $popup.find('.js-recaptcha');
 
@@ -112,17 +111,13 @@ jQuery(function($){
             if ($recaptcha.length) popup.$body.trigger('trigger:init-recaptcha');
 
             popup._clearOverlay();
-            
-            if (overlay_mod) {
-                if (popup.overlayMods.indexOf(overlay_mod) === -1) popup.overlayMods.push(overlay_mod);
-                popup.$overlay.addClass(overlay_mod);
-            }
 
             if (fire_click_selector) {
                 $popup.find(fire_click_selector).click();
             }
             
-            $popup.add(popup.$overlay).addClass('_active');
+            $popup.addClass('_active');
+            if (show_overlay) popup.$overlay.addClass('_active');
         },
         
         closePopup() {

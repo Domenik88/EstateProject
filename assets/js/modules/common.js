@@ -33,6 +33,19 @@ var $_ = {
     },
     
     initCache() {
+        this.selectors = {
+            smoothScroll: '.js-smooth-scroll',
+            simpleScroll: '.js-simple-scroll',
+            lazyLoad: '.js-lazy',
+            jsWrap: '.js-wrap',
+            sliderNav: '.js-slider-nav',
+            arrowLeft: '.js-arrow-left',
+            arrowRight: '.js-arrow-right',
+            current: '.js-current',
+            total: '.js-total',
+            estateGallerySliderImg: '.js-estate-gallery-slider-img'
+        };
+
         this.$page = $('html, body');
         this.$window = $(window);
         this.$body = $('body');
@@ -47,7 +60,7 @@ var $_ = {
         this.$toggleActive = $('.js-toggle-active');
 
         this.$estateGallerySlider = $('.js-estate-gallery-slider');
-        this.$estateGallerySliderImg = $('.js-estate-gallery-slider-img');
+        this.$estateGallerySliderImg = $(this.selectors.estateGallerySliderImg);
 
         this.$stickyContainer = $('.js-sticky-container');
         this.$stickyBlock = $('.js-sticky-block');
@@ -61,6 +74,7 @@ var $_ = {
         this.mapIsInit = false;
         
         this.$defaultSlider = $('.js-default-slider');
+        this.$estateCard = $('.js-estate-card');
 
         this.$formatInput = $('.js-format-input');
 
@@ -115,18 +129,6 @@ var $_ = {
             b900: 900,
             b700: 700,
             b500: 500,
-        };
-        
-        this.selectors = {
-            smoothScroll: '.js-smooth-scroll',
-            simpleScroll: '.js-simple-scroll',
-            lazyLoad: '.js-lazy',
-            jsWrap: '.js-wrap',
-            sliderNav: '.js-slider-nav',
-            arrowLeft: '.js-arrow-left',
-            arrowRight: '.js-arrow-right',
-            current: '.js-current',
-            total: '.js-total',
         };
         
         this.animationEvents = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
@@ -899,14 +901,14 @@ var $_ = {
         function initSlider($slider) {
             const
                 dataLazyInner = $slider.data('lazy-inner'),
-                initPhotoBox = $slider.data('init-pb'),
+                dataScrollNav = $slider.data('scroll-nav'),
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($slider),
                 dots = $_.windowWidth <= $_.breakpoints.b900;
 
             $slider.on('init', function (event, slick) {
                 if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
                 if (dataLazyInner) $_._initSliderLazyInner(slick);
-                if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
+                if (dataScrollNav) $_._initSliderScrollNav($slider);
                 if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
             })
                 .slick({
@@ -914,9 +916,10 @@ var $_ = {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     arrows: !dots,
-                    prevArrow: $arrowLeft,
-                    nextArrow: $arrowRight,
-                    fade: false,
+                    prevArrow: $arrowLeft.eq(0),
+                    nextArrow: $arrowRight.eq(0),
+                    fade: true,
+                    speed: 150,
                     infinite: false,
                     dots: dots,
                 });
@@ -949,12 +952,17 @@ var $_ = {
                 baseClass = $currentSlider[0].classList[0],
                 slides = [];
 
+            let imgCounter = 0;
+
             for (let i = 0; i < Math.ceil($imagesCache.length/imgCount); i++) {
                 slides.push(`
                     <div class="${baseClass}__item">
                         <div class="${baseClass}__container">
                             ${$imagesCache.slice(i*imgCount, i*imgCount + imgCount).toArray().map(
-                                item => item.outerHTML
+                                item => {
+                                    item.setAttribute('data-index', imgCounter++);
+                                    return item.outerHTML
+                                }
                             ).join('')}
                         </div>
                     </div>
@@ -965,7 +973,6 @@ var $_ = {
         }
 
         function resetSlider($slider) {
-            $slider.photobox('destroy');
             $slider.slick('unslick');
             $slider.off('init');
             $slider.off('beforeChange');
@@ -979,7 +986,19 @@ var $_ = {
         $_.$estateGallerySlider.each((key, item) => {
             const
                 $currentSlider = $(item),
-                $imagesCache = $currentSlider.find($_.$estateGallerySliderImg).clone();
+                $imagesCache = $currentSlider.find($_.$estateGallerySliderImg).clone(),
+                fullSizesArray = $imagesCache.map((key, item) => $(item).data('full-size')).toArray();
+
+            $currentSlider.on('click', $_.selectors.estateGallerySliderImg, (e) => {
+                const
+                    $currentImg = $(e.currentTarget),
+                    index = $currentImg.data('index');
+
+                $_.$body.trigger('trigger:init-popup-slider', {
+                    images: fullSizesArray,
+                    index,
+                });
+            });
 
             constructSlider({ $currentSlider, $imagesCache });
 
@@ -1003,16 +1022,17 @@ var $_ = {
                 $sliders.each((key, item) => {
                     const
                         $currentSlider = $(item),
+                        dataScrollNav = $currentSlider.data('scroll-nav'),
                         dataSliderParams = $currentSlider.data('slider-parameters'),
                         isInit = $currentSlider.hasClass('slick-initialized'),
                         hasRelatedSlides = $slides && $slides.length && $slides[key];
 
-                    if (isInit && hasRelatedSlides) {
-                        $currentSlider.slick('unslick');
+                    if (hasRelatedSlides) {
+                        if (isInit) $currentSlider.slick('unslick');
                         $currentSlider.html($slides[key]);
                     }
 
-                    if ((!isInit && !hasRelatedSlides) || (isInit && hasRelatedSlides)) {
+                    if (!isInit || (isInit && hasRelatedSlides)) {
                         const
                             dataLazyInner = $currentSlider.data('lazy-inner'),
                             { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
@@ -1022,14 +1042,15 @@ var $_ = {
                                 $_.$body.trigger('update:lazy-load');
                                 if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
                                 if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
+                                if (dataScrollNav) $_._initSliderScrollNav($currentSlider);
                                 if (dataLazyInner) $_._initSliderLazyInner(slick);
                             })
                             .slick({
                                 slidesToShow: 1,
                                 slidesToScroll: 1,
                                 arrows: true,
-                                prevArrow: $arrowLeft,
-                                nextArrow: $arrowRight,
+                                prevArrow: $arrowLeft.eq(0),
+                                nextArrow: $arrowRight.eq(0),
                                 fade: false,
                                 infinite: false,
                                 dots: false,
@@ -1083,11 +1104,21 @@ var $_ = {
         $_.$defaultSlider.each(function (key, item) {
             const
                 $currentSlider = $(item),
+                $estateCard = $currentSlider.find($_.$estateCard),
                 $preventChild = $currentSlider.find('[data-prevent-parent-swipe]'),
+                dataScrollNav = $currentSlider.data('scroll-nav'),
                 dataLazyInner = $currentSlider.data('lazy-inner'),
-                initPhotoBox = $currentSlider.data('init-pb'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
+
+            $estateCard.on('click', (e) => {
+                const
+                    $target = $(e.target),
+                    targetIsPrevent = $target.hasClass('js-prevent'),
+                    closestPrevent = $target.closest('.js-prevent');
+
+                if (targetIsPrevent || closestPrevent.length) e.preventDefault();
+            })
 
             $currentSlider
                 .on('init', function (event, slick) {
@@ -1095,15 +1126,15 @@ var $_ = {
                     if ($current.length && $total.length) $_._initSliderCounter(slick, $current, $total);
                     if ($preventChild.length) $_._preventParentSliderSwipe($currentSlider, $preventChild);
                     if (slick.$dots) $_._initSliderDotsNav({slick, dotsCount: 5});
+                    if (dataScrollNav) $_._initSliderScrollNav($currentSlider);
                     if (dataLazyInner) $_._initSliderLazyInner(slick);
-                    if (initPhotoBox) $_._initSliderPhotobox(slick.$slider);
                 })
                 .slick({
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     arrows: true,
-                    prevArrow: $arrowLeft,
-                    nextArrow: $arrowRight,
+                    prevArrow: $arrowLeft.eq(0),
+                    nextArrow: $arrowRight.eq(0),
                     fade: false,
                     infinite: false,
                     dots: false,
@@ -1112,6 +1143,19 @@ var $_ = {
         });
     },
 
+    _initSliderScrollNav($slider) {
+        $slider.on('mousewheel', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+
+            const
+                { wheelDelta, deltaY, detail } = e.originalEvent,
+                scrollUp = (wheelDelta > 0) || (detail < 0) || (deltaY < 0),
+                sliderSwitchDirection = scrollUp ? 'slickPrev' : 'slickNext';
+
+            $slider.slick(sliderSwitchDirection);
+        });
+    },
 
     _initSliderLazyInner(slick) {
         const
@@ -1438,7 +1482,7 @@ var $_ = {
             dotsMid = (dotsCount - 1) / 2;
 
         if (!slick.$dots.data('isInit')) {
-            slick.$dots.data('isInit', true).wrap('<div class="slider-dots-nav"></div>');
+            slick.$dots.data('isInit', true).wrap('<div class="slider-dots-nav js-prevent"></div>');
 
             const
                 $wrap = slick.$dots.parent(),
@@ -1552,18 +1596,11 @@ var $_ = {
     },
     
     _initSliderCounter(slick, $current, $total) {
-        $current.html(_addZero(slick.currentSlide + 1));
-        $total.html(_addZero(slick.slideCount));
+        $current.html(slick.currentSlide + 1);
+        $total.html(slick.slideCount);
         
         slick.$slider.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-            $current.html(_addZero(nextSlide + 1))
-        });
-    },
-
-    _initSliderPhotobox($container) {
-        $container.photobox('.slick-slide:not(.slick-cloned) a', {
-            time: 0,
-            thumbAttr: 'data-thumb',
+            $current.html(nextSlide + 1)
         });
     },
 };
