@@ -74,6 +74,7 @@ class ListingService
         $listing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
         $listing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
         $listing->setContractDate($result['ListingContractDate'] ? new \DateTime($result['ListingContractDate']) : null);
+        $listing->setSubdivision($result['SubdivisionName'] ? $result['SubdivisionName'] : null);
 
         $this->entityManager->persist($listing);
 
@@ -119,6 +120,7 @@ class ListingService
         $existingListing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
         $existingListing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
         $existingListing->setContractDate($result['ListingContractDate'] ? new \DateTime($result['ListingContractDate']) : null);
+        $existingListing->setSubdivision($result['SubdivisionName'] ? $result['SubdivisionName'] : null);
 
         $this->entityManager->flush();
 
