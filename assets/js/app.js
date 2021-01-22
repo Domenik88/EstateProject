@@ -16,7 +16,6 @@ require('./plugin/jquery-ui.min.js');
 require('./plugin/jquery.ui.touch-punch.min.js');
 require('./plugin/slick.js');
 require('./plugin/jquery.validate.min.js');
-require('./plugin/photobox.js');
 require('./modules/global.js');
 require('./modules/select.js');
 require('./modules/form.js');

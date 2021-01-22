@@ -1,0 +1,25 @@
+<div class="popup-style popup-style_fh js-popup js-slider-popup">
+    <div class="popup-style__container">
+
+        <div class="popup-style__scroll-wrap">
+            <div class="popup-style__content">
+                <div class="popup-slider-container">
+                    <div class="popup-slider-container__header pb40">
+                        <div class="cross-btn js-close-popup"></div>
+                    </div>
+
+                    <div class="popup-slider-container__table js-wrap">
+                        <div class="popup-slider-container__col popup-slider-container__col_left">
+                            <div class="full-size-img-slider js-slider" data-scroll-nav="true"></div>
+                        </div>
+                        <div class="popup-slider-container__col popup-slider-container__col_right">
+                            {% include 'layouts/modules/slider-nav.html.twig' with {
+                                counter: true,
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

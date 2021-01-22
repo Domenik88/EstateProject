@@ -8,17 +8,18 @@
             class="estate-gallery-slider js-estate-gallery-slider"
             data-lazy-inner="true"
             data-img-selector="eg-src"
-            data-init-pb="true"
         >
             {% for img in images %}
-                <a class="estate-gallery-slider__img-wrap js-estate-gallery-slider-img" href="{{ img }}" >
+                <div
+                    class="estate-gallery-slider__img-wrap js-estate-gallery-slider-img"
+                    data-full-size="{{ img }}"
+                >
                     <img
                         class="estate-gallery-slider__img of"
                         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                         data-eg-src="{{ img }}"
-                        data-thumb="{{ img }}"
                     />
-                </a>
+                </div>
             {% endfor %}
         </div>
     </div>

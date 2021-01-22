@@ -1,14 +1,14 @@
 <div class="slider-nav js-slider-nav {{ wrapMod|default('') }}">
+    {% if counter|default(false) %}
+        <div class="slider-nav__counter">
+            <div class="slider-nav__current js-current"></div>
+            <div class="slider-nav__separate"></div>
+            <div class="slider-nav__total js-total"></div>
+        </div>
+    {% endif %}
+
     <div class="slider-nav__arrows-wrap">
         <div class="slider-nav__arrow slider-nav__arrow_left icon-arrow-left js-arrow-left"></div>
         <div class="slider-nav__arrow slider-nav__arrow_right icon-arrow-right js-arrow-right"></div>
     </div>
-
-    {% if counter|default(false) %}
-        <div class="slider-nav__counter p3">
-            <div class="slider-nav__current js-current"></div>
-            <div class="slider-nav__separate">&nbsp;—&nbsp;</div>
-            <div class="slider-nav__total js-total"></div>
-        </div>
-    {% endif %}
 </div>
