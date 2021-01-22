@@ -44,15 +44,15 @@
             </div>
 
             <span
-                class="circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod|default('') }} js-prevent"
+                class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod|default('') }} js-prevent"
                 data-url="{{ favoritePath }}"
                 href="{{ loginHref|default('#') }}"
             ></span>
         </div>
 
         <div class="estate-card__controls-wrap js-slider-nav">
-            <span class="circle-button _bordered icon-angle-left js-arrow-left js-prevent"></span>
-            <span class="circle-button _bordered icon-angle-right js-arrow-right js-prevent"></span>
+            <span class="estate-card__arrow circle-button _bordered icon-angle-left js-arrow-left js-prevent"></span>
+            <span class="estate-card__arrow circle-button _bordered icon-angle-right js-arrow-right js-prevent"></span>
         </div>
     </div>
 

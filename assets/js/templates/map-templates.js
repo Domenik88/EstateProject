@@ -51,7 +51,7 @@ export const mapTemplates = {
          metrics,
          mlsNumber,
     }) => `
-        <div class="estate-card js-estate-card">
+        <a class="estate-card _small _transparent-controls js-estate-card" href="#">
             <div class="estate-card__slider-wrap js-wrap">
                 <div
                     class="estate-cards-slider js-estate-card-slider"
@@ -64,34 +64,34 @@ export const mapTemplates = {
                 
                 <div class="estate-card__header">
                     <div class="estate-card__labels-wrap">
-                        ${isNew ? `<span class="estate-card__label schild">NEW</span>` : ''}
-                        ${forSaleByOwner ? `<span class="estate-card__label schild">for sale by owner</span>` : ''}
+                        ${isNew ? `<span class="estate-card__label schild_2">NEW</span>` : ''}
+                        ${forSaleByOwner ? `<span class="estate-card__label schild_2">for sale by owner</span>` : ''}
                     </div>
         
-                    <a
-                        class="circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteJsMod ? favoriteJsMod : ''}"
+                    <span
+                        class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteJsMod ? favoriteJsMod : ''}"
                         data-url="${favoritePath}"
                         href="${loginHref}"
-                    ></a>
+                    ></span>
                 </div>
                 
                 <div class="estate-card__controls-wrap js-slider-nav">
-                    <span class="circle-button _bordered icon-angle-left js-arrow-left"></span>
-                    <span class="circle-button _bordered icon-angle-right js-arrow-right"></span>
+                    <span class="estate-card__arrow circle-button _bordered icon-angle-left js-arrow-left"></span>
+                    <span class="estate-card__arrow circle-button _bordered icon-angle-right js-arrow-right"></span>
                 </div>
             </div>
             
-            <div class="estate-card__description pt30 pb30">
+            <div class="estate-card__description pt10 pb20">
                 ${listingPrice ? 
-                    `<span class="estate-card__title subtitle_bold mb10">${_formatCurrencyCa(listingPrice)}</span>`
+                    `<span class="estate-card__title body-text_bold mb5">${_formatCurrencyCa(listingPrice)}</span>`
                 : ''}
               
                 ${(address && address.streetAddress && address.city) ? 
-                    `<a class="estate-card__location h5 mb10 link-dark" href="#">${address.streetAddress + ', ' + address.city}</a>` 
+                    `<span class="estate-card__location h6 mb5">${address.streetAddress + ', ' + address.city}</span>` 
                 : ''}
                 
                 ${metrics ? `
-                    <div class="estate-card__metrics-wrap mb20">
+                    <div class="estate-card__metrics-wrap mb10">
                         ${mapTemplates.metrics(metrics)}
                     </div>
                 ` : ''}
@@ -100,7 +100,7 @@ export const mapTemplates = {
                     `<span class="gray-mls-after icon-mls-min tiny-text">${'MLS® ' + mlsNumber}</span>`
                 : ''}
             </div>
-        </div>
+        </a>
     `,
 
     estateSliderItems: (imagesArray) => {

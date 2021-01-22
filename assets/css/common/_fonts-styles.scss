@@ -292,6 +292,19 @@
     }
 }
 
+.schild_2 {
+    font-weight: 700;
+    font-size: 9px;
+    line-height: 21px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    
+    @include media_700 {
+        font-size: 7px;
+        letter-spacing: 0.2em;
+    }
+}
+
 .link-dark {
     color: $dark1;
     transition: $default-transition;
