@@ -3,30 +3,7 @@
         icon: 'icon-public-schools',
         title: 'Public Schools',
         description: 'Part of this information is provided by the Province of British Columbia under the Open Government License for Government of BC Information v.BC1.0. School boundaries and other statistics changes frequently and is for general informational purposes only. You should not use such information in determining the legal eligibility to attend any particular school.',
-        list: [
-            {
-                subtitle: 'Elementary',
-                label: 'Myrtle Philip Community School',
-                status: {
-                    text: 'Above Average',
-                    mod: '_green'
-                },
-                val: '1.73 km',
-                rating: 'Rating 7/10',
-                details: '#',
-            },
-            {
-                subtitle: 'Secondary',
-                label: 'Whistler Secondary',
-                status: {
-                    text: 'Above Average',
-                    mod: '_green'
-                },
-                val: '5.59 km',
-                rating: 'Rating 8/10',
-                details: '#',
-            },
-        ]
+        list: schoolData.public
     },
     {
         icon: 'icon-noise',
@@ -78,28 +55,8 @@
         icon: 'icon-private-schools',
         title: 'Private Schools',
         list: [
-            {
-                subtitle: 'Elementary',
-                label: 'Collingwood School',
-                status: {
-                    text: 'Above Average',
-                    mod: '_green'
-                },
-                val: '137.29 km',
-                rating: 'Rating 10/10',
-                details: '#',
-            },
-            {
-                subtitle: 'Secondary',
-                label: 'Collingwood School',
-                status: {
-                    text: 'Above Average',
-                    mod: '_green'
-                },
-                val: '137.29 km',
-                rating: 'Rating 10/10',
-                details: '#',
-            },
+            schoolData.private.elementary,
+            schoolData.private.secondary,
         ]
     },
     {
