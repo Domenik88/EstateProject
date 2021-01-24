@@ -1,0 +1,11 @@
+<section class="column-nav {{ wrapMod ?? 'container' }}">
+    <div class="column-nav__table mtr50">
+        {% for list in array %}
+            <div class="column-nav__col mt50">
+                {% for link in list %}
+                    <a class="link-gray small-text mb10" href="{{ link.href }}">{{ link.text }}</a>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</section>

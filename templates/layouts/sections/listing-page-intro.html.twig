@@ -49,19 +49,14 @@
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
-                            label: 'label',
+                            label: 'Add to favorites',
                             url: favoritePath|default(false),
                             mod: 'favorite-toggle ' ~ (listing.userFavorite ? '_active ' : ' ' ) ~ favoriteJsMod|default(''),
                             href: loginHref|default(false)
                         },
                         {
-                            label: 'label',
+                            label: 'Share',
                             mod: 'icon-share-frame',
-                            href: '#'
-                        },
-                        {
-                            label: 'Compare',
-                            mod: 'icon-compare-frame',
                             href: '#'
                         },
                         {

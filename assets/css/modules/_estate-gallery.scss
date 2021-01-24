@@ -60,6 +60,7 @@
 		margin: 0 5px;
 		height: calc(50% - 5px);
 		width: calc(100% / 12 * 3 - 10px);
+		cursor: pointer;
 		
 		&:nth-child(1) {
 			height: 100%;

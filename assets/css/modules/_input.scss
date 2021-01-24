@@ -22,7 +22,7 @@
     color: $gray1;
     
     font-family: $montserrat;
-    @include small-text2;
+    @include small-text;
     
     &:hover {
         background: $gray0;
@@ -41,19 +41,19 @@
     }
 
     &::-webkit-input-placeholder {
-        @include small-text2;
+        @include small-text;
         color: $gray1;
     }
     &::-moz-placeholder {
-        @include small-text2;
+        @include small-text;
         color: $gray1;
     }
     &:-ms-input-placeholder {
-        @include small-text2;
+        @include small-text;
         color: $gray1;
     }
     &:-moz-placeholder {
-        @include small-text2;
+        @include small-text;
         color: $gray1;
     }
     

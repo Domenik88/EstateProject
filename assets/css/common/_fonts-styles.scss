@@ -96,6 +96,23 @@
 }
 
 .subtitle {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    color: $dark1;
+    
+    @include media_1000 {
+        font-size: 22px;
+        line-height: 36px;
+    }
+    
+    @include media_700 {
+        font-size: 16px;
+        line-height: 30px;
+    }
+}
+
+.subtitle_bold {
     font-weight: 700;
     font-size: 24px;
     line-height: 36px;
@@ -112,25 +129,8 @@
     }
 }
 
-.subtitle2 {
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 36px;
-    color: $dark1;
-    
-    @include media_1000 {
-        font-size: 22px;
-        line-height: 36px;
-    }
-    
-    @include media_700 {
-        font-size: 16px;
-        line-height: 30px;
-    }
-}
-
 .body-text {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 18px;
     line-height: 27px;
     
@@ -145,8 +145,8 @@
     }
 }
 
-.body-text2 {
-    font-weight: 500;
+.body-text_bold {
+    font-weight: 700;
     font-size: 18px;
     line-height: 27px;
     
@@ -193,18 +193,7 @@
     }
 }
 
-.small-text {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 21px;
-    
-    @include media_700 {
-        font-size: 12px;
-        line-height: 20px;
-    }
-}
-
-@mixin small-text2 {
+@mixin small-text {
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
@@ -214,8 +203,20 @@
         line-height: 20px;
     }
 }
-.small-text2 {
-    @include small-text2;
+
+.small-text {
+    @include small-text;
+}
+
+.small-text_bold {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    
+    @include media_700 {
+        font-size: 12px;
+        line-height: 20px;
+    }
 }
 
 .tiny-text {

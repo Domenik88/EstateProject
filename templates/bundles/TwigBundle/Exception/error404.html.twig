@@ -1,11 +1,19 @@
 {# templates/bundles/TwigBundle/Exception/error404.html.twig #}
-{% extends 'base.html.twig' %}
+{% extends 'base-clear.html.twig' %}
 
 {% block body %}
-    <h1>Page not found</h1>
-
-    <p>
-        The requested page couldn't be located. Checkout for any URL
-        misspelling or <a href="{{ path('home') }}">return to the homepage</a>.
-    </p>
+    {% embed 'layouts/containers/error.html.twig' with {
+        img: asset('build/images/bg/not-found.svg'),
+    } only %}
+        {% block error_content123 %}
+            <h2 class="h2 mb50">ooops! page not found</h2>
+            <p class="subtitle">
+                The page you are looking for doesn`t exist or an other error occurred.<br>
+                Go <a class="link-turquoise" href="{{ path('home') }}">back</a>, or use the search.
+            </p>
+            {% include 'layouts/modules/simple-search.html.twig' with {
+                wrapMod: '_max-w mt40',
+            } only %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

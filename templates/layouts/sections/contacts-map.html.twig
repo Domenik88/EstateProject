@@ -18,19 +18,19 @@
                 <div class="contacts-map__table mtr30">
                     {% if address %}
                         <div class="contacts-map__col mt30 icon-point">
-                            <span class="contacts-map__text small-text2">{{ address }}</span>
+                            <span class="contacts-map__text small-text">{{ address }}</span>
                         </div>
                     {% endif %}
 
                     {% if phone %}
                         <div class="contacts-map__col mt30 icon-phone">
-                            <a href="tel:{{ phone }}" class="link-fuchsia body-text">{{ phone }}</a>
+                            <a href="tel:{{ phone }}" class="link-fuchsia body-text_bold">{{ phone }}</a>
                         </div>
                     {% endif %}
 
                     {% if email %}
                         <div class="contacts-map__col mt30 icon-email">
-                            <a href="mailto:{{ email }}" class="link-fuchsia small-text2">{{ email }}</a>
+                            <a href="mailto:{{ email }}" class="link-fuchsia small-text">{{ email }}</a>
                         </div>
                     {% endif %}
                 </div>

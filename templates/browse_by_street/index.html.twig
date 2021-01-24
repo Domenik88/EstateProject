@@ -1,5 +1,175 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    browse_by_street
+    {% include 'layouts/common/breadcrumbs.html.twig' with {
+        array: [
+            {
+                uri: '#',
+                crumb: 'Site Map',
+            },
+            {
+                crumb: 'Browse by Street',
+            }
+        ]
+    } %}
+
+    {% include 'layouts/common/title-block.html.twig' with {
+        text: 'Browse by Street, British Columbia',
+        tag: 'h1',
+        wrapMod: 'container mb50',
+    } only %}
+
+    {% include 'layouts/sections/column-nav.html.twig' with {
+        array: [
+            [
+                {
+                    text: 'Abbotsford (757)',
+                    href: '#',
+                },
+                {
+                    text: 'Agassiz (23)',
+                    href: '#',
+                },
+                {
+                    text: 'Anmore (30)',
+                    href: '#',
+                },
+                {
+                    text: 'Belcarra (7)',
+                    href: '#',
+                },
+                {
+                    text: 'Boston Bar (2)',
+                    href: '#',
+                },
+                {
+                    text: 'Boston Bar / Lytton (2)',
+                    href: '#',
+                },
+                {
+                    text: 'Brackendale (1)',
+                    href: '#',
+                },
+                {
+                    text: 'Britannia Beach (6)',
+                    href: '#',
+                },
+                {
+                    text: 'Burnaby (1363)',
+                    href: '#',
+                },
+            ],
+            [
+                {
+                    text: 'Cadreb Other (2)',
+                    href: '#',
+                },
+                {
+                    text: 'Chilliwack (395)',
+                    href: '#',
+                },
+                {
+                    text: 'Columbia Valley (8)',
+                    href: '#',
+                },
+                {
+                    text: 'Coquitlam (783)',
+                    href: '#',
+                },
+                {
+                    text: 'Cultus Lake (11)',
+                    href: '#',
+                },
+                {
+                    text: "D'arcy (3)",
+                    href: '#',
+                },
+                {
+                    text: 'Delta (199)',
+                    href: '#',
+                },
+                {
+                    text: 'Downtown (1)',
+                    href: '#',
+                },
+                {
+                    text: 'Egmont (6)',
+                    href: '#',
+                },
+            ],
+            [
+                {
+                    text: 'Furry Creek (6)',
+                    href: '#',
+                },
+                {
+                    text: 'FVREB Out of Town (14)',
+                    href: '#',
+                },
+                {
+                    text: 'Garden Bay (30)',
+                    href: '#',
+                },
+                {
+                    text: 'Gibsons (123)',
+                    href: '#',
+                },
+                {
+                    text: 'Granthams Landing (3)',
+                    href: '#',
+                },
+                {
+                    text: 'Halfmoon Bay (22)',
+                    href: '#',
+                },
+                {
+                    text: 'Harrison Hot Springs (31)',
+                    href: '#',
+                },
+                {
+                    text: 'Harrison Mills (2)',
+                    href: '#',
+                },
+                {
+                    text: 'Hope (63)',
+                    href: '#',
+                },
+            ],
+            [
+                {
+                    text: 'Ladner (96)',
+                    href: '#',
+                },
+                {
+                    text: 'Laidlaw (2)',
+                    href: '#',
+                },
+                {
+                    text: 'Langley (931)',
+                    href: '#',
+                },
+                {
+                    text: 'Lindell Beach (8)',
+                    href: '#',
+                },
+                {
+                    text: 'Lions Bay (19)',
+                    href: '#',
+                },
+                {
+                    text: 'Madeira Park (18)',
+                    href: '#',
+                },
+                {
+                    text: 'Maple Ridge (485)',
+                    href: '#',
+                },
+                {
+                    text: 'Mission (238)',
+                    href: '#',
+                },
+            ],
+        ]
+    } only %}
+
 {% endblock %}

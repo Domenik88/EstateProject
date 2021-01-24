@@ -1,5 +1,305 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    sitemap
+    {% include 'layouts/common/breadcrumbs.html.twig' with {
+        array: [
+            {
+                crumb: 'Site Map',
+            }
+        ]
+    } %}
+
+    {% include 'layouts/common/title-block.html.twig' with {
+        text: 'Site Map',
+        tag: 'h1',
+        wrapMod: 'container mb50',
+    } only %}
+
+    {% include 'layouts/sections/column-nav.html.twig' with {
+        array: [
+            [
+                {
+                    text: 'Home',
+                    href: '#',
+                },
+                {
+                    text: 'Privacy Policy ',
+                    href: '#',
+                },
+                {
+                    text: 'Terms of Use ',
+                    href: '#',
+                },
+                {
+                    text: 'How it Works ',
+                    href: '#',
+                },
+                {
+                    text: 'Selling ',
+                    href: '#',
+                },
+                {
+                    text: 'Buying ',
+                    href: '#',
+                },
+                {
+                    text: 'Jobs at EstateBlock ',
+                    href: '#',
+                },
+                {
+                    text: 'Press & PR',
+                    href: '#',
+                },
+            ],
+            [
+                {
+                    text: 'Advanced Search ',
+                    href: '#',
+                },
+                {
+                    text: 'Site Map ',
+                    href: '#',
+                },
+                {
+                    text: 'Mortgage Calculator ',
+                    href: '#',
+                },
+                {
+                    text: 'Q&A Forum ',
+                    href: '#',
+                },
+                {
+                    text: 'Community Guideline ',
+                    href: '#',
+                },
+                {
+                    text: 'Disclaimers ',
+                    href: '#',
+                },
+                {
+                    text: 'First Time Home Buyers Guide ',
+                    href: '#',
+                },
+                {
+                    text: "Home Seller's Guide",
+                    href: '#',
+                },
+            ],
+            [
+                {
+                    text: 'Moving Guide Home ',
+                    href: '#',
+                },
+                {
+                    text: 'Finance Guide ',
+                    href: '#',
+                },
+                {
+                    text: 'Home Inspection Guide ',
+                    href: '#',
+                },
+                {
+                    text: 'Advertise with us ',
+                    href: '#',
+                },
+                {
+                    text: 'Contact Us ',
+                    href: '#',
+                },
+                {
+                    text: 'About EstateBLock.com ',
+                    href: '#',
+                },
+                {
+                    text: 'Old How it Works ',
+                    href: '#',
+                },
+                {
+                    text: "What's my Surrey home worth?",
+                    href: '#',
+                },
+            ],
+            [
+                {
+                    text: 'Burnaby Houses for Sale - Burnaby Condos ',
+                    href: '#',
+                },
+                {
+                    text: 'Burnaby Real Estate - MLS Burnaby ',
+                    href: '#',
+                },
+                {
+                    text: 'Vancouver Real Estate - MLS Vancouver BC ',
+                    href: '#',
+                },
+                {
+                    text: 'Vancouver Condos for Sale - Vancouver Apartments ',
+                    href: '#',
+                },
+                {
+                    text: 'Surrey Real Estate - MLS Surrey ',
+                    href: '#',
+                },
+                {
+                    text: 'Houses For Sale in Surrey BC - Surrey Homes ',
+                    href: '#',
+                },
+                {
+                    text: 'Coquitlam Real Estate - MLS Coquitlam ',
+                    href: '#',
+                },
+                {
+                    text: 'Our Agents',
+                    href: '#',
+                },
+            ],
+        ]
+    } only %}
+
+    {% include 'layouts/common/section-separator.html.twig' %}
+
+    {% include 'layouts/sections/table-nav.html.twig' with {
+        title: 'Lower Mainland',
+        array: [
+            {
+                title: 'City wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC City',
+                        href: '#',
+                    }
+                ]
+            },
+            {
+                title: 'Zipcode wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Zipcode',
+                        href: '#',
+                    }
+                ]
+            },
+            {
+                title: 'Street wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Street',
+                        href: '#',
+                    }
+                ]
+            },
+            {
+                title: 'Neighborhood wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Neighborhood',
+                        href: '#',
+                    }
+                ]
+            },
+            {
+                title: 'Area wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Area',
+                        href: '#',
+                    }
+                ]
+            },
+        ],
+    } only %}
+
+    {% include 'layouts/common/section-separator.html.twig' %}
+
+    {% include 'layouts/sections/table-nav.html.twig' with {
+        title: 'British Columbia',
+        array: [
+            {
+                title: 'City wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC City',
+                        href: '#',
+                    },
+                    {
+                        text: 'Browse Homes By British Columbia City',
+                        href: '#',
+                    },
+                ]
+            },
+            {
+                title: 'Zipcode wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Zipcode',
+                        href: '#',
+                    },
+                    {
+                        text: 'Browse Homes By British Columbia Zipcode',
+                        href: '#',
+                    },
+                ]
+            },
+            {
+                title: 'Street wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Street',
+                        href: '#',
+                    },
+                ]
+            },
+            {
+                title: 'Street wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Street',
+                        href: '#',
+                    },
+                    {
+                        text: 'Browse Homes By British Columbia Street',
+                        href: '#',
+                    },
+                ]
+            },
+            {
+                title: 'Neighborhood wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Neighborhood',
+                        href: '#',
+                    },
+                    {
+                        text: 'Browse Homes By British Columbia Neighborhood',
+                        href: '#',
+                    },
+                ]
+            },
+            {
+                title: 'Area wise MLS Listing',
+                list: [
+                    {
+                        text: 'Browse Homes By BC Area',
+                        href: '#',
+                    },
+                    {
+                        text: 'Browse Homes By British Columbia Area',
+                        href: '#',
+                    },
+                ]
+            },
+        ],
+    } only %}
+
+    {% include 'layouts/common/section-separator.html.twig' %}
+
+    {% embed 'layouts/containers/base-container.html.twig' %}
+        {% block container_content %}
+            {% include 'layouts/controls/button.html.twig' with {
+                'href': '#',
+                'mod': '_dark',
+                'text': 'XML Site Map',
+            } %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

@@ -1,8 +1,9 @@
 {% set html_tag = button|default(false) ? 'button' : (href|default(false) ? 'a' : 'div') %}
+{% set hrefAttr = href|default(false) ? "href=" ~ href %}
 {% set dataPopupAttribute = dataPopup|default(false) ? "data-popup=" ~ dataPopup|json_encode() %}
 
-<{{html_tag}} class="btn-style{{ mod|default(false) ? ' ' ~ mod }}" {{ dataPopupAttribute }}>
-    <span class="btn-style__text">
+<{{html_tag}} class="btn-style{{ mod|default(false) ? ' ' ~ mod }}" {{ dataPopupAttribute }} {{ hrefAttr }}>
+    <span class="btn-style__text {{ textMod|default('button1') }}">
         {% if text|default(false) %}
             {{ text }}
         {% elseif toggleTextInitial and toggleTextActive %}

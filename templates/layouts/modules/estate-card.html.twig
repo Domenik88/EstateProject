@@ -11,7 +11,7 @@
     {% set loginHref = path('app_login') %}
 {% endif %}
 
-<div class="estate-card">
+<a class="estate-card js-estate-card" href="#">
     <div class="estate-card__slider-wrap js-wrap">
         <div
             class="estate-cards-slider js-trigger-slider"
@@ -43,22 +43,22 @@
                 {% endif %}
             </div>
 
-            <a
-                class="circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod|default('') }}"
+            <span
+                class="circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod|default('') }} js-prevent"
                 data-url="{{ favoritePath }}"
                 href="{{ loginHref|default('#') }}"
-            ></a>
+            ></span>
         </div>
 
         <div class="estate-card__controls-wrap js-slider-nav">
-            <span class="circle-button _bordered icon-angle-left js-arrow-left"></span>
-            <span class="circle-button _bordered icon-angle-right js-arrow-right"></span>
+            <span class="circle-button _bordered icon-angle-left js-arrow-left js-prevent"></span>
+            <span class="circle-button _bordered icon-angle-right js-arrow-right js-prevent"></span>
         </div>
     </div>
 
     <div class="estate-card__description pt30 pb30">
         {% if financials.listingPrice|default(false) %}
-            <span class="estate-card__title subtitle mb10">{{ financials.listingPrice|format_currency('CAD', {fraction_digit: 0}) }}</span>
+            <span class="estate-card__title subtitle_bold mb10">{{ financials.listingPrice|format_currency('CAD', {fraction_digit: 0}) }}</span>
         {% endif %}
 
         {% if address.streetAddress|default(false) and address.city|default(false) %}
@@ -81,7 +81,7 @@
         {% endif %}
 
         {% if mlsNumber|default(false) %}
-            <span class="estate-card__text icon-mls-min tiny-text">{{ 'MLS® ' ~ mlsNumber }}</span>
+            <span class="gray-mls-after icon-mls-min tiny-text">{{ 'MLS® ' ~ mlsNumber }}</span>
         {% endif %}
     </div>
-</div>
+</a>

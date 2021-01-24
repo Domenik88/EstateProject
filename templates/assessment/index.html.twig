@@ -1,5 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    assessment
+    {% embed 'layouts/sections/intro.html.twig' with {
+        title: "What's my Surrey home worth?",
+        subtitle: 'Find out in 3 easy steps',
+        simpleSearch: true,
+        gradient: 'bg-grad-3',
+    } only %}
+        {% block intro_bg_wrap %}
+            {% include 'layouts/svg/intro-bg-3.html.twig' %}
+        {% endblock %}
+    {% endembed %}
+
+    {% include 'layouts/common/breadcrumbs.html.twig' with {
+        array: [
+            {
+                crumb: 'Surrey Home Assessment',
+            }
+        ]
+    } %}
+
+    {% embed 'layouts/containers/text-block.html.twig' with {
+        wrapMod: '',
+    } only %}
+        {% block textblock_content %}
+            <h3>Surrey Home Assessment</h3>
+            <p>If you’re looking to sell your home, there are a number of important factors to consider that will affect your success in finding a good buyer. This Surrey house cost estimator will help you determine an accurate price for your home. Housing market trends, the neighborhood, home upgrades, and even the time of year can make a big difference in what you get for your property. The following are a list of factors to keep in mind, if you are wondering “what’s my Surrey home worth?” Keep in mind that these factors are frequently volatile, and may change the appraised value of your home on a month-to-month basis. An appraiser will keep abreast of current trends and be able to give you the most up-to-date value on your home, which a real estate agent can then use to help you sell it. There are also things one can do before an appraiser looks at the place, to increase its worth. The following are some tips and guidelines to help you make the important decisions over when and how to sell your home.</p>
+            <h4>When is the best time to sell?</h4>
+            <p>Perhaps you are relocating to a new city or country; perhaps your family has outgrown the space you have; or perhaps you are downsizing. In some cases, the prime time to sell will be out of your hands, as life will inevmoved from MLS. Call us to find out the sold price. itably throw us curveballs that require immediate action. However, keeping these factors in mind, it is good to know when the conditions are most ripe to put your home on the market.</p>
+            <p>The best time of year to sell is usually the spring, with the months of April and May being optimal. By this time of year, people are no longer focused on the holidays but not yet taking their summer breaks, leaving them time to look at homes. Foliage that is blooming in spring will also make homes look more attractive to potential buyers. If you have the means, you will want to put your home up for sale during a time when demand is high, and demand generally spikes 15% higher during the spring than at any other time of year.</p>
+            <p>Neighborhood also makes a big difference. Surrey home prices, like those of any other neighborhood, are not static; they will depend on the relative condition and popularity of the community. Nearby property values will have a significant impact on your home’s worth, as well as its proximity to good schools, parks, and businesses. Is your home in a convenient place to raise a family? Within walking distance of a grocery store? Similarly, negative impacts like a high risk for natural disasters and/or high crime rates will adversely affect your home’s value, which can change its overall assessment quickly. For example, if a previously-safe neighborhood experiences a rash of crimes that make the local news, you can bet that property values will fall. Fires, floods, and other disasters in the area can also affect home prices; these situations can affect pricing on a month-by-month basis, so one should take these factors into account when considering the right time to sell—if a fire has just torn through half a block nearby, it’s probably best to wait a few months before putting your house on the market.</p>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

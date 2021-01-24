@@ -3,23 +3,27 @@
 {% block title %}Hello DefaultController!{% endblock %}
 
 {% block body %}
-    {% include 'layouts/sections/intro.html.twig' with {
+    {% embed 'layouts/sections/intro.html.twig' with {
         title: 'Find Real Estate Deals',
         fullSearch: true,
-        bg: asset('build/images/bg/intro-bg-1.svg'),
         gradient: 'bg-grad-1',
         wrapMod: '_big mb50'
     } only %}
+        {% block intro_bg_wrap %}
+            {% include 'layouts/svg/intro-bg-1.html.twig' %}
+        {% endblock %}
+    {% endembed %}
 
     {% include 'layouts/sections/quotes-slider.html.twig' %}
 
-    {# TODO: replace featuredProperties by selfListings #}
-    {% include 'layouts/sections/slider-section.html.twig' with {
-        title: 'EstateBlock Listings',
-        titleTag: 'h2',
-        slides: featuredProperties,
-        wrapMod: 'mb100'
-    } only %}
+    {% if selfListings %}
+        {% include 'layouts/sections/slider-section.html.twig' with {
+            title: 'EstateBlock Listings',
+            titleTag: 'h2',
+            slides: selfListings,
+            wrapMod: 'mb100'
+        } only %}
+    {% endif %}
 
     {% include 'layouts/sections/advantages.html.twig' with {
         title: 'Why EstateBlock?',
@@ -85,13 +89,14 @@
 
 
 
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-<div class="example-wrapper">
-    {{ dump(selfListings) }}
-    {{ dump(featuredProperties) }}
-    {{ dump(cityCounters) }}
-</div>
+{#<style>#}
+{#    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }#}
+{#    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }#}
+{#</style>#}
+{#<div class="example-wrapper">#}
+{#    {{ dump(selfListings) }}#}
+{#    {{ dump(featuredProperties) }}#}
+{#    {{ dump(cityCounters) }}#}
+{#    {{ dump(searchFormObject) }}#}
+{#</div>#}
 {% endblock %}

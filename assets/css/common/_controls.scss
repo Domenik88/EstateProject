@@ -57,9 +57,13 @@
 	}
 
 	&__text {
-		@extend .button1;
 		position: relative;
 		z-index: 2;
+	}
+	
+	&._big {
+		height: 67px;
+		padding: 0 40px;
 	}
 	
 	&._turquoise {
@@ -398,7 +402,7 @@
 	}
 	
 	&.slick-disabled {
-		pointer-events: none;
+		cursor: default;
 		
 		&::before {
 			opacity: .3;

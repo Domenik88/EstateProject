@@ -1,4 +1,4 @@
-<section class="svg-map js-svg-map {{ wrapMod ?? 'mb100' }}">
+<section id="svg-map" class="svg-map js-svg-map {{ wrapMod ?? 'mb100' }}">
     <div class="svg-map__container {{ containerMod ?? 'container' }}">
         {% if title|default(false) %}
             {% include 'layouts/common/title-block.html.twig' with {
@@ -15,8 +15,8 @@
                         class="svg-map-links__item mt10 js-svg-map-link"
                         data-id="{{ item.city }}"
                     >
-                        <span class="svg-map-links__text small-text">{{ item.city }}</span>
-                        <span class="svg-map-links__label small-text2">{{ item.count ~ ' Homes for sale' }}</span>
+                        <span class="svg-map-links__text small-text_bold">{{ item.city }}</span>
+                        <span class="svg-map-links__label small-text">{{ item.count ~ ' Homes for sale' }}</span>
                     </a>
                 {% endfor %}
             </div>

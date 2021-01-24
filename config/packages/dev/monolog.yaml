@@ -1,10 +1,10 @@
 monolog:
     handlers:
 #        main:
-#            type: stream
-#            path: "%kernel.logs_dir%/%kernel.environment%.log"
-#            level: info
-#            channels: [ "!event" ]
+#            type: syslogudp
+#            host: "%papertrail_host%"
+#            port: "%papertrail_port%"
+#            level: error # whatever
 #            formatter: app.monolog.syslog_formatter
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
@@ -14,6 +14,11 @@ monolog:
         #chromephp:
         #    type: chromephp
         #    level: info
+        nested:
+            type:  rotating_file
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            max_files: 10
         console:
             type: console
             process_psr_3_messages: false
