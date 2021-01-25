@@ -19,16 +19,21 @@
 	left: -10px;
 	
 	.estate-card {
-	    width: calc(100% / 2 - 20px);
+	    width: calc(100% / 3 - 20px);
 	    margin: 0 10px 20px;
 		opacity: 0;
 		animation: estate-card-show .7s ease both;
-		height: 470px; // TODO: remove
 		
 		@for $i from 1 through 12 {
 			&:nth-child(#{$i}) {
 				animation-delay: #{($i - 1) * 100 + ms};
 			}
+		}
+	}
+	
+	@include media_min-2400 {
+		.estate-card {
+			width: calc(100% / 4 - 20px);
 		}
 	}
 }
@@ -64,12 +69,14 @@
 	overflow: hidden;
 	background: $white;
 	
-	.circle-button {
+	&__arrow,
+	&__add-to-favotite {
 		opacity: .5;
 	}
 	
 	&:hover {
-		.circle-button {
+		#{$r}__arrow,
+		#{$r}__add-to-favotite {
 			opacity: 1;
 		}
 		
@@ -111,7 +118,7 @@
 		justify-content: flex-start;
 		flex-wrap: wrap;
 		width: calc(100% - 33px);
-		padding-right: 20px;
+		padding-right: 15px;
 	}
 	
 	&__label {
@@ -129,10 +136,6 @@
 			height: calc(100% - 1px);
 			border-radius: 10px;
 			background: $yellow;
-		}
-		
-		&:last-child {
-			margin-right: 0;
 		}
 	}
 	
@@ -167,6 +170,65 @@
 	
 	&__location {
 		transition: $default-transition;
+	}
+	
+	&._transparent-controls {
+		&:hover {
+			#{$r}__arrow {
+				opacity: .5;
+			}
+		}
+		
+		#{$r}__arrow {
+			opacity: 0;
+			
+			&:hover {
+				opacity: 1;
+			}
+		}
+		
+		#{$r}__add-to-favorite {
+			opacity: 1;
+			
+			&::after {
+				opacity: .5;
+			}
+			
+			&:hover {
+				&::after {
+					opacity: 1;
+				}
+			}
+		}
+	}
+	
+	&._small {
+		#{$r}__description {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+		
+		#{$r}__labels-wrap {
+			padding-right: 10px;
+		}
+		
+		#{$r}__label {
+			margin-bottom: 5px;
+			margin-right: 5px;
+			padding: 0 10px;
+			line-height: 1.8;
+			
+			&::before {
+				top: -1px;
+				height: 100%;
+			}
+		}
+		
+		.estate-cards-slider {
+			&__item {
+				height: 160px;
+			}
+		}
 	}
 }
 
