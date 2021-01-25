@@ -59,6 +59,7 @@ class ListingSearchDataService
             'contractDate'     => $listing->getContractDate(),
             'userFavorite'     => $userFavorite,
             'breadCrumbs'      => $this->getBreadCrumbs($listing),
+            'schoolData'       => $this->gesSchoolsDataFromTemplate($listing),
         ];
         return $listingObject;
     }
@@ -293,14 +294,62 @@ class ListingSearchDataService
 
     private function getBreadCrumbs(Listing $listing): ?object
     {
-        $breadCrumbs[ 'state' ] = new ListingBreadcrumbObject($listing->getStateOrProvince(),'#');
-        $breadCrumbs[ 'city' ] = new ListingBreadcrumbObject($listing->getCity(),'#');
+        $breadCrumbs[ 'state' ] = new ListingBreadcrumbObject($listing->getStateOrProvince(), '#');
+        $breadCrumbs[ 'city' ] = new ListingBreadcrumbObject($listing->getCity(), '#');
         if ( !is_null($listing->getSubdivision()) ) {
-            $breadCrumbs[ 'subdivision' ] = new ListingBreadcrumbObject($listing->getSubdivision(),'#');
+            $breadCrumbs[ 'subdivision' ] = new ListingBreadcrumbObject($listing->getSubdivision(), '#');
         }
-        $breadCrumbs[ 'address' ] = new ListingBreadcrumbObject($listing->getUnparsedAddress(),'#');
-
+        $breadCrumbs[ 'address' ] = new ListingBreadcrumbObject($listing->getUnparsedAddress(), '#');
         return (object)$breadCrumbs;
+    }
+
+    private function gesSchoolsDataFromTemplate(Listing $listing): ?array
+    {
+        $schoolsData = $listing->getSchoolsData();
+        if ( is_null($schoolsData) ) {
+            return null;
+        }
+        $data = [];
+        if ( isset($schoolsData[ 'public' ]) ) {
+            foreach ( $schoolsData[ 'public' ] as $schoolData ) {
+                $data[ 'public' ][] = [
+                    'subtitle' => $schoolData[ 'level' ],
+                    'label'    => $schoolData[ 'name' ],
+                    'status'   => [
+                        'text' => 'Above Average',
+                        'mod'  => '_green',
+                    ],
+                    'val'      => $schoolData[ 'distance' ],
+                    'rating'   => 'Rating 7/10',
+                    'details'  => '#',
+                ];
+            }
+        }
+        if ( isset($schoolsData[ 'private' ]) ) {
+            $data[ 'private' ][ 'elementary' ] = [
+                'subtitle' => $schoolsData[ 'private' ][ 'elementary' ][ 'level' ],
+                'label'    => $schoolsData[ 'private' ][ 'elementary' ][ 'name' ],
+                'status'   => [
+                    'text' => 'Above Average',
+                    'mod'  => '_green',
+                ],
+                'val'      => $schoolsData[ 'private' ][ 'elementary' ][ 'distance' ],
+                'rating'   => 'Rating 7/10',
+                'details'  => '#',
+            ];
+            $data[ 'private' ][ 'secondary' ] = [
+                'subtitle' => $schoolsData[ 'private' ][ 'secondary' ][ 'level' ],
+                'label'    => $schoolsData[ 'private' ][ 'secondary' ][ 'name' ],
+                'status'   => [
+                    'text' => 'Above Average',
+                    'mod'  => '_green',
+                ],
+                'val'      => $schoolsData[ 'private' ][ 'secondary' ][ 'distance' ],
+                'rating'   => 'Rating 7/10',
+                'details'  => '#',
+            ];
+        }
+        return $data;
     }
 
 }
