@@ -22,6 +22,7 @@
             {% include 'layouts/sections/neighborhood-info.html.twig' with {
                 description: listing.listingSeo.description,
                 containerMod: '',
+                schoolData: listing.schoolData,
             } only %}
 
             {% include 'layouts/sections/local-info.html.twig' with {
