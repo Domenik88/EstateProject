@@ -42,8 +42,7 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     height: calc(100% - 100px);
-    width: calc(100% - 200px);
-    max-width: 1720px;
+    width: calc(100% - 80px);
     margin: 0 auto;
     
     &__title-wrap {
@@ -73,7 +72,7 @@
         justify-content: flex-start;
         
         &_left {
-            width: calc(100% / 12 * 5.5 - 40px);
+            width: 850px;
             
             .estate-content {
             
@@ -85,7 +84,8 @@
         }
         
         &_right {
-            width: calc(100% / 12 * 6.5 - 40px);
+            width: calc(100% - 850px);
+            padding-left: 40px;
         }
     }
     
@@ -152,6 +152,18 @@
         
         .scrollbar-track-y .scrollbar-thumb {
             background: $gray1;
+        }
+    }
+    
+    @include media_min-2400 {
+        &__col {
+            &_left {
+                width: 1140px;
+            }
+        
+            &_right {
+                width: calc(100% - 1140px);
+            }
         }
     }
 }
@@ -283,6 +295,7 @@
 }
 
 .marker-popup-inner {
+    $r: &;
     position: relative;
     width: 400px;
     padding: 10px 10px 5px;
@@ -301,16 +314,26 @@
     
     &__img-wrap {
         position: relative;
+        display: block;
         width: 100%;
         @include rh(66/107);
         border-radius: 10px;
         overflow: hidden;
         background: $gray2;
         z-index: 3;
+        
+        &:hover {
+            #{$r}__img {
+                transform: scale(1.05);
+            }
+        }
     }
     
     &__img {
         z-index: 1;
+        transition: $default-transition;
+        transform-origin: 50% 50%;
+        will-change: transform;
     }
     
     &__title {
@@ -356,6 +379,12 @@
     width: auto;
     height: auto;
     
+    &:hover {
+        &:before {
+            color: $turquoise;
+        }
+    }
+    
     &::before {
         display: block;
         font-family: $icomoon;
@@ -363,6 +392,7 @@
         line-height: 1;
         font-weight: 100;
         color: $dark1;
+        transition: $default-transition;
     }
 }
 

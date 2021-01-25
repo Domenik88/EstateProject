@@ -495,7 +495,7 @@ class EstateMap {
 
         return L.responsivePopup({
             maxWidth: this.markerPopupWidth,
-            closeButton: false,
+            closeButton: true,
             riseOnHover: true,
             riseOffset: 9999,
             keepInView: true,
@@ -527,10 +527,6 @@ class EstateMap {
                 marker.on('mouseover', () => {
                     if (!popup) popup = this._constructMarkerPopup(data[i], i);
                     this.map.openPopup(popup);
-                });
-
-                marker.on('mouseout', () => {
-                    if (popup) this.map.closePopup(popup);
                 });
 
                 this.markersObj[mlsNum] = marker;

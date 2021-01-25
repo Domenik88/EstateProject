@@ -117,4 +117,12 @@ class HomeController extends AbstractController
         return $this->render('assessment/index.html.twig');
     }
 
+    /**
+     * @Route ("/price-your-home", name="price-your-home", priority=10)
+     */
+    public function priceYourHome()
+    {
+        return $this->render('price_your_home/index.html.twig');
+    }
+
 }

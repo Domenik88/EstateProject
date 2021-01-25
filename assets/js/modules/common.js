@@ -30,6 +30,7 @@ var $_ = {
         this.initToggleNext();
         this.initKeywordsInput();
         this.initAutofill();
+        this.initClickPrevent();
     },
     
     initCache() {
@@ -145,6 +146,17 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initClickPrevent() {
+        $_.$body.on('click', (e) => {
+            const
+                $target = $(e.target),
+                targetIsPrevent = $target.hasClass('js-prevent'),
+                closestPrevent = $target.closest('.js-prevent');
+
+            if (targetIsPrevent || closestPrevent.length) e.preventDefault();
+        })
     },
 
     initAutofill() {
@@ -1110,15 +1122,6 @@ var $_ = {
                 dataLazyInner = $currentSlider.data('lazy-inner'),
                 dataParameters = $currentSlider.data('slider-parameters') || {},
                 { $arrowLeft, $arrowRight, $current, $total } = $_._getRelatedSliderNav($currentSlider);
-
-            $estateCard.on('click', (e) => {
-                const
-                    $target = $(e.target),
-                    targetIsPrevent = $target.hasClass('js-prevent'),
-                    closestPrevent = $target.closest('.js-prevent');
-
-                if (targetIsPrevent || closestPrevent.length) e.preventDefault();
-            })
 
             $currentSlider
                 .on('init', function (event, slick) {
