@@ -1,12 +1,14 @@
 <div class="info-cards-wrap mb70">
     <div class="info-cards-wrap__list">
         {% for item in infoList %}
-            {% include 'layouts/modules/info-card.html.twig' with {
-                icon: item.icon|default(false),
-                title: item.title|default(false),
-                list: item.list|default(false),
-                description: item.description|default(false),
-            } only %}
+            {% if item is not null %}
+                {% include 'layouts/modules/info-card.html.twig' with {
+                    icon: item.icon|default(false),
+                    title: item.title|default(false),
+                    list: item.list|default(false),
+                    description: item.description|default(false),
+                } only %}
+            {% endif %}
         {% endfor %}
     </div>
 </div>
