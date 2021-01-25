@@ -8,12 +8,12 @@ export const mapTemplates = {
     }) => `
         <div class="marker-popup-inner">
             <div class="marker-popup-inner__left-col">
-                <div class="marker-popup-inner__img-wrap mb5">
+                <a class="marker-popup-inner__img-wrap mb5" href="#">
                     ${img 
                         ? `<img src=${img} alt="#" class="marker-popup-inner__img of"/>` 
                         : `<div class="marker-popup-inner__img of default-img-bg"></div>`
                     }
-                </div>
+                </a>
                 
                 ${listingPrice ?
                     `<span class="tiny-text_bold">${_formatCurrencyCa(listingPrice)}</span>`
@@ -69,15 +69,15 @@ export const mapTemplates = {
                     </div>
         
                     <span
-                        class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteJsMod ? favoriteJsMod : ''}"
+                        class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteJsMod ? favoriteJsMod : ''} js-prevent"
                         data-url="${favoritePath}"
                         href="${loginHref}"
                     ></span>
                 </div>
                 
                 <div class="estate-card__controls-wrap js-slider-nav">
-                    <span class="estate-card__arrow circle-button _bordered icon-angle-left js-arrow-left"></span>
-                    <span class="estate-card__arrow circle-button _bordered icon-angle-right js-arrow-right"></span>
+                    <span class="estate-card__arrow circle-button _bordered icon-angle-left js-arrow-left js-prevent"></span>
+                    <span class="estate-card__arrow circle-button _bordered icon-angle-right js-arrow-right js-prevent"></span>
                 </div>
             </div>
             
