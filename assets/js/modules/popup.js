@@ -32,7 +32,7 @@ jQuery(function($){
                 popup.closePopup();
             });
             
-            $('.js-call-popup').on('click', (e) => {
+            popup.$body.on('click', '.js-call-popup', (e) => {
                 e.preventDefault();
                 popup._clickHandler(e);
             });

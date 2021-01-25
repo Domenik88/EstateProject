@@ -1,7 +1,6 @@
 <div class="controls-bar">
     {% for item in controlsArray %}
         {% set dataLabel = item.label|default(false) ? "data-label=" ~ item.label : '' %}
-        {% set dataUrl = item.url|default(false) ? "data-url=" ~ item.url : '' %}
         {% set dataPopupAttribute = item.dataPopup|default(false) ? "data-popup=" ~ item.dataPopup|json_encode() : '' %}
         {% set html_tag = item.href|default(false) ? 'a' :'div' %}
         {% set href = item.href|default(false) ? "href=" ~ item.href : '' %}
@@ -9,9 +8,9 @@
         <{{html_tag}}
             class="controls-bar__item {{ item.mod|default('') }}"
             {{ dataLabel }}
-            {{ dataUrl }}
             {{ dataPopupAttribute }}
             {{ href }}
+            {{ dataAttribute|default('') }}
         >
             {% if item.text|default(false) %}
                 <span class="controls-bar__text button1">

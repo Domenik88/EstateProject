@@ -8,6 +8,10 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+
+        <script type="text/javascript">
+            window.IS_AUTHENTICATED_REMEMBERED = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'true' : 'false' }};
+        </script>
     </head>
     <body>
         <div class="wrapper">

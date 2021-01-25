@@ -1,0 +1,81 @@
+<form class="authorization-form js-ajax-form" action="" method="post" autocomplete="off">
+    <h3 class="authorization-form__title h3 mb30">Sign in or register<br>to save your favorite homes</h3>
+
+    <div class="authorization-form__row mb10">
+        {% include 'layouts/controls/button.html.twig' with {
+            'text': 'Continue with Facebook',
+        } only %}
+    </div>
+
+    <div class="authorization-form__row">
+        {% include 'layouts/controls/button.html.twig' with {
+            'text': 'Continue with Google',
+        } only %}
+    </div>
+
+    {% include 'layouts/common/separator.html.twig' with {
+        text: 'OR',
+        wrapMod: '',
+        marginsMod: 'mt20 mb20',
+    } only %}
+
+    <div class="authorization-form__row mb10">
+        {% include 'layouts/form/input.html.twig' with {
+            'name': 'email',
+            'placeholder': 'Your email',
+            'inputMod': 'required usermail',
+        } only %}
+    </div>
+
+    <div class="authorization-form__row mb20">
+        <div class="tel-wrap">
+            <div class="tel-wrap__code">
+                {% include 'layouts/form/select.html.twig' with {
+                    'name': 'code',
+                    'inputMod': '',
+                    'wrapMod': '  _gray-text',
+                    'textMod': 'small-text',
+                    'options': [
+                        {
+                            'value': '+1268',
+                            'text': 'CA +1268',
+                        },
+                        {
+                            'value': '1111',
+                            'text': 'CA +1111',
+                        },
+                        {
+                            'value': '2222',
+                            'text': 'CA +2222',
+                        },
+                    ]
+                } only %}
+            </div>
+            <div class="tel-wrap__phone">
+                {% include 'layouts/form/input.html.twig' with {
+                    'name': 'phone',
+                    'placeholder': 'Phone number',
+                    'inputMod': 'required',
+                } only %}
+            </div>
+        </div>
+    </div>
+
+    <div class="authorization-form__row mb15">
+        {% include 'layouts/controls/button.html.twig' with {
+            'button': true,
+            'text': 'Login',
+        } only %}
+    </div>
+
+    <a href="#" class="link-turquoise tiny-text">Forgot Password?</a>
+
+    {% include 'layouts/common/separator.html.twig' with {
+        wrapMod: '',
+        marginsMod: 'mt20 mb30',
+    } %}
+
+    <span class="button1">
+        Not a member? <a href="#" class="link-turquoise">Register for free</a>
+    </span>
+</form>
