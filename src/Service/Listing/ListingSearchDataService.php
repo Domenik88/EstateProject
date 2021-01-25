@@ -12,6 +12,7 @@ namespace App\Service\Listing;
 use App\Entity\Listing;
 use App\Entity\User;
 use DateTime;
+use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Component\Security\Core\Security;
 
 class ListingSearchDataService
@@ -27,12 +28,6 @@ class ListingSearchDataService
 
     public function constructSearchListingData(Listing $listing): object
     {
-        $currentUser = $this->security->getUser();
-        if ( $currentUser instanceof User ) {
-            $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
-        } else {
-            $userFavorite = false;
-        }
         $listingImagesUrlArray = $this->listingMediaService->getListingPhotos($listing);
         $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
         $listingObject = (object)[
@@ -51,17 +46,52 @@ class ListingSearchDataService
             'financials'       => $this->getListingFinancialsObject($listing),
             'listingAgent'     => $this->getListingAgentObject($listing),
             'agent'            => $this->getAgentObject(),
-            'isNew'            => !is_null($daysOnTheMarket) ? $daysOnTheMarket <= 3 : false,
+            'isNew'            => $this->isNew($listing),
             'listingSeo'       => $this->getListingSeoObject($listing),
             'status'           => $listing->getStatus(),
             'processingStatus' => $listing->getProcessingStatus(),
             'selfListing'      => $listing->getSelfListing(),
             'contractDate'     => $listing->getContractDate(),
-            'userFavorite'     => $userFavorite,
+            'userFavorite'     => $this->getFavoriteUserData($listing),
             'breadCrumbs'      => $this->getBreadCrumbs($listing),
             'schoolData'       => $this->gesSchoolsDataFromTemplate($listing),
         ];
         return $listingObject;
+    }
+
+    public function constructListingDataForMap(Listing $listing): object
+    {
+        $listingObject = (object)[
+            'images'         => $this->listingMediaService->getListingPhotos($listing),
+            'isNew'          => $this->isNew($listing),
+            'listingPrice'   => $listing->getListPrice(),
+            'metrics'        => $this->getListingMetricsObject($listing),
+            'address'        => $this->getListingAddressObject($listing),
+            'mlsNumber'      => $listing->getMlsNum(),
+            'userFavorite'   => $this->getFavoriteUserData($listing),
+            'favoritePath'   => '#',
+            'forSaleByOwner' => '#',
+            'loginHref'      => '#',
+        ];
+        return $listingObject;
+    }
+
+    private function getFavoriteUserData(Listing $listing)
+    {
+        $currentUser = $this->security->getUser();
+        if ( $currentUser instanceof User ) {
+            $userFavorite = $this->security->getUser()->getFavoriteListings()->contains($listing);
+        } else {
+            $userFavorite = false;
+        }
+
+        return $userFavorite;
+    }
+
+    private function isNew(Listing $listing)
+    {
+        $daysOnTheMarket = $this->getListingDaysOnTheMarket($listing->getContractDate());
+        return !is_null($daysOnTheMarket) ? $daysOnTheMarket <= 3 : false;
     }
 
     private function getSingleListingCoordinatesObject(Listing $listing): object
