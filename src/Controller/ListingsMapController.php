@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Listing\ListingSearchDataService;
 use App\Service\Listing\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +26,7 @@ class ListingsMapController extends AbstractController
     /**
      * @Route("/listing/search", priority=10, name="listings_search")
      */
-    public function listingSearch(Request $request, ListingService $listingService)
+    public function listingSearch(Request $request, ListingService $listingService, ListingSearchDataService $listingSearchDataService)
     {
         if(!$request->isXmlHttpRequest())
         {
@@ -37,7 +38,7 @@ class ListingsMapController extends AbstractController
         $response = new JsonResponse(['collection' => json_encode($listings)]);
         $responseData = [];
         foreach ($listings as $listing) {
-            $responseData[] = $listing->getDataForMap();
+            $responseData[] = $listingSearchDataService->constructListingDataForMap($listing);
         }
         $response->setData($responseData);
         return $response;
