@@ -12,7 +12,7 @@
 		.autofill-option {
 			@extend .select-option;
 			
-			span {
+			.highlight {
 				display: inline;
 				background: yellow;
 			}
