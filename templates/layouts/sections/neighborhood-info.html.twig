@@ -1,10 +1,29 @@
-{% set infoList = [
-    {
+{% if schoolData.public is not empty %}
+    {% set publickSchools = {
         icon: 'icon-public-schools',
         title: 'Public Schools',
         description: 'Part of this information is provided by the Province of British Columbia under the Open Government License for Government of BC Information v.BC1.0. School boundaries and other statistics changes frequently and is for general informational purposes only. You should not use such information in determining the legal eligibility to attend any particular school.',
         list: schoolData.public
-    },
+    } %}
+{% else %}
+    {% set publickSchools = null %}
+{% endif %}
+
+{% if schoolData.private is not empty %}
+    {% set privateSchools = {
+        icon: 'icon-private-schools',
+        title: 'Private Schools',
+        list: [
+            schoolData.private.elementary,
+            schoolData.private.secondary,
+        ]
+    } %}
+{% else %}
+    {% set privateSchools = null %}
+{% endif %}
+
+{% set infoList = [
+    publickSchools,
     {
         icon: 'icon-noise',
         title: 'Noise/ Power Lines',
@@ -51,14 +70,7 @@
             }
         ]
     },
-    {
-        icon: 'icon-private-schools',
-        title: 'Private Schools',
-        list: [
-            schoolData.private.elementary,
-            schoolData.private.secondary,
-        ]
-    },
+    privateSchools,
     {
         icon: 'icon-climate',
         title: 'Climate',
