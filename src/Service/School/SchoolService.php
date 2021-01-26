@@ -101,4 +101,10 @@ class SchoolService
         }
         return null;
     }
+
+    public function getAllSchoolsForMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
+    {
+        return $this->schoolRepository->getAllSchoolsInMapBox($neLat, $neLng, $swLat, $swLng);
+    }
+
 }
