@@ -59,23 +59,6 @@ class ListingSearchDataService
         return $listingObject;
     }
 
-    public function constructListingDataForMap(Listing $listing): object
-    {
-        $listingObject = (object)[
-            'images'         => $this->listingMediaService->getListingPhotos($listing),
-            'isNew'          => $this->isNew($listing),
-            'listingPrice'   => $listing->getListPrice(),
-            'metrics'        => $this->getListingMetricsObject($listing),
-            'address'        => $this->getListingAddressObject($listing),
-            'mlsNumber'      => $listing->getMlsNum(),
-            'userFavorite'   => $this->getFavoriteUserData($listing),
-            'favoritePath'   => '#',
-            'forSaleByOwner' => '#',
-            'loginHref'      => '#',
-        ];
-        return $listingObject;
-    }
-
     private function getFavoriteUserData(Listing $listing)
     {
         $currentUser = $this->security->getUser();
