@@ -1,4 +1,4 @@
-{% if schoolData.public is not empty %}
+{% if schoolData.public is defined and schoolData.public is not empty %}
     {% set publickSchools = {
         icon: 'icon-public-schools',
         title: 'Public Schools',
@@ -9,7 +9,7 @@
     {% set publickSchools = null %}
 {% endif %}
 
-{% if schoolData.private is not empty %}
+{% if schoolData.private is defined and schoolData.private is not empty %}
     {% set privateSchools = {
         icon: 'icon-private-schools',
         title: 'Private Schools',
