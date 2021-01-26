@@ -12,16 +12,19 @@
 
         <div class="header__control-wrap">
             {% include 'layouts/controls/button.html.twig' with {
-                'href': '#',
-                'text': 'Price your home',
+                href: '#',
+                text: 'Price your home',
             } %}
         </div>
 
         <div class="header__control-wrap">
             {% include 'layouts/controls/button.html.twig' with {
-                'href': '#',
-                'mod': '_bordered',
-                'text': 'Sign in',
+                mod: '_bordered js-call-popup',
+                text: 'Sign in',
+                dataPopup: {
+                    target: 'authorization',
+                    show_overlay: true,
+                }
             } %}
         </div>
 

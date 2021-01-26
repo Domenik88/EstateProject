@@ -308,6 +308,7 @@
 .link-dark {
     color: $dark1;
     transition: $default-transition;
+    cursor: pointer;
 
     &:hover {
         color: $turquoise;
@@ -317,6 +318,7 @@
 .link-purple {
     color: $turquoise;
     transition: $default-transition;
+    cursor: pointer;
 
     &:hover {
         color: $blue;
@@ -326,6 +328,7 @@
 .link-purple-lb {
     color: $turquoise;
     transition: $default-transition;
+    cursor: pointer;
 
     &:hover {
         color: $blue2;
@@ -335,6 +338,7 @@
 .link-white-fuchsia {
     color: $white;
     transition: $default-transition;
+    cursor: pointer;
     
     &:hover {
         color: $fuchsia-hover;
@@ -344,6 +348,7 @@
 .link-fuchsia {
     color: $fuchsia;
     transition: $default-transition;
+    cursor: pointer;
 
     &:hover {
         color: $fuchsia-hover;
@@ -353,6 +358,7 @@
 .link-turquoise {
     color: $turquoise;
     transition: $default-transition;
+    cursor: pointer;
 
     &:hover {
         color: $blue;
@@ -362,6 +368,7 @@
 .link-light-gray {
     color: $gray1;
     transition: $default-transition;
+    cursor: pointer;
     
     &:hover,
     &._current {
@@ -376,6 +383,7 @@
 .link-gray {
     color: $gray0;
     transition: $default-transition;
+    cursor: pointer;
     
     &:hover,
     &._current {
@@ -388,6 +396,8 @@
 }
 
 .link-underline {
+    cursor: pointer;
+    
     &:hover {
         text-decoration: underline;
     }

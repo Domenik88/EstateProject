@@ -39,20 +39,19 @@
                 } only %}
             </div>
             <div class="listing-page-intro__controls-wrap">
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    {% set favoritePath = path('add_to_favorites', {listingId: listing.listingId, userId: app.user.id}) %}
-                    {% set favoriteJsMod = 'js-favorite-listing' %}
-                {% else %}
-                    {% set loginHref = path('app_login') %}
-                {% endif %}
+                {% set favoriteJsMod = is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'js-favorite-listing' : 'js-call-popup' %}
+
+                {% set favoriteDataParameters = is_granted('IS_AUTHENTICATED_REMEMBERED') ?
+                    'data-url=' ~ path('add_to_favorites', {listingId: listingId, userId: app.user.id}) :
+                    'data-popup=' ~ { target: 'authorization', show_overlay: true }|json_encode
+                %}
 
                 {% include 'layouts/modules/controls-bar.html.twig' with {
                     controlsArray: [
                         {
                             label: 'Add to favorites',
-                            url: favoritePath|default(false),
-                            mod: 'favorite-toggle ' ~ (listing.userFavorite ? '_active ' : ' ' ) ~ favoriteJsMod|default(''),
-                            href: loginHref|default(false)
+                            mod: 'favorite-toggle ' ~ (listing.userFavorite ? '_active ' : ' ' ) ~ favoriteJsMod,
+                            dataAttribute: favoriteDataParameters,
                         },
                         {
                             label: 'Share',

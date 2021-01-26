@@ -3,13 +3,12 @@
     dots: true
 } %}
 
-{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    {% set favoritePath = path('add_to_favorites', {listingId: listingId, userId: app.user.id}) %}
-    {% set favoriteJsMod = 'js-favorite-listing' %}
-{% else %}
-    {% set favoritePath = '' %}
-    {% set loginHref = path('app_login') %}
-{% endif %}
+{% set favoriteJsMod = is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'js-favorite-listing' : 'js-call-popup' %}
+
+{% set favoriteDataParameters = is_granted('IS_AUTHENTICATED_REMEMBERED') ?
+    'data-url=' ~ path('add_to_favorites', {listingId: listingId, userId: app.user.id}) :
+    'data-popup=' ~ { target: 'authorization', show_overlay: true }|json_encode
+%}
 
 <a class="estate-card js-estate-card" href="#">
     <div class="estate-card__slider-wrap js-wrap">
@@ -44,9 +43,8 @@
             </div>
 
             <span
-                class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod|default('') }} js-prevent"
-                data-url="{{ favoritePath }}"
-                href="{{ loginHref|default('#') }}"
+                class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle {{ userFavorite|default(false) ? '_active' }} {{ favoriteJsMod }} js-prevent"
+                {{ favoriteDataParameters }}
             ></span>
         </div>
 

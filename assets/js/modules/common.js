@@ -616,9 +616,12 @@ var $_ = {
                     type: 'POST',
                     dataType: 'json',
                 };
-            $.ajax(requestParameters).done(() => {
-                $currentTarget.toggleClass('_active');
-            })
+
+            if (dataUrl) {
+                $.ajax(requestParameters).done(() => {
+                    $currentTarget.toggleClass('_active');
+                })
+            }
         });
     },
 

@@ -1,6 +1,6 @@
 <div class="check {{ wrapMod|default('') }}">
     <input
-            class="check__input"
+            class="check__input {{ inputMod|default('') }}"
             type="{{ type|default('checkbox') }}"
             name="{{ name }}" value="{{ value }}"
             {{ checked|default(false) ? 'checked' : '' }}

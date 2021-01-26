@@ -32,7 +32,7 @@ jQuery(function($){
                 popup.closePopup();
             });
             
-            $('.js-call-popup').on('click', (e) => {
+            popup.$body.on('click', '.js-call-popup', (e) => {
                 e.preventDefault();
                 popup._clickHandler(e);
             });
@@ -110,6 +110,7 @@ jQuery(function($){
 
             if ($recaptcha.length) popup.$body.trigger('trigger:init-recaptcha');
 
+            popup.$popups.removeClass('_active');
             popup._clearOverlay();
 
             if (fire_click_selector) {
