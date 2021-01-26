@@ -139,6 +139,29 @@
         }
     }
     
+    &._bordered-med {
+        background: $white;
+        color: $gray1;
+        border-color: $gray5;
+    
+        &:hover {
+            background: $gray4;
+        }
+    
+        &:focus {
+            background: $white;
+            color: $dark1;
+            font-weight: 700;
+        }
+    
+        &.error {
+            background: $pink-pdra;
+            border-color: $pink-pdra;
+            color: $dark1;
+            font-weight: 700;
+        }
+    }
+    
     &._bordered-bright {
         background: $white;
         color: $dark1;

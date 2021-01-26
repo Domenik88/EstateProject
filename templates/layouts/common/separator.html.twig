@@ -1,0 +1,9 @@
+<div class="separator {{ wrapMod ?? 'container' }} {{ marginsMod ?? 'mt10 pt40 pb50' }}">
+    <div class="separator__container {{ containerMod ?? '' }}">
+        <div class="separator__line {{ lineMod ?? '' }}"></div>
+
+        {% if text|default(false) %}
+            <span class="separator__text {{ textMod ?? 'table-text' }}">{{ text }}</span>
+        {% endif %}
+    </div>
+</div>

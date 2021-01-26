@@ -66,4 +66,21 @@ class SchoolRepository extends ServiceEntityRepository
 
         return $privateSchools;
     }
+
+    public function getAllSchoolsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
+    {
+        $boxString = "box '((" . $neLat . ", " . $neLng . "),(" . $swLat . ", " . $swLng . "))'";
+        try {
+            $rsm = new ResultSetMappingBuilder($this->entityManager);
+            $rsm->addRootEntityFromClassMetadata('App\Entity\School', 's');
+            $sql = "select * from school where coordinates <@ $boxString";
+            $query = $this->entityManager->createNativeQuery($sql, $rsm);
+            return $query->getResult();
+        } catch ( \Exception $e ) {
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
+            return [];
+        }
+    }
+
 }

@@ -59,6 +59,14 @@
 	&__text {
 		position: relative;
 		z-index: 2;
+		
+		&.button1 {
+			margin-bottom: -0.1em;
+		}
+	}
+	
+	&._med {
+		height: 45px;
 	}
 	
 	&._big {
@@ -137,24 +145,65 @@
 		padding: 0 10px;
 	}
 	
+	&._google-colored {
+		&::before {
+			content: '';
+			font-size: 0;
+			width: 18px;
+			height: 18px;
+			background: $googleColoredIcon center center no-repeat;
+			background-size: contain;
+		}
+	}
+	
 	&.icon-twitter {
 		background: $twitter;
+		border: 1px solid $twitter;
+		
+		&:hover {
+			background: $white;
+			color: $twitter;
+		}
 	}
 	
 	&.icon-facebook {
 		background: $facebook;
+		border: 1px solid $facebook;
+		
+		&:hover {
+			background: $white;
+			color: $facebook;
+		}
 	}
 	
 	&.icon-youtube {
 		background: $youtube;
+		border: 1px solid $youtube;
+		
+		&:hover {
+			background: $white;
+			color: $youtube;
+		}
 	}
 	
 	&.icon-linkedin {
 		background: $linkedin;
+		border: 1px solid $linkedin;
+		
+		&:hover {
+			background: $white;
+			color: $linkedin;
+		}
 	}
 	
 	&.icon-pinterest {
 		background: $pinterest;
+		border: 1px solid $pinterest;
+		
+		&:hover {
+			background: $white;
+			color: $pinterest;
+		}
 	}
 	
 	&:not(._active) {
@@ -281,6 +330,10 @@
 			&::before {
 				opacity: 1;
 			}
+		}
+		
+		&.error ~ #{$r}__indicator {
+			background: $pink-pdra;
 		}
 	}
 	

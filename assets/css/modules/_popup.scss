@@ -36,6 +36,7 @@ $baseAnimationDuration: .3s;
 	z-index: 960;
 	transition: left 0s linear;
 	transition-delay: $baseAnimationDuration;
+	pointer-events: none;
 	
 	&__container {
 		position: relative;
@@ -51,6 +52,7 @@ $baseAnimationDuration: .3s;
 		opacity: 0;
 		transition: opacity $baseAnimationDuration ease;
 		transition-delay: 0s;
+		pointer-events: auto;
 	}
 	
 	&__scroll-wrap {
@@ -79,6 +81,29 @@ $baseAnimationDuration: .3s;
 		
 		#{$r}__container {
 			opacity: 1;
+		}
+	}
+	
+	&_narrow {
+		.cross-btn {
+			top: 30px;
+			right: 30px;
+		}
+		
+		#{$r}__container {
+			width: 600px;
+			padding: 90px 45px;
+			border: 1px solid $gray-line;
+			border-radius: 20px;
+		}
+		
+		#{$r}__scroll-wrap {
+			padding: 0 50px;
+			max-height: calc(100vh - 280px);
+			
+			.scroll-content {
+				padding-right: 0;
+			}
 		}
 	}
 	

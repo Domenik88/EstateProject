@@ -9,6 +9,10 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+
+        <script type="text/javascript">
+            window.IS_AUTHENTICATED_REMEMBERED = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'true' : 'false' }};
+        </script>
     </head>
     <body>
         <div class="wrapper">
@@ -19,6 +23,11 @@
             {% block body %}{% endblock %}
 
             {% include 'layouts/footer.html.twig' %}
+
+            {% include 'layouts/popups/popup-overlay.html.twig' %}
+            {% include 'layouts/popups/authorization-popup.html.twig' %}
+            {% include 'layouts/popups/registration-popup.html.twig' %}
+            {% include 'layouts/popups/password-recovery-popup.html.twig' %}
 
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}

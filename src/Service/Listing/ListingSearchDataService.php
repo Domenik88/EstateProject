@@ -67,7 +67,6 @@ class ListingSearchDataService
         } else {
             $userFavorite = false;
         }
-
         return $userFavorite;
     }
 
@@ -102,6 +101,7 @@ class ListingSearchDataService
             'city'          => $listing->getCity(),
             'postalCode'    => $listing->getPostalCode(),
             'streetAddress' => $listing->getUnparsedAddress(),
+            'subdivision'   => $listing->getSubdivision() ? $listing->getSubdivision() : null,
         ];
     }
 

@@ -44,64 +44,73 @@ export const mapTemplates = {
          forSaleByOwner,
          favoritePath,
          userFavorite,
-         loginHref,
-         favoriteJsMod,
          listingPrice,
          address,
          metrics,
          mlsNumber,
-    }) => `
-        <a class="estate-card _small _transparent-controls js-estate-card" href="#">
-            <div class="estate-card__slider-wrap js-wrap">
-                <div
-                    class="estate-cards-slider js-estate-card-slider"
-                    data-lazy-inner="true"
-                    data-img-selector="ec-src"
-                    data-slider-parameters=${JSON.stringify({ lazyLoad: 'ondemand', dots: true })}
-                >
-                    ${mapTemplates.estateSliderItems(images)}
-                </div>
-                
-                <div class="estate-card__header">
-                    <div class="estate-card__labels-wrap">
-                        ${isNew ? `<span class="estate-card__label schild_2">NEW</span>` : ''}
-                        ${forSaleByOwner ? `<span class="estate-card__label schild_2">for sale by owner</span>` : ''}
+    }) =>{
+        const
+            dataFavoritePath = IS_AUTHENTICATED_REMEMBERED ? `data-url="${favoritePath}"` : '',
+            favoriteMod = IS_AUTHENTICATED_REMEMBERED ? 'js-favorite-listing' : '',
+            popupMod = !IS_AUTHENTICATED_REMEMBERED ? 'js-call-popup' : '',
+            dataPopup = !IS_AUTHENTICATED_REMEMBERED ? `data-popup=${JSON.stringify({
+                target: 'authorization',
+                show_overlay: true,
+            })}` : '';
+
+        return `
+            <a class="estate-card _small _transparent-controls js-estate-card" href="#">
+                <div class="estate-card__slider-wrap js-wrap">
+                    <div
+                        class="estate-cards-slider js-estate-card-slider"
+                        data-lazy-inner="true"
+                        data-img-selector="ec-src"
+                        data-slider-parameters=${JSON.stringify({ lazyLoad: 'ondemand', dots: true })}
+                    >
+                        ${mapTemplates.estateSliderItems(images)}
                     </div>
-        
-                    <span
-                        class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteJsMod ? favoriteJsMod : ''} js-prevent"
-                        data-url="${favoritePath}"
-                        href="${loginHref}"
-                    ></span>
-                </div>
-                
-                <div class="estate-card__controls-wrap js-slider-nav">
-                    <span class="estate-card__arrow circle-button _bordered icon-angle-left js-arrow-left js-prevent"></span>
-                    <span class="estate-card__arrow circle-button _bordered icon-angle-right js-arrow-right js-prevent"></span>
-                </div>
-            </div>
+                    
+                    <div class="estate-card__header">
+                        <div class="estate-card__labels-wrap">
+                            ${isNew ? `<span class="estate-card__label schild_2">NEW</span>` : ''}
+                            ${forSaleByOwner ? `<span class="estate-card__label schild_2">for sale by owner</span>` : ''}
+                        </div>
             
-            <div class="estate-card__description pt10 pb20">
-                ${listingPrice ? 
-                    `<span class="estate-card__title body-text_bold mb5">${_formatCurrencyCa(listingPrice)}</span>`
-                : ''}
-              
-                ${(address && address.streetAddress && address.city) ? 
-                    `<span class="estate-card__location h6 mb5">${address.streetAddress + ', ' + address.city}</span>` 
-                : ''}
-                
-                ${metrics ? `
-                    <div class="estate-card__metrics-wrap mb10">
-                        ${mapTemplates.metrics(metrics)}
+                        <span
+                            class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteMod} ${popupMod} js-prevent"
+                            ${dataFavoritePath}
+                            ${dataPopup}
+                        ></span>
                     </div>
-                ` : ''}
+                    
+                    <div class="estate-card__controls-wrap js-slider-nav">
+                        <span class="estate-card__arrow circle-button _bordered icon-angle-left js-arrow-left js-prevent"></span>
+                        <span class="estate-card__arrow circle-button _bordered icon-angle-right js-arrow-right js-prevent"></span>
+                    </div>
+                </div>
                 
-                ${mlsNumber ? 
-                    `<span class="gray-mls-after icon-mls-min tiny-text">${'MLS® ' + mlsNumber}</span>`
-                : ''}
-            </div>
-        </a>
-    `,
+                <div class="estate-card__description pt10 pb20">
+                    ${listingPrice ? 
+                        `<span class="estate-card__title body-text_bold mb5">${_formatCurrencyCa(listingPrice)}</span>`
+                    : ''}
+                  
+                    ${(address && address.streetAddress && address.city) ? 
+                        `<span class="estate-card__location h6 mb5">${address.streetAddress + ', ' + address.city}</span>` 
+                    : ''}
+                    
+                    ${metrics ? `
+                        <div class="estate-card__metrics-wrap mb10">
+                            ${mapTemplates.metrics(metrics)}
+                        </div>
+                    ` : ''}
+                    
+                    ${mlsNumber ? 
+                        `<span class="gray-mls-after icon-mls-min tiny-text">${'MLS® ' + mlsNumber}</span>`
+                    : ''}
+                </div>
+            </a>
+        `
+    },
 
     estateSliderItems: (imagesArray) => {
         if (imagesArray && imagesArray.length) {
