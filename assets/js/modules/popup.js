@@ -110,6 +110,7 @@ jQuery(function($){
 
             if ($recaptcha.length) popup.$body.trigger('trigger:init-recaptcha');
 
+            popup.$popups.removeClass('_active');
             popup._clearOverlay();
 
             if (fire_click_selector) {

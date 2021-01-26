@@ -1,5 +1,5 @@
 <form class="form-style js-ajax-form" action="" method="post" autocomplete="off">
-    <h3 class="form-style__title h3 mb30">Sign in or register<br>to save your favorite homes</h3>
+    <h3 class="form-style__title h3 mb30">Want to Compare Homes?</h3>
 
     <div class="form-style__full-w-row mb10">
         {% include 'layouts/controls/button.html.twig' with {
@@ -22,6 +22,16 @@
         wrapMod: '',
         marginsMod: 'mt20 mb20',
     } only %}
+
+    <div class="form-style__full-w-row mb10">
+        <span class="form-style__label small-text mb10">Full name</span>
+
+        {% include 'layouts/form/input.html.twig' with {
+            name: 'name',
+            placeholder: '',
+            inputMod: '_bordered-med required usermail',
+        } only %}
+    </div>
 
     <div class="form-style__full-w-row mb10">
         <span class="form-style__label small-text mb10">Email</span>
@@ -62,7 +72,7 @@
             <div class="tel-wrap__phone">
                 {% include 'layouts/form/input.html.twig' with {
                     name: 'phone',
-                    placeholder: 'Phone number',
+                    placeholder: 'Phone (# is used as password)',
                     inputMod: '_bordered-med required',
                 } only %}
             </div>
@@ -72,15 +82,14 @@
     <div class="form-style__full-w-row mb15">
         {% include 'layouts/controls/button.html.twig' with {
             button: true,
-            text: 'Login',
+            text: 'Continue My Search',
             mod: '_bordered',
         } only %}
     </div>
 
-    <span class="link-turquoise tiny-text js-call-popup" data-popup="{{ {
-        target: 'password-recovery',
-        show_overlay: true
-    }|json_encode }}">Forgot Password?</span>
+    <div class="form-style__full-w-row">
+        {% include 'layouts/modules/agreement-check.html.twig' %}
+    </div>
 
     {% include 'layouts/common/separator.html.twig' with {
         wrapMod: '',
@@ -88,9 +97,9 @@
     } %}
 
     <span class="button1">
-        Not a member? <span class="link-turquoise inline-block js-call-popup" data-popup="{{ {
-            target: 'registration',
-            show_overlay: true
-        }|json_encode }}">Register for free</span>
+        Already signed up? <span class="link-turquoise inline-block js-call-popup" data-popup="{{ {
+            target: 'authorization',
+            show_overlay: true,
+        }|json_encode }}">Log in</span>
     </span>
 </form>

@@ -85,8 +85,25 @@ $baseAnimationDuration: .3s;
 	}
 	
 	&_narrow {
+		.cross-btn {
+			top: 30px;
+			right: 30px;
+		}
+		
 		#{$r}__container {
 			width: 600px;
+			padding: 90px 45px;
+			border: 1px solid $gray-line;
+			border-radius: 20px;
+		}
+		
+		#{$r}__scroll-wrap {
+			padding: 0 50px;
+			max-height: calc(100vh - 280px);
+			
+			.scroll-content {
+				padding-right: 0;
+			}
 		}
 	}
 	

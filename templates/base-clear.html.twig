@@ -21,6 +21,11 @@
 
             {% block body %}{% endblock %}
 
+            {% include 'layouts/popups/popup-overlay.html.twig' %}
+            {% include 'layouts/popups/authorization-popup.html.twig' %}
+            {% include 'layouts/popups/registration-popup.html.twig' %}
+            {% include 'layouts/popups/password-recovery-popup.html.twig' %}
+
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
             {% endblock %}
