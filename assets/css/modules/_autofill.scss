@@ -11,6 +11,11 @@
 		
 		.autofill-option {
 			@extend .select-option;
+			
+			span {
+				display: inline;
+				background: yellow;
+			}
 		}
 	}
 	

@@ -1,9 +1,19 @@
 <form class="simple-search js-no-ajax {{ wrapMod|default('') }}">
-    {% include 'layouts/form/input.html.twig' with {
-        'name': 'search-input',
-        'placeholder': 'Enter Your Adderss',
-        'inputMod': '_bordered',
-    } only %}
+    {% if autofill|default(false) %}
+        {% include 'layouts/form/autofill.html.twig' with {
+            inputPlaceholder: 'Enter Your Adderss',
+            inputMod: '_bordered',
+            requestOptions: {
+                spec: 'here'
+            }
+        } only %}
+    {% else %}
+        {% include 'layouts/form/input.html.twig' with {
+            'name': 'search-input',
+            'placeholder': 'Enter Your Adderss',
+            'inputMod': '_bordered',
+        } only %}
+    {% endif %}
 
     <button class="icon-btn icon-search {{ buttonMod|default('') }}"></button>
 </form>
