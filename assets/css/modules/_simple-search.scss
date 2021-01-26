@@ -5,6 +5,11 @@
 	background: $white;
 	border-radius: 5px;
 	
+	.autofill {
+		height: 100%;
+		border-radius: inherit;
+	}
+	
 	.input-style {
 		height: 100%;
 		margin-bottom: 0;

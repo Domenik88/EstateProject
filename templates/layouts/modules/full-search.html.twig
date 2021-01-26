@@ -87,7 +87,12 @@
     </div>
 
     <div class="full-search__fields-container mb20">
-        {% include 'layouts/form/autofill.html.twig' only %}
+        {% include 'layouts/form/autofill.html.twig' with {
+            requestOptions: {
+                action: "",
+                type: "POST",
+            }
+        } only %}
 
         <div class="full-search__selects-container">
             <div class="full-search__selects-group">
