@@ -70,15 +70,6 @@
 }
 
 .intro-animations-1 {
-	@keyframes intro-1-leaves-animation {
-		0%, 100% {
-			transform: skewX(0deg);
-		}
-		
-		50% {
-			transform: skewX(3deg);
-		}
-	}
 	@keyframes intro-1-boat-1-animation {
 		0% {
 			transform: translate3d(0, 0, 0);
@@ -280,13 +271,11 @@
 		transform-origin: 50% 100%;
 		animation-duration: 3s;
 		animation-timing-function: ease-in-out;
-		animation-name: intro-1-leaves-animation;
+		animation-name: leaves-animation;
 		animation-iteration-count: infinite;
 		
 		&_1 {
 			animation-delay: .3s;
-		}
-		&_2 {
 		}
 	}
 	
@@ -447,16 +436,6 @@
 }
 
 .intro-animations-3 {
-	@keyframes intro-3-tree-animation {
-		0%, 100% {
-			transform: skewX(0deg);
-		}
-		
-		50% {
-			transform: skewX(3deg);
-		}
-	}
-
 	@keyframes intro-3-clouds-animation {
 		0%, 100% {
 			transform: translate3d(0,0,0);
@@ -481,7 +460,7 @@
 		animation-duration: 3s;
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
-		animation-name: intro-3-tree-animation;
+		animation-name: leaves-animation;
 		transform-origin: 50% 100%;
 		
 		@for $i from 1 through 10 {

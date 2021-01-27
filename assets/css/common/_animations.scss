@@ -16,3 +16,27 @@ $default-transition-5: all #{($baseDuration * 5) + s} $timingFunction;
 		animation-play-state: running;
 	}
 }
+
+@keyframes leaves-animation {
+	0%, 100% {
+		transform: skewX(0deg);
+	}
+	
+	50% {
+		transform: skewX(3deg);
+	}
+}
+
+@keyframes leaves-animation-2 {
+	0%, 100% {
+		transform: skewX(0deg);
+	}
+	
+	25% {
+		transform: skewX(2deg);
+	}
+	
+	75% {
+		transform: skewX(-2deg);
+	}
+}
