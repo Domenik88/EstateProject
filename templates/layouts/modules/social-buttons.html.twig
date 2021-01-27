@@ -3,11 +3,17 @@
         <h3 class="social-buttons__label h3">Follow us</h3>
     {% endif %}
 
-    <div class="social-buttons__list">
-        <a class="social-buttons__item icon-twitter-frame" href="#"></a>
-        <a class="social-buttons__item icon-facebook-frame" href="#"></a>
-        <a class="social-buttons__item icon-youtube-frame" href="#"></a>
-        <a class="social-buttons__item icon-linkedin-frame" href="#"></a>
-        <a class="social-buttons__item icon-pinterest-frame" href="#"></a>
-    </div>
+    {% if custom|default(false) %}
+        <div class="social-buttons__list">
+            <a class="social-buttons__item icon-twitter-frame" href="#"></a>
+            <a class="social-buttons__item icon-facebook-frame" href="#"></a>
+            <a class="social-buttons__item icon-youtube-frame" href="#"></a>
+            <a class="social-buttons__item icon-linkedin-frame" href="#"></a>
+            <a class="social-buttons__item icon-pinterest-frame" href="#"></a>
+        </div>
+    {% else %}
+        <div class="social-buttons__addthis-wrap">
+            <div class="addthis_inline_share_toolbox_k8mq"></div>
+        </div>
+    {% endif %}
 </div>

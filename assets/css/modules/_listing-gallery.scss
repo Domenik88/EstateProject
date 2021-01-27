@@ -1,29 +1,32 @@
 .listing-gallery {
 	position: relative;
 	overflow: hidden;
+	border-radius: 20px;
 	
 	&__list {
 		position: relative;
 		display: flex;
 		align-items: flex-start;
-		justify-content: flex-start;
+		justify-content: space-between;
 		flex-wrap: wrap;
-		width: calc(100% + 20px);
-		left: -10px;
+		width: 100%;
 	}
 	
 	&__item {
 		position: relative;
-		width: calc(50% - 20px);
+		width: calc(50% - 5px);
 		@include rh(350/630);
-		margin: 0 10px 20px;
+		margin-top: 10px;
 		background: $gray2;
-		border-radius: 20px;
 		overflow: hidden;
 		z-index: 2;
 		
+		&:first-child {
+			margin-top: 0;
+		}
+		
 		&:nth-child(3n - 2) {
-			width: calc(100% - 20px);
+			width: 100%;
 			@include rh(500/1275);
 		}
 	}
