@@ -10,7 +10,7 @@
             {{ dataLabel }}
             {{ dataPopupAttribute }}
             {{ href }}
-            {{ dataAttribute|default('') }}
+            {{ item.dataAttribute|default('') }}
         >
             {% if item.text|default(false) %}
                 <span class="controls-bar__text button1">
