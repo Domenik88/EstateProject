@@ -33,14 +33,12 @@
 			@include absolute;
 			width: 100%;
 			height: auto;
+			backface-visibility: hidden;
+			pointer-events: none;
 			
 			.animate-in-window {
 				transform-box: fill-box;
 			}
-			
-			// TODO: uncomment
-			//backface-visibility: hidden;
-			//pointer-events: none;
 		}
 	}
 	
@@ -51,9 +49,6 @@
 		align-items: center;
 		justify-content: flex-start;
 		z-index: 3;
-		
-		// TODO: remove
-		pointer-events: none;
 	}
 	
 	&__content {
