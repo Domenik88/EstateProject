@@ -21,6 +21,10 @@
     {% include 'layouts/form/autofill.html.twig' with {
         inputPlaceholder: 'Enter Neighbourhood, City, MLS®',
         inputMod: '_bordered',
+        requestOptions: {
+            action: "",
+            type: "POST",
+        }
     } only %}
 
     <button class="icon-btn icon-search"></button>

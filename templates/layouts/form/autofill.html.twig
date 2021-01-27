@@ -1,9 +1,6 @@
 <div
     class="autofill {{ wrapMod|default('') }} js-autofill js-bcc"
-    data-request-options="{{ {
-        action: "",
-        type: "POST",
-    }|json_encode() }}"
+    data-request-options="{{ requestOptions|json_encode() }}"
 >
     {% include 'layouts/form/input.html.twig' with {
         name: inputName|default('search-input'),
