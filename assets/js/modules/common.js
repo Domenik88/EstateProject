@@ -163,28 +163,40 @@ var $_ = {
         function search(obj) {
             const
                 { $currentAutofill, $relatedOptionsContainer, inputVal, dataRequestOptions } = obj,
-                { action, type } = dataRequestOptions;
-
-            $.ajax({
-                url: action,
-                type: type,
-                data: {
-                    text: inputVal
+                { action, type, spec } = dataRequestOptions,
+                defaultAjaxParameters = {
+                    url: action,
+                    type: type,
+                    data: {
+                        text: inputVal
+                    },
                 },
-            })
-            .done((data) => {
-                //TODO: replace testData by data
-                const testData = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8'];
+                specificAjaxParameters = {
+                    here: {
+                        url: `https://autocomplete.geocoder.ls.hereapi.com/6.2/suggest.json?query=${inputVal}&beginHighlight=<span class="highlight">&endHighlight=</span>&apiKey=r8YkmrDOzfX6spDJx1q3azz9rMoIn7zTSNdWIInUzbM`,
+                        type: 'GET',
+                    },
+                },
+                useParameters = spec ? specificAjaxParameters[spec] : defaultAjaxParameters;
 
-                addOptions({
-                    data: testData,
-                    $currentAutofill,
-                    $relatedOptionsContainer,
+            $.ajax(useParameters)
+                .done((data) => {
+                    //TODO: remove testData
+                    const
+                        testData = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7'],
+                        useData = $.isArray(data) ? data : (data && data.suggestions ? data.suggestions.map(
+                            item => item.label
+                        ) : testData);
+
+                    addOptions({
+                        data: useData,
+                        $currentAutofill,
+                        $relatedOptionsContainer,
+                    });
+                })
+                .fail((err) => {
+                    console.log(err);
                 });
-            })
-            .fail((err) => {
-                console.log(err);
-            });
         }
 
         function addOptions(obj) {
@@ -195,7 +207,7 @@ var $_ = {
                     <span class="autofill-option">${item}</span>
                 `).join(''));
 
-                $currentAutofill.addClass('_show-options');
+                $currentAutofill.addClass('_active _show-options');
             } else {
                 clear({ $currentAutofill, $relatedOptionsContainer });
             }
@@ -204,7 +216,7 @@ var $_ = {
         function clear(obj) {
             const { $currentAutofill, $relatedOptionsContainer } = obj;
 
-            $currentAutofill.removeClass('_show-options');
+            $currentAutofill.removeClass('_active _show-options');
             $relatedOptionsContainer.html('');
         }
         

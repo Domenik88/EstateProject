@@ -37,7 +37,7 @@ class ListingsMapController extends AbstractController
         $response = new JsonResponse(['collection' => json_encode($listings)]);
         $responseData = [];
         foreach ($listings as $listing) {
-            $responseData[] = $listingSearchDataService->constructListingDataForMap($listing);
+            $responseData[] = $listingSearchDataService->constructSearchListingData($listing);
         }
         $response->setData($responseData);
         return $response;
