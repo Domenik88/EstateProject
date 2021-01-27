@@ -70,7 +70,7 @@
 }
 
 .intro-animations-1 {
-	@keyframes leaves-animation {
+	@keyframes intro-1-leaves-animation {
 		0%, 100% {
 			transform: skewX(0deg);
 		}
@@ -79,7 +79,7 @@
 			transform: skewX(3deg);
 		}
 	}
-	@keyframes boat-1-animation {
+	@keyframes intro-1-boat-1-animation {
 		0% {
 			transform: translate3d(0, 0, 0);
 			opacity: 1;
@@ -110,8 +110,8 @@
 			opacity: 1;
 		}
 	}
-	@keyframes boat-2-animation {
-		0% {
+	@keyframes intro-1-boat-2-animation {
+		0%, 100% {
 			transform: translate3d(0, 0, 0);
 		}
 		
@@ -122,13 +122,9 @@
 		70% {
 			transform: translate3d(-2100%, -160%, 0);
 		}
-		
-		100% {
-			transform: translate3d(0, 0, 0);
-		}
 	}
-	@keyframes boat-3-animation {
-		0% {
+	@keyframes intro-1-boat-3-animation {
+		0%, 100% {
 			transform: translate3d(0, 0, 0);
 		}
 		
@@ -147,28 +143,10 @@
 		90% {
 			transform: translate3d(-480%, 0, 0);
 		}
-		
-		100% {
-			transform: translate3d(0, 0, 0);
-		}
 	}
 	
-	@keyframes bird-animation {
-		0% {
-			transform: translate3d(0,0,0);
-		}
-		
-		50% {
-			transform: translate3d(-15%,15%,0);
-		}
-		
-		100% {
-			transform: translate3d(0,0,0);
-		}
-	}
-	
-	@keyframes bird-1-animation {
-		0% {
+	@keyframes intro-1-bird-1-animation {
+		0%, 100% {
 			transform: rotate(0deg);
 			opacity: 1;
 		}
@@ -192,15 +170,10 @@
 			transform: rotate(50deg);
 			opacity: 1;
 		}
-		
-		100% {
-			transform: rotate(0deg);
-			opacity: 1;
-		}
 	}
 	
-	@keyframes bird-2-animation {
-		0% {
+	@keyframes intro-1-bird-2-animation {
+		0%, 100% {
 			transform: translate3d(0, 0, 0) scale(1);
 			opacity: 1;
 		}
@@ -224,15 +197,10 @@
 			transform: translate3d(-200%, 190%, 0) scale(.5);
 			opacity: 0;
 		}
-		
-		100% {
-			transform: translate3d(0, 0, 0) scale(1);
-			opacity: 1;
-		}
 	}
 	
-	@keyframes bird-3-animation {
-		0% {
+	@keyframes intro-1-bird-3-animation {
+		0%, 100% {
 			transform: rotate(0deg) scale(1);
 			opacity: 1;
 		}
@@ -256,108 +224,55 @@
 			transform: rotate(-70deg) scale(.5);
 			opacity: 1;
 		}
-
-		100% {
-			transform: rotate(0deg) scale(1);
-			opacity: 1;
-		}
 	}
 
-	@keyframes man-hand-animation {
-		0% {
+	@keyframes intro-1-man-hand-animation {
+		0%, 30%, 50%, 100% {
 			transform: rotate(0deg);
 		}
 
-		15% {
+		15%, 75% {
 			transform: rotate(-15deg);
-		}
-
-		30% {
-			transform: rotate(0deg);
-		}
-
-		50% {
-			transform: rotate(0deg);
-		}
-
-		75% {
-			transform: rotate(-15deg);
-		}
-
-		100% {
-			transform: rotate(0deg);
 		}
 	}
 	
-	@keyframes man-animation {
-		0% {
-			transform: skewX(0deg);
-		}
-		
-		50% {
+	@keyframes intro-1-man-animation {
+		0%, 50%, 100% {
 			transform: skewX(0deg);
 		}
 		
 		75% {
 			transform: skewX(-2deg);
 		}
-		
-		100% {
-			transform: skewX(0deg);
-		}
 	}
 	
-	@keyframes woman-animation {
-		0% {
-			transform: skewX(0deg);
-		}
-		
-		50% {
+	@keyframes intro-1-woman-animation {
+		0%, 50%, 100% {
 			transform: skewX(0deg);
 		}
 		
 		75% {
 			transform: skewX(2deg);
 		}
-		
-		100% {
-			transform: skewX(0deg);
-		}
 	}
 	
-	@keyframes man-head-animation {
-		0% {
-			transform: rotate(0deg);
-		}
-		
-		50% {
+	@keyframes intro-1-man-head-animation {
+		0%, 50%, 100% {
 			transform: rotate(0deg);
 		}
 		
 		75% {
 			transform: rotate(15deg);
 		}
-		
-		100% {
-			transform: rotate(0deg);
-		}
 	}
 	
-	@keyframes woman-head-animation {
-		0% {
-			transform: rotate(0deg);
-		}
-		
-		50% {
+	@keyframes intro-1-woman-head-animation {
+		0%, 50%, 100% {
 			transform: rotate(0deg);
 		}
 		
 		75% {
 			transform: rotate(-15deg);
-		}
-		
-		100% {
-			transform: rotate(0deg);
 		}
 	}
 	
@@ -365,7 +280,7 @@
 		transform-origin: 50% 100%;
 		animation-duration: 3s;
 		animation-timing-function: ease-in-out;
-		animation-name: leaves-animation;
+		animation-name: intro-1-leaves-animation;
 		animation-iteration-count: infinite;
 		
 		&_1 {
@@ -381,13 +296,13 @@
 		animation-iteration-count: infinite;
 		
 		&_1 {
-			animation-name: boat-1-animation;
+			animation-name: intro-1-boat-1-animation;
 		}
 		&_2 {
-			animation-name: boat-2-animation;
+			animation-name: intro-1-boat-2-animation;
 		}
 		&_3 {
-			animation-name: boat-3-animation;
+			animation-name: intro-1-boat-3-animation;
 		}
 	}
 	
@@ -398,31 +313,17 @@
 		
 		&_1 {
 			transform-origin: 0% -1500%;
-			animation-name: bird-1-animation;
+			animation-name: intro-1-bird-1-animation;
 		}
 		&_2 {
 			transform-origin: 50% 50%;
-			animation-name: bird-2-animation;
+			animation-name: intro-1-bird-2-animation;
 		}
 		&_3 {
 			transform-origin: 300% 870%;
-			animation-name: bird-3-animation;
+			animation-name: intro-1-bird-3-animation;
 		}
 	}
-	
-	//.svg-bird {
-	//	animation-duration: 10s;
-	//	animation-timing-function: linear;
-	//	animation-iteration-count: infinite;
-	//	animation-name: bird-animation;
-	//
-	//	&_2 {
-	//		animation-delay: .2s;
-	//	}
-	//	&_3 {
-	//		animation-delay: .4s;
-	//	}
-	//}
 	
 	.svg-woman,
 	.svg-woman-head,
@@ -436,34 +337,170 @@
 		transform-origin: 50% 100%;
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
-		animation-name: woman-animation;
+		animation-name: intro-1-woman-animation;
 	}
 	
 	.svg-woman-head {
 		transform-origin: 50% 100%;
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
-		animation-name: woman-head-animation;
+		animation-name: intro-1-woman-head-animation;
 	}
 	
 	.svg-man {
 		transform-origin: 50% 100%;
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
-		animation-name: man-animation;
+		animation-name: intro-1-man-animation;
 	}
 	
 	.svg-man-head {
 		transform-origin: 50% 100%;
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
-		animation-name: man-head-animation;
+		animation-name: intro-1-man-head-animation;
 	}
 	
 	.svg-man-hand {
 		animation-timing-function: ease-in-out;
 		animation-iteration-count: infinite;
 		transform-origin: 10% 25%;
-		animation-name: man-hand-animation;
+		animation-name: intro-1-man-hand-animation;
+	}
+}
+
+.intro-animations-2 {
+	@keyframes intro-2-boat-1-animation {
+		0%, 100% {
+			transform: translate3d(0, 0, 0);
+		}
+
+		25% {
+			transform: translate3d(5825%, 0, 0);
+		}
+
+		75% {
+			transform: translate3d(-3075%, 0, 0);
+		}
+	}
+	
+	@keyframes intro-2-boat-2-animation {
+		0%, 100% {
+			transform: translate3d(0, 0, 0);
+		}
+
+		25% {
+			transform: translate3d(-2775%, 0, 0);
+		}
+
+		75% {
+			transform: translate3d(3025%, 0, 0);
+		}
+	}
+	
+	@keyframes intro-2-boat-3-animation {
+		0%, 100% {
+			transform: translate3d(0, 0, 0);
+		}
+
+		25% {
+			transform: translate3d(-4175%, 0, 0);
+		}
+
+		75% {
+			transform: translate3d(3325%, 0, 0);
+		}
+	}
+	
+	@keyframes intro-2-boat-4-animation {
+		0%, 100% {
+			transform: translate3d(0, 0, 0);
+		}
+
+		25% {
+			transform: translate3d(5225%, 0, 0);
+		}
+
+		75% {
+			transform: translate3d(-5775%, 0, 0);
+		}
+	}
+	
+	.svg-boat {
+		animation-duration: 180s;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		
+		&_1 {
+			animation-name: intro-2-boat-1-animation;
+		}
+		&_2 {
+			animation-name: intro-2-boat-2-animation;
+		}
+		&_3 {
+			animation-name: intro-2-boat-3-animation;
+		}
+		&_4 {
+			animation-name: intro-2-boat-4-animation;
+		}
+	 }
+}
+
+.intro-animations-3 {
+	@keyframes intro-3-tree-animation {
+		0%, 100% {
+			transform: skewX(0deg);
+		}
+		
+		50% {
+			transform: skewX(3deg);
+		}
+	}
+
+	@keyframes intro-3-clouds-animation {
+		0%, 100% {
+			transform: translate3d(0,0,0);
+		}
+		
+		50% {
+			transform: translate3d(-15%,0,0);
+		}
+	}
+
+	@keyframes intro-3-clouds-animation {
+		0%, 100% {
+			transform: translate3d(0,0,0);
+		}
+		
+		50% {
+			transform: translate3d(-45%,0,0);
+		}
+	}
+	
+	.svg-tree {
+		animation-duration: 3s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		animation-name: intro-3-tree-animation;
+		transform-origin: 50% 100%;
+		
+		@for $i from 1 through 10 {
+			&:nth-child(#{$i}n) {
+				animation-delay: #{50*$i + ms};
+			}
+		}
+	}
+	
+	.svg-cloud {
+		animation-duration: 12s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		animation-name: intro-3-clouds-animation;
+		
+		@for $i from 1 through 10 {
+			&:nth-child(#{$i}n) {
+				animation-delay: #{50*$i + ms};
+			}
+		}
 	}
 }
