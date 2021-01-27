@@ -262,6 +262,104 @@
 			opacity: 1;
 		}
 	}
+
+	@keyframes man-hand-animation {
+		0% {
+			transform: rotate(0deg);
+		}
+
+		15% {
+			transform: rotate(-15deg);
+		}
+
+		30% {
+			transform: rotate(0deg);
+		}
+
+		50% {
+			transform: rotate(0deg);
+		}
+
+		75% {
+			transform: rotate(-15deg);
+		}
+
+		100% {
+			transform: rotate(0deg);
+		}
+	}
+	
+	@keyframes man-animation {
+		0% {
+			transform: skewX(0deg);
+		}
+		
+		50% {
+			transform: skewX(0deg);
+		}
+		
+		75% {
+			transform: skewX(-2deg);
+		}
+		
+		100% {
+			transform: skewX(0deg);
+		}
+	}
+	
+	@keyframes woman-animation {
+		0% {
+			transform: skewX(0deg);
+		}
+		
+		50% {
+			transform: skewX(0deg);
+		}
+		
+		75% {
+			transform: skewX(2deg);
+		}
+		
+		100% {
+			transform: skewX(0deg);
+		}
+	}
+	
+	@keyframes man-head-animation {
+		0% {
+			transform: rotate(0deg);
+		}
+		
+		50% {
+			transform: rotate(0deg);
+		}
+		
+		75% {
+			transform: rotate(15deg);
+		}
+		
+		100% {
+			transform: rotate(0deg);
+		}
+	}
+	
+	@keyframes woman-head-animation {
+		0% {
+			transform: rotate(0deg);
+		}
+		
+		50% {
+			transform: rotate(0deg);
+		}
+		
+		75% {
+			transform: rotate(-15deg);
+		}
+		
+		100% {
+			transform: rotate(0deg);
+		}
+	}
 	
 	.svg-leaves {
 		transform-origin: 50% 100%;
@@ -303,12 +401,10 @@
 			animation-name: bird-1-animation;
 		}
 		&_2 {
-			animation-duration: 10s;
 			transform-origin: 50% 50%;
 			animation-name: bird-2-animation;
 		}
 		&_3 {
-			animation-duration: 10s;
 			transform-origin: 300% 870%;
 			animation-name: bird-3-animation;
 		}
@@ -328,23 +424,46 @@
 	//	}
 	//}
 	
-	.svg-woman {
+	.svg-woman,
+	.svg-woman-head,
+	.svg-man,
+	.svg-man-head,
+	.svg-man-hand {
+		animation-duration: 7.5s;
+	}
 	
+	.svg-woman {
+		transform-origin: 50% 100%;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		animation-name: woman-animation;
 	}
 	
 	.svg-woman-head {
-	
+		transform-origin: 50% 100%;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		animation-name: woman-head-animation;
 	}
 	
 	.svg-man {
-	
+		transform-origin: 50% 100%;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		animation-name: man-animation;
 	}
 	
 	.svg-man-head {
-	
+		transform-origin: 50% 100%;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		animation-name: man-head-animation;
 	}
 	
 	.svg-man-hand {
-	
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		transform-origin: 10% 25%;
+		animation-name: man-hand-animation;
 	}
 }
