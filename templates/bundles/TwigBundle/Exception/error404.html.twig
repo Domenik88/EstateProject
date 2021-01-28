@@ -3,9 +3,13 @@
 
 {% block body %}
     {% embed 'layouts/containers/error.html.twig' with {
-        img: asset('build/images/bg/not-found.svg'),
+        svgWrapMod: 'not-found-animation',
     } only %}
-        {% block error_content123 %}
+        {% block error_svg %}
+            {% include 'layouts/svg/404.html.twig' %}
+        {% endblock %}
+
+        {% block error_content %}
             <h2 class="h2 mb50">ooops! page not found</h2>
             <p class="subtitle">
                 The page you are looking for doesn`t exist or an other error occurred.<br>

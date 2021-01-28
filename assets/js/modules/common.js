@@ -44,7 +44,8 @@ var $_ = {
             arrowRight: '.js-arrow-right',
             current: '.js-current',
             total: '.js-total',
-            estateGallerySliderImg: '.js-estate-gallery-slider-img'
+            estateGallerySliderImg: '.js-estate-gallery-slider-img',
+            hiddenInput: '.js-hidden-input',
         };
 
         this.$page = $('html, body');
@@ -859,7 +860,7 @@ var $_ = {
             const
                 $currentForm = $(item),
                 $innerCollapseBlock = $currentForm.find($_.$collapse),
-                $innerInputs = $currentForm.find('input[type="text"]'),
+                $innerInputs = $currentForm.find('input[type="text"]').not($_.selectors.hiddenInput),
                 $parentStickyBlock = $currentForm.closest('.js-sticky-block');
 
             $currentForm.on('change', () => {

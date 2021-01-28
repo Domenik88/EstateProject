@@ -6,3 +6,37 @@ $default-transition-2: all #{($baseDuration * 2) + s} $timingFunction;
 $default-transition-3: all #{($baseDuration * 3) + s} $timingFunction;
 $default-transition-4: all #{($baseDuration * 4) + s} $timingFunction;
 $default-transition-5: all #{($baseDuration * 5) + s} $timingFunction;
+
+.animate-in-window {
+	animation-play-state: paused;
+}
+
+._in-window {
+	.animate-in-window {
+		animation-play-state: running;
+	}
+}
+
+@keyframes leaves-animation {
+	0%, 100% {
+		transform: skewX(0deg);
+	}
+	
+	50% {
+		transform: skewX(3deg);
+	}
+}
+
+@keyframes leaves-animation-2 {
+	0%, 100% {
+		transform: skewX(0deg);
+	}
+	
+	25% {
+		transform: skewX(2deg);
+	}
+	
+	75% {
+		transform: skewX(-2deg);
+	}
+}

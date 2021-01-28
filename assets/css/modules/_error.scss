@@ -13,11 +13,113 @@
 				display: block;
 				width: 100%;
 				height: auto;
+				backface-visibility: hidden;
+				pointer-events: none;
+				
+				.animate-in-window {
+					transform-box: fill-box;
+				}
 			}
 		}
 		
 		&_right {
 			width: calc(100% / 12 * 7 - 10px);
+		}
+	}
+}
+
+.not-found-animation {
+	@keyframes nf-magnifier-animation {
+		0%, 100% {
+			transform: rotate(0deg);
+		}
+		
+		25% {
+			transform: rotate(4.5deg);
+		}
+		
+		75% {
+			transform: rotate(-1.7deg);
+		}
+	}
+	
+	@keyframes nf-man-hand-left {
+		0%, 100% {
+			transform: rotate(0deg);
+		}
+		
+		25% {
+			transform: rotate(10deg);
+		}
+		
+		75% {
+			transform: rotate(-5deg);
+		}
+	}
+	
+	@keyframes nf-man-hand-right-top {
+		0%, 100% {
+			transform: rotate(0deg);
+		}
+		
+		25% {
+			transform: rotate(2deg);
+		}
+		
+		75% {
+			transform: rotate(-3deg);
+		}
+	}
+	
+	@keyframes nf-man-hand-right-bottom {
+		0%, 100% {
+			transform: translate3d(0,0,0);
+		}
+		
+		25% {
+			transform: translate3d(-6%,0,0);
+		}
+		
+		75% {
+			transform: translate3d(6%,0,0);
+		}
+	}
+	
+	.svg-magnifier,
+	.svg-man-hand-left,
+	.svg-man-hand-right-top,
+	.svg-man-hand-right-bottom,
+	.svg-tree {
+		animation-duration: 3s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+	}
+	
+	.svg-magnifier {
+		animation-name: nf-magnifier-animation;
+		transform-origin: 100% 22%;
+	}
+	.svg-man-hand-left {
+		animation-name: nf-man-hand-left;
+		transform-origin: 100% 22%;
+	}
+	.svg-man-hand-right-top {
+		animation-name: nf-man-hand-right-top;
+		transform-origin: 47% 8%;
+	}
+	.svg-man-hand-right-bottom {
+		animation-name: nf-man-hand-right-bottom;
+		transform-origin: 75% 0;
+	}
+	.svg-tree {
+		animation-duration: 4s;
+		animation-name: leaves-animation-2;
+		transform-origin: 50% 100%;
+		
+		@for $i from 1 through 10 {
+			&:nth-child(#{$i}n) {
+				animation-delay: #{50*$i + ms};
+			}
 		}
 	}
 }
