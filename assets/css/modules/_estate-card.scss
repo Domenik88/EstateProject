@@ -12,7 +12,7 @@
 .estate-cards-list {
 	position: relative;
 	display: flex;
-	align-items: flex-start;
+	align-items: stretch;
 	justify-content: flex-start;
 	flex-wrap: wrap;
 	width: calc(100% + 20px);

@@ -1,22 +1,22 @@
 export const mapTemplates = {
     markerPopup: ({
-        img,
-        listingPrice,
+        images,
+        financials,
         address,
         metrics,
-        mls,
+        mlsNumber,
     }) => `
         <div class="marker-popup-inner">
             <div class="marker-popup-inner__left-col">
                 <a class="marker-popup-inner__img-wrap mb5" href="#">
-                    ${img 
-                        ? `<img src=${img} alt="#" class="marker-popup-inner__img of"/>` 
+                    ${images && images[0] 
+                        ? `<img src=${images[0]} alt="#" class="marker-popup-inner__img of"/>` 
                         : `<div class="marker-popup-inner__img of default-img-bg"></div>`
                     }
                 </a>
                 
-                ${listingPrice ?
-                    `<span class="tiny-text_bold">${_formatCurrencyCa(listingPrice)}</span>`
+                ${financials && financials.listingPrice ?
+                    `<span class="tiny-text_bold">${_formatCurrencyCa(financials.listingPrice)}</span>`
                 : ''}   
             </div>
             
@@ -31,8 +31,8 @@ export const mapTemplates = {
                     </div>
                 ` : ''}
                 
-                ${mls ?
-                    `<span class="gray-mls-after icon-mls-min tiny-text">${mls}</span>`
+                ${mlsNumber ?
+                    `<span class="gray-mls-after icon-mls-min tiny-text">${mlsNumber}</span>`
                 : ''}
             </div>
         </div>
@@ -42,21 +42,18 @@ export const mapTemplates = {
          images,
          isNew,
          forSaleByOwner,
-         favoritePath,
+         listingId,
          userFavorite,
-         listingPrice,
+         financials,
          address,
          metrics,
          mlsNumber,
     }) =>{
         const
-            dataFavoritePath = IS_AUTHENTICATED_REMEMBERED ? `data-url="${favoritePath}"` : '',
-            favoriteMod = IS_AUTHENTICATED_REMEMBERED ? 'js-favorite-listing' : '',
-            popupMod = !IS_AUTHENTICATED_REMEMBERED ? 'js-call-popup' : '',
-            dataPopup = !IS_AUTHENTICATED_REMEMBERED ? `data-popup=${JSON.stringify({
-                target: 'authorization',
-                show_overlay: true,
-            })}` : '';
+            favoriteMod = IS_AUTHENTICATED_REMEMBERED ? 'js-favorite-listing' : 'js-call-popup',
+            favoriteDataAttribute = IS_AUTHENTICATED_REMEMBERED ?
+                `data-url="${ADD_TO_FAVORITES_PATH.replace('@', listingId)}"` :
+                `data-popup=${JSON.stringify({ target: 'authorization', show_overlay: true })}`;
 
         return `
             <a class="estate-card _small _transparent-controls js-estate-card" href="#">
@@ -77,9 +74,8 @@ export const mapTemplates = {
                         </div>
             
                         <span
-                            class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteMod} ${popupMod} js-prevent"
-                            ${dataFavoritePath}
-                            ${dataPopup}
+                            class="estate-card__add-to-favorite circle-button _ic-fs-12 favorite-toggle ${userFavorite ? '_active' : '' } ${favoriteMod} js-prevent"
+                            ${favoriteDataAttribute}
                         ></span>
                     </div>
                     
@@ -90,8 +86,8 @@ export const mapTemplates = {
                 </div>
                 
                 <div class="estate-card__description pt10 pb20">
-                    ${listingPrice ? 
-                        `<span class="estate-card__title body-text_bold mb5">${_formatCurrencyCa(listingPrice)}</span>`
+                    ${financials && financials.listingPrice ? 
+                        `<span class="estate-card__title body-text_bold mb5">${_formatCurrencyCa(financials.listingPrice)}</span>`
                     : ''}
                   
                     ${(address && address.streetAddress && address.city) ? 

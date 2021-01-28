@@ -42,7 +42,7 @@
                 {% set favoriteJsMod = is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'js-favorite-listing' : 'js-call-popup' %}
 
                 {% set favoriteDataParameters = is_granted('IS_AUTHENTICATED_REMEMBERED') ?
-                    'data-url=' ~ path('add_to_favorites', {listingId: listingId, userId: app.user.id}) :
+                    'data-url=' ~ path('add_to_favorites', {listingId: listing.listingId, userId: app.user.id}) :
                     'data-popup=' ~ { target: 'authorization', show_overlay: true }|json_encode
                 %}
 

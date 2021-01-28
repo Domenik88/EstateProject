@@ -92,7 +92,7 @@ class EstateMap {
         });
 
         this.$showSchools.on('click', (e) => {
-            this._loadSchools();
+            this._loadSchools(this.box);
         });
 
         this.$window.resize(() => {
@@ -106,10 +106,6 @@ class EstateMap {
 
             OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                tileloadstart: () => {
-                    alert(1)
-                }
-
             }),
 
             Here = L.tileLayer('https://2.aerial.maps.ls.hereapi.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/512/png8?apiKey={accessToken}', {
@@ -262,185 +258,26 @@ class EstateMap {
         }
     }
 
-    _loadSchools() {
-        fetch('test-data/school_ca.kml')
-            .then(res => res.text())
-            .then(kmltext => {
-                // Create new kml overlay
-                const parser = new DOMParser();
-                const kml = parser.parseFromString(kmltext, 'text/xml');
-                const track = new L.KML(kml);
-                this.map.addLayer(track);
+    _loadSchools(box) {
+        const
+            { schoolsPath } = this.dataParams,
+            requestParameters = {
+                url: schoolsPath,
+                type: 'POST',
+                dataType: 'json',
+                data: {box: JSON.stringify(box)}
+            };
 
-                // Adjust map to show the kml
-                const bounds = track.getBounds();
-                this.map.fitBounds(bounds);
-            });
+        const request = $.ajax(requestParameters).done((data) => {
+            this._addSchools(data);
+        });
 
-        // $.ajax(
-        //     {
-        //         url: 'test-data/school_ca.geojson',
-        //         type: 'POST',
-        //         dataType: 'json',
-        //
-        //         success: function (data) {
-        //             this._addSchools(data);
-        //         },
-        //     }
-        // );
+        this._showPreloader(request);
+        this._errorHandler(request);
     }
 
     _addSchools(data) {
         console.log(data);
-
-        // // Adding Voyager Basemap
-        // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-        //     maxZoom: 18
-        // }).addTo(this.map);
-        //
-        // // Adding Voyager Labels
-        // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png', {
-        //     maxZoom: 18,
-        //     zIndex: 10
-        // }).addTo(this.map);
-        //
-
-
-        const client = new carto.Client({
-            apiKey: 'e9468a54f5e995d7c036d05d5907e1a22c9cabc4',
-            username: 'roefto'
-        });
-        // const client = new carto.Client({
-        //     apiKey: '60a3b14b8d005c59016a3fc25f102899ef3e8141',
-        //     username: 'vadimmarusin'
-        // });
-
-
-        const europeanCountriesDataset = new carto.source.Dataset(`
-          school_ca
-        `);
-
-        // const europeanCountriesDataset = new carto.source.Dataset(`
-        //   bc_condo_prices_by_neighbourhood
-        // `);
-
-        const europeanCountriesStyle = new carto.style.CartoCSS(`
-          #layer {
-          polygon-fill: #162945;
-            polygon-opacity: 0.5;
-            ::outline {
-              line-width: 1;
-              line-color: #FFFFFF;
-              line-opacity: 0.5;
-            }
-          }
-        `);
-        const europeanCountries = new carto.layer.Layer(europeanCountriesDataset, europeanCountriesStyle);
-
-        client.addLayers([europeanCountries]);
-
-        client.getLeafletLayer().addTo(this.map);
-
-
-        //
-
-
-        // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png', {
-        //     zIndex: 10
-        // }).addTo(this.map);
-        //
-        //
-
-
-
-        // // #########################
-        //
-        // let
-        //     markersArray = [],
-        //     areasArray = [];
-        //
-        // let
-        //     cutCoordinates = 0,
-        //     totalEmptyCoordinates = 0,
-        //     emptyCoordinatesWithoutPolygon = 0,
-        //     emptyCoordinatesWithPolygon = 0;
-        //
-        // for (let i = 0; i < 500; i++) {
-        // // for (let i = 0; i < data.features.length; i++) {
-        //     const { areas, lat, lon } = data.features[i].properties;
-        //
-        //
-        //     // ####
-        //     if (!lat || !lon) {
-        //         totalEmptyCoordinates++;
-        //
-        //         if (areas && areas.length) {
-        //             emptyCoordinatesWithPolygon++;
-        //         } else {
-        //             emptyCoordinatesWithoutPolygon++;
-        //         }
-        //     }
-        //
-        //     if ((areas.indexOf("<coordinates>") === -1) || (areas.indexOf("</coordinates>") === -1)) {
-        //         cutCoordinates++;
-        //     }
-        //     // ####
-        //
-        //     if (lat && lon) {
-        //         const marker = L.marker(L.latLng(lat,lon), { icon: this._constructDivIcon({
-        //                     mod: 'school'
-        //                 })}),
-        //             popup = L.responsivePopup().setContent(mapTemplates.markerPopup({
-        //                 img: `https://picsum.photos/300/170??random=${i+1}`,
-        //                 title: `title ${i+1}`,
-        //                 text: 'test',
-        //             }));
-        //
-        //         marker.bindPopup(
-        //             popup,
-        //             {
-        //                 maxWidth: this.markerPopupWidth,
-        //                 closeButton: false,
-        //                 riseOnHover: true,
-        //                 riseOffset: 9999,
-        //                 keepInView: true,
-        //                 autoPan: false,
-        //             }
-        //         );
-        //
-        //         marker.on('mouseover', () => {
-        //             marker.openPopup();
-        //         });
-        //
-        //         marker.on('mouseout', () => {
-        //             marker.closePopup();
-        //         });
-        //
-        //         if (areas && areas.length) {
-        //             const coordinatesMatches = areas.match("<coordinates>(.*)</coordinates>")
-        //
-        //             if (coordinatesMatches && coordinatesMatches[1]) {
-        //                 const
-        //                     coordinates = coordinatesMatches[1].split(' ').map(item => item.split(',')),
-        //                     polygon = L.polygon(coordinates, {color: 'red'});
-        //
-        //                 // markersArray.push(polygon);
-        //             }
-        //         }
-        //
-        //         markersArray.push(marker);
-        //     }
-        // }
-        //
-        //
-        // console.log('cutCoordinates: ', cutCoordinates);
-        // console.log('totalEmptyCoordinates: ', totalEmptyCoordinates);
-        // console.log('emptyCoordinatesWithoutPolygon: ', emptyCoordinatesWithoutPolygon);
-        // console.log('emptyCoordinatesWithPolygon: ', emptyCoordinatesWithPolygon);
-        //
-        // if (this.schoolsLayers) this.schoolsLayers.clearLayers();
-        // this.schoolsLayers = L.layerGroup(markersArray);
-        // this.map.addLayer(this.schoolsLayers);
     }
 
     _constructDivIcon(data={}) {
@@ -468,30 +305,9 @@ class EstateMap {
     }
 
     _constructMarkerPopup(data, counter) {
-        const { address, lat, lng, mlsNum } = data;
-
-        const testData = {
-            img: `https://picsum.photos/300/170??random=${counter+1}`,
-            listingPrice: 849888.88,
-            address: {
-                country: "Canada",
-                state: "British Columbia",
-                city: "Kelowna",
-                postalCode: "V1X3B1",
-                streetAddress: "285 Rutland Road, N",
-            },
-            metrics: {
-                yearBuilt: null,
-                bedRooms: null,
-                bathRooms: 2,
-                stories: 1,
-                lotSize: null,
-                lotSizeUnits: "acres",
-                sqrtFootage: null,
-                sqrtFootageUnits: "square feet",
-            },
-            mls: 'Whistler Real Estate Company Limited'
-        };
+        const
+            { coordinates } = data,
+            { lat, lng } = coordinates;
 
         return L.responsivePopup({
             maxWidth: this.markerPopupWidth,
@@ -503,7 +319,7 @@ class EstateMap {
             offset: [0, -15],
         })
             .setLatLng(L.latLng(lat,lng))
-            .setContent(mapTemplates.markerPopup(testData))
+            .setContent(mapTemplates.markerPopup(data))
     }
 
     _setMarkersObj(data, from=0) {
@@ -516,10 +332,10 @@ class EstateMap {
         this.markersShowedFrom = from;
 
         for (let i = from; i < to; i++) {
-            const currentItem = data[i];
-
-            if (currentItem) {
-                const { lat, lng, mlsNum } = data[i],
+            if (data[i]) {
+                const
+                    { coordinates, mlsNumber } = data[i],
+                    { lat, lng } = coordinates,
                     marker = L.marker(L.latLng(lat,lng), { icon: this._constructDivIcon()});
 
                 let popup = null;
@@ -529,7 +345,7 @@ class EstateMap {
                     this.map.openPopup(popup);
                 });
 
-                this.markersObj[mlsNum] = marker;
+                this.markersObj[mlsNumber] = marker;
             } else {
                 break;
             }
@@ -613,10 +429,10 @@ class EstateMap {
             };
 
             const
-                { address, mlsNum } = data[i],
-                $card = $(mapTemplates.estateCard(testData));
+                { mlsNumber } = data[i],
+                $card = $(mapTemplates.estateCard(data[i]));
             
-            this._bindCardMouseEvents($card, this.markersObj[mlsNum]);
+            this._bindCardMouseEvents($card, this.markersObj[mlsNumber]);
             cards.push($card);
         }
 
@@ -728,7 +544,7 @@ class EstateMap {
 
     _searchMarkers(box) {
         const
-            { path, cardsPreloader } = this.dataParams,
+            { path } = this.dataParams,
             requestParameters = {
                 url: path,
                 type: 'POST',
@@ -736,22 +552,16 @@ class EstateMap {
                 data: {box: JSON.stringify(box)}
             };
 
-        if (cardsPreloader) this.$estateCardsWrap.addClass('_loading');
-
-        $.ajax(requestParameters).done((data) => {
+        const request = $.ajax(requestParameters).done((data) => {
             this._parseMarkersData(data);
-        })
-            .fail((err) => {
-                console.log(err);
-            })
-            .always(() => {
-                this.$estateCardsWrap.removeClass('_loading');
-            })
+        });
+
+        this._showPreloader(request);
+        this._errorHandler(request);
     }
 
     _yelpSearch() {
         const
-            { yelpPreloader } = this.dataParams,
             mapBounds = this.map.getBounds(),
             center = this.map.getCenter(),
             { lat, lng } = center,
@@ -774,19 +584,14 @@ class EstateMap {
                 },
             };
 
-        if (yelpPreloader) this.$mapContainer.addClass('_loading');
-
-        $.ajax(requestParameters).done((data) => {
+        const request = $.ajax(requestParameters).done((data) => {
             this._addYelpMarkers(data);
             this._addYelpCardsToSlider(data);
             this._addYelpCardsToMapMenu(data);
-        })
-        .fail((err) => {
-            console.log(err);
-        })
-        .always(() => {
-            this.$mapContainer.removeClass('_loading');
-        })
+        });
+
+        this._showPreloader(request);
+        this._errorHandler(request);
     }
 
     _runRefreshTimer() {
@@ -900,6 +705,24 @@ class EstateMap {
         this.map.boxZoom[method]();
         this.map.keyboard[method]();
         if (this.map.tap) this.map.tap[method]();
+    }
+
+    _showPreloader(request) {
+        const startTime = $.now();
+
+        this.$mapContainer.addClass('_loading');
+
+        request.always(() => {
+            setTimeout(() => {
+                this.$mapContainer.removeClass('_loading');
+            }, Math.max(0, 1300 - ($.now() - startTime)))
+        });
+    }
+
+    _errorHandler(request) {
+        request.fail((err) => {
+            console.log(err);
+        });
     }
 }
 
