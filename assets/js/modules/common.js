@@ -31,6 +31,8 @@ var $_ = {
         this.initKeywordsInput();
         this.initAutofill();
         this.initClickPrevent();
+        this.initTwinFields();
+        this.initInputOnlyNumber();
     },
     
     initCache() {
@@ -119,6 +121,10 @@ var $_ = {
         this.$autofillInput = $('.js-autofill-input');
         this.$autofillOptionsContainer = $('.js-autofill-options-container');
 
+        this.$twinFields = $('.js-twin-fields');
+
+        this.$onlyNumbers = $('.js-only-numbers');
+
         this.windowWidth = window.outerWidth;
         this.windowHeight = $_.$window.height();
         
@@ -147,6 +153,66 @@ var $_ = {
             return !!('ontouchstart' in window);
         }
         is_touch_device();
+    },
+
+    initInputOnlyNumber() {
+        $_.$onlyNumbers.on('keyup change', (e) => {
+            const
+                $currentTarget = $(e.currentTarget),
+                val = $currentTarget.val(),
+                fixVal = _getPureNumber(val);
+
+            if (val !== fixVal) $currentTarget.val(fixVal).trigger('change');
+        });
+    },
+
+    initTwinFields() {
+        function getSelectOption(obj) {
+            const { $wrap, name, val } = obj;
+            return $wrap.find(`[data-name="${name}"]`).find(`[data-value="${val}"]`);
+        }
+
+        $_.$twinFields.each((key, item) => {
+            const
+                $currentModule = $(item),
+                $relatedFields = $currentModule.find('input, select');
+
+            $relatedFields.on('change', () => {
+                const
+                    values = $relatedFields.serializeArray(),
+                    { name: fistInputName, value: fistInputValue } = values[0],
+                    { name: secondInputName, value: secondInputValue } = values[1];
+
+                if ((+fistInputValue && +secondInputValue) && (+fistInputValue > +secondInputValue)) {
+                    if ($relatedFields.is('input')) {
+                        const
+                            firstInputVal = $relatedFields.eq(0).val(),
+                            secondInputVal = $relatedFields.eq(1).val();
+
+                        $relatedFields.eq(0).val(secondInputVal);
+                        $relatedFields.eq(1).val(firstInputVal);
+                    }
+
+                    if ($relatedFields.is('select')) {
+                        const
+                            $setFirstSelectOption = getSelectOption({
+                                $wrap: $currentModule,
+                                name: fistInputName,
+                                val: secondInputValue,
+                            }),
+                            $setSecondSelectOption = getSelectOption({
+                                $wrap: $currentModule,
+                                name: secondInputName,
+                                val: fistInputValue,
+                            });
+
+                        if ($setFirstSelectOption.length && $setSecondSelectOption.length) {
+                            $setFirstSelectOption.add($setSecondSelectOption).click();
+                        }
+                    }
+                }
+            });
+        });
     },
 
     initClickPrevent() {
@@ -424,8 +490,9 @@ var $_ = {
             $btn[selected ? 'addClass' : 'removeClass']('_selected');
         }
 
-        function findFieldText($btn, val) {
-            return $btn.find(`[value="${val}"]`).text();
+        function getSelectOptionText(obj) {
+            const { $btn, name, val } = obj;
+            return $btn.find(`[data-name="${name}"]`).find(`[data-value="${val}"]`).data('text');
         }
 
         function showSelected(data) {
@@ -449,18 +516,38 @@ var $_ = {
             if (patternTwin) {
                 const
                     { first, last, both } = patternTwin,
-                    valueFirst = values[0] && values[0].value,
-                    valueSecond = values[1] && values[1].value;
+                    { name: fistInputName, value: fistInputValue } = values[0],
+                    { name: secondInputName, value: secondInputValue } = values[1];
 
-                if (valueFirst && valueSecond) {
-                    $selectedContainer.html(both.replace(patternReplace, valueFirst).replace(patternReplace, valueSecond));
-                } else if (valueFirst) {
-                    $selectedContainer.html(first.replace(patternReplace, valueFirst));
+                if (fistInputValue && secondInputValue) {
+                    $selectedContainer.html(
+                        both
+                            .replace(patternReplace, getSelectOptionText({
+                                $btn: $currentButton,
+                                name: fistInputName,
+                                val: fistInputValue,
+                            }))
+                            .replace(patternReplace, getSelectOptionText({
+                                $btn: $currentButton,
+                                name: secondInputName,
+                                val: secondInputValue,
+                            }))
+                    );
+                } else if (fistInputValue) {
+                    $selectedContainer.html(first.replace(patternReplace, getSelectOptionText({
+                        $btn: $currentButton,
+                        name: fistInputName,
+                        val: fistInputValue,
+                    })));
                 } else {
-                    $selectedContainer.html(last.replace(patternReplace, valueSecond));
+                    $selectedContainer.html(last.replace(patternReplace, getSelectOptionText({
+                        $btn: $currentButton,
+                        name: secondInputName,
+                        val: secondInputValue,
+                    })));
                 }
 
-                toggleButton($currentButton, !!(valueFirst || valueSecond));
+                toggleButton($currentButton, !!(fistInputValue || secondInputValue));
             }
 
             if (patternMulti) {

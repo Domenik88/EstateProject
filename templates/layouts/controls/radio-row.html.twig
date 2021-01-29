@@ -1,91 +1,40 @@
 {% set defaultLists = {
     baths: [
-        {
-            name: 'baths',
-            value: '',
-            text: 'Any',
-            checked: true,
-        },
-        {
-            name: 'baths',
-            value: '1',
-            text: '1',
-        },
-        {
-            name: 'baths',
-            value: '2',
-            text: '2',
-        },
-        {
-            name: 'baths',
-            value: '3',
-            text: '3',
-        },
-        {
-            name: 'baths',
-            value: '4',
-            text: '4',
-        },
-        {
-            name: 'baths',
-            value: '5+',
-            text: '5+',
-        },
+        "Any",
+        "1+",
+        "2+",
+        "3+",
+        "4+",
+        "5+",
     ],
 
     beds: [
-        {
-            name: 'beds',
-            value: '',
-            text: 'Studio+',
-            checked: true,
-        },
-        {
-            name: 'beds',
-            value: '1',
-            text: '1',
-        },
-        {
-            name: 'beds',
-            value: '2',
-            text: '2',
-        },
-        {
-            name: 'beds',
-            value: '3',
-            text: '3',
-        },
-        {
-            name: 'beds',
-            value: '4',
-            text: '4',
-        },
-        {
-            name: 'beds',
-            value: '5',
-            text: '5',
-        },
-        {
-            name: 'beds',
-            value: '6+',
-            text: '6+',
-        },
+        "Studio+",
+        "1+",
+        "2+",
+        "3+",
+        "4+",
     ]
 } %}
 
 {% set useList = list|default(false) ? list : (defaultList ? defaultLists[defaultList] : []) %}
 
 <div class="radio-row {{ wrapMod|default('') }}">
-    {% for item in useList %}
+    {% for item in useList|cast_to_array %}
+        {% set checkedAttr = firstNotChecked|default(false) ? '' : (loop.index0 ? '' : 'checked') %}
+        {% set value = item.value|default(false) ? item.value : (loop.index0 ? item : '') %}
+        {% set text = item.text|default(false) ? item.text : item %}
+
         <div class="radio-row__item">
             <input
                     class="radio-row__input"
                     type="radio"
-                    name="{{ item.name }}" value="{{ item.value }}"
-                    {{ item.checked|default(false) ? 'checked' : '' }}
+                    name="{{ name }}"
+                    value="{{ value }}"
+                    {{ checkedAttr }}
             >
             <div class="radio-row__indicator"></div>
-            <div class="radio-row__text small-text_bold {{ item.textMod|default('') }}">{{ item.text|default('') }}</div>
+            <div class="radio-row__text {{ textMod|default('small-text_bold') }}">{{ text }}</div>
         </div>
     {% endfor %}
 </div>

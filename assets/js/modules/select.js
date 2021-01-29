@@ -52,7 +52,10 @@ jQuery(function($) {
                 
                 if (!isDisabled) {
                     $opt_container.append(`
-                        <div class="select-module__option js-select-module-option ${selectedClass}" data-value="${value}">
+                        <div class="select-module__option js-select-module-option ${selectedClass}" 
+                            data-value="${value}"
+                            data-text="${title}"
+                        >
                             ${title}
                         </div>
                     `);

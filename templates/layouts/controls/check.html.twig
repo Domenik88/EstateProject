@@ -6,5 +6,5 @@
             {{ checked|default(false) ? 'checked' : '' }}
     >
     <div class="check__indicator"></div>
-    <div class="check__text tiny-text">{{ text|raw }}</div>
+    <div class="check__text tiny-text">{{ (valueAsText|default(false) ? value : text)|raw }}</div>
 </div>

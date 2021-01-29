@@ -19,9 +19,9 @@
                 <span class="intro__subtitle subtitle_bold mt20">{{ subtitle }}</span>
             {% endif %}
 
-            {% if fullSearch|default(false) %}
+            {% if fullSearch|default(false) and searchFormObject|default(false) %}
                 <div class="intro__full-search-wrap mt50">
-                    {% include 'layouts/modules/full-search.html.twig' %}
+                    {% include 'layouts/modules/full-search.html.twig' with searchFormObject only %}
                 </div>
             {% endif %}
 
