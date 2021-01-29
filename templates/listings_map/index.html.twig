@@ -1,27 +1,27 @@
 {% set mapTableMenu = [
     {
         text: 'Map',
-        linkMod: 'js-',
-        dataVal: 'map',
+        linkMod: 'js-map-layer-option',
+        dataVal: 'markers',
     },
     {
         text: 'Schools',
-        linkMod: 'js-map-show-schools',
+        linkMod: 'js-map-layer-option',
         dataVal: 'schools',
     },
     {
         text: 'Crime',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option',
         dataVal: 'crime',
     },
     {
         text: 'Commute',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option',
         dataVal: 'commute',
     },
     {
         text: 'Shop & Eat',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option',
         dataVal: 'yelp',
     },
 ] %}
@@ -76,7 +76,7 @@
 
                     {% include 'layouts/controls/button.html.twig' with {
                         'text': 'Save Search',
-                        'mod': '_bordered-gray js-save-map-filter',
+                        'mod': '_bordered-gray js-save-map-filter js-map-draw',
                     } only %}
                 </div>
 
@@ -145,17 +145,20 @@
                         <div class="map-container js-map-container">
                             {% include 'layouts/common/spinner.html.twig' %}
 
-                            <div class="map" id="estate-map" data-params='{
-                                "path":"/listing/search",
-                                "schoolsPath":"/school/search",
-                                "center":[49.20984,-122.87793],
-                                "zoom":13,
-                                "minZoom":10,
-                                "refreshMarkers":true,
-                                "refreshYelp":true,
-                                "cardsPerPage":48,
-                                "maxMarkersCount":480
-                            }'></div>
+                            <div class="map" id="estate-map" data-params={{
+                                {
+                                    path: "/listing/search",
+                                    schoolsPath: "/school/search",
+                                    center: [49.20984,-122.87793],
+                                    zoom: 13,
+                                    minZoom: 10,
+                                    refreshMarkers: true,
+                                    refreshYelp: true,
+                                    cardsPerPage: 48,
+                                    maxMarkersCount: 480,
+                                    refreshLayers: ['map', 'yelp', 'schools'],
+                                }|json_encode
+                            }}></div>
                         </div>
                     </div>
                 </div>
