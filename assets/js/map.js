@@ -286,15 +286,46 @@ class EstateMap {
             };
 
         const request = $.ajax(requestParameters).done((data) => {
-            this._addSchools(data);
+            this._parseSchoolsData(data);
+            this._addSchools();
         });
 
         this._showPreloader(request, 'schools');
         this._errorHandler(request);
     }
 
-    _addSchools(data) {
-        console.log(data);
+    _parseSchoolsData(data) {
+        this.layers.schools.data = [];
+
+        for (let i = 0; i < data.length; i++) {
+            const
+                { areas, coordinates } = data[i],
+                { latitude, longitude } = coordinates,
+                marker = L.marker(
+                    L.latLng(latitude,longitude),
+                    {
+                        icon: this._constructDivIcon({ mod: '_school' })
+                    }
+                );
+
+            if (areas) {
+                this.layers.schools.data.push(L.polygon(
+                    areas.map(item => Object.values(item)),
+                    {
+                        color: 'red',
+                        weight: 0,
+                    }
+                ));
+            }
+
+            this.layers.schools.data.push(marker);
+        }
+    }
+
+    _addSchools() {
+        if (this.layers.schools.layer) this.layers.schools.layer.clearLayers();
+        this.layers.schools.layer = L.layerGroup(this.layers.schools.data);
+        this.map.addLayer(this.layers.schools.layer);
     }
 
     _constructDivIcon(data={}) {
@@ -417,7 +448,7 @@ class EstateMap {
         this.$estateCardsList.html('').append(cards);
     }
 
-    _addYelpMarkers(data) {
+    _parseYelpMarkers(data) {
         const { businesses } = data;
         this.layers.yelp.data = {};
 
@@ -471,7 +502,9 @@ class EstateMap {
                 this.layers.yelp.data[id] = marker;
             }
         }
+    }
 
+    _addYelpMarkers() {
         if (this.layers.yelp.layer) this.layers.yelp.layer.clearLayers();
         this.layers.yelp.layer = L.layerGroup(Object.values(this.layers.yelp.data));
         this.map.addLayer(this.layers.yelp.layer);
@@ -568,7 +601,8 @@ class EstateMap {
             };
 
         const request = $.ajax(requestParameters).done((data) => {
-            this._addYelpMarkers(data);
+            this._parseYelpMarkers(data);
+            this._addYelpMarkers();
             this._addYelpCardsToSlider(data);
             this._addYelpCardsToMapMenu(data);
         });
@@ -630,9 +664,7 @@ class EstateMap {
                     if (this._checkLayerBox(this.layers.yelp)) {
                         this._yelpSearch();
                     } else {
-                        this._addYelpMarkers(this.layers.yelp.data);
-                        this._addYelpCardsToSlider(this.layers.yelp.data);
-                        this._addYelpCardsToMapMenu(this.layers.yelp.data);
+                        this._addYelpMarkers();
                     }
                     break;
             }

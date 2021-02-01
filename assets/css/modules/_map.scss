@@ -448,8 +448,9 @@
             z-index: 2;
         }
         
-        &.school {
-            background: blue;
+        &._school {
+            background: $fuchsia;
+            border-radius: 0;
         }
     }
     
