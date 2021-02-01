@@ -9,6 +9,7 @@
 
 namespace App\Service\Listing;
 
+use App\Criteria\ListingSearchCriteria;
 use App\Repository\ListingRepository;
 
 class ListingSearchService
@@ -20,9 +21,9 @@ class ListingSearchService
         $this->listingRepository = $listingRepository;
     }
 
-    public function searchListings($criteria = []): ?array
+    public function searchListings(ListingSearchCriteria $criteria): ?array
     {
-        $result = $this->listingRepository->findBy($criteria);
+        $result = $this->listingRepository->findBy($criteria->toArray());
         dump($result);
         die;
         return [];

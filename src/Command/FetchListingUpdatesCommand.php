@@ -2,11 +2,13 @@
 
 namespace App\Command;
 
+use App\Criteria\ListingSearchCriteria;
 use App\Repository\ListingRepository;
 use App\Service\Feed\DdfListingMasterService;
 use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
 use App\Service\Feed\SearchUpdatedDdfListingsService;
+use App\Service\Listing\ListingSearchService;
 use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -27,8 +29,9 @@ class FetchListingUpdatesCommand extends Command
     private FeedService $feedService;
     private DdfListingMasterService $ddfListingMasterService;
     private SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService;
+    private ListingSearchService $listingSearchService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService, ListingSearchService $listingSearchService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
@@ -37,6 +40,7 @@ class FetchListingUpdatesCommand extends Command
         $this->feedService = $feedService;
         $this->ddfListingMasterService = $ddfListingMasterService;
         $this->searchUpdatedDdfListingsService = $searchUpdatedDdfListingsService;
+        $this->listingSearchService = $listingSearchService;
         parent::__construct();
     }
 
@@ -51,6 +55,9 @@ class FetchListingUpdatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $criteria = new ListingSearchCriteria(null,null, 3);
+        $data = $this->listingSearchService->searchListings($criteria);
+        dump($data);die;
         $commandLastRunTimeDate = new \DateTime();
         $io = new SymfonyStyle($input, $output);
         $io->success("Start fetching listings");
