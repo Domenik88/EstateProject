@@ -74,6 +74,15 @@
         &_left {
             width: 850px;
             
+            &::before {
+                content: '';
+                display: block;
+                @include absolute(0,auto,auto,-110%);
+                width: 100%;
+                height: 100%;
+                z-index: 90;
+            }
+            
             .estate-content {
             
             }
@@ -168,6 +177,47 @@
     }
 }
 
+.map-interface-wrap {
+    &:not(._drawing) {
+        .map-draw-bar {
+            display: none;
+        }
+    }
+    
+    &._drawing {
+        .map-section__filter-wrap,
+        .map-section__sort-wrap,
+        .map-section__nav-wrap,
+        .map-section__cards-container,
+        .map-buttons-bar,
+        .leaflet-control-zoom,
+        .leaflet-control-layers,
+        .leaflet-marker-icon {
+            opacity: .3;
+            pointer-events: none;
+        }
+    
+        .map-section__col_left::before {
+            left: 0;
+        }
+    }
+    
+    &:not(._draw-apply) {
+        .remove-boundary-button {
+            display: none;
+        }
+        .edit-boundary-button {
+            display: none;
+        }
+    }
+    
+    &._draw-apply {
+        .draw-button {
+            display: none;
+        }
+    }
+}
+
 .map-container {
     position: relative;
     overflow: hidden;
@@ -206,37 +256,6 @@
     
     .leaflet-control-layers-toggle {
         background-image: url(../../images/map/layers.png);
-    }
-    
-    &:not(._show-draw-bar) {
-        .map-draw-bar {
-            display: none;
-        }
-    }
-    
-    &._show-draw-bar {
-        .map-buttons-bar,
-        .leaflet-control-zoom,
-        .leaflet-control-layers,
-        .leaflet-marker-icon {
-            opacity: .3;
-            pointer-events: none;
-        }
-    }
-    
-    &:not(._draw) {
-        .remove-boundary-button {
-            display: none;
-        }
-        .edit-boundary-button {
-            display: none;
-        }
-    }
-    
-    &._draw {
-        .draw-button {
-            display: none;
-        }
     }
 }
 
@@ -400,9 +419,11 @@
     .marker-inner {
         width: 100%;
         height: 100%;
-        background: green;
         border-radius: 50%;
         box-sizing: content-box;
+        //background: green;
+        //background: $fuchsia;
+        background: $turquoise;
         
         &::before,
         &::after {
@@ -422,7 +443,7 @@
         }
         
         &::after {
-            border: 1px solid $white;
+            border: 2px solid $white;
             box-sizing: border-box;
             z-index: 2;
         }

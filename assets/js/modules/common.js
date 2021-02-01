@@ -560,7 +560,12 @@ var $_ = {
                 dataInitMap = $currentLink.data('init-map'),
                 $wrap = $currentLink.closest($_.selectors.jsWrap);
 
-            if (dataInitMap) $_.$body.trigger('trigger:init-map', dataInitMap);
+            console.log('$contentTabNav click');
+
+            if (dataInitMap) {
+                $_.$body.trigger('trigger:init-map', dataInitMap);
+                $currentLink.trigger('trigger:click');
+            }
 
             if ($.isArray(dataContentId)) {
                 dataContentId.forEach(item => switchTabs($wrap, item));

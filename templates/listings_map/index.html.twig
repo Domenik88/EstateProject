@@ -2,7 +2,7 @@
     {
         text: 'Map',
         linkMod: 'js-map-layer-option',
-        dataVal: 'markers',
+        dataVal: 'listings',
     },
     {
         text: 'Schools',
@@ -36,7 +36,7 @@
 {% block title %}Hello MapListingsController!{% endblock %}
 
 {% block body %}
-    <div class="map-section pt40 js-map-interface-wrap">
+    <div class="map-section pt40 map-interface-wrap js-map-interface-wrap">
         <div class="map-section__title-wrap mb20">
             <h4 class="map-section__title h4">1,504 Vancouver, BC Real Estate for Sale</h4>
         </div>
@@ -156,7 +156,8 @@
                                     refreshYelp: true,
                                     cardsPerPage: 48,
                                     maxMarkersCount: 480,
-                                    refreshLayers: ['map', 'yelp', 'schools'],
+                                    refreshLayers: ['listings'],
+                                    preventClear: ['listings']
                                 }|json_encode
                             }}></div>
                         </div>

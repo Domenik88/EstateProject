@@ -28,7 +28,7 @@
 	}
 }
 
-._loading {
+[class*='_loading-'] {
 	.spinner {
 		opacity: 1;
 		
