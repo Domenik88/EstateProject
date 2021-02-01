@@ -29,7 +29,7 @@ class SchoolData
     public ?array $areas;
     public ?string $distance;
 
-    public function __construct(School $school, ?string $distance)
+    public function __construct(School $school, string $distance = null)
     {
         $this->name = (string)$school->getSchoolName();
         $this->street = (string)$school->getStreet();
@@ -43,7 +43,7 @@ class SchoolData
         $this->uri = (string)$school->getWebUrl();
         $this->coordinates = $school->getCoordinates();
         $this->areas = $school->getAreas();
-        $this->distance = $distance;
+        $this->distance = $distance ? $distance : null;
 
         return $this;
     }
