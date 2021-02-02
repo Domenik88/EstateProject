@@ -1,106 +1,20 @@
 {% set defaultLists = {
     common: [
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Apartment/Condo',
-            text: 'Apartment/Condo',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'House',
-            text: 'House',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Multifamily',
-            text: 'Multifamily',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Townhouse',
-            text: 'Townhouse',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Land Only',
-            text: 'Land Only',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Other',
-            text: 'Other',
-            wrapMod: '_dark-gray',
-        },
+       "Aaprtment/Condo",
+       "House",
+       "Multifamily",
+       "Townhouse",
+       "Land Only",
+       "Other",
     ],
 
     commercial: [
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Agri-Business',
-            text: 'Agri-Business',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Business',
-            text: 'Business',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Business with Property',
-            text: 'Business with Property',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Industrial',
-            text: 'Industrial',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Land',
-            text: 'Land',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Multi-Family',
-            text: 'Multi-Family',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Office',
-            text: 'Office',
-            wrapMod: '_dark-gray',
-        },
-        {
-            type: 'checkbox',
-            name: 'property-type',
-            value: 'Retail',
-            text: 'Retail',
-            wrapMod: '_dark-gray',
-        },
+        "Aaprtment/Condo",
+        "House",
+        "Multifamily",
+        "Townhouse",
+        "Land Only",
+        "Other",
     ]
 } %}
 
@@ -121,8 +35,14 @@
 } only %}
     {% block dropdown_content %}
         <div class="list">
-            {% for item in list %}
-                {% include 'layouts/controls/check.html.twig' with item only %}
+            {% for item in list|cast_to_array %}
+                {% include 'layouts/controls/check.html.twig' with {
+                    type: 'checkbox',
+                    name: 'property-type',
+                    wrapMod: '_dark-gray',
+                    valueAsText: true,
+                    value: item
+                } only %}
             {% endfor %}
         </div>
     {% endblock %}

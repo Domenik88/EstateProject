@@ -1,49 +1,41 @@
-{% set fullSearchMinPriceSelect = {
-    name: 'min-price',
-    inputMod: '_bordered-bright',
-    options: [
-        {
-            value: false,
-            text: 'No Min',
-            selected: true,
-        },
-        {
-            value: '100',
-            text: 'CA$100',
-        },
-        {
-            value: '200',
-            text: 'CA$200',
-        },
-    ]
-} %}
+{% set fullSearchMinPriceSelect = [
+    "No min",
+    10000,
+    20000,
+    30000,
+    50000,
+    100000,
+    500000,
+    800000,
+    900000,
+    1000000,
+    1200000,
+    1400000,
+    1500000,
+] %}
 
-{% set fullSearchMaxPriceSelect = {
-    name: 'max-price',
-    inputMod: '_bordered-bright',
-    options: [
-        {
-            value: false,
-            text: 'No Max',
-            selected: true,
-        },
-        {
-            value: '100',
-            text: 'CA$100',
-        },
-        {
-            value: '200',
-            text: 'CA$200',
-        },
-    ]
-} %}
+{% set fullSearchMaxPriceSelect = [
+    "No max",
+    10000,
+    20000,
+    30000,
+    50000,
+    100000,
+    500000,
+    800000,
+    900000,
+    1000000,
+    1200000,
+    1400000,
+    1500000,
+] %}
 
 {% embed 'layouts/containers/dropdown-button.html.twig' with {
     placeholder: placeholder|default('Price'),
     wrapMod: wrapMod|default(''),
     popupMod: popupMod|default('_small-padding'),
-    selectMin: minSlecet|default(fullSearchMinPriceSelect),
-    selectMax: maxSelect|default(fullSearchMaxPriceSelect),
+    arrayMin: pricesArrayFrom|default(fullSearchMinPriceSelect),
+    arrayMax: pricesArrayTo|default(fullSearchMaxPriceSelect),
     dataProps: {
         patternReplace: '@',
         patternTwin: {
@@ -54,9 +46,19 @@
     }
 } only %}
     {% block dropdown_content %}
-        <div class="twin-fields">
-            {% include 'layouts/form/select.html.twig' with selectMin only %}
-            {% include 'layouts/form/select.html.twig' with selectMax only %}
+        <div class="twin-fields js-twin-fields">
+            {% include 'layouts/form/select.html.twig' with {
+                name: 'min-price',
+                inputMod: '_bordered-bright',
+                formatBigPrice: true,
+                options: arrayMin,
+            } only %}
+            {% include 'layouts/form/select.html.twig' with {
+                name: 'max-price',
+                inputMod: '_bordered-bright',
+                formatBigPrice: true,
+                options: arrayMax,
+            } only %}
         </div>
     {% endblock %}
 {% endembed %}

@@ -75,6 +75,12 @@
     ]
 }%}
 
+{#{{ dump(type) }}#}
+{#{{ dump(priceFrom) }}#}
+{#{{ dump(priceTo) }}#}
+{#{{ dump(beds) }}#}
+{#{{ dump(baths) }}#}
+
 <form class="full-search js-full-search">
     <div class="full-search__nav-wrap mb20">
         <input type="text" class="pseudo-hidden js-full-search-type" name="search-type" />
@@ -98,35 +104,43 @@
             <div class="full-search__selects-group">
                 {% include 'layouts/form/checkbox-list-select.html.twig' with {
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
-                    defaultList: 'common',
                     placeholder: 'Any',
+                    list: type,
                 } %}
 
+                {# TODO: commercial type #}
                 {% include 'layouts/form/checkbox-list-select.html.twig' with {
                     wrapMod: '_fh js-fs-tab js-fs-tab-commercial _hide',
-                    defaultList: 'commercial',
                     placeholder: 'Any',
+                    defaultList: 'commercial',
                 } %}
 
                 {% include 'layouts/form/price-select.html.twig' with {
                     wrapMod: '_fh',
+                    pricesArrayFrom: priceFrom,
+                    pricesArrayTo: priceTo,
                 } %}
             </div>
 
             <div class="full-search__selects-group">
                 {% include 'layouts/form/radio-row-select.html.twig' with {
+                    name: 'beds',
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
-                    defaultList: 'beds',
                     placeholder: 'Beds',
+                    list: beds,
                 } %}
 
                 {% include 'layouts/form/radio-row-select.html.twig' with {
+                    name: 'baths',
                     wrapMod: '_fh js-fs-tab js-fs-tab-default',
-                    defaultList: 'baths',
                     placeholder: 'Baths',
+                    list: baths,
                 } %}
 
+                {# TODO: building size #}
                 {% include 'layouts/form/select.html.twig' with fullSearchBuildingSizeSelect only %}
+
+                {# TODO: lot size #}
                 {% include 'layouts/form/select.html.twig' with fullSearchlotSizeSelect only %}
             </div>
         </div>

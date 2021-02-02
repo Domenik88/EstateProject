@@ -148,7 +148,8 @@
 
         <div class="filter-more__fields-wrap">
             {% include 'layouts/controls/radio-row.html.twig' with {
-                defaultList: 'baths'
+                name: 'baths',
+                list: baths,
             } only %}
         </div>
     </div>
@@ -157,17 +158,17 @@
         <span class="filter-more__label small-text mb5">Square Feet</span>
 
         <div class="filter-more__fields-wrap">
-            <div class="twin-fields">
+            <div class="twin-fields js-twin-fields">
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'square-feet-min',
                     'placeholder': 'No Min',
-                    'inputMod': '_bordered-bright',
+                    'inputMod': '_bordered-bright js-only-numbers',
                 } only %}
 
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'square-feet-max',
                     'placeholder': 'No Max',
-                    'inputMod': '_bordered-bright',
+                    'inputMod': '_bordered-bright js-only-numbers',
                 } only %}
             </div>
         </div>
@@ -185,17 +186,17 @@
         <span class="filter-more__label small-text mb5">Year Built</span>
 
         <div class="filter-more__fields-wrap">
-            <div class="twin-fields">
+            <div class="twin-fields js-twin-fields">
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'year-built-min',
                     'placeholder': 'No Min',
-                    'inputMod': '_bordered-bright',
+                    'inputMod': '_bordered-bright js-only-numbers',
                 } only %}
 
                 {% include 'layouts/form/input.html.twig' with {
                     'name': 'year-built-max',
                     'placeholder': 'No Max',
-                    'inputMod': '_bordered-bright',
+                    'inputMod': '_bordered-bright js-only-numbers',
                 } only %}
             </div>
         </div>

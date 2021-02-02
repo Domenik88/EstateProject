@@ -12,13 +12,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ListingsMapController extends AbstractController
 {
+    private ListingService $listingService;
+
+    public function __construct(ListingService $listingService)
+    {
+        $this->listingService = $listingService;
+    }
+
     /**
      * @Route("/map", priority=10, name="listings_map")
      */
+
     public function index()
     {
+        $searchFormObject = $this->listingService->getSearchFormObject();
         return $this->render('listings_map/index.html.twig', [
             'controller_name' => 'ListingsMapController',
+            'searchFormObject' => $searchFormObject,
         ]);
     }
 

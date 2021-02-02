@@ -47,18 +47,21 @@
                     <div class="map-section__filter-wrap mb20">
                         {% include 'layouts/form/price-select.html.twig' with {
                             wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            pricesArrayFrom: searchFormObject.priceFrom,
+                            pricesArrayTo: searchFormObject.priceTo,
                         } %}
 
                         {% include 'layouts/form/radio-row-select.html.twig' with {
+                            name: 'beds',
                             wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                            defaultList: 'beds',
                             placeholder: 'Beds',
+                            list: searchFormObject.beds,
                         } %}
 
                         {% include 'layouts/form/checkbox-list-select.html.twig' with {
                             wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                            defaultList: 'common',
                             placeholder: 'All Home Types',
+                            list: searchFormObject.type,
                         } %}
 
                         {% embed 'layouts/containers/dropdown-button.html.twig' with {
@@ -68,10 +71,11 @@
                             scroll: true,
                             dataProps: {
                                 patternFixed: 'More',
-                            }
+                            },
+                            searchFormObject,
                         } only %}
                             {% block dropdown_content %}
-                                {% include 'layouts/form/filter-more.html.twig' %}
+                                {% include 'layouts/form/filter-more.html.twig' with searchFormObject only %}
                             {% endblock %}
                         {% endembed %}
 
