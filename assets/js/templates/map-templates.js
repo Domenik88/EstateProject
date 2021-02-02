@@ -1,5 +1,5 @@
 export const mapTemplates = {
-    markerPopup: ({
+    listingMarkerPopup: ({
         images,
         financials,
         address,
@@ -37,6 +37,10 @@ export const mapTemplates = {
             </div>
         </div>
     `,
+
+    schoolMarkerPopup: () => {
+
+    },
 
     estateCard: ({
          images,
@@ -209,6 +213,30 @@ export const mapTemplates = {
     yelpSimpleCard: (data) => `
         <div class="yelp-simple-card">
             ${mapTemplates.yelpMarkerPopup(data)}
+        </div>
+    `,
+
+    schoolCard: ({
+        name,
+        street,
+        city,
+        state,
+        distance,
+        rating='7/10',
+        rank='Above Average',
+    }) => `
+        <div class="school-card">
+            <span class="school-card__title h5">${name}</span>
+            <span class="school-card__address tiny-text">
+                ${[street, city, state].filter(el => el !== null).join(', ')}
+            </span>
+            
+            <div class="school-card__bottom mt5">
+                <span class="school-card__rank small-text_bold">${rank}</span>
+                <span class="school-card__separate tiny-text">
+                    ${[distance, ('Rating ' + rating)].filter(el => el !== null).join(' | ')}
+                </span>    
+            </div>
         </div>
     `,
 
