@@ -8,10 +8,16 @@
             <option value="" disabled selected></option>
         {% endif %}
 
-        {% for option in options %}
-            {% set selecter_attr = option.selected|default(false) ? 'selected="selected"' : '' %}
+        {% for option in options|cast_to_array %}
+            {% set selectedAttr = initialEmpty|default(false) ? '' : (loop.index0 ? '' : 'selected=selected') %}
+            {% set value = option.value|default(false) ? option.value : (loop.index0 ? option : '') %}
+            {% set text = option.text|default(false) ? option.text : option %}
+            {% set formatText = formatBigPrice|default(false) and loop.index0 ?
+                'CA$' ~ (text >= 1000000 ? text/1000000 ~ 'm' : text/1000 ~ 'k') :
+                text
+            %}
 
-            <option value="{{ option.value }}"{{ selecter_attr }}>{{ option.text }}</option>
+            <option value="{{ value }}" {{ selectedAttr }}>{{ formatText }}</option>
         {% endfor %}
     </select>
 
@@ -23,7 +29,7 @@
         </span>
     </div>
 
-    <div class="select-module__dropdown">
+    <div class="select-module__dropdown" data-name="{{ name }}">
         <div class="select-module__scroll js-select-module-scrollbar js-select-module-options">
         </div>
     </div>

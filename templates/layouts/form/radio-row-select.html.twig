@@ -4,6 +4,7 @@
     popupMod: '_small-padding',
     list: list|default(false),
     defaultList: defaultList|default(false),
+    name: name,
     dataProps: {
         patternReplace: '@',
         patternSimple: "@&#32;Beds"
@@ -11,6 +12,7 @@
 } only %}
     {% block dropdown_content %}
         {% include 'layouts/controls/radio-row.html.twig' with {
+            name: name,
             list: list|default(false),
             defaultList: defaultList|default(false)
         } only %}
