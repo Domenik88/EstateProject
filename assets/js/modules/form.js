@@ -150,30 +150,27 @@ jQuery(function($) {
             }
             
             for (var i = 0; i < form_arr.length; i++) {
-                if (form_arr[i].value.length > 0) {
-                    
-                    var $current_input = $fieldsToAssembly.filter('[name=' + form_arr[i].name + ']'),
-                        value_arr = {};
-                    
-                    if ($current_input.attr('type') !== 'hidden') {
-                        var title = $current_input.attr('data-title');
-                        
-                        if (!formdata[form_arr[i].name]) {
-                            value_arr['value'] = form_arr[i].value;
-                            value_arr['title'] = title;
-                            formdata[form_arr[i].name] = value_arr;
-                        } else {
-                            if (typeof formdata[form_arr[i].name].value === 'string') {
-                                const currentVal = formdata[form_arr[i].name].value;
-                                formdata[form_arr[i].name].value = [];
-                                formdata[form_arr[i].name].value.push(currentVal);
-                            } else {
-                                formdata[form_arr[i].name].value.push(form_arr[i].value);
-                            }
-                        }
+                var $current_input = $fieldsToAssembly.filter('[name=' + form_arr[i].name + ']'),
+                    value_arr = {};
+
+                if ($current_input.attr('type') !== 'hidden') {
+                    var title = $current_input.attr('data-title');
+
+                    if (!formdata[form_arr[i].name]) {
+                        value_arr['value'] = form_arr[i].value;
+                        value_arr['title'] = title;
+                        formdata[form_arr[i].name] = value_arr;
                     } else {
-                        formSendAll.append(form_arr[i].name, form_arr[i].value);
+                        if (typeof formdata[form_arr[i].name].value === 'string') {
+                            const currentVal = formdata[form_arr[i].name].value;
+                            formdata[form_arr[i].name].value = [];
+                            formdata[form_arr[i].name].value.push(currentVal);
+                        } else {
+                            formdata[form_arr[i].name].value.push(form_arr[i].value);
+                        }
                     }
+                } else {
+                    formSendAll.append(form_arr[i].name, form_arr[i].value);
                 }
             }
             

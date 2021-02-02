@@ -2,11 +2,11 @@
     {
         text: 'Map',
         linkMod: 'js-map-layer-option',
-        dataVal: 'markers',
+        dataVal: 'listings',
     },
     {
         text: 'Schools',
-        linkMod: 'js-map-layer-option js-map-show-schools',
+        linkMod: 'js-map-layer-option',
         dataVal: 'schools',
     },
     {
@@ -36,84 +36,88 @@
 {% block title %}Hello MapListingsController!{% endblock %}
 
 {% block body %}
-    <div class="map-section pt40 js-map-interface-wrap">
+    <div class="map-section pt40 map-interface-wrap js-map-interface-wrap">
         <div class="map-section__title-wrap mb20">
             <h4 class="map-section__title h4">1,504 Vancouver, BC Real Estate for Sale</h4>
         </div>
 
         <div class="map-section__table">
             <div class="map-section__col map-section__col_left js-estate-cards-wrap">
-                <div class="map-section__filter-wrap mb20">
-                    {% include 'layouts/form/price-select.html.twig' with {
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        pricesArrayFrom: searchFormObject.priceFrom,
-                        pricesArrayTo: searchFormObject.priceTo,
-                    } %}
+                <form class="map-section__form js-ajax-form">
+                    <div class="map-section__filter-wrap mb20">
+                        {% include 'layouts/form/price-select.html.twig' with {
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            pricesArrayFrom: searchFormObject.priceFrom,
+                            pricesArrayTo: searchFormObject.priceTo,
+                        } %}
 
-                    {% include 'layouts/form/radio-row-select.html.twig' with {
-                        name: 'beds',
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        placeholder: 'Beds',
-                        list: searchFormObject.beds,
-                    } %}
+                        {% include 'layouts/form/radio-row-select.html.twig' with {
+                            name: 'beds',
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            placeholder: 'Beds',
+                            list: searchFormObject.beds,
+                        } %}
 
-                    {% include 'layouts/form/checkbox-list-select.html.twig' with {
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        placeholder: 'All Home Types',
-                        list: searchFormObject.type,
-                    } %}
+                        {% include 'layouts/form/checkbox-list-select.html.twig' with {
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            placeholder: 'All Home Types',
+                            list: searchFormObject.type,
+                        } %}
 
-                    {% embed 'layouts/containers/dropdown-button.html.twig' with {
-                        placeholder: 'More',
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        scrollMod: 'js-max-height',
-                        scroll: true,
-                        dataProps: {
-                            patternFixed: 'More',
-                        },
-                        searchFormObject,
-                    } only %}
-                        {% block dropdown_content %}
-                            {% include 'layouts/form/filter-more.html.twig' with searchFormObject only %}
-                        {% endblock %}
-                    {% endembed %}
+                        {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                            placeholder: 'More',
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            scrollMod: 'js-max-height',
+                            scroll: true,
+                            dataProps: {
+                                patternFixed: 'More',
+                            },
+                            searchFormObject,
+                        } only %}
+                            {% block dropdown_content %}
+                                {% include 'layouts/form/filter-more.html.twig' with searchFormObject only %}
+                            {% endblock %}
+                        {% endembed %}
 
-                    {% include 'layouts/controls/button.html.twig' with {
-                        'text': 'Save Search',
-                        'mod': '_bordered-gray js-save-map-filter js-map-draw',
-                    } only %}
-                </div>
-
-                <div class="map-section__sort-wrap mb20">
-                    <div class="homes-available small-text">
-                        <span class="homes-available__val js-homes-available">-</span>
-                        <span class="homes-available__suffix">homes available</span>
-                    </div>
-
-                    <div class="sort">
-                        <span class="sort__label small-text">Sort:</span>
-                        {% include 'layouts/form/select.html.twig' with {
-                            'name': 'map-sort',
-                            'wrapMod': '_thin-text',
-                            'inputMod': '_inline',
-                            'textMod': 'small-text',
-                            'options': [
-                                {
-                                    'value': 'new',
-                                    'text': 'New Listings',
-                                },
-                                {
-                                    'value': 'prop2',
-                                    'text': 'prop2',
-                                },
-                                {
-                                    'value': 'prop3',
-                                    'text': 'prop3',
-                                },
-                            ]
+                        {% include 'layouts/controls/button.html.twig' with {
+                            'text': 'Save Search',
+                            'mod': '_bordered-gray js-save-map-filter',
+                            button: true,
                         } only %}
                     </div>
-                </div>
+
+                    <div class="map-section__sort-wrap mb20">
+                        <div class="homes-available small-text">
+                            <span class="homes-available__val js-homes-available">-</span>
+                            <span class="homes-available__suffix">homes available</span>
+                        </div>
+
+                        <div class="sort">
+                            <span class="sort__label small-text">Sort:</span>
+                            {% include 'layouts/form/select.html.twig' with {
+                                'name': 'map-sort',
+                                'wrapMod': '_thin-text',
+                                'inputMod': '_inline',
+                                'textMod': 'small-text',
+                                'options': [
+                                    {
+                                        'value': 'new',
+                                        'text': 'New Listings',
+                                    },
+                                    {
+                                        'value': 'prop2',
+                                        'text': 'prop2',
+                                    },
+                                    {
+                                        'value': 'prop3',
+                                        'text': 'prop3',
+                                    },
+                                ]
+                            } only %}
+                        </div>
+                    </div>
+                </form>
+
 
                 <div class="map-section__cards-container">
                     <div class="map-section__cards-wrap">
@@ -160,7 +164,8 @@
                                     refreshYelp: true,
                                     cardsPerPage: 48,
                                     maxMarkersCount: 480,
-                                    refreshLayers: ['map', 'yelp', 'schools'],
+                                    refreshLayers: ['listings'],
+                                    preventClear: ['listings']
                                 }|json_encode
                             }}></div>
                         </div>

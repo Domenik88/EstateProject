@@ -2,46 +2,47 @@
     {
         text: 'Photos',
         linkMod: 'js-content-tab-nav',
-        contentId: 'gallery',
+        dataVal: 'gallery',
+        contentId: ['gallery', 'agent'],
     },
     {
         text: 'Map',
-        linkMod: 'js-content-tab-nav js-map-state-nav',
-        dataVal: 'map',
+        linkMod: 'js-content-tab-nav js-map-layer-option',
+        dataVal: 'listings',
         initMap: '#listing-popup-map',
-        contentId: ['map', '#'],
+        contentId: ['map', 'agent'],
     },
     {
         text: 'Street view',
-        linkMod: 'js-content-tab-nav js-map-state-nav',
+        linkMod: 'js-content-tab-nav js-map-layer-option',
         dataVal: 'street-view',
         initMap: '#listing-popup-map',
         contentId: ['map', '#'],
     },
     {
         text: 'Schools',
-        linkMod: 'js-content-tab-nav js-map-state-nav',
+        linkMod: 'js-content-tab-nav js-map-layer-option',
         dataVal: 'schools',
         initMap: '#listing-popup-map',
         contentId: ['map', 'schools'],
     },
     {
         text: 'Crime',
-        linkMod: 'js-content-tab-nav js-map-state-nav',
+        linkMod: 'js-content-tab-nav js-map-layer-option',
         dataVal: 'crime',
         initMap: '#listing-popup-map',
         contentId: ['map', 'crime'],
     },
     {
         text: 'Commute',
-        linkMod: 'js-content-tab-nav js-map-state-nav',
+        linkMod: 'js-content-tab-nav js-map-layer-option',
         dataVal: 'commute',
         initMap: '#listing-popup-map',
         contentId: ['map', 'commute'],
     },
     {
         text: 'Shop & Eat',
-        linkMod: 'js-content-tab-nav js-map-state-nav',
+        linkMod: 'js-content-tab-nav js-map-layer-option',
         dataVal: 'yelp',
         initMap: '#listing-popup-map',
         contentId: ['map', 'shop-and-eat'],
@@ -96,52 +97,36 @@
                 <div class="popup-map-container js-map-interface-wrap js-wrap">
                     <div class="popup-map-container__nav-wrap mb40">
                         {% include 'layouts/modules/slide-menu.html.twig' with {
-                            list: listingPopupMapMenu
+                            list: listingPopupMapMenu,
                         } only %}
 
                         <div class="cross-btn js-close-popup"></div>
                     </div>
 
-                    <div class="popup-map-container__content content-tabs-container">
-                        <div class="popup-map-container__table content-tab js-content-tab" data-content-id="gallery">
+                    <div class="popup-map-container__content">
+                        <div class="popup-map-container__table content-tabs-container">
                             <div class="popup-map-container__col popup-map-container__col_left">
-                                <div class="popup-map-container__scroll-wrap js-smooth-scroll">
+                                <div class="popup-map-container__scroll-wrap content-tab js-smooth-scroll js-content-tab" data-content-id="gallery">
                                     {% include 'layouts/modules/listing-gallery.html.twig' with {
                                         images: images|default(false),
                                         imgMod: 'js-tab-img'
                                     } only %}
                                 </div>
-                            </div>
 
-                            <div class="popup-map-container__col popup-map-container__col_right">
-                                <div class="popup-map-container__scroll-wrap js-smooth-scroll">
-                                    {% include 'layouts/modules/agent.html.twig' with {
-                                        confidentiality: true,
-                                        confidentialityCollapse: true,
-                                        agentPhoto: agent.agentPhoto,
-                                        agentName: agent.agentName,
-                                        agencyName: agent.agencyName,
-                                        agentPhone: agent.agentPhone,
-                                        listingId: listingId,
-                                    } only %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="popup-map-container__table content-tab js-content-tab" data-content-id="map">
-                            <div class="popup-map-container__col popup-map-container__col_left">
-                                <div class="map-container js-map-container">
+                                <div class="map-container content-tab js-map-container js-content-tab" data-content-id="map">
                                     {% include 'layouts/common/spinner.html.twig' %}
 
                                     <div class="map" id="listing-popup-map" data-params='{{
-                                        {
-                                            center: coordinates|default(false),
-                                            initialMarker: true,
-                                            zoom: 13,
-                                            minZoom: 10,
-                                            refreshYelp: true,
-                                            yelpPreloader: true,
-                                        }|json_encode
+                                    {
+                                        center: coordinates|default(false),
+                                        initialMarker: true,
+                                        zoom: 13,
+                                        minZoom: 10,
+                                        refreshYelp: true,
+                                        yelpPreloader: true,
+                                        refreshLayers: ['listings'],
+                                        preventClear: ['listings']
+                                    }|json_encode
                                     }}'></div>
                                 </div>
                             </div>
@@ -170,6 +155,18 @@
                                             yelpLabel: true,
                                             slideMenu: 'default',
                                             contentMod: 'js-yelp-cards-menu',
+                                        } only %}
+                                    </div>
+
+                                    <div class="popup-map-container__scroll-wrap content-tab js-smooth-scroll js-content-tab" data-content-id="agent">
+                                        {% include 'layouts/modules/agent.html.twig' with {
+                                            confidentiality: true,
+                                            confidentialityCollapse: true,
+                                            agentPhoto: agent.agentPhoto,
+                                            agentName: agent.agentName,
+                                            agencyName: agent.agencyName,
+                                            agentPhone: agent.agentPhone,
+                                            listingId: listingId,
                                         } only %}
                                     </div>
                                 </div>
