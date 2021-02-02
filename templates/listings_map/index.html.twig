@@ -43,73 +43,77 @@
 
         <div class="map-section__table">
             <div class="map-section__col map-section__col_left js-estate-cards-wrap">
-                <div class="map-section__filter-wrap mb20">
-                    {% include 'layouts/form/price-select.html.twig' with {
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                    } %}
+                <form class="map-section__form js-ajax-form">
+                    <div class="map-section__filter-wrap mb20">
+                        {% include 'layouts/form/price-select.html.twig' with {
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                        } %}
 
-                    {% include 'layouts/form/radio-row-select.html.twig' with {
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        defaultList: 'beds',
-                        placeholder: 'Beds',
-                    } %}
+                        {% include 'layouts/form/radio-row-select.html.twig' with {
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            defaultList: 'beds',
+                            placeholder: 'Beds',
+                        } %}
 
-                    {% include 'layouts/form/checkbox-list-select.html.twig' with {
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        defaultList: 'common',
-                        placeholder: 'All Home Types',
-                    } %}
+                        {% include 'layouts/form/checkbox-list-select.html.twig' with {
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            defaultList: 'common',
+                            placeholder: 'All Home Types',
+                        } %}
 
-                    {% embed 'layouts/containers/dropdown-button.html.twig' with {
-                        placeholder: 'More',
-                        wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
-                        scrollMod: 'js-max-height',
-                        scroll: true,
-                        dataProps: {
-                            patternFixed: 'More',
-                        }
-                    } only %}
-                        {% block dropdown_content %}
-                            {% include 'layouts/form/filter-more.html.twig' %}
-                        {% endblock %}
-                    {% endembed %}
+                        {% embed 'layouts/containers/dropdown-button.html.twig' with {
+                            placeholder: 'More',
+                            wrapMod: '_btn-style _popup-stick-to-left _selected-highlight',
+                            scrollMod: 'js-max-height',
+                            scroll: true,
+                            dataProps: {
+                                patternFixed: 'More',
+                            }
+                        } only %}
+                            {% block dropdown_content %}
+                                {% include 'layouts/form/filter-more.html.twig' %}
+                            {% endblock %}
+                        {% endembed %}
 
-                    {% include 'layouts/controls/button.html.twig' with {
-                        'text': 'Save Search',
-                        'mod': '_bordered-gray js-save-map-filter js-map-draw',
-                    } only %}
-                </div>
-
-                <div class="map-section__sort-wrap mb20">
-                    <div class="homes-available small-text">
-                        <span class="homes-available__val js-homes-available">-</span>
-                        <span class="homes-available__suffix">homes available</span>
-                    </div>
-
-                    <div class="sort">
-                        <span class="sort__label small-text">Sort:</span>
-                        {% include 'layouts/form/select.html.twig' with {
-                            'name': 'map-sort',
-                            'wrapMod': '_thin-text',
-                            'inputMod': '_inline',
-                            'textMod': 'small-text',
-                            'options': [
-                                {
-                                    'value': 'new',
-                                    'text': 'New Listings',
-                                },
-                                {
-                                    'value': 'prop2',
-                                    'text': 'prop2',
-                                },
-                                {
-                                    'value': 'prop3',
-                                    'text': 'prop3',
-                                },
-                            ]
+                        {% include 'layouts/controls/button.html.twig' with {
+                            'text': 'Save Search',
+                            'mod': '_bordered-gray js-save-map-filter',
+                            button: true,
                         } only %}
                     </div>
-                </div>
+
+                    <div class="map-section__sort-wrap mb20">
+                        <div class="homes-available small-text">
+                            <span class="homes-available__val js-homes-available">-</span>
+                            <span class="homes-available__suffix">homes available</span>
+                        </div>
+
+                        <div class="sort">
+                            <span class="sort__label small-text">Sort:</span>
+                            {% include 'layouts/form/select.html.twig' with {
+                                'name': 'map-sort',
+                                'wrapMod': '_thin-text',
+                                'inputMod': '_inline',
+                                'textMod': 'small-text',
+                                'options': [
+                                    {
+                                        'value': 'new',
+                                        'text': 'New Listings',
+                                    },
+                                    {
+                                        'value': 'prop2',
+                                        'text': 'prop2',
+                                    },
+                                    {
+                                        'value': 'prop3',
+                                        'text': 'prop3',
+                                    },
+                                ]
+                            } only %}
+                        </div>
+                    </div>
+                </form>
+
 
                 <div class="map-section__cards-container">
                     <div class="map-section__cards-wrap">
