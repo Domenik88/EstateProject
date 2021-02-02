@@ -18,25 +18,37 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SchoolsMapController extends AbstractController
 {
+    private SchoolService $schoolService;
+
+    public function __construct(SchoolService $schoolService)
+    {
+       $this->schoolService = $schoolService;
+    }
+
     /**
      * @Route("/school/search", priority=10, name="school_search")
      */
-    public function schoolSearch(Request $request, SchoolService $schoolService)
+    public function schoolSearch(Request $request)
     {
-        if(!$request->isXmlHttpRequest())
-        {
-            throw new NotFoundHttpException();
+        try {
+            if ( !$request->isXmlHttpRequest() ) {
+                throw new NotFoundHttpException();
+            }
+            $boxObject = $request->request->get('box');
+            $box = json_decode($boxObject);
+            $schools = $this->schoolService->getAllSchoolsForMapBox($box->northEast->lat, $box->northEast->lng, $box->southWest->lat, $box->southWest->lng);
+            $response = new JsonResponse([ 'collection' => json_encode($schools) ]);
+            $responseData = [];
+            foreach ( $schools as $school ) {
+                $responseData[] = $this->schoolService->getDataForMap($school);
+            }
+            $response->setData($responseData);
+            return $response;
+        }catch (\Exception $e) {
+            dump($e->getMessage());
+            dump($e->getTrace());
+            die;
         }
-        $boxObject = $request->request->get('box');
-        $box = json_decode($boxObject);
-        $schools = $schoolService->getAllSchoolsForMapBox($box->northEast->lat,$box->northEast->lng,$box->southWest->lat,$box->southWest->lng);
-        $response = new JsonResponse(['collection' => json_encode($schools)]);
-        $responseData = [];
-        foreach ($schools as $school) {
-            $responseData[] = $school->getDataForMap();
-        }
-        $response->setData($responseData);
-        return $response;
     }
 
 }

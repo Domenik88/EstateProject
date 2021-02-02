@@ -1,27 +1,27 @@
 {% set mapTableMenu = [
     {
         text: 'Map',
-        linkMod: 'js-',
-        dataVal: 'map',
+        linkMod: 'js-map-layer-option',
+        dataVal: 'markers',
     },
     {
         text: 'Schools',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option js-map-show-schools',
         dataVal: 'schools',
     },
     {
         text: 'Crime',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option',
         dataVal: 'crime',
     },
     {
         text: 'Commute',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option',
         dataVal: 'commute',
     },
     {
         text: 'Shop & Eat',
-        linkMod: 'js-',
+        linkMod: 'js-map-layer-option',
         dataVal: 'yelp',
     },
 ] %}
@@ -80,7 +80,7 @@
 
                     {% include 'layouts/controls/button.html.twig' with {
                         'text': 'Save Search',
-                        'mod': '_bordered-gray js-save-map-filter',
+                        'mod': '_bordered-gray js-save-map-filter js-map-draw',
                     } only %}
                 </div>
 
@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                {#            {% include 'layouts/common/preloader.html.twig' %}#}
+                {#            {% include 'layouts/common/spinner.html.twig' %}#}
                 {#            <div class="map-section__scroll-wrap js-cards-scroll-wrap js-smooth-scroll" data-trigger-on-scroll="trigger:check-sliders">#}
                 {#                <div class="estate-content">#}
                 {#                    <div class="estate-cards-list js-estate-cards-list"> </div>#}
@@ -137,35 +137,38 @@
 
             </div>
             <div class="map-section__col map-section__col_right pb30">
-
                 <div class="map-section__nav-wrap mb20">
                     {% include 'layouts/modules/slide-menu.html.twig' with {
-                        list: mapTableMenu
+                        list: mapTableMenu,
+                        firstActive: true,
                     } only %}
                 </div>
-
 
                 <div class="map-section__map-container">
                     <div class="map-section__map-wrap">
                         <div class="map-container js-map-container">
-                            <div class="map" id="estate-map" data-params='{
-                            "path":"/listing/search",
-                            "center":[49.20984,-122.87793],
-                            "zoom":13,
-                            "minZoom":10,
-                            "refreshMarkers":true,
-                            "refreshYelp":true,
-                            "yelpPreloader":true,
-                            "cardsPreloader":true,
-                            "cardsPerPage":48,
-                            "maxMarkersCount":480
-                        }'></div>
+                            {% include 'layouts/common/spinner.html.twig' %}
+
+                            <div class="map" id="estate-map" data-params={{
+                                {
+                                    path: "/listing/search",
+                                    schoolsPath: "/school/search",
+                                    center: [49.20984,-122.87793],
+                                    zoom: 13,
+                                    minZoom: 10,
+                                    refreshMarkers: true,
+                                    refreshYelp: true,
+                                    cardsPerPage: 48,
+                                    maxMarkersCount: 480,
+                                    refreshLayers: ['map', 'yelp', 'schools'],
+                                }|json_encode
+                            }}></div>
                         </div>
                     </div>
                 </div>
 
 {#                            <div class="map-container js-map-container">#}
-{#                                {% include 'layouts/common/preloader.html.twig' %}#}
+{#
 
 {#                                <div class="map-controls">#}
 {#                                    <div class="map-draw-bar">#}

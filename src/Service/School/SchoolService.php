@@ -107,4 +107,9 @@ class SchoolService
         return $this->schoolRepository->getAllSchoolsInMapBox($neLat, $neLng, $swLat, $swLng);
     }
 
+    public function getDataForMap(School $school): SchoolData
+    {
+        return new SchoolData($school);
+    }
+
 }

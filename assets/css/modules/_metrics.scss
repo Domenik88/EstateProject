@@ -40,7 +40,6 @@
 			border-radius: 0;
 			background: transparent;
 			
-			
 			&:last-child {
 				#{$r}__label {
 					&::after {
@@ -67,6 +66,18 @@
 			
 			&::after {
 				content: '\00a0|\00a0';
+			}
+			
+			&:first-child {
+				margin-right: 0;
+				
+				&::before {
+					display: none;
+				}
+				
+				&::after {
+					content: '\00a0';
+				}
 			}
 		}
 	}

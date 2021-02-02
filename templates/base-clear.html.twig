@@ -11,6 +11,10 @@
 
         <script type="text/javascript">
             window.IS_AUTHENTICATED_REMEMBERED = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'true' : 'false' }};
+            window.ADD_TO_FAVORITES_PATH = {{
+                is_granted('IS_AUTHENTICATED_REMEMBERED') ?
+                path('add_to_favorites', {listingId: '@', userId: app.user.id}) : '""'
+            }};
         </script>
     </head>
     <body>
