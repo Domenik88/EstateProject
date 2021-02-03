@@ -9,7 +9,7 @@
 
 namespace App\Criteria;
 
-class ListingSearchCriteria
+class ListingSearchMapCriteria
 {
     public ?string $city;
 //    public ?int $beds;

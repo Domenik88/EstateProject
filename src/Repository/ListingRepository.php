@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Criteria\ListingSearchMapCriteria;
 use App\Entity\Listing;
 use App\Entity\User;
 use App\Service\Listing\ListingConstants;
@@ -171,4 +172,58 @@ class ListingRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function searchListingsByMapCriteria(ListingSearchMapCriteria $criteria): ?array
+    {
+        $sqlArray = [];
+        $params = [];
+        $rsm = new ResultSetMappingBuilder($this->entityManager);
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
+
+        if ($criteria->beds) {
+            $sqlArray[] = 'bedrooms = :bedrooms';
+            $params[ 'bedrooms' ] = $criteria->beds;
+        }
+        if ($criteria->baths) {
+            $sqlArray[] = 'bathrooms = :bathrooms';
+            $params[ 'bathrooms' ] = $criteria->baths;
+        }
+        if ($criteria->livingArea) {
+            $sqlArray[] = '(living_area > :livingAreaFrom and living_area < :livingAreaTo)';
+            $params[ 'livingAreaFrom' ] = $criteria->livingArea[ 0 ];
+            $params[ 'livingAreaTo' ] = $criteria->livingArea[ 1 ];
+        }
+        if ($criteria->lotSize) {
+            $sqlArray[] = 'lot_size >= :lotSize';
+            $params[ 'lotSize' ] = $criteria->lotSize;
+        }
+        if ($criteria->yearBuilt) {
+            $sqlArray[] = '(year_built >= :yearBuiltFrom and year_built <= :yearBuiltTo)';
+            $params[ 'yearBuiltFrom' ] = $criteria->yearBuilt[ 0 ];
+            $params[ 'yearBuiltTo' ] = $criteria->yearBuilt[ 1 ];
+        }
+        if ($criteria->type) {
+            $typeSqlArray = [];
+            foreach ( $criteria->type as $key => $value ) {
+                $typeSqlArray[] = "type LIKE :$key";
+                $params[$key] = '%' . $value . '%';
+            }
+            $sqlArray[] = '(' . implode(' or ', $typeSqlArray) . ')';
+        }
+        if ($criteria->price) {
+            $sqlArray[] = '(list_price >= :priceFrom and list_price <= :priceTo)';
+            $params[ 'priceFrom' ] = $criteria->price[ 0 ];
+            $params[ 'priceTo' ] = $criteria->price[ 1 ];
+        }
+
+        $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
+        if ( !empty($sqlArray) ) {
+            $sql .= ' and ' . implode(' and ', $sqlArray);
+        }
+        $sql .= ' limit 1';
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        foreach ( $params as $key => $param ) {
+            $query->setParameter($key, $param);
+        }
+        return $query->getResult();
+    }
 }
