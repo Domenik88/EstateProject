@@ -9,6 +9,13 @@
         } only %}
     {% endif %}
 
+    {% include 'layouts/common/ty-message.html.twig' with {
+        title: tyTitle|default('Thank you'),
+        subtitle: tySubtitle|default('Your message has been sent'),
+        titleMod: tyTitleMod|default(false),
+        subtitleMod: tySubtitleMod|default(false),
+    } only %}
+
     <div class="contact-form__col">
         <div class="contact-form__list mb20">
             <div class="contact-form__row">

@@ -1,5 +1,5 @@
 jQuery(function($){
-    const popup = {
+    const $_ = {
         init() {
             this.initCache();
             this.events();
@@ -24,30 +24,30 @@ jQuery(function($){
         },
         
         events() {
-            popup.$btn_close.on('click', () => {
-                popup.closePopup();
+            $_.$btn_close.on('click', () => {
+                $_.closePopup();
             });
             
-            popup.$overlay.on('click', () => {
-                popup.closePopup();
+            $_.$overlay.on('click', () => {
+                $_.closePopup();
             });
             
-            popup.$body.on('click', '.js-call-popup', (e) => {
+            $_.$body.on('click', '.js-call-popup', (e) => {
                 e.preventDefault();
-                popup._clickHandler(e);
+                $_._clickHandler(e);
             });
             
-            popup.$body.on('show:ty-popup', (e, data, delay) => {
-                popup._showTyPopup(data, delay);
+            $_.$body.on('show:ty-popup', (e, data, delay) => {
+                $_._showTyPopup(data, delay);
             });
             
-            popup.$body.on('trigger:init-popup-slider', (e, data) => {
-                popup._initPopupSlider(data);
+            $_.$body.on('trigger:init-popup-slider', (e, data) => {
+                $_._initPopupSlider(data);
             });
         },
         
         _clearOverlay() {
-            popup.$overlay.removeClass(popup.overlayMods.join(' '));
+            $_.$overlay.removeClass($_.overlayMods.join(' '));
         },
     
         _initPopupSlider(data) {
@@ -55,9 +55,9 @@ jQuery(function($){
                 { images, index } = data,
                 $popup = $('.js-slider-popup'),
                 $popupSlider = $popup.find('.js-slider'),
-                slides = images.map(item => popup.templates.estateSliderItem(item)).join('');
+                slides = images.map(item => $_.templates.estateSliderItem(item)).join('');
 
-            popup.$body.trigger('trigger:init-slider', {
+            $_.$body.trigger('trigger:init-slider', {
                 $sliders: $popupSlider,
                 $slides: [slides],
                 sliderParams: {
@@ -68,8 +68,8 @@ jQuery(function($){
                 }
             });
 
-            popup.$popups.removeClass('_active');
-            popup._clearOverlay();
+            $_.$popups.removeClass('_active');
+            $_._clearOverlay();
             $popup.addClass('_active');
         },
     
@@ -85,18 +85,18 @@ jQuery(function($){
                 showDelay = delay || 500,
                 hideDelay = showDelay + 7000;
             
-            popup.$popups.removeClass('_active');
+            $_.$popups.removeClass('_active');
             
             $title.html(title || titleDefault);
             $subtitle.html(subtitle || subtitleDefault);
             
-            setTimeout(function () {
-                popup._clearOverlay();
-                $popup.add(popup.$overlay).addClass('_active');
+            setTimeout(() => {
+                $_._clearOverlay();
+                $popup.add($_.$overlay).addClass('_active');
             }, showDelay);
             
-            setTimeout(function () {
-                if ($popup.hasClass('_active')) $popup.add(popup.$overlay).removeClass('_active');
+            setTimeout(() => {
+                if ($popup.hasClass('_active')) $popup.add($_.$overlay).removeClass('_active');
             }, hideDelay);
         },
         
@@ -107,17 +107,17 @@ jQuery(function($){
                 $popup = $('.js-popup-' + target),
                 $recaptcha = $popup.find('.js-recaptcha');
 
-            if ($recaptcha.length) popup.$body.trigger('trigger:init-recaptcha');
+            if ($recaptcha.length) $_.$body.trigger('trigger:init-recaptcha');
 
-            popup.$popups.removeClass('_active');
-            popup._clearOverlay();
+            $_.$popups.removeClass('_active');
+            $_._clearOverlay();
 
             if (fire_click_selector) {
                 $popup.find(fire_click_selector).click();
             }
             
             $popup.addClass('_active');
-            if (show_overlay) popup.$overlay.addClass('_active');
+            if (show_overlay) $_.$overlay.addClass('_active');
         },
         
         closePopup() {
@@ -125,7 +125,7 @@ jQuery(function($){
                 $popup_active = $('.js-popup._active'),
                 $inputForClearing = $popup_active.find('.js-clear-on-close');
             
-            popup.$overlay.removeClass('_active');
+            $_.$overlay.removeClass('_active');
             $popup_active.removeClass('_active');
             
             if ($inputForClearing.length) $inputForClearing.attr('value', '');
@@ -133,6 +133,6 @@ jQuery(function($){
     };
     
     $(document).ready(() => {
-        popup.init();
+        $_.init();
     });
 });

@@ -1,4 +1,15 @@
 <form class="request-form js-ajax-form" action="{{ path('new_viewing') }}" method="post" autocomplete="off">
+    {% include 'layouts/common/ty-message.html.twig' with {
+        title: tyTitle|default('Thank you'),
+        subtitle: tySubtitle|default('Your message has been sent'),
+        titleMod: tyTitleMod|default(false),
+        subtitleMod: tySubtitleMod|default(false),
+    } only %}
+
+    {% if title|default(false) %}
+        <h3 class="request-form__title h3 mb40">{{ title }}</h3>
+    {% endif %}
+
     <div class="request-form__col request-form__col_left">
         <div class="request-form__list">
             <div class="request-form__row">

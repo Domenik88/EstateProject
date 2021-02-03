@@ -2,9 +2,9 @@
     <div class="request__container {{ containerMod ?? 'container' }}">
         <div class="request__wrap pt60 pb60">
             <div class="request__inner-container {{ innerContainerMod ?? 'inner-container' }}">
-                <h3 class="request__title h3 mb40">Submit a request</h3>
-
-                {% include 'layouts/modules/request-form.html.twig' %}
+                {% include 'layouts/modules/request-form.html.twig' with {
+                    title: 'Submit a request',
+                } only %}
             </div>
         </div>
     </div>

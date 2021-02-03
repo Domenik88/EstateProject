@@ -1,5 +1,5 @@
 jQuery(function($){
-    const rs_ = {
+    const $_ = {
         init(){
             this.initCache();
             this.initRange();
@@ -14,12 +14,12 @@ jQuery(function($){
         },
 
         _setSliderVal($slider, $relativeInput, mlt) {
-            const fixMlt = rs_._normalizeNum((1 / mlt) * _getPureNumber($relativeInput.val()));
+            const fixMlt = $_._normalizeNum((1 / mlt) * _getPureNumber($relativeInput.val()));
             $slider.slider("value", fixMlt);
         },
 
         initRange(){
-            rs_.$range.each((key, item) => {
+            $_.$range.each((key, item) => {
                 const 
                     $item = $(item),
                     { relativeInputName, trigger, options={} } = $item.data('params') || {},
@@ -34,18 +34,18 @@ jQuery(function($){
                     max: max,
                     start: start,
                     create: () => {
-                        rs_._setSliderVal($item, $relativeInput, fixMlt);
+                        $_._setSliderVal($item, $relativeInput, fixMlt);
                     },
                     slide: (event, ui) => {
                         $relativeInput.trigger('trigger:set-val', {
-                            val: rs_._normalizeNum(ui.value * fixMlt),
+                            val: $_._normalizeNum(ui.value * fixMlt),
                             change: true
                         });
                     }
                 });
 
                 $relativeInput.on('change', () => {
-                    rs_._setSliderVal($item, $relativeInput, fixMlt);
+                    $_._setSliderVal($item, $relativeInput, fixMlt);
                 });
 
                 $relativeInput.on('trigger:set-range-props', (e, data) => {
@@ -62,6 +62,6 @@ jQuery(function($){
     };
 
     $(document).ready(function() {
-        rs_.init();
+        $_.init();
     });
 });

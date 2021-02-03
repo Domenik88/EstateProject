@@ -1,44 +1,44 @@
 jQuery(function($) {
-    var sel = {
+    const $_ = {
         init() {
-            this.init_cache();
-            this.events();
-            this.init_selects();
+            this.initCache();
+            this.initEvents();
+            this.initSelects();
         },
         
-        init_cache() {
+        initCache() {
             this.$body = $('body');
-            this.$module = $(".js-select-module");
-            this.$select = $(".js-select-module-select");
-            this.$container = $(".js-select-module-container");
-            this.$opt_container = $(".js-select-module-options");
-            this.$btn = $(".js-select-module-text-block");
+            this.$module = $('.js-select-module');
+            this.$select = $('.js-select-module-select');
+            this.$container = $('.js-select-module-container');
+            this.$optContainer = $('.js-select-module-options');
+            this.$btn = $('.js-select-module-text-block');
         },
-        
-        events() {
-            this.$container.on('click', (e) => {
+
+        initEvents() {
+            $_.$container.on('click', (e) => {
                 const
                     $el = $(e.currentTarget),
-                    $relatedModule = $el.closest(sel.$module);
+                    $relatedModule = $el.closest($_.$module);
                 
                 $relatedModule.toggleClass("_active");
             });
         },
         
-        init_selects() {
-            this.$module.each((key, item) => {
+        initSelects() {
+            $_.$module.each((key, item) => {
                 const
                     $item = $(item),
-                    $select = $item.find(sel.$select),
-                    $opt_container = $item.find(sel.$opt_container),
-                    $btn = $item.find(sel.$btn);
+                    $select = $item.find($_.$select),
+                    $optContainer = $item.find($_.$optContainer),
+                    $btn = $item.find($_.$btn);
                 
-                sel.build_options($select, $opt_container, $btn);
-                sel.add_events($item, $btn, $select);
+                $_._buildOptions($select, $optContainer, $btn);
+                $_._addEvents($item, $btn, $select);
             });
         },
         
-        build_options($select, $opt_container, $btn) {
+        _buildOptions($select, $optContainer, $btn) {
             let $options = $select.find("option");
             
             for (let i = 0; i < $options.length; i++) {
@@ -51,7 +51,7 @@ jQuery(function($) {
                     title = $item.text();
                 
                 if (!isDisabled) {
-                    $opt_container.append(`
+                    $optContainer.append(`
                         <div class="select-module__option js-select-module-option ${selectedClass}" 
                             data-value="${value}"
                             data-text="${title}"
@@ -62,24 +62,17 @@ jQuery(function($) {
                 }
                 
                 if (isSelected) {
-                    $select.closest(sel.$module).addClass('_selected');
+                    $select.closest($_.$module).addClass('_selected');
                     $btn.text(title);
                 }
-
-                // if (isSelected) {
-                //     if (value && value.length) {
-                //         $select.closest(sel.$module).addClass('_selected');
-                //         $btn.text(title);
-                //     }
-                // }
             }
     
-            sel.$body.trigger('trigger:init-scrollbar', {
-                el: $opt_container[0]
+            $_.$body.trigger('trigger:init-scrollbar', {
+                el: $optContainer[0]
             })
         },
         
-        add_events($item, $btn, $select) {
+        _addEvents($item, $btn, $select) {
             const $options = $item.find(".js-select-module-option");
             
             $options.on("click", (e) => {
@@ -101,7 +94,7 @@ jQuery(function($) {
         }
     };
 
-    $(document).ready(function() {
-        sel.init();
+    $(document).ready(() => {
+        $_.init();
     });
 });
