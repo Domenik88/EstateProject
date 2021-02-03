@@ -33,6 +33,7 @@ var $_ = {
         this.initClickPrevent();
         this.initTwinFields();
         this.initInputOnlyNumber();
+        this.initMaxHeight();
     },
     
     initCache() {
@@ -124,6 +125,8 @@ var $_ = {
         this.$twinFields = $('.js-twin-fields');
 
         this.$onlyNumbers = $('.js-only-numbers');
+
+        this.$maxHeight = $('.js-max-height');
 
         this.windowWidth = window.outerWidth;
         this.windowHeight = $_.$window.height();
@@ -571,18 +574,9 @@ var $_ = {
         $_.$dropdownButton.each((key, item) => {
             const
                 $currentButton = $(item),
-                $maxScroll = $currentButton.find('.js-max-height'),
                 $selectedContainer = $currentButton.find($_.$dropdownSelected),
                 $innerFields = $currentButton.find('input, select'),
                 dataProps = $currentButton.data('props');
-
-            if ($maxScroll.length) {
-                setMaxHeight($maxScroll);
-
-                $_.$body.on('body:resize', () => {
-                    setMaxHeight($maxScroll);
-                });
-            }
 
             if (dataProps) {
                 $innerFields.on('change', () => {
@@ -594,6 +588,27 @@ var $_ = {
                     });
                 });
             }
+        });
+    },
+
+    initMaxHeight() {
+        function setMaxHeight($item, offset) {
+            const { top } = $item[0].getBoundingClientRect();
+            $item.css('max-height', `${$_.windowHeight - top - offset}px`);
+        }
+
+        $_.$maxHeight.each((key, item) => {
+            const
+                $currentItem = $(item),
+                $innerScroll = $currentItem.find($_.selectors.smoothScroll),
+                dataOffset = $currentItem.data('offset') || 0;
+
+            setMaxHeight($currentItem, dataOffset);
+
+            $_.$body.on('body:resize', () => {
+                setMaxHeight($currentItem, dataOffset);
+                if ($innerScroll.length) $innerScroll.trigger('trigger:update-scroll');
+            });
         });
     },
 
@@ -951,6 +966,7 @@ var $_ = {
         $_.$confCollapseForm.each((key, item) => {
             const
                 $currentForm = $(item),
+                $parentScroll = $currentForm.closest($_.selectors.smoothScroll),
                 $innerCollapseBlock = $currentForm.find($_.$collapse),
                 $innerInputs = $currentForm.find('input[type="text"]').not($_.selectors.hiddenInput),
                 $parentStickyBlock = $currentForm.closest('.js-sticky-block');
@@ -964,6 +980,7 @@ var $_ = {
                     };
 
                 if ($parentStickyBlock.length) props.step = () => $parentStickyBlock.trigger('trigger:update');
+                if ($parentScroll.length) props.complete = () => $parentScroll.trigger('trigger:update-scroll');
 
                 $innerCollapseBlock[method](props);
             });
@@ -1387,6 +1404,10 @@ var $_ = {
 
                 $item.on('trigger:scroll-top', () => {
                     scrollbar.scrollTop = 0;
+                });
+
+                $item.on('trigger:update-scroll', () => {
+                    Scrollbar.get(item).update();
                 });
             }
         }

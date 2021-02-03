@@ -2,10 +2,20 @@
 	$r: &;
 	background: $dark1;
 	border-radius: 20px;
-	padding: 50px;
+	padding: 50px 35px;
+	display: flex;
 	
 	&__container {
-	
+		position: relative;
+		display: block;
+		max-height: 100%;
+		overflow: hidden;
+		padding-left: 15px;
+		padding-right: 15px;
+		
+		&[data-scrollbar] {
+			padding-right: 0;
+		}
 	}
 	
 	&__person {

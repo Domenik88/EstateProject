@@ -64,6 +64,7 @@ jQuery(function($){
                     initialSlide: index,
                     infinite: true,
                     speed: 150,
+                    fade: true,
                 }
             });
 
