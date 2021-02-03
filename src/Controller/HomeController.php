@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Listing\ListingSearchService;
 use App\Service\Listing\ListingService;
 use App\Service\Page\PageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,8 @@ class HomeController extends AbstractController
     private ListingService $listingService;
     private PageService $pageService;
 
-    public function __construct(ListingService $listingService, PageService $pageService)
+    public function __construct(ListingService $listingService,
+                                PageService $pageService)
     {
         $this->listingService = $listingService;
         $this->pageService = $pageService;
@@ -47,7 +49,8 @@ class HomeController extends AbstractController
             return $this->render('page/' . $page->getType() . '-page.html.twig', [
                 'page' => $page,
             ]);
-        } else {
+        }
+        else {
             return $this->render('bundles/TwigBundle/Exception/error404.html.twig');
         }
     }
