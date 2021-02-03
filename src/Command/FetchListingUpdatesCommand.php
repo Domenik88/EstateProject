@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Criteria\ListingSearchCriteria;
+use App\Criteria\ListingMapSearchCriteria;
 use App\Repository\ListingRepository;
 use App\Service\Feed\DdfListingMasterService;
 use App\Service\Feed\DdfService;

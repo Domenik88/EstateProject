@@ -2,9 +2,8 @@
 
 namespace App\Repository;
 
-use App\Criteria\ListingSearchMapCriteria;
+use App\Criteria\ListingMapSearchCriteria;
 use App\Entity\Listing;
-use App\Entity\User;
 use App\Service\Listing\ListingConstants;
 use App\Service\Listing\ListingCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -12,9 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @method Listing|null find( $id, $lockMode = null, $lockVersion = null )
@@ -29,7 +26,9 @@ class ListingRepository extends ServiceEntityRepository
     private float $latitude;
     private float $longtitude;
 
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager, LoggerInterface $logger)
+    public function __construct(ManagerRegistry $registry,
+                                EntityManagerInterface $entityManager,
+                                LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->logger = $logger;
@@ -43,7 +42,9 @@ class ListingRepository extends ServiceEntityRepository
 
     public function deleteListings(string $feedId)
     {
-        $query = $this->getEntityManager()->createQuery("UPDATE App\Entity\Listing l SET l.deletedDate = current_timestamp() where l.feedID = :feedId and l.deletedDate IS NULL and not exists (select lm.feedListingId from App\Entity\ListingMaster lm where lm.feedListingId = l.feedListingID and lm.feedId = l.feedID)");
+        $query = $this->getEntityManager()->createQuery("UPDATE App\Entity\Listing l SET l.deletedDate = current_timestamp() 
+                      where l.feedID = :feedId and l.deletedDate IS NULL and 
+                      not exists (select lm.feedListingId from App\Entity\ListingMaster lm where lm.feedListingId = l.feedListingID and lm.feedId = l.feedID)");
         $query->setParameter('feedId', $feedId);
         $query->execute();
     }
@@ -53,7 +54,8 @@ class ListingRepository extends ServiceEntityRepository
         $rsm = new ResultSetMapping();
         $this->getEntityManager()->createNativeQuery("insert into listing(feed_id,feed_listing_id,status,processing_status,self_listing) 
                 select lm.feed_id, lm.feed_listing_id, 'new' as status,'none' as processing_status, false as self_listing
-                from listing_master lm on conflict (feed_id,feed_listing_id) where deleted_date is null do update set last_update_from_feed = excluded.last_update_from_feed", $rsm)->execute();
+                from listing_master lm on conflict (feed_id,feed_listing_id) where deleted_date is null do update set last_update_from_feed = excluded.last_update_from_feed",
+                                                     $rsm)->execute();
     }
 
     public function getAllListingsInMapBox(float $neLat, float $neLng, float $swLat, float $swLng): array
@@ -62,7 +64,10 @@ class ListingRepository extends ServiceEntityRepository
         try {
             $rsm = new ResultSetMappingBuilder($this->entityManager);
             $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and processing_status != '" . ListingConstants::ERROR_PROCESSING_LISTING_STATUS . "' and coordinates IS NOT NULL and coordinates <@ $boxString AND deleted_date IS NULL";
+            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" .
+                   ListingConstants::UPDATED_LISTING_STATUS . "') and processing_status != '" .
+                   ListingConstants::ERROR_PROCESSING_LISTING_STATUS .
+                   "' and coordinates IS NOT NULL and coordinates <@ $boxString AND deleted_date IS NULL";
             $query = $this->entityManager->createNativeQuery($sql, $rsm);
             return $query->getResult();
         } catch ( \Exception $e ) {
@@ -72,7 +77,14 @@ class ListingRepository extends ServiceEntityRepository
         }
     }
 
-    public function getSimilarListings(?string $type, ?string $ownershipType, ?int $bedRooms, ?array $livingAreaRange, ?array $lotSizeRange, ?array $yearBuiltRange, ?object $coordinates, ?string $mlsNum): array
+    public function getSimilarListings(?string $type,
+                                       ?string $ownershipType,
+                                       ?int $bedRooms,
+                                       ?array $livingAreaRange,
+                                       ?array $lotSizeRange,
+                                       ?array $yearBuiltRange,
+                                       ?object $coordinates,
+                                       ?string $mlsNum): array
     {
         try {
             $this->latitude = $coordinates->lat;
@@ -103,7 +115,8 @@ class ListingRepository extends ServiceEntityRepository
                     $sqlArray[] = 'lot_size <@ int4range(:lotSizeFrom,:lotSizeTo)';
                     $params[ 'lotSizeFrom' ] = $lotSizeRange[ 0 ];
                     $params[ 'lotSizeTo' ] = $lotSizeRange[ 1 ];
-                } else {
+                }
+                else {
                     $sqlArray[] = 'lot_size = :lotSize';
                     $params[ 'lotSize' ] = $lotSizeRange[ 0 ];
                 }
@@ -113,12 +126,14 @@ class ListingRepository extends ServiceEntityRepository
                 $params[ 'yearBuiltFrom' ] = $yearBuiltRange[ 0 ];
                 $params[ 'yearBuiltTo' ] = $yearBuiltRange[ 1 ];
             }
-            $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' . ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
+            $sqlArray[] = 'circle (\'(' . $this->latitude . ',' . $this->longtitude . ')\',' .
+                          ListingConstants::SEARCH_RADIUS / 100 . ') @> coordinates';
             if ( isset($mlsNum) ) {
                 $sqlArray[] = 'mls_num != :mlsNumber';
                 $params[ 'mlsNumber' ] = $mlsNum;
             }
-            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
+            $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" .
+                   ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
             if ( !empty($sqlArray) ) {
                 $sql .= ' and ' . implode(' and ', $sqlArray);
             }
@@ -136,21 +151,13 @@ class ListingRepository extends ServiceEntityRepository
 
     public function getCounters(array $cities, string $stateOrProvince, string $feedId): ?array
     {
-        return $this->createQueryBuilder('l')
-            ->select('l.city, COUNT(l) as counter')
-            ->where("l.city IN (:sities)")
-            ->andWhere('l.deletedDate IS NULL')
-            ->andWhere('l.stateOrProvince = :stateOrProvince')
-            ->andWhere("l.status IN (:statuses)")
-            ->andWhere('l.feedID = :feedID')
-            ->groupBy('l.city')
-            ->setParameter('sities', $cities)
-            ->setParameter('stateOrProvince', $stateOrProvince)
-            ->setParameter('statuses', [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ])
-            ->setParameter('feedID', $feedId)
-            ->getQuery()
-            ->getResult()
-            ;
+        return $this->createQueryBuilder('l')->select('l.city, COUNT(l) as counter')->where("l.city IN (:sities)")
+                    ->andWhere('l.deletedDate IS NULL')->andWhere('l.stateOrProvince = :stateOrProvince')
+                    ->andWhere("l.status IN (:statuses)")->andWhere('l.feedID = :feedID')->groupBy('l.city')
+                    ->setParameter('sities', $cities)->setParameter('stateOrProvince', $stateOrProvince)
+                    ->setParameter('statuses',
+                                   [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ])
+                    ->setParameter('feedID', $feedId)->getQuery()->getResult();
     }
 
     public function getListingsByCriteria(ListingCriteria $criteria, int $page = 1, int $pageSize = 50)
@@ -163,63 +170,33 @@ class ListingRepository extends ServiceEntityRepository
                     AND l.status IN (:statuses) 
                 ORDER BY l.contract_date DESC NULLS LAST 
                 LIMIT :limit 
-                OFFSET :offset",
-            $rsm);
+                OFFSET :offset", $rsm);
         $query->setParameter('feedId', $criteria->feedId);
         $query->setParameter('statuses', $criteria->statuses);
         $query->setParameter('limit', $pageSize);
-        $query->setParameter('offset', ($page - 1) * $pageSize);
+        $query->setParameter('offset', ( $page - 1 ) * $pageSize);
         return $query->getResult();
     }
 
-    public function searchListingsByMapCriteria(ListingSearchMapCriteria $criteria): ?array
+    public function searchListingsByMapCriteria(ListingMapSearchCriteria $criteria): ?array
     {
         $sqlArray = [];
         $params = [];
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Entity\Listing', 'l');
-
-        if ($criteria->beds) {
-            $sqlArray[] = 'bedrooms = :bedrooms';
-            $params[ 'bedrooms' ] = $criteria->beds;
+        if ( $criteria->city ) {
+            $sqlArray[] = 'city = :city';
+            $params[ 'city' ] = $criteria->city;
         }
-        if ($criteria->baths) {
-            $sqlArray[] = 'bathrooms = :bathrooms';
-            $params[ 'bathrooms' ] = $criteria->baths;
+        if ( $criteria->stateOrProvince ) {
+            $sqlArray[] = 'state_or_province = :stateOrProvince';
+            $params[ 'stateOrProvince' ] = $criteria->stateOrProvince;
         }
-        if ($criteria->livingArea) {
-            $sqlArray[] = '(living_area > :livingAreaFrom and living_area < :livingAreaTo)';
-            $params[ 'livingAreaFrom' ] = $criteria->livingArea[ 0 ];
-            $params[ 'livingAreaTo' ] = $criteria->livingArea[ 1 ];
-        }
-        if ($criteria->lotSize) {
-            $sqlArray[] = 'lot_size >= :lotSize';
-            $params[ 'lotSize' ] = $criteria->lotSize;
-        }
-        if ($criteria->yearBuilt) {
-            $sqlArray[] = '(year_built >= :yearBuiltFrom and year_built <= :yearBuiltTo)';
-            $params[ 'yearBuiltFrom' ] = $criteria->yearBuilt[ 0 ];
-            $params[ 'yearBuiltTo' ] = $criteria->yearBuilt[ 1 ];
-        }
-        if ($criteria->type) {
-            $typeSqlArray = [];
-            foreach ( $criteria->type as $key => $value ) {
-                $typeSqlArray[] = "type LIKE :$key";
-                $params[$key] = '%' . $value . '%';
-            }
-            $sqlArray[] = '(' . implode(' or ', $typeSqlArray) . ')';
-        }
-        if ($criteria->price) {
-            $sqlArray[] = '(list_price >= :priceFrom and list_price <= :priceTo)';
-            $params[ 'priceFrom' ] = $criteria->price[ 0 ];
-            $params[ 'priceTo' ] = $criteria->price[ 1 ];
-        }
-
-        $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" . ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
+        $sql = "select * from listing where status IN ('" . ListingConstants::LIVE_LISTING_STATUS . "', '" .
+               ListingConstants::UPDATED_LISTING_STATUS . "') and deleted_date is null";
         if ( !empty($sqlArray) ) {
             $sql .= ' and ' . implode(' and ', $sqlArray);
         }
-        $sql .= ' limit 1';
         $query = $this->entityManager->createNativeQuery($sql, $rsm);
         foreach ( $params as $key => $param ) {
             $query->setParameter($key, $param);

@@ -9,7 +9,7 @@
 
 namespace App\Service\Listing;
 
-use App\Criteria\ListingSearchCriteria;
+use App\Criteria\ListingMapSearchCriteria;
 use App\Repository\ListingRepository;
 
 class ListingSearchService
@@ -17,20 +17,20 @@ class ListingSearchService
     private ListingRepository $listingRepository;
     private ListingSearchDataService $listingSearchDataService;
 
-    public function __construct(ListingRepository $listingRepository, ListingSearchDataService $listingSearchDataService)
+    public function __construct(ListingRepository $listingRepository,
+                                ListingSearchDataService $listingSearchDataService)
     {
         $this->listingRepository = $listingRepository;
         $this->listingSearchDataService = $listingSearchDataService;
     }
 
-    public function searchListings(ListingSearchCriteria $criteria): ?array
+    public function searchListings(ListingMapSearchCriteria $criteria): ?array
     {
         $result = [];
-        $searchResult = $this->listingRepository->searchListingsByCriteria($criteria);
+        $searchResult = $this->listingRepository->searchListingsByMapCriteria($criteria);
         foreach ( $searchResult as $item ) {
             $result[] = $this->listingSearchDataService->constructSearchListingData($item);
         }
-
         return $result;
     }
 }
