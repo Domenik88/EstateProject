@@ -52,11 +52,11 @@ class EstateMap {
         this.$estateCardsWrapPosition = this.$estateCardsWrap.length && this.$estateCardsWrap[0].getBoundingClientRect();
 
         this.layers = {
-            listings: { layer: null, items: null, data: null, lastBox: null },
+            listings: { layer: null, items: null, lastBox: null },
             schools: { layer: null, items: null, data: null, lastBox: null },
-            crime: { layer: null, items: null, data: null, lastBox: null },
-            commute: { layer: null, items: null, data: null, lastBox: null },
-            yelp: { layer: null, items: null, data: null, lastBox: null },
+            crime: { layer: null, items: null, lastBox: null },
+            commute: { layer: null, items: null, lastBox: null },
+            yelp: { layer: null, items: null, lastBox: null },
             draw: { layer: null }
         };
 
@@ -65,6 +65,7 @@ class EstateMap {
             resizeUpdateDelay: 300,
             popupWidth: 400,
             yelpPopupWidth: 290,
+            schoolPopupWidth: 290,
         }
 
         this.selectors = {
@@ -345,8 +346,8 @@ class EstateMap {
                 marker.on('mouseover', () => {
                     if (!popup) popup = this._constructMarkerPopup({
                         data: data[i],
-                        template: 'schoolMarkerPopup',
-                        // width: '',
+                        template: 'schoolCard',
+                        width: this.settings.schoolPopupWidth,
                     });
                     this.map.openPopup(popup);
                 });

@@ -38,10 +38,6 @@ export const mapTemplates = {
         </div>
     `,
 
-    schoolMarkerPopup: () => {
-
-    },
-
     estateCard: ({
          images,
          isNew,
