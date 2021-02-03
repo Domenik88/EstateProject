@@ -3,6 +3,7 @@
 {% block title %}Hello DefaultController!{% endblock %}
 
 {% block body %}
+    {{ dump() }}
     {% embed 'layouts/sections/intro.html.twig' with {
         title: 'Find Real Estate Deals',
         fullSearch: true,

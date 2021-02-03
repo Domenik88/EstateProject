@@ -53,5 +53,18 @@ class ListingsMapController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/map/{city},{state}/", priority=10, name="search_on_map", requirements={"city"=".+","state"=".+"})
+     */
+
+    public function searchOnMap(string $city,string $state)
+    {
+
+        $searchFormObject = $this->listingService->getSearchFormObject();
+        return $this->render('listings_map/index.html.twig', [
+            'controller_name' => 'ListingsMapController',
+            'searchFormObject' => $searchFormObject,
+        ]);
+    }
 
 }
