@@ -15,17 +15,22 @@ use App\Repository\ListingRepository;
 class ListingSearchService
 {
     private ListingRepository $listingRepository;
+    private ListingSearchDataService $listingSearchDataService;
 
-    public function __construct(ListingRepository $listingRepository)
+    public function __construct(ListingRepository $listingRepository, ListingSearchDataService $listingSearchDataService)
     {
         $this->listingRepository = $listingRepository;
+        $this->listingSearchDataService = $listingSearchDataService;
     }
 
     public function searchListings(ListingSearchCriteria $criteria): ?array
     {
-        $result = $this->listingRepository->findBy($criteria->toArray());
-        dump($result);
-        die;
-        return [];
+        $result = [];
+        $searchResult = $this->listingRepository->searchListingsByCriteria($criteria);
+        foreach ( $searchResult as $item ) {
+            $result[] = $this->listingSearchDataService->constructSearchListingData($item);
+        }
+
+        return $result;
     }
 }

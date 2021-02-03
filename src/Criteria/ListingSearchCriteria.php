@@ -11,45 +11,42 @@ namespace App\Criteria;
 
 class ListingSearchCriteria
 {
-    public ?string $mlsNum;
     public ?int $beds;
     public ?int $baths;
+    public ?array $livingArea;
+    public ?int $lotSize;
+    public ?array $yearBuilt;
+    public ?array $type;
+    public ?array $price;
+    public ?array $keyWords;
 
-    public function __construct(string $mlsNum = null, ?int $beds = null, ?int $baths = null)
+    public function __construct(?int $beds = null,
+                                ?int $baths = null,
+                                ?array $livingArea = null,
+                                ?int $lotSize = null,
+                                ?array $yearBuilt = null,
+                                ?array $type = null,
+                                ?array $price = null,
+                                ?string $keyWords = null)
     {
-        $this->mlsNum = $mlsNum;
         $this->beds = $beds;
         $this->baths = $baths;
+        $this->livingArea = $livingArea;
+        $this->lotSize = $lotSize;
+        $this->yearBuilt = $yearBuilt;
+        $this->type = $type;
+        $this->price = $price;
+        $this->keyWords = $this->keyWordsToArray($keyWords);
     }
 
-    public function toArray(): ?array
+    private function keyWordsToArray(?string $keyWords): ?array
     {
-        $return = [];
-        if ($this->mlsNum){
-            $return['mlsNum'] = $this->getMlsNum();
+        if ( is_null($keyWords) ) {
+            return null;
         }
-        if ($this->beds){
-            $return['bedrooms'] = $this->getBeds();
-        }
-        if ($this->beds){
-            $return['bathrooms'] = $this->getBaths();
-        }
-        return $return;
-    }
 
-    private function getMlsNum(): ?string
-    {
-        return $this->mlsNum;
-    }
-
-    private function getBeds(): ?int
-    {
-        return $this->beds;
-    }
-
-    private function getBaths(): ?int
-    {
-        return $this->baths;
+        dump(explode(',', str_replace(' ','',$keyWords)));die;
+        return explode(',', $keyWords);
     }
 
 }

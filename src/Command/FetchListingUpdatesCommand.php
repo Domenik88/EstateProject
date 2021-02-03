@@ -55,9 +55,6 @@ class FetchListingUpdatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $criteria = new ListingSearchCriteria(null,null, 3);
-        $data = $this->listingSearchService->searchListings($criteria);
-        dump($data);die;
         $commandLastRunTimeDate = new \DateTime();
         $io = new SymfonyStyle($input, $output);
         $io->success("Start fetching listings");
