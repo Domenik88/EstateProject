@@ -37,8 +37,10 @@ class EstateMap {
         this.$yelpNavLink = this.$iw.find('.js-yelp-nav-link');
         this.$yelpCardsSlider = this.$iw.find('.js-yelp-cards-slider');
         this.$yelpCardsMenu = this.$iw.find('.js-yelp-cards-menu');
+        this.$schoolsCardsMenu = this.$iw.find('.js-schools-cards-menu');
         this.$homesAvailable = this.$iw.find('.js-homes-available');
         this.$mapLayerOption = this.$iw.find('.js-map-layer-option');
+        this.$schoolsOption = this.$iw.find('.js-schools-option');
         this.dataParams = this.$map.data('params');
 
         this.map = null;
@@ -46,14 +48,15 @@ class EstateMap {
         this.timers = { resize: null, refresh: null };
         this.boxState = { current: null, prev: null };
         this.layerOption = this.$mapLayerOption.length ? this.$mapLayerOption.filter('._active').data('val') : null;
+        this.schoolOption = this.$schoolsOption.length ? this.$schoolsOption.filter('._active').data('val') : null;
         this.$estateCardsWrapPosition = this.$estateCardsWrap.length && this.$estateCardsWrap[0].getBoundingClientRect();
 
         this.layers = {
-            listings: { layer: null, data: null, lastBox: null },
-            schools: { layer: null, data: null, lastBox: null },
-            crime: { layer: null, data: null, lastBox: null },
-            commute: { layer: null, data: null, lastBox: null },
-            yelp: { layer: null, data: null, lastBox: null },
+            listings: { layer: null, items: null, lastBox: null },
+            schools: { layer: null, items: null, data: null, lastBox: null },
+            crime: { layer: null, items: null, lastBox: null },
+            commute: { layer: null, items: null, lastBox: null },
+            yelp: { layer: null, items: null, lastBox: null },
             draw: { layer: null }
         };
 
@@ -62,6 +65,11 @@ class EstateMap {
             resizeUpdateDelay: 300,
             popupWidth: 400,
             yelpPopupWidth: 290,
+            schoolPopupWidth: 290,
+        }
+
+        this.selectors = {
+            smoothScroll: '.js-smooth-scroll',
         }
 
         // TODO: REMOVE
@@ -88,21 +96,32 @@ class EstateMap {
         });
 
         this.$showSchools.on('click', (e) => {
-            this._loadSchools(this.boxState.current);
+            this._loadSchools();
         });
 
-        this.$mapLayerOption.on('click trigger:click', (e) => {
+        this.$schoolsOption.add(this.$mapLayerOption).on('click trigger:click', (e) => {
             const
                 $currentTarget = $(e.currentTarget),
-                isActive = $currentTarget.data('active-map-option');
+                isActive = $currentTarget.data('active-option');
 
             if (!isActive) {
-                this.$mapLayerOption.data('active-map-option', false);
-                $currentTarget.data('active-map-option', true);
-                this.layerOption = $currentTarget.data('val');
+                const val = $currentTarget.data('val');
 
                 this._clearLayers();
-                this._runRefreshTimer(100);
+
+                if ($currentTarget.is(this.$schoolsOption)) {
+                    this.$schoolsOption.data('active-option', false);
+                    this.schoolOption = val;
+                    this._loadSchools();
+                }
+
+                if ($currentTarget.is(this.$mapLayerOption)) {
+                    this.$mapLayerOption.data('active-option', false);
+                    this.layerOption = val;
+                    this._runRefreshTimer(100);
+                }
+
+                $currentTarget.data('active-option', true);
             }
         });
 
@@ -275,8 +294,9 @@ class EstateMap {
         }
     }
 
-    _loadSchools(box) {
+    _loadSchools() {
         const
+            box = this.boxState.current,
             { schoolsPath } = this.dataParams,
             requestParameters = {
                 url: schoolsPath,
@@ -288,6 +308,12 @@ class EstateMap {
         const request = $.ajax(requestParameters).done((data) => {
             this._parseSchoolsData(data);
             this._addSchools();
+            this._addCardsToMapMenu({
+                $wrap: this.$schoolsCardsMenu,
+                data: this.layers.schools.data,
+                layer: 'schools',
+                template: 'schoolCard',
+            });
         });
 
         this._showPreloader(request, 'schools');
@@ -295,36 +321,55 @@ class EstateMap {
     }
 
     _parseSchoolsData(data) {
+        this.layers.schools.items = {};
         this.layers.schools.data = [];
 
         for (let i = 0; i < data.length; i++) {
             const
-                { areas, coordinates } = data[i],
-                { latitude, longitude } = coordinates,
-                marker = L.marker(
-                    L.latLng(latitude,longitude),
-                    {
-                        icon: this._constructDivIcon({ mod: '_school' })
-                    }
-                );
+                { level } = data[i],
+                matchOption = level.toLowerCase().indexOf(this.schoolOption) !== -1;
 
-            if (areas) {
-                this.layers.schools.data.push(L.polygon(
-                    areas.map(item => Object.values(item)),
-                    {
+            if (!this.schoolOption || (this.schoolOption === 'all') || matchOption) {
+                const
+                    { areas, coordinates } = data[i],
+                    { latitude, longitude } = coordinates,
+                    id = this._coordinatesToId(coordinates),
+                    marker = L.marker(
+                        L.latLng(latitude,longitude),
+                        {
+                            icon: this._constructDivIcon({ mod: '_school' })
+                        }
+                    );
+
+                let popup = null;
+
+                marker.on('mouseover', () => {
+                    if (!popup) popup = this._constructMarkerPopup({
+                        data: data[i],
+                        template: 'schoolCard',
+                        width: this.settings.schoolPopupWidth,
+                    });
+                    this.map.openPopup(popup);
+                });
+
+                if (areas) {
+                    this.layers.schools.items[`${id}_polygon`] = L.polygon(areas.map(item => Object.values(item)), {
                         color: 'red',
                         weight: 0,
-                    }
-                ));
-            }
+                        interactive: false,
+                        bubblingMouseEvents: false,
+                    });
+                }
 
-            this.layers.schools.data.push(marker);
+                this.layers.schools.data.push(data[i]);
+                this.layers.schools.items[id] = marker;
+            }
         }
     }
 
     _addSchools() {
         if (this.layers.schools.layer) this.layers.schools.layer.clearLayers();
-        this.layers.schools.layer = L.layerGroup(this.layers.schools.data);
+        this.layers.schools.layer = L.layerGroup(Object.values(this.layers.schools.items));
         this.map.addLayer(this.layers.schools.layer);
     }
 
@@ -352,13 +397,14 @@ class EstateMap {
         });
     }
 
-    _constructMarkerPopup(data, counter) {
+    _constructMarkerPopup(obj) {
         const
+            { data, template, width } = obj,
             { coordinates } = data,
-            { lat, lng } = coordinates;
+            { lat, latitude, lng, longitude } = coordinates;
 
         return L.responsivePopup({
-            maxWidth: this.settings.popupWidth,
+            maxWidth: width || this.settings.popupWidth,
             closeButton: true,
             riseOnHover: true,
             riseOffset: 9999,
@@ -366,16 +412,16 @@ class EstateMap {
             autoPan: false,
             offset: [0, -15],
         })
-            .setLatLng(L.latLng(lat,lng))
-            .setContent(mapTemplates.markerPopup(data))
+            .setLatLng(L.latLng(lat||latitude, lng||longitude))
+            .setContent(mapTemplates[template](data))
     }
 
-    _setMarkersData(data, from=0) {
+    _parseListingsData(data, from=0) {
         const
-            { maxMarkersCount=99999 } = this.dataParams,
+            { maxMarkersCount=4800 } = this.dataParams,
             to = Math.min(from + maxMarkersCount, data.length);
 
-        this.layers.listings.data = {};
+        this.layers.listings.items = {};
         this.estateCardsShowed = { from, to };
 
         for (let i = from; i < to; i++) {
@@ -393,31 +439,27 @@ class EstateMap {
                 let popup = null;
 
                 marker.on('mouseover', () => {
-                    if (!popup) popup = this._constructMarkerPopup(data[i], i);
+                    if (!popup) popup = this._constructMarkerPopup({
+                        data: data[i], 
+                        template: 'listingMarkerPopup',
+                    });
                     this.map.openPopup(popup);
                 });
 
-                this.layers.listings.data[mlsNumber] = marker;
+                this.layers.listings.items[mlsNumber] = marker;
             } else {
                 break;
             }
         }
     }
 
-    _parseMarkersData(data) {
-        this._setAvailableHomes(data.length);
-        this._setMarkersData(data);
-        this._addMarkers();
-        if (this.$estateCardsPagination.length) this._initPagination(data);
-    }
-
     _setAvailableHomes(count) {
         this.$homesAvailable.html(_formatCurrency(count));
     }
 
-    _addMarkers() {
+    _addListings() {
         if (this.layers.listings.layer) this.layers.listings.layer.clearLayers();
-        this.layers.listings.layer = L.layerGroup(Object.values(this.layers.listings.data));
+        this.layers.listings.layer = L.layerGroup(Object.values(this.layers.listings.items));
         this.map.addLayer(this.layers.listings.layer);
     }
     
@@ -441,7 +483,7 @@ class EstateMap {
                 { mlsNumber } = data[i],
                 $card = $(mapTemplates.estateCard(data[i]));
             
-            this._bindCardMouseEvents($card, this.layers.listings.data[mlsNumber]);
+            this._bindCardMouseEvents($card, this.layers.listings.items[mlsNumber]);
             cards.push($card);
         }
 
@@ -450,7 +492,7 @@ class EstateMap {
 
     _parseYelpMarkers(data) {
         const { businesses } = data;
-        this.layers.yelp.data = {};
+        this.layers.yelp.items = {};
 
         for (let i = 0; i < businesses.length; i++) {
             const {
@@ -499,35 +541,58 @@ class EstateMap {
                     marker.openPopup();
                 });
 
-                this.layers.yelp.data[id] = marker;
+                this.layers.yelp.items[id] = marker;
             }
         }
     }
 
     _addYelpMarkers() {
         if (this.layers.yelp.layer) this.layers.yelp.layer.clearLayers();
-        this.layers.yelp.layer = L.layerGroup(Object.values(this.layers.yelp.data));
+        this.layers.yelp.layer = L.layerGroup(Object.values(this.layers.yelp.items));
         this.map.addLayer(this.layers.yelp.layer);
     }
 
-    _addYelpCardsToMapMenu(data) {
-        if (this.$yelpCardsMenu.length) {
+    _addSchoolsCardsToMapMenu(data) {
+        if (this.$schoolsCardsMenu.length) {
             const
-                { businesses } = data,
-                $closestScroll = this.$yelpCardsMenu.closest('.js-smooth-scroll');
 
-            let yelpSimpleCardsArray = [];
+                $closestScroll = this.$yelpCardsMenu.closest(this.selectors.smoothScroll);
 
-            for (let i = 0; i < businesses.length; i++) {
+            let schoolsCardsArray = [];
+
+            for (let i = 0; i < data.length; i++) {
                 const
-                    { id } = businesses[i],
-                    $card = $(mapTemplates.yelpSimpleCard(businesses[i]));
+                    { id } = data[i],
+                    $card = $(mapTemplates.yelpSimpleCard(data[i]));
 
-                this._bindCardMouseEvents($card, this.layers.yelp.data[id]);
-                yelpSimpleCardsArray.push($card);
+                this._bindCardMouseEvents($card, this.layers.schools.items[id]);
+                schoolsCardsArray.push($card);
             }
 
-            this.$yelpCardsMenu.html('').append(yelpSimpleCardsArray);
+            this.$yelpCardsMenu.html('').append(schoolsCardsArray);
+            $closestScroll.trigger('trigger:scroll-top');
+        }
+    }
+
+    _addCardsToMapMenu(obj) {
+        const { $wrap, data, template, layer } = obj;
+
+        if ($wrap.length) {
+            const $closestScroll = $wrap.closest(this.selectors.smoothScroll);
+
+            let cardsArray = [];
+
+            for (let i = 0; i < data.length; i++) {
+                const
+                    { id, coordinates } = data[i],
+                    findId = id || this._coordinatesToId(coordinates),
+                    $card = $(mapTemplates[template](data[i]));
+
+                this._bindCardMouseEvents($card, this.layers[layer].items[findId]);
+                cardsArray.push($card);
+            }
+
+            $wrap.html('').append(cardsArray);
             $closestScroll.trigger('trigger:scroll-top');
         }
     }
@@ -542,7 +607,7 @@ class EstateMap {
                     { id } = businesses[i],
                     $card = $(mapTemplates.yelpCard(businesses[i]));
 
-                this._bindCardMouseEvents($card, this.layers.yelp.data[id]);
+                this._bindCardMouseEvents($card, this.layers.yelp.items[id]);
                 yelpCardsArray.push($card);
             }
 
@@ -557,8 +622,9 @@ class EstateMap {
         }
     }
 
-    _searchMarkers(box) {
+    _loadListings() {
         const
+            box = this.boxState.current,
             { path } = this.dataParams,
             requestParameters = {
                 url: path,
@@ -568,7 +634,10 @@ class EstateMap {
             };
 
         const request = $.ajax(requestParameters).done((data) => {
-            this._parseMarkersData(data);
+            this._setAvailableHomes(data.length);
+            this._parseListingsData(data);
+            this._addListings();
+            if (this.$estateCardsPagination.length) this._initPagination(data);
         });
 
         this._showPreloader(request, 'listing');
@@ -604,7 +673,13 @@ class EstateMap {
             this._parseYelpMarkers(data);
             this._addYelpMarkers();
             this._addYelpCardsToSlider(data);
-            this._addYelpCardsToMapMenu(data);
+
+            this._addCardsToMapMenu({
+                $wrap: this.$yelpCardsMenu,
+                data: data.businesses,
+                layer: 'yelp',
+                template: 'yelpSimpleCard',
+            });
         });
 
         this._showPreloader(request, 'yelp');
@@ -627,13 +702,10 @@ class EstateMap {
         }, delay || this.settings.refreshDelay);
     }
 
-    _checkLayerBox(layer) {
-        if (this.boxState.current !== layer.lastBox) {
-            layer.lastBox = this.boxState.current;
-            return true;
-        } else {
-            return false
-        }
+    _isBoxChanged(layer) {
+        const changed = this.boxState.current !== layer.lastBox;
+        layer.lastBox = this.boxState.current;
+        return changed;
     }
 
     _refreshMap() {
@@ -649,19 +721,19 @@ class EstateMap {
         refreshArray.forEach(item => {
             switch (item) {
                 case 'listings':
-                    if (this._checkLayerBox(this.layers.listings)) this._searchMarkers(this.boxState.current);
+                    if (this._isBoxChanged(this.layers.listings)) this._loadListings();
                     break;
 
                 case 'schools':
-                    if (this._checkLayerBox(this.layers.schools)) {
-                        this._loadSchools(this.boxState.current);
+                    if (this._isBoxChanged(this.layers.schools)) {
+                        this._loadSchools();
                     } else {
-                        this._addSchools(this.layers.schools.data);
+                        this._addSchools(this.layers.schools.items);
                     }
                     break;
 
                 case 'yelp':
-                    if (this._checkLayerBox(this.layers.yelp)) {
+                    if (this._isBoxChanged(this.layers.yelp)) {
                         this._yelpSearch();
                     } else {
                         this._addYelpMarkers();
@@ -689,12 +761,12 @@ class EstateMap {
                 this.$cardsScrollWrap.trigger('trigger:scroll-top');
 
                 if ((to <= pageCounterFrom) && (direction === 1)) {
-                    this._setMarkersData(data, pageCounterFrom);
-                    this._addMarkers();
+                    this._parseListingsData(data, pageCounterFrom);
+                    this._addListings();
                 } else if (direction === -1) {
                     if ((pageCounterFrom + pageSize) <= from) {
-                        this._setMarkersData(data, Math.max((pageSize * pageNumber) - maxMarkersCount, 0));
-                        this._addMarkers();
+                        this._parseListingsData(data, Math.max((pageSize * pageNumber) - maxMarkersCount, 0));
+                        this._addListings();
                     }
                 }
 
@@ -804,11 +876,14 @@ class EstateMap {
                     this._cancelDraw();
                 } else {
                     const { layer } = currentLayer;
-
                     if (layer) currentLayer.layer.clearLayers();
                 }
             }
         }
+    }
+
+    _coordinatesToId(coordinates) {
+        return _getPureNumber(JSON.stringify(Object.values(coordinates))).split('.').join('');
     }
 }
 

@@ -68,23 +68,23 @@
 {% set listingPopupMapSchoolsSlideMenu = [
     {
         text: 'Elementary',
-        linkMod: '',
-        dataVal: '',
+        linkMod: 'js-schools-option',
+        dataVal: 'elementary',
     },
     {
         text: 'Middle',
-        linkMod: '',
-        dataVal: '',
+        linkMod: 'js-schools-option',
+        dataVal: 'middle',
     },
     {
-        text: 'High',
-        linkMod: '',
-        dataVal: '',
+        text: 'Secondary',
+        linkMod: 'js-schools-option',
+        dataVal: 'secondary',
     },
     {
         text: 'All',
-        linkMod: '',
-        dataVal: '',
+        linkMod: 'js-schools-option',
+        dataVal: 'all',
     },
 ] %}
 
@@ -117,16 +117,17 @@
                                     {% include 'layouts/common/spinner.html.twig' %}
 
                                     <div class="map" id="listing-popup-map" data-params='{{
-                                    {
-                                        center: coordinates|default(false),
-                                        initialMarker: true,
-                                        zoom: 13,
-                                        minZoom: 10,
-                                        refreshYelp: true,
-                                        yelpPreloader: true,
-                                        refreshLayers: ['listings'],
-                                        preventClear: ['listings']
-                                    }|json_encode
+                                        {
+                                            center: coordinates|default(false),
+                                            schoolsPath: "/school/search",
+                                            initialMarker: true,
+                                            zoom: 13,
+                                            minZoom: 10,
+                                            refreshYelp: true,
+                                            yelpPreloader: true,
+                                            refreshLayers: [],
+                                            preventClear: ['listings']
+                                        }|json_encode
                                     }}'></div>
                                 </div>
                             </div>
@@ -137,7 +138,8 @@
                                         {% include 'layouts/modules/map-menu.html.twig' with {
                                             title: 'Schools',
                                             select: listingPopupMapSchoolsSelect,
-                                            slideMenu: listingPopupMapSchoolsSlideMenu
+                                            slideMenu: listingPopupMapSchoolsSlideMenu,
+                                            contentMod: 'js-schools-cards-menu',
                                         } only %}
                                     </div>
 

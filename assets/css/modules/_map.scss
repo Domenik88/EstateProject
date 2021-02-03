@@ -741,3 +741,38 @@
         width: 41px;
     }
 }
+
+.school-card {
+    padding: 10px 20px;
+    background: $white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+    
+    &__bottom {
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    &__rank {
+        margin-right: 10px;
+        color: $green;
+    }
+    
+    &__separate {
+        color: $dark1;
+    }
+    
+    &__title {
+        color: $dark1;
+    }
+    
+    &__address {
+        color: $gray1;
+    }
+}
