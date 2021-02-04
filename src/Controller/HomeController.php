@@ -13,7 +13,8 @@ class HomeController extends AbstractController
     private ListingService $listingService;
     private PageService $pageService;
 
-    public function __construct(ListingService $listingService, PageService $pageService)
+    public function __construct(ListingService $listingService,
+                                PageService $pageService)
     {
         $this->listingService = $listingService;
         $this->pageService = $pageService;
