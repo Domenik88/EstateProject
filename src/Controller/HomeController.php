@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Criteria\ListingMapSearchCriteria;
+use App\Service\Listing\ListingSearchService;
 use App\Service\Listing\ListingService;
 use App\Service\Page\PageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,12 +14,14 @@ class HomeController extends AbstractController
 {
     private ListingService $listingService;
     private PageService $pageService;
+    private ListingSearchService $listingSearchService;
 
     public function __construct(ListingService $listingService,
-                                PageService $pageService)
+                                PageService $pageService, ListingSearchService $listingSearchService)
     {
         $this->listingService = $listingService;
         $this->pageService = $pageService;
+        $this->listingSearchService = $listingSearchService;
     }
 
     /**
@@ -39,7 +43,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route ("/{slug}", name="page", requirements={"slug"=".+"})
+     * @Route ("/{slug}", name="page", requirements={"slug"=".+"}, methods={"GET"})
      */
     public function page($slug)
     {
@@ -51,7 +55,11 @@ class HomeController extends AbstractController
                 ]);
             } else {
                 $searchFormObject = $this->listingService->getSearchFormObject();
+                $content = explode(',',$page->getContent());
+                $criteria = new ListingMapSearchCriteria($content[0], $this->listingService->getProvinceName($content[1]));
+                $searchListings = $this->listingSearchService->searchListings($criteria);
                 return $this->render('listings_map/index.html.twig', [
+                    'searchListings'   => $searchListings,
                     'searchFormObject' => $searchFormObject,
                 ]);
             }
