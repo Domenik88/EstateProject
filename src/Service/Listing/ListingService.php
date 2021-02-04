@@ -325,7 +325,7 @@ class ListingService
         $result = $this->listingRepository->getCounters($cityes, 'British Columbia', 'ddf');
         $cityCounters = [];
         foreach ( $result as $item ) {
-            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia');
+            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia', 'Vancouver,BC');
         }
 
         return $cityCounters;

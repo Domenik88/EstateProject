@@ -15,12 +15,14 @@ class CitiesCounterResult
     public int $count;
     public string $feedID;
     public string $stateOrProvince;
+    public  string $href;
 
-    public function __construct(string $city, int $count, string $feedID, string $stateOrProvince)
+    public function __construct(string $city, int $count, string $feedID, string $stateOrProvince, string $href = '#')
     {
         $this->city = $city;
         $this->count = $count;
         $this->feedID = $feedID;
         $this->stateOrProvince = $stateOrProvince;
+        $this->href = $href;
     }
 }

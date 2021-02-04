@@ -23,7 +23,11 @@
                         <div class="row">
                             <div class="col-md-1"></div>
                             <div class="col-md-9">
-                                {{ include('admin/page/_form.html.twig') }}
+                                {% if form_type == 'search' %}
+                                    {{ include('admin/page/forms/new_search_form.html.twig') }}
+                                {% else %}
+                                    {{ include('admin/page/forms/_form.html.twig') }}
+                                {% endif %}
                                 <a href="{{ path('page_index') }}">back to list</a>
                             </div>
                             <div class="col-md-2"></div>

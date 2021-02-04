@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Page;
 use App\Form\PageType;
+use App\Form\SearchPageType;
 use App\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,16 @@ class AdminStaticPageController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="page_new", methods={"GET","POST"})
+     * @Route("/new/{type}", name="page_new", methods={"GET","POST"}, requirements={"type"="\w+"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, string $type = null): Response
     {
         $staticPage = new Page();
-        $form = $this->createForm(PageType::class, $staticPage);
+        if ($type == 'search') {
+            $form = $this->createForm(SearchPageType::class, $staticPage);
+        } else {
+            $form = $this->createForm(PageType::class, $staticPage);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,6 +50,7 @@ class AdminStaticPageController extends AbstractController
         return $this->render('admin/page/new.html.twig', [
             'static_page' => $staticPage,
             'form' => $form->createView(),
+            'form_type' => $type,
         ]);
     }
 

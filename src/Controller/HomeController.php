@@ -44,9 +44,16 @@ class HomeController extends AbstractController
     {
         $page = $this->pageService->search([ 'slug' => $slug, 'status' => true ]);
         if ( $page ) {
-            return $this->render('page/' . $page->getType() . '-page.html.twig', [
-                'page' => $page,
-            ]);
+            if ($page->getType() != 'search') {
+                return $this->render('page/' . $page->getType() . '-page.html.twig', [
+                    'page' => $page,
+                ]);
+            } else {
+                $searchFormObject = $this->listingService->getSearchFormObject();
+                return $this->render('listings_map/index.html.twig', [
+                    'searchFormObject' => $searchFormObject,
+                ]);
+            }
         } else {
             return $this->render('bundles/TwigBundle/Exception/error404.html.twig');
         }

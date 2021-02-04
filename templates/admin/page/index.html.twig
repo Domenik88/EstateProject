@@ -45,7 +45,8 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <a href="{{ path('page_new') }}">Create new</a>
+                        <a href="{{ path('page_new', {'type': 'static'}) }}">Create new Static/Landing page</a>
+                        <a href="{{ path('page_new', {'type': 'search'}) }}">Create new Search Page</a>
                     </div>
                 </div>
             </div>
