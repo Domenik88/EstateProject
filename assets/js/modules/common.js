@@ -587,22 +587,28 @@ jQuery(function($){
         },
 
         initMaxHeight() {
-            function setMaxHeight($item, offset) {
-                const { top } = $item[0].getBoundingClientRect();
-                $item.css('max-height', `${$_.windowHeight - top - offset}px`);
+            function setMaxHeight($item, dataOffset) {
+                const
+                    { top } = $item[0].getBoundingClientRect(),
+                    { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
+                    $parentStickyBlock = $item.closest($_.$stickyBlock),
+                    stickyOffset = $parentStickyBlock.length ? ($parentStickyBlock.data('offset') || 0) : 0,
+                    dataMhFromPosition = $item.data('mh-from-position'),
+                    totalHeightOffset = dataMhFromPosition ? top : headerHeight + stickyOffset;
+
+                $item.css('max-height', `${$_.windowHeight - totalHeightOffset - dataOffset}px`);
+                $_.$body.trigger('body:trigger:init:scrollbars');
             }
 
             $_.$maxHeight.each((key, item) => {
                 const
                     $currentItem = $(item),
-                    $innerScroll = $currentItem.find($_.selectors.smoothScroll),
                     dataOffset = $currentItem.data('offset') || 0;
 
                 setMaxHeight($currentItem, dataOffset);
 
                 $_.$body.on('body:resize', () => {
                     setMaxHeight($currentItem, dataOffset);
-                    if ($innerScroll.length) $innerScroll.trigger('trigger:update-scroll');
                 });
             });
         },
@@ -928,7 +934,8 @@ jQuery(function($){
             function setStickyTop($currentStickyBlock) {
                 const
                     { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
-                    offset = headerHeight + 20;
+                    dataOffset = $currentStickyBlock.data('offset') || 0,
+                    offset = headerHeight + dataOffset;
 
                 $currentStickyBlock.css('top', offset);
                 $currentStickyBlock.removeClass('_stick-to-bottom').addClass('_stick-to-top');
@@ -959,10 +966,9 @@ jQuery(function($){
             $_.$confCollapseForm.each((key, item) => {
                 const
                     $currentForm = $(item),
-                    $parentScroll = $currentForm.closest($_.selectors.smoothScroll),
                     $innerCollapseBlock = $currentForm.find($_.$collapse),
                     $innerInputs = $currentForm.find('input[type="text"]').not($_.selectors.hiddenInput),
-                    $parentStickyBlock = $currentForm.closest('.js-sticky-block');
+                    $parentStickyBlock = $currentForm.closest($_.$stickyBlock);
 
                 $currentForm.on('change', () => {
                     const
@@ -970,10 +976,15 @@ jQuery(function($){
                         method = values.indexOf(true) !== -1 ? 'slideDown' : 'slideUp',
                         props = {
                             duration: 300,
+                            complete: () => $_.$body.trigger('body:trigger:init:scrollbars'),
                         };
 
-                    if ($parentStickyBlock.length) props.step = () => $parentStickyBlock.trigger('trigger:update');
-                    if ($parentScroll.length) props.complete = () => $parentScroll.trigger('trigger:update-scroll');
+                    if ($parentStickyBlock.length) props.step = () => {
+                        $parentStickyBlock.trigger('trigger:update');
+                        $_.$body.trigger('body:trigger:init:scrollbars', {
+                            preventDestroy: true,
+                        });
+                    };
 
                     $innerCollapseBlock[method](props);
                 });
@@ -1342,28 +1353,47 @@ jQuery(function($){
         },
 
         initSmoothScroll() {
-            function setScrollBars() {
-                const $scrollbar = $($_.selectors.smoothScroll);
+            function setScrollBars(data) {
+                const
+                    $scrollbar = $($_.selectors.smoothScroll),
+                    { preventDestroy } = data || {};
 
                 $scrollbar.each((key, item) => {
                     const
                         $item = $(item),
                         $breakpointDetect = $item.find('.js-bp-detect'),
+                        dataInitIfOverflow = $item.data('init-if-overflow'),
                         isInit = Scrollbar.has(item);
 
-                    if ($breakpointDetect.length) {
-                        if ($breakpointDetect.eq(0).is(':hidden')) {
+                    if (dataInitIfOverflow) {
+                        const { clientHeight, scrollHeight } = item;
+
+                        if (scrollHeight > clientHeight) {
                             init(item, isInit);
                         } else {
-                            if (isInit) {
-                                $item.off('trigger:scroll-top');
-                                Scrollbar.destroy(item);
-                            }
+                            if (isInit && !preventDestroy) destroy($item);
                         }
                     } else {
-                        init(item, isInit);
+                        if ($breakpointDetect.length) {
+                            if ($breakpointDetect.eq(0).is(':hidden')) {
+                                init(item, isInit);
+                            } else {
+                                if (isInit) {
+                                    destroy($item);
+                                }
+                            }
+                        } else {
+                            init(item, isInit);
+                        }
                     }
                 });
+            }
+
+            function destroy($item) {
+                $item.off('trigger:scroll-top');
+                $item.off('trigger:update-scroll');
+                $item.removeClass('_scroll-initialized');
+                Scrollbar.destroy($item[0])
             }
 
             function init(item, update) {
@@ -1371,7 +1401,6 @@ jQuery(function($){
 
                 if (update) {
                     Scrollbar.get(item).update();
-
                 } else {
                     const
                         dataScrollOptions = $item.data('scroll-options') || {},
@@ -1391,6 +1420,8 @@ jQuery(function($){
                         });
                     }
 
+                    $item.addClass('_scroll-initialized');
+
                     $item.on('trigger:scroll-top', () => {
                         scrollbar.scrollTop = 0;
                     });
@@ -1405,8 +1436,8 @@ jQuery(function($){
                 setScrollBars();
             });
 
-            $_.$body.on('body:trigger:init:scrollbars', () => {
-                setScrollBars();
+            $_.$body.on('body:trigger:init:scrollbars', (e, data) => {
+                setScrollBars(data);
             });
 
             $_.$body.on('trigger:init-scrollbar', (e, data) => {

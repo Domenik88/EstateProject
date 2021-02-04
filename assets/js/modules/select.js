@@ -12,6 +12,7 @@ jQuery(function($) {
             this.$select = $('.js-select-module-select');
             this.$container = $('.js-select-module-container');
             this.$optContainer = $('.js-select-module-options');
+            this.$dropdown = $('.js-select-dropdown');
             this.$btn = $('.js-select-module-text-block');
         },
 
@@ -23,6 +24,14 @@ jQuery(function($) {
                 
                 $relatedModule.toggleClass("_active");
             });
+
+            $_.$dropdown.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', (e) => {
+                const
+                    $currentTarget = $(e.currentTarget),
+                    $parentScroll = $currentTarget.closest('.js-smooth-scroll');
+
+                if ($parentScroll.length) $parentScroll.trigger('trigger:update-scroll');
+            })
         },
         
         initSelects() {

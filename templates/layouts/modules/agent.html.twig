@@ -2,7 +2,7 @@
 {% set idAttribute = id|default(false) ? 'id=' ~ id : '' %}
 
 <div class="agent {{ mod }} {{ wrapMod|default('') }}" {{ idAttribute }} data-offset="20">
-    <div class="agent__container {{ containerMod|default('') }}">
+    <div class="agent__container _scroll-hover-white {{ containerMod|default('') }}" data-init-if-overflow="true">
         <div class="agent__person">
             <div class="agent__photo-wrap">
                 <img class="agent__photo of" src="{{ agentPhoto }}" />
