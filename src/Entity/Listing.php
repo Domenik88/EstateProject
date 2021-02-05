@@ -177,6 +177,11 @@ class Listing
      */
     private $schoolsData = [];
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $bathrooms;
+
     public function __construct()
     {
         $this->viewings = new ArrayCollection();
@@ -597,6 +602,18 @@ class Listing
     public function setSchoolsData(?array $schoolsData): self
     {
         $this->schoolsData = $schoolsData;
+
+        return $this;
+    }
+
+    public function getBathrooms(): ?int
+    {
+        return $this->bathrooms;
+    }
+
+    public function setBathrooms(?int $bathrooms): self
+    {
+        $this->bathrooms = $bathrooms;
 
         return $this;
     }

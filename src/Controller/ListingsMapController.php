@@ -22,12 +22,10 @@ class ListingsMapController extends AbstractController
     /**
      * @Route("/map", priority=10, name="listings_map")
      */
-
     public function index()
     {
         $searchFormObject = $this->listingService->getSearchFormObject();
         return $this->render('listings_map/index.html.twig', [
-            'controller_name' => 'ListingsMapController',
             'searchFormObject' => $searchFormObject,
         ]);
     }
@@ -35,23 +33,35 @@ class ListingsMapController extends AbstractController
     /**
      * @Route("/listing/search", priority=10, name="listings_search")
      */
-    public function listingSearch(Request $request, ListingService $listingService, ListingSearchDataService $listingSearchDataService)
+    public function listingSearch(Request $request,
+                                  ListingService $listingService,
+                                  ListingSearchDataService $listingSearchDataService)
     {
-        if(!$request->isXmlHttpRequest())
-        {
+        if ( !$request->isXmlHttpRequest() ) {
             throw new NotFoundHttpException();
         }
         $boxObject = $request->request->get('box');
         $box = json_decode($boxObject);
-        $listings = $listingService->getAllActiveListingsForMapBox($box->northEast->lat,$box->northEast->lng,$box->southWest->lat,$box->southWest->lng);
-        $response = new JsonResponse(['collection' => json_encode($listings)]);
+        $listings = $listingService->getAllActiveListingsForMapBox($box->northEast->lat, $box->northEast->lng,
+                                                                   $box->southWest->lat, $box->southWest->lng);
+        $response = new JsonResponse([ 'collection' => json_encode($listings) ]);
         $responseData = [];
-        foreach ($listings as $listing) {
+        foreach ( $listings as $listing ) {
             $responseData[] = $listingSearchDataService->constructSearchListingData($listing);
         }
         $response->setData($responseData);
         return $response;
     }
 
+    /**
+     * @Route("/map/{city},{state}/", priority=10, name="search_on_map", requirements={"city"=".+","state"=".+"})
+     */
+    public function searchOnMap(string $city, string $state)
+    {
+        $searchFormObject = $this->listingService->getSearchFormObject();
+        return $this->render('listings_map/index.html.twig', [
+            'searchFormObject' => $searchFormObject,
+        ]);
+    }
 
 }
