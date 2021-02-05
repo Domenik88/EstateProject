@@ -2,13 +2,11 @@
 
 namespace App\Command;
 
-use App\Criteria\ListingMapSearchCriteria;
 use App\Repository\ListingRepository;
 use App\Service\Feed\DdfListingMasterService;
 use App\Service\Feed\DdfService;
 use App\Service\Feed\FeedService;
 use App\Service\Feed\SearchUpdatedDdfListingsService;
-use App\Service\Listing\ListingSearchService;
 use App\Service\Listing\ListingService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
