@@ -35,6 +35,7 @@ jQuery(function($){
             this.initTwinFields();
             this.initInputOnlyNumber();
             this.initMaxHeight();
+            this.initMaxWidth();
         },
 
         initCache() {
@@ -131,6 +132,8 @@ jQuery(function($){
             this.$onlyNumbers = $('.js-only-numbers');
 
             this.$maxHeight = $('.js-max-height');
+            this.$maxWidth = $('.js-max-width');
+            this.$maxWidthContainer = $('.js-max-width-container');
 
             this.windowWidth = window.outerWidth;
             this.windowHeight = $_.$window.height();
@@ -234,12 +237,25 @@ jQuery(function($){
         },
 
         initAutofillFilter() {
-            function filter(obj) {
+            function getHighlightString(props) {
                 const
-                    { $relatedInput, $relatedOptions, $autofillNoResults } = obj,
+                    { text, replace } = props,
+                    from = text.toLowerCase().indexOf(replace.toLowerCase()),
+                    to = from + replace.length;
+
+                return from !== -1 ? (
+                    text.substring(0, from) +
+                    `<span class="highlight">${text.substring(from, to)}</span>` +
+                    text.substring(to, text.length)
+                ) : false
+            }
+
+            function filter(props) {
+                const
+                    { $relatedInput, $relatedOptions, $autofillNoResults } = props,
                     inputValue = $relatedInput.val();
 
-                let matches = 0;
+                let matches = false;
 
                 $autofillNoResults.removeClass('_show');
 
@@ -247,27 +263,23 @@ jQuery(function($){
                     const
                         $currentOption = $(item),
                         dataVal = $currentOption.data('value'),
-                        matchIndex = dataVal.toLowerCase().indexOf(inputValue.toLowerCase()),
-                        hasMatch = matchIndex !== -1;
+                        dataName = $currentOption.data('name'),
+                        valHighlight = getHighlightString({ text: dataVal, replace: inputValue }),
+                        nameHighlight = getHighlightString({ text: dataName, replace: inputValue }),
+                        hasMatches = valHighlight || nameHighlight,
+                        isHighlighted = $currentOption.data('highlight');
 
-                    if (hasMatch) {
-                        matches++;
+                    if (isHighlighted) $currentOption.html(dataVal).data('highlight', false);
 
-                        $currentOption
-                            .html(
-                                dataVal.substring(0, matchIndex) +
-                                `<span class="highlight">${dataVal.substring(matchIndex, matchIndex + inputValue.length)}</span>` +
-                                dataVal.substring(matchIndex + inputValue.length, dataVal.length)
-                            )
-                            .data('highlight', true);
-                    }
-                    else if ($currentOption.data('highlight')) {
-                        $currentOption
-                            .html(dataVal)
-                            .data('highlight', false);
+                    if (hasMatches) {
+                        matches = true;
+                        $currentOption.data('highlight', true);
+
+                        if (valHighlight) $currentOption.html(valHighlight);
+                        if (nameHighlight) $currentOption.append(`<span class="option-label">${nameHighlight}</span>`);
                     }
 
-                    $currentOption[hasMatch ? 'removeClass' : 'addClass']('_hide');
+                    $currentOption[hasMatches ? 'removeClass' : 'addClass']('_hide');
                 });
 
                 if (!matches) $autofillNoResults.addClass('_show');
@@ -281,11 +293,7 @@ jQuery(function($){
                         $currentOption = $(item),
                         dataVal = $currentOption.data('value');
 
-                    if ($currentOption.data('highlight')) {
-                        $currentOption
-                            .html(dataVal)
-                            .data('highlight', false);
-                    }
+                    if ($currentOption.data('highlight')) $currentOption.html(dataVal).data('highlight', false);
                 });
             }
 
@@ -688,14 +696,32 @@ jQuery(function($){
             });
         },
 
-        initMaxHeight() {
-            function setMaxHeight($item, dataOffset) {
+        initMaxWidth() {
+            function setMaxWidth($block, $wrap) {
+                $block.css('max-width', $wrap.width());
+            }
+
+            $_.$maxWidth.each((key, item) => {
                 const
+                    $currentItem = $(item),
+                    $wrap = $currentItem.closest($_.$maxWidthContainer);
+
+                if ($wrap.length) {
+                    setMaxWidth($currentItem, $wrap);
+
+                    $_.$body.on('body:resize', () => {
+                        setMaxWidth($currentItem, $wrap);
+                    });
+                }
+            });
+        },
+
+        initMaxHeight() {
+            function setMaxHeight(props) {
+                const
+                    { $item, dataOffset, stickyOffset, dataMhFromPosition } = props,
                     { top } = $item[0].getBoundingClientRect(),
                     { height: headerHeight } = $_.$header[0].getBoundingClientRect(),
-                    $parentStickyBlock = $item.closest($_.$stickyBlock),
-                    stickyOffset = $parentStickyBlock.length ? ($parentStickyBlock.data('offset') || 0) : 0,
-                    dataMhFromPosition = $item.data('mh-from-position'),
                     totalHeightOffset = dataMhFromPosition ? top : headerHeight + stickyOffset;
 
                 $item.css('max-height', `${$_.windowHeight - totalHeightOffset - dataOffset}px`);
@@ -705,12 +731,18 @@ jQuery(function($){
             $_.$maxHeight.each((key, item) => {
                 const
                     $currentItem = $(item),
-                    dataOffset = $currentItem.data('offset') || 0;
+                    $parentStickyBlock = $currentItem.closest($_.$stickyBlock),
+                    props = {
+                        $item: $currentItem,
+                        dataOffset: $currentItem.data('offset') || 0,
+                        dataMhFromPosition: $currentItem.data('mh-from-position'),
+                        stickyOffset: $parentStickyBlock.length ? ($parentStickyBlock.data('offset') || 0) : 0,
+                    };
 
-                setMaxHeight($currentItem, dataOffset);
+                setMaxHeight(props);
 
                 $_.$body.on('body:resize', () => {
-                    setMaxHeight($currentItem, dataOffset);
+                    setMaxHeight(props);
                 });
             });
         },

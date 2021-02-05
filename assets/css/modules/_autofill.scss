@@ -4,6 +4,8 @@
 	
 	&__dropdown {
 		@extend .select-dropdown;
+		min-width: 100%;
+		width: auto;
 	}
 	
 	&__options {
@@ -49,4 +51,11 @@
 	&._hide {
 		display: none;
 	}
+}
+
+.option-label {
+	@extend .tiny-text;
+	color: $gray1;
+	display: block;
+	white-space: nowrap;
 }
