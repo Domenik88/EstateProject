@@ -54,14 +54,19 @@ class ListingsMapController extends AbstractController
     }
 
     /**
-     * @Route("/map/{city},{state}/", priority=10, name="search_on_map", requirements={"city"=".+","state"=".+"})
+     * @Route("/map/filter-search", priority=10, name="map_filter_search", methods={"POST"})
      */
-    public function searchOnMap(string $city, string $state)
+    public function searchOnMap(Request $request, string $city, string $state)
     {
-        $searchFormObject = $this->listingService->getSearchFormObject();
-        return $this->render('listings_map/index.html.twig', [
-            'searchFormObject' => $searchFormObject,
-        ]);
+        if ( !$request->isXmlHttpRequest() ) {
+            throw new NotFoundHttpException();
+        }
+        $requestData = $request->request->all();
+        $listings = $this->listingService->getListingsByFilters($requestData);
+
+        $response = new JsonResponse([ 'collection' => json_encode($listings) ]);
+
+        return $response;
     }
 
 }
