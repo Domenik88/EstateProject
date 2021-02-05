@@ -55,7 +55,6 @@ class ListingSearchDataService
             'userFavorite'     => $this->getFavoriteUserData($listing),
             'breadCrumbs'      => $this->getBreadCrumbs($listing),
             'schoolData'       => $this->gesSchoolsDataFromTemplate($listing),
-            'raw' => $listing->getRawData(),
         ];
         return $listingObject;
     }
