@@ -55,7 +55,19 @@
 
 .option-label {
 	@extend .tiny-text;
+	position: relative;
 	color: $gray1;
 	display: block;
 	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+	
+	&::after {
+		content: '';
+		width: 20px;
+		height: 100%;
+		@include absolute(0,0,auto,auto);
+		background: linear-gradient(270deg, $white, rgba(0,0,0,0));
+		z-index: 2;
+	}
 }

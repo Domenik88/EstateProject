@@ -39,25 +39,13 @@
             <div class="request-form__row">
                 <div class="tel-wrap">
                     <div class="tel-wrap__code">
-                        {% include 'layouts/form/select.html.twig' with {
-                            'name': 'code',
-                            'inputMod': '',
-                            'wrapMod': '  _gray-text',
-                            'textMod': 'small-text',
-                            'options': [
-                                {
-                                    'value': '+1268',
-                                    'text': 'CA +1268',
-                                },
-                                {
-                                    'value': '1111',
-                                    'text': 'CA +1111',
-                                },
-                                {
-                                    'value': '2222',
-                                    'text': 'CA +2222',
-                                },
-                            ]
+                        {% include 'layouts/form/autofill.html.twig' with {
+                            inputName: 'code',
+                            wrapMod: 'js-autofill-filter',
+                            inputPlaceholder: ' ',
+                            inputMod: ' ',
+                            inputValue: 'CA +1',
+                            phoneCodeOptions: true,
                         } only %}
                     </div>
                     <div class="tel-wrap__phone">

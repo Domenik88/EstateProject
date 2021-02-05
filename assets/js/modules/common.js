@@ -324,7 +324,11 @@ jQuery(function($){
                     clearTimeout(timer);
 
                     timer = setTimeout(() => {
-                        filter({ $relatedInput, $relatedOptions, $autofillNoResults })
+                        if ($relatedInput.val().length) {
+                            filter({ $relatedInput, $relatedOptions, $autofillNoResults })
+                        } else {
+                            reset($relatedOptions);
+                        }
                     }, 500);
                 });
             });
