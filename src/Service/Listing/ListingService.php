@@ -9,7 +9,6 @@
 
 namespace App\Service\Listing;
 
-
 use App\Entity\Listing;
 use App\Entity\School;
 use App\Repository\ListingRepository;
@@ -34,7 +33,14 @@ class ListingService
     private SchoolRepository $schoolRepository;
     private HereRouteService $hereRouteService;
 
-    public function __construct(EntityManagerInterface $entityManager, ListingRepository $listingRepository, ListingMediaService $listingMediaService, ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates, LoggerInterface $logger, ListingSearchDataService $listingSearchDataService, SchoolRepository $schoolRepository, HereRouteService $hereRouteService)
+    public function __construct(EntityManagerInterface $entityManager,
+                                ListingRepository $listingRepository,
+                                ListingMediaService $listingMediaService,
+                                ListingListSinglePageListingsCoordinates $listingListSinglePageListingsCoordinates,
+                                LoggerInterface $logger,
+                                ListingSearchDataService $listingSearchDataService,
+                                SchoolRepository $schoolRepository,
+                                HereRouteService $hereRouteService)
     {
         $this->entityManager = $entityManager;
         $this->listingRepository = $listingRepository;
@@ -50,32 +56,31 @@ class ListingService
     {
         $listing = new Listing();
         $listing->setFeedID('ddf');
-        $listing->setCity($result['City']);
-        $listing->setFeedListingID($result['ListingKey']);
-        $listing->setListPrice($result['ListPrice']);
-        $listing->setOriginalPrice($result['ListPrice']);
-        $listing->setMlsNum($result['ListingId']);
-        $listing->setPhotosCount($result['PhotosCount']);
-        $listing->setPostalCode($result['PostalCode']);
-        $listing->setUnparsedAddress($result['UnparsedAddress']);
-        $listing->setStateOrProvince($result['StateOrProvince']);
-        $listing->setCountry($result['Country']);
+        $listing->setCity($result[ 'City' ]);
+        $listing->setFeedListingID($result[ 'ListingKey' ]);
+        $listing->setListPrice($result[ 'ListPrice' ]);
+        $listing->setOriginalPrice($result[ 'ListPrice' ]);
+        $listing->setMlsNum($result[ 'ListingId' ]);
+        $listing->setPhotosCount($result[ 'PhotosCount' ]);
+        $listing->setPostalCode($result[ 'PostalCode' ]);
+        $listing->setUnparsedAddress($result[ 'UnparsedAddress' ]);
+        $listing->setStateOrProvince($result[ 'StateOrProvince' ]);
+        $listing->setCountry($result[ 'Country' ]);
         $listing->setStatus(ListingConstants::NEW_LISTING_STATUS);
         $listing->setProcessingStatus(ListingConstants::NONE_PROCESSING_LISTING_STATUS);
         $listing->setLastUpdateFromFeed(new \DateTime());
         $listing->setRawData($result);
-        if ( $result['Latitude'] != '' or $result['Longitude'] != '' ) {
-            $listing->setCoordinates(new Point($result['Latitude'], $result['Longitude']));
+        if ( $result[ 'Latitude' ] != '' or $result[ 'Longitude' ] != '' ) {
+            $listing->setCoordinates(new Point($result[ 'Latitude' ], $result[ 'Longitude' ]));
         }
-        $listing->setType($result['PropertyType']);
-        $listing->setOwnershipType($result['OwnershipType']);
-        $listing->setBedrooms($result['BedroomsTotal'] ? (int)$result['BedroomsTotal'] : null);
-        $listing->setLivingArea($result['BuildingAreaTotal'] ? (int)$result['BuildingAreaTotal'] : 0);
-        $listing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
-        $listing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
-        $listing->setContractDate($result['ListingContractDate'] ? new \DateTime($result['ListingContractDate']) : null);
-        $listing->setSubdivision($result['SubdivisionName'] ? $result['SubdivisionName'] : null);
-
+        $listing->setType($result[ 'PropertyType' ]);
+        $listing->setOwnershipType($result[ 'OwnershipType' ]);
+        $listing->setBedrooms($result[ 'BedroomsTotal' ] ? (int)$result[ 'BedroomsTotal' ] : null);
+        $listing->setLivingArea($result[ 'BuildingAreaTotal' ] ? (int)$result[ 'BuildingAreaTotal' ] : 0);
+        $listing->setLotSize($result[ 'LotSizeArea' ] ? (int)$result[ 'LotSizeArea' ] : 0);
+        $listing->setYearBuilt($result[ 'YearBuilt' ] ? (int)$result[ 'YearBuilt' ] : null);
+        $listing->setContractDate($result[ 'ListingContractDate' ] ? new \DateTime($result[ 'ListingContractDate' ]) : null);
+        $listing->setSubdivision($result[ 'SubdivisionName' ] ? $result[ 'SubdivisionName' ] : null);
         $this->entityManager->persist($listing);
 
         $this->entityManager->flush();
@@ -86,22 +91,22 @@ class ListingService
     public function upsertFromDdfResult(array $result, bool $updateStatuses = true): Listing
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'feedID' => 'ddf',
-            'feedListingID' => $result['ListingKey'],
-            'deletedDate' => null,
-        ]);
+                                                                   'feedID'        => 'ddf',
+                                                                   'feedListingID' => $result[ 'ListingKey' ],
+                                                                   'deletedDate'   => null,
+                                                               ]);
         if ( !$existingListing ) {
             return $this->createFromDdfResult($result);
         }
         $existingListing->setFeedID('ddf');
-        $existingListing->setMlsNum($result['ListingId']);
-        $existingListing->setCity($result['City']);
-        $existingListing->setListPrice($result['ListPrice']);
-        $existingListing->setPhotosCount($result['PhotosCount']);
-        $existingListing->setPostalCode($result['PostalCode']);
-        $existingListing->setUnparsedAddress($result['UnparsedAddress']);
-        $existingListing->setStateOrProvince($result['StateOrProvince']);
-        $existingListing->setCountry($result['Country']);
+        $existingListing->setMlsNum($result[ 'ListingId' ]);
+        $existingListing->setCity($result[ 'City' ]);
+        $existingListing->setListPrice($result[ 'ListPrice' ]);
+        $existingListing->setPhotosCount($result[ 'PhotosCount' ]);
+        $existingListing->setPostalCode($result[ 'PostalCode' ]);
+        $existingListing->setUnparsedAddress($result[ 'UnparsedAddress' ]);
+        $existingListing->setStateOrProvince($result[ 'StateOrProvince' ]);
+        $existingListing->setCountry($result[ 'Country' ]);
         if ( $updateStatuses ) {
             if ( $existingListing->getStatus() != 'new' ) {
                 $existingListing->setStatus(ListingConstants::UPDATED_LISTING_STATUS);
@@ -110,74 +115,71 @@ class ListingService
         }
         $existingListing->setLastUpdateFromFeed(new \DateTime());
         $existingListing->setRawData($result);
-        if ( $result['Latitude'] != '' or $result['Longitude'] != '' ) {
-            $existingListing->setCoordinates(new Point($result['Latitude'], $result['Longitude']));
+        if ( $result[ 'Latitude' ] != '' or $result[ 'Longitude' ] != '' ) {
+            $existingListing->setCoordinates(new Point($result[ 'Latitude' ], $result[ 'Longitude' ]));
         }
-        $existingListing->setType($result['PropertyType']);
-        $existingListing->setOwnershipType($result['OwnershipType']);
-        $existingListing->setBedrooms($result['BedroomsTotal'] ? (int)$result['BedroomsTotal'] : null);
-        $existingListing->setLivingArea($result['BuildingAreaTotal'] ? (int)$result['BuildingAreaTotal'] : 0);
-        $existingListing->setLotSize($result['LotSizeArea'] ? (int)$result['LotSizeArea'] : 0);
-        $existingListing->setYearBuilt($result['YearBuilt'] ? (int)$result['YearBuilt'] : null);
-        $existingListing->setContractDate($result['ListingContractDate'] ? new \DateTime($result['ListingContractDate']) : null);
-        $existingListing->setSubdivision($result['SubdivisionName'] ? $result['SubdivisionName'] : null);
-
+        $existingListing->setType($result[ 'PropertyType' ]);
+        $existingListing->setOwnershipType($result[ 'OwnershipType' ]);
+        $existingListing->setBedrooms($result[ 'BedroomsTotal' ] ? (int)$result[ 'BedroomsTotal' ] : null);
+        $existingListing->setLivingArea($result[ 'BuildingAreaTotal' ] ? (int)$result[ 'BuildingAreaTotal' ] : 0);
+        $existingListing->setLotSize($result[ 'LotSizeArea' ] ? (int)$result[ 'LotSizeArea' ] : 0);
+        $existingListing->setYearBuilt($result[ 'YearBuilt' ] ? (int)$result[ 'YearBuilt' ] : null);
+        $existingListing->setContractDate($result[ 'ListingContractDate' ] ? new \DateTime($result[ 'ListingContractDate' ]) : null);
+        $existingListing->setSubdivision($result[ 'SubdivisionName' ] ? $result[ 'SubdivisionName' ] : null);
         $this->entityManager->flush();
 
         return $existingListing;
     }
 
-    public function getAdminListingList(array $criteria, int $currentPage = 1, int $limit = 50, int $offset = 0): ListingListSearchResult
+    public function getAdminListingList(array $criteria,
+                                        int $currentPage = 1,
+                                        int $limit = 50,
+                                        int $offset = 0): ListingListSearchResult
     {
-        $results = $this->listingRepository->findBy(
-            $criteria,
-            ['feedListingID' => 'DESC'],
-            $limit,
-            $offset);
+        $results = $this->listingRepository->findBy($criteria, [ 'feedListingID' => 'DESC' ], $limit, $offset);
         $listingListCount = $this->getAdminListingListCount();
         $listingList = [];
         foreach ( $results as $result ) {
             $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
         }
         $pageCounter = 1;
-        if (count($listingList) != 1)
-        {
+        if ( count($listingList) != 1 ) {
             $pageCounter = ceil($listingListCount / $limit);
         }
-
         return new ListingListSearchResult($listingListCount, $listingList, $currentPage, $pageCounter);
     }
 
     public function getAdminListingListCount()
     {
         return $this->listingRepository->count([
-            'deletedDate' => null,
-        ]);
+                                                   'deletedDate' => null,
+                                               ]);
     }
 
     public function setAdminListingSelfListing(string $mlsId)
     {
         $singleListing = $this->listingRepository->findOneBy([
-            'id' => $mlsId
-        ]);
+                                                                 'id' => $mlsId
+                                                             ]);
         $selfListingStatus = $singleListing->getSelfListing() ? false : true;
         $singleListing->setSelfListing($selfListingStatus);
-
         $this->entityManager->flush();
-
         return true;
     }
 
-    public function getListingList(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): ?ListingListSearchResult
+    public function getListingList(string $feedName,
+                                   int $currentPage,
+                                   int $limit = 50,
+                                   int $offset = 0): ?ListingListSearchResult
     {
         $results = $this->listingRepository->findBy([
-            'feedID' => $feedName,
-            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
-            'deletedDate' => null,
-        ],
-            null,
-            $limit,
-            $offset);
+                                                        'feedID'      => $feedName,
+                                                        'status'      => [
+                                                            ListingConstants::LIVE_LISTING_STATUS,
+                                                            ListingConstants::UPDATED_LISTING_STATUS
+                                                        ],
+                                                        'deletedDate' => null,
+                                                    ], null, $limit, $offset);
         $listingListCount = $this->getListingListCount($feedName);
         $pageCounter = ceil($listingListCount / $limit);
 
@@ -187,47 +189,54 @@ class ListingService
     public function getSingleListing(string $province, string $mlsNum, string $feedName): ?Listing
     {
         return $this->listingRepository->findOneBy([
-            'stateOrProvince' => $province,
-            'mlsNum' => $mlsNum,
-            'feedID' => $feedName,
-            'deletedDate' => null,
-            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
-        ]);
+                                                       'stateOrProvince' => $province,
+                                                       'mlsNum'          => $mlsNum,
+                                                       'feedID'          => $feedName,
+                                                       'deletedDate'     => null,
+                                                       'status'          => [
+                                                           ListingConstants::LIVE_LISTING_STATUS,
+                                                           ListingConstants::UPDATED_LISTING_STATUS
+                                                       ],
+                                                   ]);
     }
 
     public function getListingListCount(string $feedName)
     {
         return $this->listingRepository->count([
-            'feedID' => $feedName,
-            'deletedDate' => null,
-            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
-        ]);
+                                                   'feedID'      => $feedName,
+                                                   'deletedDate' => null,
+                                                   'status'      => [
+                                                       ListingConstants::LIVE_LISTING_STATUS,
+                                                       ListingConstants::UPDATED_LISTING_STATUS
+                                                   ],
+                                               ]);
     }
 
     public function getBatchListingsForProcessing(string $feedName, int $batchSize): array
     {
         return $this->listingRepository->findBy([
-            'feedID' => $feedName,
-            'deletedDate' => null,
-            'status' => [ ListingConstants::NEW_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
-            'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
-        ], [ 'lastUpdateFromFeed' => 'ASC' ], $batchSize);
+                                                    'feedID'           => $feedName,
+                                                    'deletedDate'      => null,
+                                                    'status'           => [
+                                                        ListingConstants::NEW_LISTING_STATUS,
+                                                        ListingConstants::UPDATED_LISTING_STATUS
+                                                    ],
+                                                    'processingStatus' => ListingConstants::NONE_PROCESSING_LISTING_STATUS,
+                                                ], [ 'lastUpdateFromFeed' => 'ASC' ], $batchSize);
     }
 
     public function setListingStatus(Listing $listing, string $status)
     {
         $listing->setStatus($status);
-
         $this->entityManager->flush();
     }
 
     public function setListingProcessingStatus($listingId, string $status)
     {
         $listing = $this->listingRepository->findOneBy([
-            'id' => $listingId
-        ]);
+                                                           'id' => $listingId
+                                                       ]);
         $listing->setProcessingStatus($status);
-
         $this->entityManager->flush();
     }
 
@@ -250,51 +259,49 @@ class ListingService
     public function setListingPhotosNamesObject(Listing $listing, array $photoNamesArray): Listing
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'feedID' => 'ddf',
-            'feedListingID' => $listing->getFeedListingID(),
-            'deletedDate' => null,
-        ]);
+                                                                   'feedID'        => 'ddf',
+                                                                   'feedListingID' => $listing->getFeedListingID(),
+                                                                   'deletedDate'   => null,
+                                                               ]);
         $existingListing->setImagesData($photoNamesArray);
-
         $this->entityManager->flush();
-
         return $existingListing;
     }
 
     public function setListingCoordinates(Listing $listing, Point $point): Listing
     {
         $existingListing = $this->listingRepository->findOneBy([
-            'mlsNum' => $listing->getMlsNum(),
-            'feedListingID' => $listing->getFeedListingID(),
-            'deletedDate' => null,
-        ]);
+                                                                   'mlsNum'        => $listing->getMlsNum(),
+                                                                   'feedListingID' => $listing->getFeedListingID(),
+                                                                   'deletedDate'   => null,
+                                                               ]);
         $existingListing->setCoordinates($point);
-
         $this->entityManager->flush();
-
         return $existingListing;
     }
 
     public function getListingData(string $province, string $mlsNum, string $feedName): ?object
     {
         $singleListing = $this->getSingleListing($province, $mlsNum, $feedName);
-        if (is_null($singleListing)) {
+        if ( is_null($singleListing) ) {
             return null;
         }
-
         return $this->listingSearchDataService->constructSearchListingData($singleListing);
     }
 
-    public function getListingListCoordinates(string $feedName, int $currentPage, int $limit = 50, int $offset = 0): array
+    public function getListingListCoordinates(string $feedName,
+                                              int $currentPage,
+                                              int $limit = 50,
+                                              int $offset = 0): array
     {
         $results = $this->listingRepository->findBy([
-            'feedID' => $feedName,
-            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
-            'deletedDate' => null,
-        ],
-            null,
-            $limit,
-            $offset);
+                                                        'feedID'      => $feedName,
+                                                        'status'      => [
+                                                            ListingConstants::LIVE_LISTING_STATUS,
+                                                            ListingConstants::UPDATED_LISTING_STATUS
+                                                        ],
+                                                        'deletedDate' => null,
+                                                    ], null, $limit, $offset);
         return $this->listingListSinglePageListingsCoordinates->getListingListCoordinates($results);
     }
 
@@ -306,50 +313,68 @@ class ListingService
     public function getSelfListingsForHomepage(): array
     {
         $results = $this->listingRepository->findBy([
-            'selfListing' => true,
-            'status' => [ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ],
-            'deletedDate' => null,
-        ],
-        ['lastUpdateFromFeed' => 'DESC']);
+                                                        'selfListing' => true,
+                                                        'status'      => [
+                                                            ListingConstants::LIVE_LISTING_STATUS,
+                                                            ListingConstants::UPDATED_LISTING_STATUS
+                                                        ],
+                                                        'deletedDate' => null,
+                                                    ], [ 'lastUpdateFromFeed' => 'DESC' ]);
         $listingList = [];
         foreach ( $results as $result ) {
             $listingList[] = $this->listingSearchDataService->constructSearchListingData($result);
         }
-
         return $listingList;
     }
 
     public function getCitiesCounters(): ?array
     {
-        $cityes = ['Vancouver','North Vancouver','Burnaby','Coquitlam','Surrey','Richmond','West Vancouver','Langley','Maple Ridge','Pitt Meadows','Mission','Abbotsford','Chilliwack','Pitt Meadows','Mission'];
+        $cityes = [
+            'Vancouver',
+            'North Vancouver',
+            'Burnaby',
+            'Coquitlam',
+            'Surrey',
+            'Richmond',
+            'West Vancouver',
+            'Langley',
+            'Maple Ridge',
+            'Pitt Meadows',
+            'Mission',
+            'Abbotsford',
+            'Chilliwack',
+            'Pitt Meadows',
+            'Mission'
+        ];
         $result = $this->listingRepository->getCounters($cityes, 'British Columbia', 'ddf');
         $cityCounters = [];
         foreach ( $result as $item ) {
-            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia');
+            $cityCounters[] = new CitiesCounterResult($item['city'],$item['counter'], 'ddf', 'British Columbia', 'Vancouver,BC');
         }
-
         return $cityCounters;
     }
 
     public function getFeaturedProperties()
     {
-        $results = $this->listingRepository->getListingsByCriteria(new ListingCriteria('ddf',[ ListingConstants::LIVE_LISTING_STATUS, ListingConstants::UPDATED_LISTING_STATUS ]));
+        $results = $this->listingRepository->getListingsByCriteria(new ListingCriteria('ddf', [
+            ListingConstants::LIVE_LISTING_STATUS,
+            ListingConstants::UPDATED_LISTING_STATUS
+        ]));
         $featuredProperties = [];
         foreach ( $results as $result ) {
             $featuredProperties[] = $this->listingSearchDataService->constructSearchListingData($result);
         }
-
         return $featuredProperties;
     }
 
     public function getSearchFormObject(): ?array
     {
         return [
-            'type' => $this->getPropertyTypes(),
+            'type'      => $this->getPropertyTypes(),
             'priceFrom' => $this->getPropertyPriceFrom(),
-            'priceTo' => $this->getPropertyPriceTo(),
-            'beds' => $this->getPropertyBedrooms(),
-            'baths' => $this->getPropertyBathrooms(),
+            'priceTo'   => $this->getPropertyPriceTo(),
+            'beds'      => $this->getPropertyBedrooms(),
+            'baths'     => $this->getPropertyBathrooms(),
         ];
     }
 
@@ -359,19 +384,18 @@ class ListingService
         $publicSchools = $this->schoolRepository->getPublicSchools($coordinates);
         $schoolObject = [];
         foreach ( $publicSchools as $publicSchool ) {
-            $distance = $this->getSchoolDistance($listing,$publicSchool);
-            $schoolObject['public'][] = new SchoolData($publicSchool, $distance);
+            $distance = $this->getSchoolDistance($listing, $publicSchool);
+            $schoolObject[ 'public' ][] = new SchoolData($publicSchool, $distance);
         }
         $privateSchools = $this->schoolRepository->getPrivateSchools($coordinates);
-        foreach ( $privateSchools['elementary'] as $privateSchoolElementary ) {
-            $distance = $this->getSchoolDistance($listing,$privateSchoolElementary);
-            $schoolObject['private']['elementary'] = new SchoolData($privateSchoolElementary, $distance);
+        foreach ( $privateSchools[ 'elementary' ] as $privateSchoolElementary ) {
+            $distance = $this->getSchoolDistance($listing, $privateSchoolElementary);
+            $schoolObject[ 'private' ][ 'elementary' ] = new SchoolData($privateSchoolElementary, $distance);
         }
-        foreach ( $privateSchools['secondary'] as $privateSchoolSecondary ) {
-            $distance = $this->getSchoolDistance($listing,$privateSchoolSecondary);
-            $schoolObject['private']['secondary'] = new SchoolData($privateSchoolSecondary, $distance);
+        foreach ( $privateSchools[ 'secondary' ] as $privateSchoolSecondary ) {
+            $distance = $this->getSchoolDistance($listing, $privateSchoolSecondary);
+            $schoolObject[ 'private' ][ 'secondary' ] = new SchoolData($privateSchoolSecondary, $distance);
         }
-
         return $listing->setSchoolsData($schoolObject);
     }
 
@@ -381,11 +405,11 @@ class ListingService
             $request = $this->hereRouteService->getRoute($listing->getCoordinates(), $school->getCoordinates());
             $routes = json_decode($request->getBody()->getContents())->response->route;
             $distance = [];
-            foreach ($routes as $route) {
+            foreach ( $routes as $route ) {
                 $distance[] = $route->summary->distance;
             }
             return round(min($distance) / 1000, 2) . ' km';
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             return null;
         }
     }
@@ -525,6 +549,26 @@ class ListingService
             '3+',
             '4+',
         ];
+    }
+
+    public function getProvinceName(string $provinceShortCode): string
+    {
+        $provinces = [
+            'YT' => 'Yukon',
+            'NT' => 'Northwest Territories',
+            'NU' => 'Nunavut',
+            'BC' => 'British Columbia',
+            'AB' => 'Alberta',
+            'QC' => 'Quebec',
+            'MB' => 'Manitoba',
+            'NS' => 'Nova Scotia',
+            'NB' => 'New Brunswick',
+            'NL' => 'Newfoundland and Labrador',
+            'ON' => 'Ontario',
+            'PE' => 'Prince Edward Island',
+            'SK' => 'Saskatchewan'
+        ];
+        return $provinces[ $provinceShortCode ];
     }
 
 }

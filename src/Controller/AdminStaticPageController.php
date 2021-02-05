@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Page;
 use App\Form\PageType;
+use App\Form\SearchPageType;
 use App\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,16 @@ class AdminStaticPageController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="page_new", methods={"GET","POST"})
+     * @Route("/new/{type}", name="page_new", methods={"GET","POST"}, requirements={"type"="(static|search|landing)"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, string $type = null): Response
     {
         $staticPage = new Page();
-        $form = $this->createForm(PageType::class, $staticPage);
+        if ($type == 'search') {
+            $form = $this->createForm(SearchPageType::class, $staticPage);
+        } else {
+            $form = $this->createForm(PageType::class, $staticPage);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -39,42 +44,38 @@ class AdminStaticPageController extends AbstractController
             $entityManager->persist($staticPage);
             $entityManager->flush();
 
-            return $this->redirectToRoute('page_edit',['id' => $staticPage->getId()]);
+            return $this->redirectToRoute('page_edit',['id' => $staticPage->getId(),'type' => $staticPage->getType()]);
         }
 
         return $this->render('admin/page/new.html.twig', [
             'static_page' => $staticPage,
             'form' => $form->createView(),
+            'form_type' => $type,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="page_show", methods={"GET"})
+     * @Route("/{type}-{id}/edit", name="page_edit", methods={"GET","POST"}, requirements={"type"="(static|search|landing)"})
      */
-    public function show(Page $staticPage): Response
+    public function edit(Request $request, Page $staticPage, $type): Response
     {
-        return $this->render('admin/page/show.html.twig', [
-            'static_page' => $staticPage,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="page_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Page $staticPage): Response
-    {
-        $form = $this->createForm(PageType::class, $staticPage);
+        if ($type == 'search') {
+            $form = $this->createForm(SearchPageType::class, $staticPage);
+        } else {
+            $form = $this->createForm(PageType::class, $staticPage);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('page_edit',['id' => $staticPage->getId()]);
+            return $this->redirectToRoute('page_edit',['id' => $staticPage->getId(),'type' => $staticPage->getType()]);
         }
 
         return $this->render('admin/page/edit.html.twig', [
             'static_page' => $staticPage,
             'form' => $form->createView(),
+            'form_type' => $type,
         ]);
     }
 

@@ -34,8 +34,7 @@
                                     <td>{{ static_page.type }}</td>
                                     <td>{{ static_page.status ? 'Yes' : 'No' }}</td>
                                     <td>
-                                        <a href="{{ path('page_show', {'id': static_page.id}) }}">show</a>
-                                        <a href="{{ path('page_edit', {'id': static_page.id}) }}">edit</a>
+                                        <a href="{{ path('page_edit', {'id': static_page.id,'type': static_page.type}) }}">edit</a>
                                     </td>
                                 </tr>
                             {% else %}
@@ -45,7 +44,8 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <a href="{{ path('page_new') }}">Create new</a>
+                        <a href="{{ path('page_new', {'type': 'static'}) }}">Create new Static/Landing page</a>
+                        <a href="{{ path('page_new', {'type': 'search'}) }}">Create new Search Page</a>
                     </div>
                 </div>
             </div>
