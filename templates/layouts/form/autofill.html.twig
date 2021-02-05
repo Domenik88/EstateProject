@@ -1,14 +1,33 @@
+{% set dataRequestOptionsAttribute = requestOptions|default(false)  ? "data-request-options=" ~ requestOptions|json_encode()  %}
+
 <div
-    class="autofill {{ wrapMod|default('') }} js-autofill js-bcc"
-    data-request-options="{{ requestOptions|json_encode() }}"
+    class="autofill {{ wrapMod|default('js-autofill') }} js-bcc"
+    data-no-result-text="no results"
+    {{ dataRequestOptionsAttribute }}
 >
     {% include 'layouts/form/input.html.twig' with {
         name: inputName|default('search-input'),
         placeholder: inputPlaceholder|default('Enter Neighbourhood, City, MLS®'),
-        inputMod: inputMod|default('_transparent') ~ ' js-autofill-input',
+        inputMod: 'required ' ~ inputMod|default('_transparent') ~ ' ' ~ inputJsMod|default('js-autofill-input'),
+        value: inputValue|default(''),
     } only %}
 
     <div class="autofill__dropdown">
-        <div class="autofill__options js-autofill-options-container js-smooth-scroll"></div>
+        <div class="autofill__options js-smooth-scroll {{ optionsContainerMod|default('js-autofill-options-container ') }}">
+            <div class="autofill__options-list">
+                {% if phoneCodesArray|default(false) %}
+                    {% for item in phoneCodesArray %}
+                        <span
+                            class="autofill-option js-autofill-option"
+                            data-value="{{ item.code ~ ' ' ~ item.dial_code }}"
+                        >{{
+                            item.code ~ ' ' ~ item.dial_code
+                        }}</span>
+                    {% endfor %}
+
+                    <span class="autofill-no-results js-autofill-no-results small-text">no results</span>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>

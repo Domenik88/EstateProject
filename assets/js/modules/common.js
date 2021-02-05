@@ -30,6 +30,7 @@ jQuery(function($){
             this.initToggleNext();
             this.initKeywordsInput();
             this.initAutofill();
+            this.initAutofillFilter();
             this.initClickPrevent();
             this.initTwinFields();
             this.initInputOnlyNumber();
@@ -119,6 +120,9 @@ jQuery(function($){
             this.$keywordsList = $('.js-keywords-list');
 
             this.$autofill = $('.js-autofill');
+            this.$autofillFilter = $('.js-autofill-filter');
+            this.$autofillOption = $('.js-autofill-option');
+            this.$autofillNoResults = $('.js-autofill-no-results');
             this.$autofillInput = $('.js-autofill-input');
             this.$autofillOptionsContainer = $('.js-autofill-options-container');
 
@@ -229,6 +233,95 @@ jQuery(function($){
             })
         },
 
+        initAutofillFilter() {
+            function filter(obj) {
+                const
+                    { $relatedInput, $relatedOptions, $autofillNoResults } = obj,
+                    inputValue = $relatedInput.val();
+
+                let matches = 0;
+
+                $autofillNoResults.removeClass('_show');
+
+                $relatedOptions.each((key, item) => {
+                    const
+                        $currentOption = $(item),
+                        dataVal = $currentOption.data('value'),
+                        matchIndex = dataVal.toLowerCase().indexOf(inputValue.toLowerCase()),
+                        hasMatch = matchIndex !== -1;
+
+                    if (hasMatch) {
+                        matches++;
+
+                        $currentOption
+                            .html(
+                                dataVal.substring(0, matchIndex) +
+                                `<span class="highlight">${dataVal.substring(matchIndex, matchIndex + inputValue.length)}</span>` +
+                                dataVal.substring(matchIndex + inputValue.length, dataVal.length)
+                            )
+                            .data('highlight', true);
+                    }
+                    else if ($currentOption.data('highlight')) {
+                        $currentOption
+                            .html(dataVal)
+                            .data('highlight', false);
+                    }
+
+                    $currentOption[hasMatch ? 'removeClass' : 'addClass']('_hide');
+                });
+
+                if (!matches) $autofillNoResults.addClass('_show');
+            }
+
+            function reset($options) {
+                $options.removeClass('_hide');
+
+                $options.each((key, item) => {
+                    const
+                        $currentOption = $(item),
+                        dataVal = $currentOption.data('value');
+
+                    if ($currentOption.data('highlight')) {
+                        $currentOption
+                            .html(dataVal)
+                            .data('highlight', false);
+                    }
+                });
+            }
+
+            $_.$autofillFilter.each((key, item) => {
+                const
+                    $currentAutofill = $(item),
+                    $relatedInput = $currentAutofill.find($_.$autofillInput),
+                    $autofillNoResults = $currentAutofill.find($_.$autofillNoResults),
+                    $relatedOptions = $currentAutofill.find($_.$autofillOption);
+
+                let timer = null;
+
+                $relatedInput.on('focus click', () => {
+                    $currentAutofill.addClass('_active');
+                });
+
+                $relatedOptions.on('click', (e) => {
+                    const
+                        $currentTarget = $(e.currentTarget),
+                        dataValue = $currentTarget.data('value');
+
+                    $relatedInput.val(dataValue);
+                    $currentAutofill.removeClass('_active');
+                    reset($relatedOptions);
+                });
+
+                $relatedInput.on('keyup change', () => {
+                    clearTimeout(timer);
+
+                    timer = setTimeout(() => {
+                        filter({ $relatedInput, $relatedOptions, $autofillNoResults })
+                    }, 500);
+                });
+            });
+        },
+
         initAutofill() {
             function search(obj) {
                 const
@@ -274,20 +367,29 @@ jQuery(function($){
 
                 if (data.length) {
                     $relatedOptionsContainer.html(data.map(item => `
-                    <span class="autofill-option">${item}</span>
-                `).join(''));
+                        <span class="autofill-option">${item}</span>
+                    `).join(''));
 
-                    $currentAutofill.addClass('_active _show-options');
+                    $currentAutofill.addClass('_active').data('has-options', true);
                 } else {
-                    clear({ $currentAutofill, $relatedOptionsContainer });
+                    clear({ $currentAutofill, $relatedOptionsContainer, noResults: true });
                 }
             }
 
             function clear(obj) {
-                const { $currentAutofill, $relatedOptionsContainer } = obj;
+                const
+                    { $currentAutofill, $relatedOptionsContainer, noResults } = obj,
+                    dataNoResultText = $currentAutofill.data('no-result-text');
 
-                $currentAutofill.removeClass('_active _show-options');
                 $relatedOptionsContainer.html('');
+
+                if (noResults && dataNoResultText) {
+                    $relatedOptionsContainer.append(`<span class="autofill-no-results _show">${dataNoResultText}</span>`);
+                    $currentAutofill.addClass('_active');
+                } else {
+                    $currentAutofill.removeClass('_active');
+                    $currentAutofill.data('has-options', false);
+                }
             }
 
             $_.$autofill.each((key, item) => {
@@ -301,7 +403,7 @@ jQuery(function($){
                     lastVal = null;
 
                 $relatedInput.on('focus click', () => {
-                    $currentAutofill.addClass('_active');
+                    if ($currentAutofill.data('has-options')) $currentAutofill.addClass('_active');
                 });
 
                 $relatedOptionsContainer.on('click', '.autofill-option', (e) => {
