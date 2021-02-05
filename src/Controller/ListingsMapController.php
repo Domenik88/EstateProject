@@ -56,7 +56,7 @@ class ListingsMapController extends AbstractController
     /**
      * @Route("/map/filter-search", priority=10, name="map_filter_search", methods={"POST"})
      */
-    public function searchOnMap(Request $request, string $city, string $state)
+    public function searchOnMap(Request $request)
     {
         if ( !$request->isXmlHttpRequest() ) {
             throw new NotFoundHttpException();
