@@ -29,9 +29,8 @@ class FetchListingUpdatesCommand extends Command
     private FeedService $feedService;
     private DdfListingMasterService $ddfListingMasterService;
     private SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService;
-    private ListingSearchService $listingSearchService;
 
-    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService, ListingSearchService $listingSearchService)
+    public function __construct(DdfService $ddfService, LoggerInterface $logger, ListingRepository $listingRepository, ListingService $listingService, FeedService $feedService, DdfListingMasterService $ddfListingMasterService, SearchUpdatedDdfListingsService $searchUpdatedDdfListingsService)
     {
         $this->ddfService = $ddfService;
         $this->logger = $logger;
@@ -40,7 +39,6 @@ class FetchListingUpdatesCommand extends Command
         $this->feedService = $feedService;
         $this->ddfListingMasterService = $ddfListingMasterService;
         $this->searchUpdatedDdfListingsService = $searchUpdatedDdfListingsService;
-        $this->listingSearchService = $listingSearchService;
         parent::__construct();
     }
 

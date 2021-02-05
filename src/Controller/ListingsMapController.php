@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Criteria\ListingMapSearchCriteria;
 use App\Service\Listing\ListingSearchDataService;
-use App\Service\Listing\ListingSearchService;
 use App\Service\Listing\ListingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,12 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListingsMapController extends AbstractController
 {
     private ListingService $listingService;
-    private ListingSearchService $listingSearchService;
 
-    public function __construct(ListingService $listingService, ListingSearchService $listingSearchService)
+    public function __construct(ListingService $listingService)
     {
         $this->listingService = $listingService;
-        $this->listingSearchService = $listingSearchService;
     }
 
     /**
@@ -62,11 +58,8 @@ class ListingsMapController extends AbstractController
      */
     public function searchOnMap(string $city, string $state)
     {
-        $criteria = new ListingMapSearchCriteria($city, $this->listingService->getProvinceName($state));
-        $searchListings = $this->listingSearchService->searchListings($criteria);
         $searchFormObject = $this->listingService->getSearchFormObject();
         return $this->render('listings_map/index.html.twig', [
-            'searchListings'   => $searchListings,
             'searchFormObject' => $searchFormObject,
         ]);
     }

@@ -27,7 +27,7 @@ class AdminStaticPageController extends AbstractController
     }
 
     /**
-     * @Route("/new/{type}", name="page_new", methods={"GET","POST"}, requirements={"type"="\w+"})
+     * @Route("/new/{type}", name="page_new", methods={"GET","POST"}, requirements={"type"="(static|search|landing)"})
      */
     public function new(Request $request, string $type = null): Response
     {
@@ -55,7 +55,7 @@ class AdminStaticPageController extends AbstractController
     }
 
     /**
-     * @Route("/{type}-{id}/edit", name="page_edit", methods={"GET","POST"})
+     * @Route("/{type}-{id}/edit", name="page_edit", methods={"GET","POST"}, requirements={"type"="(static|search|landing)"})
      */
     public function edit(Request $request, Page $staticPage, $type): Response
     {
