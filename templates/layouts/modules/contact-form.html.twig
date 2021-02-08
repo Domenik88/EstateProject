@@ -1,6 +1,7 @@
 {% set mod = twoCol|default(false) ? '_2-col' : '' %}
 {% set collapseMod = confidentialityCollapse|default(false) ? '_collapse' : '' %}
 {% set collapseJsMod = confidentialityCollapse|default(false) ? 'js-conf-collapse-form' : '' %}
+
 <form class="contact-form {{ mod }} {{ collapseMod }} {{ collapseJsMod }} js-ajax-form" action="{{ path('new_viewing') }}" method="post" autocomplete="off">
     {% if listingId|default(false) %}
         {% include 'layouts/form/hidden-input.html.twig' with {
@@ -8,6 +9,13 @@
             value: listingId,
         } only %}
     {% endif %}
+
+    {% include 'layouts/common/ty-message.html.twig' with {
+        title: tyTitle|default('Thank you'),
+        subtitle: tySubtitle|default('Your message has been sent'),
+        titleMod: tyTitleMod|default(false),
+        subtitleMod: tySubtitleMod|default(false),
+    } only %}
 
     <div class="contact-form__col">
         <div class="contact-form__list mb20">
@@ -27,27 +35,15 @@
                 } only %}
             </div>
             <div class="contact-form__row">
-                <div class="tel-wrap">
+                <div class="tel-wrap js-max-width-container">
                     <div class="tel-wrap__code">
-                        {% include 'layouts/form/select.html.twig' with {
-                            'name': 'code',
-                            'inputMod': '',
-                            'wrapMod': '  _gray-text',
-                            'textMod': 'small-text',
-                            'options': [
-                                {
-                                    'value': '+1268',
-                                    'text': 'CA +1268',
-                                },
-                                {
-                                    'value': '1111',
-                                    'text': 'CA +1111',
-                                },
-                                {
-                                    'value': '2222',
-                                    'text': 'CA +2222',
-                                },
-                            ]
+                        {% include 'layouts/form/autofill.html.twig' with {
+                            inputName: 'code',
+                            wrapMod: 'js-autofill-filter',
+                            inputPlaceholder: ' ',
+                            inputMod: ' ',
+                            inputValue: 'CA +1',
+                            phoneCodeOptions: true,
                         } only %}
                     </div>
                     <div class="tel-wrap__phone">

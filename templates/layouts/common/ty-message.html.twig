@@ -1,0 +1,9 @@
+<div class="ty-message {{ wrapMod|default(false) }}">
+    {% if title|default(false) %}
+        <span class="ty-message__title {{ titleMod|default('h2') }}">{{ title }}</span>
+    {% endif %}
+
+    {% if subtitle|default(false) %}
+        <span class="ty-message__subtitle {{ subtitleMod|default('mt20 h5') }}">{{ subtitle }}</span>
+    {% endif %}
+</div>

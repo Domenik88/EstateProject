@@ -1,0 +1,14 @@
+<div
+    class="filter-dropdown {{ wrapMod|default('') }} js-filter-dropdown js-bcc"
+    data-request-options="{{ requestOptions|json_encode() }}"
+>
+    {% include 'layouts/form/input.html.twig' with {
+        name: inputName|default('code'),
+        inputMod: inputMod|default('_transparent') ~ ' js-filter-dropdown-input',
+        value: inputValue|default('CA +1268'),
+    } only %}
+
+    <div class="autofill__dropdown">
+        <div class="autofill__options js-autofill-options-container js-smooth-scroll"></div>
+    </div>
+</div>

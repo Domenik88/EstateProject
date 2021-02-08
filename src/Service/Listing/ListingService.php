@@ -9,6 +9,7 @@
 
 namespace App\Service\Listing;
 
+use App\Criteria\ListingMapSearchCriteria;
 use App\Entity\Listing;
 use App\Entity\School;
 use App\Repository\ListingRepository;
@@ -412,6 +413,12 @@ class ListingService
         } catch ( \Exception $e ) {
             return null;
         }
+    }
+
+    public function getListingsByFilters(array $filters): ?array
+    {
+        $result = $this->listingRepository->searchListingsByMapCriteria(new ListingMapSearchCriteria($filters['city'],$filters['province']));
+        return $result;
     }
 
     public function getFilteredListingsByUriRequest(string $request): ?array

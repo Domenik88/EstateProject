@@ -54,6 +54,22 @@ class ListingsMapController extends AbstractController
     }
 
     /**
+     * @Route("/map/filter-search", priority=10, name="map_filter_search", methods={"POST"})
+     */
+    public function searchOnMap(Request $request)
+    {
+        if ( !$request->isXmlHttpRequest() ) {
+            throw new NotFoundHttpException();
+        }
+        $requestData = $request->request->all();
+        $listings = $this->listingService->getListingsByFilters($requestData);
+
+        $response = new JsonResponse([ 'collection' => json_encode($listings) ]);
+
+        return $response;
+    }
+
+    /**
      * @Route("/map/{request}", priority=10, name="request_search_on_map", requirements={"request"=".+"}, methods={"GET"})
      */
     public function searchOnMap(string $request)
@@ -64,5 +80,4 @@ class ListingsMapController extends AbstractController
             'searchFormObject' => $searchFormObject,
         ]);
     }
-
 }

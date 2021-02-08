@@ -1,6 +1,8 @@
 {% set mod = simple|default(false) ? '_simple' : '' %}
-<div class="agent {{ mod }}">
-    <div class="agent__container">
+{% set idAttribute = id|default(false) ? 'id=' ~ id : '' %}
+
+<div class="agent {{ mod }} {{ wrapMod|default('') }}" {{ idAttribute }} data-offset="20">
+    <div class="agent__container _scroll-hover-white {{ containerMod|default('') }}" data-init-if-overflow="true">
         <div class="agent__person">
             <div class="agent__photo-wrap">
                 <img class="agent__photo of" src="{{ agentPhoto }}" />
@@ -18,8 +20,9 @@
 
         {% if simple|default(false) %}
             {% include 'layouts/controls/button.html.twig' with {
-                'href': '#',
-                'text': 'Go See This Home Now',
+                href: '#agent',
+                text: 'Go See This Home Now',
+                mod: 'js-nav-link',
             } only %}
         {% endif %}
 
@@ -30,10 +33,14 @@
             </div>
 
             {% include 'layouts/modules/contact-form.html.twig' with {
-                'confidentiality': confidentiality|default(false),
-                'confidentialityCollapse': confidentialityCollapse|default(false),
-                'btnText': 'Go See This Home Now',
-                'listingId':listingId|default(''),
+                confidentiality: confidentiality|default(false),
+                confidentialityCollapse: confidentialityCollapse|default(false),
+                btnText: 'Go See This Home Now',
+                listingId:listingId|default(''),
+                tyTitle: tyTitle|default(false),
+                tySubtitle: tySubtitle|default(false),
+                tyTitleMod: tyTitleMod|default(false),
+                tySubtitleMod: tySubtitleMod|default(false),
             } only %}
         {% endif %}
     </div>

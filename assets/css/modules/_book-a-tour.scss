@@ -18,7 +18,7 @@
 	
 	&__table {
 		display: flex;
-		align-items: flex-start;
+		align-items: stretch;
 		justify-content: space-between;
 	}
 	
@@ -40,6 +40,8 @@
 		
 		&_right {
 			width: calc(100% / 10 * 6 - 10px);
+			display: flex;
+			align-items: stretch;
 		}
 	}
 	
