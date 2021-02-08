@@ -414,6 +414,12 @@ class ListingService
         }
     }
 
+    public function getFilteredListingsByUriRequest(string $request): ?array
+    {
+        dump(explode('/',$request));die;
+        return null;
+    }
+
     private function getPropertyTypes(): ?object
     {
         return (object)[

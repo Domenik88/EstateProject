@@ -54,10 +54,11 @@ class ListingsMapController extends AbstractController
     }
 
     /**
-     * @Route("/map/{city},{state}/", priority=10, name="search_on_map", requirements={"city"=".+","state"=".+"})
+     * @Route("/map/{request}", priority=10, name="request_search_on_map", requirements={"request"=".+"}, methods={"GET"})
      */
-    public function searchOnMap(string $city, string $state)
+    public function searchOnMap(string $request)
     {
+        $listings = $this->listingService->getFilteredListingsByUriRequest($request);
         $searchFormObject = $this->listingService->getSearchFormObject();
         return $this->render('listings_map/index.html.twig', [
             'searchFormObject' => $searchFormObject,
