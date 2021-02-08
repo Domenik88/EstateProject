@@ -31,6 +31,8 @@
     max-height: 84px;
 }
 
+
+
 .select-option {
     position: relative;
     display: block;
@@ -38,8 +40,12 @@
     cursor: pointer;
     color: $gray0;
     transition: $default-transition;
-    margin-bottom: 10px;
     @extend .small-text;
+    margin-top: 10px;
+    
+    &:first-child {
+        margin-top: 0;
+    }
     
     &:last-child {
         margin-bottom: 0;

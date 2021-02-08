@@ -20,6 +20,17 @@
 			}
 		}
 	}
+	
+	&._scroll-hover-white {
+		.scrollbar-track-y {
+			.scrollbar-thumb {
+				&:hover,
+				&:active {
+					background: $white;
+				}
+			}
+		}
+	}
 }
 
 [data-simplebar] {

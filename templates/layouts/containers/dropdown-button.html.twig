@@ -1,6 +1,8 @@
 {% set dropdownButtonScrollJsMod = scroll|default(false) ? 'js-smooth-scroll' : '' %}
 {% set dropdownButtonScrollStyleMod = scroll|default(false) ? '_scroll-padding' : '' %}
 {% set dataPropsAttribute = dataProps|default(false) ? "data-props=" ~ dataProps|json_encode() %}
+{% set dataOffsetAttribute = dataOffset|default(false) ? "data-offset=" ~ dataOffset %}
+{% set dataMhFromPositionAttribute = dataMhFromPosition|default(false) ? "data-mh-from-position=" ~ dataMhFromPosition %}
 
 <div class="dropdown-button {{ wrapMod|default('') }} js-dropdown-button" {{ dataPropsAttribute }}>
     <div class="dropdown-button__text js-toggle-active {{ textWrapMod|default('js-bcc') }}">
@@ -12,7 +14,11 @@
     </div>
 
     <div class="dropdown-button__popup {{ popupMod|default('') }} {{ dropdownButtonScrollStyleMod }} js-bcc-sibling js-dropdown-popup">
-        <div class="dropdown-button__{{ scroll|default(false) ? 'scroll' : 'inner' }} {{ scrollMod|default('') }} {{ dropdownButtonScrollJsMod }}">
+        <div
+            class="dropdown-button__{{ scroll|default(false) ? 'scroll' : 'inner' }} {{ scrollMod|default('') }} {{ dropdownButtonScrollJsMod }}"
+            {{ dataOffsetAttribute }}
+            {{ dataMhFromPositionAttribute }}
+        >
             {% block dropdown_content %}{% endblock %}
         </div>
     </div>

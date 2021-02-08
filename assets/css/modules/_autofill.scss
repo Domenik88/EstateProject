@@ -4,24 +4,70 @@
 	
 	&__dropdown {
 		@extend .select-dropdown;
+		min-width: 100%;
+		width: auto;
 	}
 	
 	&__options {
 		@extend .select-scroll;
-		
-		.autofill-option {
-			@extend .select-option;
-			
-			.highlight {
-				display: inline;
-				background: yellow;
-			}
-		}
 	}
 	
-	&._show-options._active {
+	&__options-list {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	
+	&._active {
 		#{$r}__dropdown {
 			@extend .select-dropdown-active;
 		}
+	}
+}
+
+.autofill-no-results {
+	color: $gray1;
+	
+	&:not(._show) {
+		display: none;
+	}
+}
+
+.autofill-option {
+	@extend .select-option;
+	margin-top: 0;
+	
+	&:not(._hide) ~ & {
+		margin-top: 10px;
+	}
+	
+	.highlight {
+		display: inline;
+		background: yellow;
+	}
+	
+	&._hide {
+		display: none;
+	}
+}
+
+.option-label {
+	@extend .tiny-text;
+	position: relative;
+	color: $gray1;
+	display: block;
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+	
+	&::after {
+		content: '';
+		width: 20px;
+		height: 100%;
+		@include absolute(0,0,auto,auto);
+		background: linear-gradient(270deg, $white, rgba(0,0,0,0));
+		z-index: 2;
 	}
 }
