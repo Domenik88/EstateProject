@@ -72,7 +72,7 @@ class ListingsMapController extends AbstractController
     /**
      * @Route("/map/{request}", priority=10, name="request_search_on_map", requirements={"request"=".+"}, methods={"GET"})
      */
-    public function searchOnMap(string $request)
+    public function searchOnMapFromUri(string $request)
     {
         $listings = $this->listingService->getFilteredListingsByUriRequest($request);
         $searchFormObject = $this->listingService->getSearchFormObject();
