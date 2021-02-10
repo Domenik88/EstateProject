@@ -423,6 +423,16 @@ class ListingService
 
     public function getFilteredListingsByUriRequest(string $request): ?array
     {
+        $requestArray = explode('/',$request);
+        $filters = [];
+        foreach ($requestArray as $item){
+            $key = explode('_',$item);
+            dump($key);
+            if (isset($key[1])){
+                $filters[$key[0]] = $key[1];
+            }
+        }
+        dump($filters);
         dump(explode('/',$request));die;
         return null;
     }
