@@ -22,7 +22,11 @@ class ListingMediaService
         if (!is_null($imageNames)) {
             $i = 1;
             while ( $i <= count($imageNames) ) {
-                $listingImagesUrlArray[] = $_ENV['ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE'] . '/listings/' . $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/' . $imageNames[$i];
+                if (isset($imageNames[$i])) {
+                    $listingImagesUrlArray[] = $_ENV[ 'ESBL_DIGITAL_OCEAN_ENDPOINT_EDGE' ] . '/listings/' .
+                                               $listing->getFeedID() . '/' . $listing->getFeedListingID() . '/' .
+                                               $imageNames[ $i ];
+                }
                 $i++;
             }
         } else {

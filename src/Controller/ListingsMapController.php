@@ -78,6 +78,7 @@ class ListingsMapController extends AbstractController
         $searchFormObject = $this->listingService->getSearchFormObject();
         return $this->render('listings_map/index.html.twig', [
             'searchFormObject' => $searchFormObject,
+            'searchedListings' => $listings,
         ]);
     }
 }
